@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-22 20:19+0200\n"
+"POT-Creation-Date: 2017-04-28 18:18+0200\n"
 "PO-Revision-Date: 2016-12-31 21:22+0000\n"
 "Last-Translator: antiparvos <marcoslansgarza@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/corebird/corebird/language/"
@@ -76,9 +76,25 @@ msgstr "twitter;"
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:357
-msgid "Could not load tweets"
-msgstr "Non foi posíbel cargar os chíos"
+#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
+#: src/CbUtils.c:87 src/TweetInfoPage.vala:479
+#, fuzzy
+msgid "Replying to"
+msgstr "Responder"
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet. Example: "Replying to Foo and Bar" where
+#. * "and Bar" comes from this string.
+#: src/CbUtils.c:98 src/TweetInfoPage.vala:491
+msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet
+#: src/CbUtils.c:107
+#, c-format
+msgid "and %d others"
+msgstr ""
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -100,8 +116,12 @@ msgstr "Nova mensaxe directa de %s"
 msgid "Direct Messages"
 msgstr "Mensaxes directas"
 
+#: src/DefaultTimeline.vala:357
+msgid "Could not load tweets"
+msgstr "Non foi posíbel cargar os chíos"
+
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:531
+#: src/TweetInfoPage.vala:520
 msgid "Favorites"
 msgstr "Favoritos"
 
@@ -134,61 +154,13 @@ msgstr[1] "%d chíos novos"
 msgid "Home"
 msgstr "Inicio"
 
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] "(%d sen ler)"
-msgstr[1] "(%d sen ler)"
-
-#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
-#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
-msgid "Delete"
-msgstr "Eliminar"
-
-#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
-msgid "Lists"
-msgstr "Listaxes"
-
 #: src/ListStatusesPage.vala:378
 msgid "List"
 msgstr "Listaxe"
 
-#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:470
-#, fuzzy
-msgid "Replying to"
-msgstr "Responder"
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet. Example: "Replying to Foo and Bar" where
-#. "and Bar" comes from this string.
-#: src/list/TweetListEntry.vala:176 src/TweetInfoPage.vala:496
-msgid "and"
-msgstr ""
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet
-#: src/list/TweetListEntry.vala:189
-#, c-format
-msgid "and %d others"
-msgstr ""
-
-#: src/list/TweetListEntry.vala:485
-#, c-format
-msgid "Block %s"
-msgstr "Bloquear a %s"
-
-#: src/list/TweetListEntry.vala:641
-msgid "This tweet contains images marked as inappropriate"
-msgstr "Este chío contén imaxes marcadas como inapropiadas"
-
-#: src/list/TweetListEntry.vala:648
-msgid "Show anyway"
-msgstr "Mostrar"
+#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
+msgid "Lists"
+msgstr "Listaxes"
 
 #: src/MainWindow.vala:79
 msgid "Add new Account"
@@ -220,21 +192,49 @@ msgstr "Buscar"
 msgid "Could not show tweet"
 msgstr "Non foi posíbel mostrar o chío"
 
-#: src/TweetInfoPage.vala:530
+#: src/TweetInfoPage.vala:519
 msgid "Retweets"
 msgstr "Rechouchíos"
 
-#: src/TweetInfoPage.vala:539 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:528 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "Abrir no navegador"
 
-#: src/TweetInfoPage.vala:539
+#: src/TweetInfoPage.vala:528
 msgid "Source"
 msgstr "Orixe"
 
-#: src/TweetInfoPage.vala:585
+#: src/TweetInfoPage.vala:574
 msgid "Tweet Details"
 msgstr "Detalles do chío"
+
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d sen ler)"
+msgstr[1] "(%d sen ler)"
+
+#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
+#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "Eliminar"
+
+#: src/list/TweetListEntry.vala:450
+#, c-format
+msgid "Block %s"
+msgstr "Bloquear a %s"
+
+#: src/list/TweetListEntry.vala:606
+msgid "This tweet contains images marked as inappropriate"
+msgstr "Este chío contén imaxes marcadas como inapropiadas"
+
+#: src/list/TweetListEntry.vala:613
+msgid "Show anyway"
+msgstr "Mostrar"
 
 #: src/util/Utils.vala:168
 msgid "Now"

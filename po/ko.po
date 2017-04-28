@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-22 20:19+0200\n"
+"POT-Creation-Date: 2017-04-28 18:18+0200\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/corebird/corebird/"
@@ -75,9 +75,25 @@ msgstr "트위터;"
 msgid "corebird"
 msgstr "코어버드"
 
-#: src/DefaultTimeline.vala:357
-msgid "Could not load tweets"
-msgstr "트윗을 불러올 수 없습니다."
+#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
+#: src/CbUtils.c:87 src/TweetInfoPage.vala:479
+#, fuzzy
+msgid "Replying to"
+msgstr "트윗에 답장"
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet. Example: "Replying to Foo and Bar" where
+#. * "and Bar" comes from this string.
+#: src/CbUtils.c:98 src/TweetInfoPage.vala:491
+msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet
+#: src/CbUtils.c:107
+#, c-format
+msgid "and %d others"
+msgstr ""
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -98,8 +114,12 @@ msgstr "%s 로부터 새로운 다이렉트 메시지"
 msgid "Direct Messages"
 msgstr "다이렉트 메시지"
 
+#: src/DefaultTimeline.vala:357
+msgid "Could not load tweets"
+msgstr "트윗을 불러올 수 없습니다."
+
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:531
+#: src/TweetInfoPage.vala:520
 msgid "Favorites"
 msgstr "즐겨찾기"
 
@@ -131,60 +151,13 @@ msgstr[0] "%d 개의 새로운 트윗!"
 msgid "Home"
 msgstr "홈"
 
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] "(%d 개의 읽지 않음)"
-
-#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
-#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
-msgid "Delete"
-msgstr "지우기"
-
-#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
-msgid "Lists"
-msgstr "리스트"
-
 #: src/ListStatusesPage.vala:378
 msgid "List"
 msgstr "리스트"
 
-#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:470
-#, fuzzy
-msgid "Replying to"
-msgstr "트윗에 답장"
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet. Example: "Replying to Foo and Bar" where
-#. "and Bar" comes from this string.
-#: src/list/TweetListEntry.vala:176 src/TweetInfoPage.vala:496
-msgid "and"
-msgstr ""
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet
-#: src/list/TweetListEntry.vala:189
-#, c-format
-msgid "and %d others"
-msgstr ""
-
-#: src/list/TweetListEntry.vala:485
-#, c-format
-msgid "Block %s"
-msgstr "%s 차단"
-
-#: src/list/TweetListEntry.vala:641
-msgid "This tweet contains images marked as inappropriate"
-msgstr "이 트윗에 포함된 이미지는 적절하지 않다고 표시 되었습니다"
-
-#: src/list/TweetListEntry.vala:648
-msgid "Show anyway"
-msgstr "아무튼 보기"
+#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
+msgid "Lists"
+msgstr "리스트"
 
 #: src/MainWindow.vala:79
 msgid "Add new Account"
@@ -216,21 +189,48 @@ msgstr "찾기"
 msgid "Could not show tweet"
 msgstr "트윗을 볼 수 없음"
 
-#: src/TweetInfoPage.vala:530
+#: src/TweetInfoPage.vala:519
 msgid "Retweets"
 msgstr "리트윗"
 
-#: src/TweetInfoPage.vala:539 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:528 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "브라우저에서 열기"
 
-#: src/TweetInfoPage.vala:539
+#: src/TweetInfoPage.vala:528
 msgid "Source"
 msgstr "원본"
 
-#: src/TweetInfoPage.vala:585
+#: src/TweetInfoPage.vala:574
 msgid "Tweet Details"
 msgstr "상세 트윗"
+
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d 개의 읽지 않음)"
+
+#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
+#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "지우기"
+
+#: src/list/TweetListEntry.vala:450
+#, c-format
+msgid "Block %s"
+msgstr "%s 차단"
+
+#: src/list/TweetListEntry.vala:606
+msgid "This tweet contains images marked as inappropriate"
+msgstr "이 트윗에 포함된 이미지는 적절하지 않다고 표시 되었습니다"
+
+#: src/list/TweetListEntry.vala:613
+msgid "Show anyway"
+msgstr "아무튼 보기"
 
 #: src/util/Utils.vala:168
 msgid "Now"

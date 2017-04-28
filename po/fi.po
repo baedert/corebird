@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-22 20:19+0200\n"
+"POT-Creation-Date: 2017-04-28 18:18+0200\n"
 "PO-Revision-Date: 2016-12-19 11:14+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
@@ -75,9 +75,25 @@ msgstr "twitter;"
 msgid "corebird"
 msgstr "corebird"
 
-#: src/DefaultTimeline.vala:357
-msgid "Could not load tweets"
-msgstr "Twiittien lataaminen epäonnistui"
+#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
+#: src/CbUtils.c:87 src/TweetInfoPage.vala:479
+#, fuzzy
+msgid "Replying to"
+msgstr "Vastaa twiittiin"
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet. Example: "Replying to Foo and Bar" where
+#. * "and Bar" comes from this string.
+#: src/CbUtils.c:98 src/TweetInfoPage.vala:491
+msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet
+#: src/CbUtils.c:107
+#, c-format
+msgid "and %d others"
+msgstr ""
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -99,8 +115,12 @@ msgstr "Uusi yksityinen viesti käyttäjältä %s"
 msgid "Direct Messages"
 msgstr "Yksityisviestit"
 
+#: src/DefaultTimeline.vala:357
+msgid "Could not load tweets"
+msgstr "Twiittien lataaminen epäonnistui"
+
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:531
+#: src/TweetInfoPage.vala:520
 msgid "Favorites"
 msgstr "Suosikit"
 
@@ -133,61 +153,13 @@ msgstr[1] "%d uutta twiittiä!"
 msgid "Home"
 msgstr "Koti"
 
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] "(%d lukematon)"
-msgstr[1] "(%d lukematonta)"
-
-#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
-#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
-msgid "Delete"
-msgstr "Poista"
-
-#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
-msgid "Lists"
-msgstr "Listat"
-
 #: src/ListStatusesPage.vala:378
 msgid "List"
 msgstr "Lista"
 
-#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:470
-#, fuzzy
-msgid "Replying to"
-msgstr "Vastaa twiittiin"
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet. Example: "Replying to Foo and Bar" where
-#. "and Bar" comes from this string.
-#: src/list/TweetListEntry.vala:176 src/TweetInfoPage.vala:496
-msgid "and"
-msgstr ""
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet
-#: src/list/TweetListEntry.vala:189
-#, c-format
-msgid "and %d others"
-msgstr ""
-
-#: src/list/TweetListEntry.vala:485
-#, c-format
-msgid "Block %s"
-msgstr "Estä %s"
-
-#: src/list/TweetListEntry.vala:641
-msgid "This tweet contains images marked as inappropriate"
-msgstr "Tämä twiitti sisältää asiattomaksi merkittyjä kuvia"
-
-#: src/list/TweetListEntry.vala:648
-msgid "Show anyway"
-msgstr "Näytä silti"
+#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
+msgid "Lists"
+msgstr "Listat"
 
 #: src/MainWindow.vala:79
 msgid "Add new Account"
@@ -219,21 +191,49 @@ msgstr "Etsi"
 msgid "Could not show tweet"
 msgstr "Twiitin näyttäminen epäonnistui"
 
-#: src/TweetInfoPage.vala:530
+#: src/TweetInfoPage.vala:519
 msgid "Retweets"
 msgstr "Uudelleentwiittaukset"
 
-#: src/TweetInfoPage.vala:539 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:528 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "Avaa selaimessa"
 
-#: src/TweetInfoPage.vala:539
+#: src/TweetInfoPage.vala:528
 msgid "Source"
 msgstr "Lähde"
 
-#: src/TweetInfoPage.vala:585
+#: src/TweetInfoPage.vala:574
 msgid "Tweet Details"
 msgstr "Twiitin tiedot"
+
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d lukematon)"
+msgstr[1] "(%d lukematonta)"
+
+#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
+#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "Poista"
+
+#: src/list/TweetListEntry.vala:450
+#, c-format
+msgid "Block %s"
+msgstr "Estä %s"
+
+#: src/list/TweetListEntry.vala:606
+msgid "This tweet contains images marked as inappropriate"
+msgstr "Tämä twiitti sisältää asiattomaksi merkittyjä kuvia"
+
+#: src/list/TweetListEntry.vala:613
+msgid "Show anyway"
+msgstr "Näytä silti"
 
 #: src/util/Utils.vala:168
 msgid "Now"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-22 20:19+0200\n"
+"POT-Creation-Date: 2017-04-28 18:18+0200\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Spanish (Venezuela) (http://www.transifex.com/corebird/"
@@ -76,8 +76,24 @@ msgstr ""
 msgid "corebird"
 msgstr ""
 
-#: src/DefaultTimeline.vala:357
-msgid "Could not load tweets"
+#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
+#: src/CbUtils.c:87 src/TweetInfoPage.vala:479
+#, fuzzy
+msgid "Replying to"
+msgstr "Responder tweet"
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet. Example: "Replying to Foo and Bar" where
+#. * "and Bar" comes from this string.
+#: src/CbUtils.c:98 src/TweetInfoPage.vala:491
+msgid "and"
+msgstr ""
+
+#. TRANSLATORS: This gets appended to the "replying to" line
+#. * in a tweet
+#: src/CbUtils.c:107
+#, c-format
+msgid "and %d others"
 msgstr ""
 
 #: src/DMPage.vala:346
@@ -100,8 +116,12 @@ msgstr "Nuevo mensaje directo de %s"
 msgid "Direct Messages"
 msgstr "Mensajes directos"
 
+#: src/DefaultTimeline.vala:357
+msgid "Could not load tweets"
+msgstr ""
+
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:531
+#: src/TweetInfoPage.vala:520
 msgid "Favorites"
 msgstr "Favoritos"
 
@@ -134,61 +154,13 @@ msgstr[1] "%d nuevos Tweets!"
 msgid "Home"
 msgstr "Inicio"
 
-#: src/list/DMThreadEntry.vala:71
-#, c-format
-msgid "(%d unread)"
-msgid_plural "(%d unread)"
-msgstr[0] "(%d sin leer)"
-msgstr[1] "(%d sin leer)"
-
-#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
-#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
-#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
-#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
-#: ui/tweet-list-entry.ui:10
-msgid "Delete"
-msgstr "Borrar"
-
-#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
-msgid "Lists"
-msgstr "Listas"
-
 #: src/ListStatusesPage.vala:378
 msgid "List"
 msgstr "Lista"
 
-#. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/list/TweetListEntry.vala:145 src/TweetInfoPage.vala:470
-#, fuzzy
-msgid "Replying to"
-msgstr "Responder tweet"
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet. Example: "Replying to Foo and Bar" where
-#. "and Bar" comes from this string.
-#: src/list/TweetListEntry.vala:176 src/TweetInfoPage.vala:496
-msgid "and"
-msgstr ""
-
-#. TRANSLATORS: This gets appended to the "replying to" line
-#. in a tweet
-#: src/list/TweetListEntry.vala:189
-#, c-format
-msgid "and %d others"
-msgstr ""
-
-#: src/list/TweetListEntry.vala:485
-#, c-format
-msgid "Block %s"
-msgstr ""
-
-#: src/list/TweetListEntry.vala:641
-msgid "This tweet contains images marked as inappropriate"
-msgstr ""
-
-#: src/list/TweetListEntry.vala:648
-msgid "Show anyway"
-msgstr ""
+#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
+msgid "Lists"
+msgstr "Listas"
 
 #: src/MainWindow.vala:79
 msgid "Add new Account"
@@ -220,21 +192,49 @@ msgstr "Buscar"
 msgid "Could not show tweet"
 msgstr "No se pudo mostrar el tweet"
 
-#: src/TweetInfoPage.vala:530
+#: src/TweetInfoPage.vala:519
 msgid "Retweets"
 msgstr "Retweets"
 
-#: src/TweetInfoPage.vala:539 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:528 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr "Abrir en un navegador"
 
-#: src/TweetInfoPage.vala:539
+#: src/TweetInfoPage.vala:528
 msgid "Source"
 msgstr "Fuente"
 
-#: src/TweetInfoPage.vala:585
+#: src/TweetInfoPage.vala:574
 msgid "Tweet Details"
 msgstr "Detalles del tweet"
+
+#: src/list/DMThreadEntry.vala:71
+#, c-format
+msgid "(%d unread)"
+msgid_plural "(%d unread)"
+msgstr[0] "(%d sin leer)"
+msgstr[1] "(%d sin leer)"
+
+#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
+#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
+#: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
+#: ui/tweet-list-entry.ui:10
+msgid "Delete"
+msgstr "Borrar"
+
+#: src/list/TweetListEntry.vala:450
+#, c-format
+msgid "Block %s"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:606
+msgid "This tweet contains images marked as inappropriate"
+msgstr ""
+
+#: src/list/TweetListEntry.vala:613
+msgid "Show anyway"
+msgstr ""
 
 #: src/util/Utils.vala:168
 msgid "Now"
