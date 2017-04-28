@@ -158,6 +158,9 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       quote_label.label = Cb.TextTransform.tweet (ref tweet.quoted_tweet,
                                                  Settings.get_text_transform_flags (),
                                                  0);
+      if (quote_label.label.length == 0)
+        quote_label.hide ();
+
       quote_name.set_markup (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
       if (tweet.quoted_tweet.reply_id != 0) {
