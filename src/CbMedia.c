@@ -134,13 +134,14 @@ cb_media_serialize (CbMedia *media)
 {
   /* We only save these values and ignore the rest
    * since we also don't save the surfaces to disk... */
-  g_message ("%s, %s, %s", media->thumb_url, media->thumb_url, media->target_url);
   return g_variant_new (CB_MEDIA_VARIANT_STRING,
                         media->url,
                         media->thumb_url,
                         media->target_url,
                         media->width,
                         media->height);
+
+  /* TODO: Serialize media type */
 }
 
 CbMedia *

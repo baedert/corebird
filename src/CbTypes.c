@@ -24,16 +24,14 @@
 #define CB_USER_IDENTITY_VARIANT_TYPE   "xss"
 #define CB_USER_IDENTITY_VARIANT_STRING "(" CB_USER_IDENTITY_VARIANT_TYPE ")"
 
-#define CB_TEXT_ENTITY_VARIANT_TYPE     "uusss"
+#define CB_TEXT_ENTITY_VARIANT_TYPE     "uusmsms"
 #define CB_TEXT_ENTITY_VARIANT_STRING   "(" CB_TEXT_ENTITY_VARIANT_TYPE ")"
 
 #define CB_MINI_TWEET_VARIANT_TYPE     "xxuxs"\
                                        "v"\
+                                       "av"\
+                                       "av"\
                                        "av"
-                                       /*"a(msmsmsdd)"*/
-                                       /*CB_USER_IDENTITY_VARIANT_TYPE\*/
-                                       /*"a(" CB_MEDIA_VARIANT_TYPE ")"*/
-                                       /*"a(" CB_USER_IDENTITY_VARIANT_TYPE ")"*/
 
 #define CB_MINI_TWEET_VARIANT_STRING   "(" CB_MINI_TWEET_VARIANT_TYPE ")"
 
@@ -104,7 +102,6 @@ cb_text_entity_copy (CbTextEntity *e1, CbTextEntity *e2)
 GVariant *
 cb_text_entity_serialize (const CbTextEntity *e)
 {
-  /* TODO: How to handle ->info? Not at all? */
   return g_variant_new (CB_TEXT_ENTITY_VARIANT_STRING,
                         e->from, e->to,
                         e->display_text, e->tooltip_text, e->target);
@@ -599,31 +596,22 @@ GVariant *
 cb_mini_tweet_serialize (const CbMiniTweet *t)
 {
   guint i;
-  /*GVariantBuilder entities_builder;*/
+  GVariantBuilder entities_builder;
   GVariantBuilder media_builder;
-  /*GVariantBuilder reply_users_builder;*/
+  GVariantBuilder reply_users_builder;
 
-  /*g_variant_builder_init (&entities_builder, G_VARIANT_TYPE_ARRAY);*/
-
-
-  /*g_variant_builder_init (&media_builder, G_VARIANT_TYPE_ARRAY);*/
-  /*g_variant_builder_init (&media_builder, G_VARIANT_TYPE ("a(msmsmsdd)"));*/
+  g_variant_builder_init (&entities_builder, G_VARIANT_TYPE ("av"));
   g_variant_builder_init (&media_builder, G_VARIANT_TYPE ("av"));
+  g_variant_builder_init (&reply_users_builder, G_VARIANT_TYPE ("av"));
 
-
-  /*G_VARIANT_TYPE_ARRAY);*/
-  /*g_variant_builder_init (&reply_users_builder, G_VARIANT_TYPE_ARRAY);*/
-
-  /*for (i = 0; i < t->n_entities; i ++)*/
-    /*g_variant_builder_add_value (&entities_builder, cb_text_entity_serialize (&t->entities[i]));*/
-
-  /*g_message ("Entities: %u", t->n_entities);*/
+  for (i = 0; i < t->n_entities; i ++)
+    g_variant_builder_add (&entities_builder, "v", cb_text_entity_serialize (&t->entities[i]));
 
   for (i = 0; i < t->n_medias; i ++)
     g_variant_builder_add (&media_builder, "v", cb_media_serialize (t->medias[i]));
 
-  /*for (i = 0; i < t->n_reply_users; i ++)*/
-    /*g_variant_builder_add_value (&reply_users_builder, cb_user_identity_serialize (&t->reply_users[i]));*/
+  for (i = 0; i < t->n_reply_users; i ++)
+    g_variant_builder_add (&reply_users_builder, "v", cb_user_identity_serialize (&t->reply_users[i]));
 
 
 
@@ -631,12 +619,12 @@ cb_mini_tweet_serialize (const CbMiniTweet *t)
                         t->id,
                         t->created_at,
                         t->display_range_start,
-                        /*t->reply_id,*/
-                        0,
+                        t->reply_id,
                         t->text,
                         cb_user_identity_serialize (&t->author),
-                        &media_builder
-                       );
+                        &entities_builder,
+                        &media_builder,
+                        &reply_users_builder);
 }
 
 void
@@ -644,7 +632,10 @@ cb_mini_tweet_deserialize (GVariant    *variant,
                            CbMiniTweet *t)
 {
   GVariant *author_variant;
+  GVariant *v;
+  GVariantIter *entity_iter;
   GVariantIter *media_iter;
+  GVariantIter *reply_users_iter;
   guint i;
 
   g_variant_get (variant, CB_MINI_TWEET_VARIANT_STRING,
@@ -654,12 +645,32 @@ cb_mini_tweet_deserialize (GVariant    *variant,
                  &t->reply_id,
                  &t->text,
                  &author_variant,
-                 &media_iter);
+                 &entity_iter,
+                 &media_iter,
+                 &reply_users_iter);
 
-  if (media_iter != NULL)
+  t->n_entities = g_variant_iter_n_children (entity_iter);
+  t->n_medias = g_variant_iter_n_children (media_iter);
+  t->n_reply_users = g_variant_iter_n_children (reply_users_iter);
+
+  if (t->n_entities > 0)
     {
-      GVariant *v;
-      t->n_medias = g_variant_iter_n_children (media_iter);
+      t->entities = g_new0 (CbTextEntity, t->n_entities);
+
+      i = 0;
+      while (g_variant_iter_loop (entity_iter, "v", &v))
+        {
+          cb_text_entity_deserialize (v, &t->entities[i]);
+          i ++;
+        }
+    }
+  else
+    {
+      t->entities = NULL;
+    }
+
+  if (t->n_medias > 0)
+    {
       t->medias = g_new0 (CbMedia *, t->n_medias);
 
       i = 0;
@@ -673,8 +684,23 @@ cb_mini_tweet_deserialize (GVariant    *variant,
     }
   else
     {
-      t->n_medias = 0;
       t->medias = NULL;
+    }
+
+  if (t->n_reply_users > 0)
+    {
+      t->reply_users = g_new0 (CbUserIdentity, t->n_reply_users);
+
+      i = 0;
+      while (g_variant_iter_loop (reply_users_iter, "v", &v))
+        {
+          cb_user_identity_deserialize (v, &t->reply_users[i]);
+          i ++;
+        }
+    }
+  else
+    {
+      t->reply_users = NULL;
     }
 
   cb_user_identity_deserialize (author_variant, &t->author);

@@ -34,7 +34,7 @@ typedef enum {
   CB_MEDIA_TYPE_UNKNOWN
 } CbMediaType;
 
-#define CB_MEDIA_VARIANT_TYPE "msmsmsdd"
+#define CB_MEDIA_VARIANT_TYPE "msmsmsii"
 #define CB_MEDIA_VARIANT_STRING "(" CB_MEDIA_VARIANT_TYPE ")"
 
 struct _CbMedia
