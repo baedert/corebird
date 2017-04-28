@@ -60,14 +60,14 @@ class ModifySnippetDialog : Gtk.Dialog {
     save_button.sensitive = true;
 
     if (key == "") {
-      error_label.label = _("Snippet can't be empty");
+      error_label.label = _("Snippet can’t be empty");
       key_entry.get_style_context ().add_class ("error");
       save_button.sensitive = false;
       return;
     }
 
     if (value == "") {
-      error_label.label = _("Replacement can't be empty");
+      error_label.label = _("Replacement can’t be empty");
       value_entry.get_style_context ().add_class ("error");
       save_button.sensitive = false;
       return;

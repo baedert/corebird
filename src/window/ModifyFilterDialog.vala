@@ -75,7 +75,7 @@ class ModifyFilterDialog : Gtk.Dialog {
     if (matches) {
       regex_status_label.label = _("Matches");
     } else {
-      regex_status_label.label = _("Doesn't match");
+      regex_status_label.label = _("Doesn’t match");
     }
     save_button.sensitive = (regex_entry.text.length != 0);
   }
