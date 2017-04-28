@@ -236,13 +236,13 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
           JsonArray  *indices = json_object_get_array_member (mention, "indices");
           gint64 user_id = json_object_get_int_member (mention, "id");
 
-          if (i == 0 && user_id == reply_to_user_id)
-            direct_duplicate = TRUE;
-
           if (json_array_get_int_element (indices, 1) <= t->display_range_start)
               n_reply_users ++;
           else
             break;
+
+          if (i == 0 && user_id == reply_to_user_id)
+            direct_duplicate = TRUE;
         }
 
       if (!direct_duplicate)
