@@ -27,6 +27,8 @@ class AccountCreateWidget : Gtk.Box {
   private Gtk.Button request_pin_button;
   [GtkChild]
   private Gtk.Label info_label;
+  [GtkChild]
+  private Gtk.Stack content_stack;
   private unowned Account acc;
   private unowned Corebird corebird;
   private unowned MainWindow main_window;
@@ -36,8 +38,8 @@ class AccountCreateWidget : Gtk.Box {
     this.acc = acc;
     this.corebird = corebird;
     this.main_window = main_window;
-    info_label.label = "%s <a href=\"http://twitter.com/signup\">%s</a>"
-                       .printf (_("Don’t have an account yet?"), _("Create one"));
+    info_label.label = "%s <a href=\"https://twitter.com/signup\">%s</a>"
+                       .printf (_("Don’t have a Twitter account yet?"), _("Create one"));
     pin_entry.buffer.deleted_text.connect (pin_changed_cb);
     pin_entry.buffer.inserted_text.connect (pin_changed_cb);
   }
@@ -74,6 +76,7 @@ class AccountCreateWidget : Gtk.Box {
   [GtkCallback]
   private void request_pin_clicked_cb () {
     open_pin_request_site ();
+    content_stack.visible_child_name = "pin";
   }
 
   [GtkCallback]

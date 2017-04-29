@@ -9,7 +9,19 @@
     <property name="margin-bottom">20</property>
     <property name="margin-start">20</property>
     <property name="margin-end">20</property>
+    <property name="spacing">24</property>
     <signal name="delete_event" handler="delete_event_cb" swapped="no"/>
+
+    <child>
+      <object class="GtkImage">
+        <property name="visible">1</property>
+        <property name="icon-name">corebird</property>
+        <property name="halign">center</property>
+        <property name="margin-bottom">24</property>
+        <property name="pixel-size">128</property>
+      </object>
+    </child>
+
     <child>
       <object class="GtkLabel">
         <property name="visible">1</property>
@@ -18,122 +30,133 @@
           <attribute name="scale" value="3"/>
         </attributes>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
+
     <child>
-      <object class="GtkBox">
+      <object class="GtkStack" id="content_stack">
         <property name="visible">1</property>
-        <property name="halign">center</property>
-        <property name="margin-top">35</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
+        <property name="transition-type">slide-left-right</property>
         <child>
           <object class="GtkBox">
             <property name="visible">1</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">24</property>
             <child>
-              <object class="GtkLabel" id="label2">
+              <object class="GtkLabel">
                 <property name="visible">1</property>
-                <property name="halign">end</property>
-                <property name="valign">baseline</property>
-                <property name="margin-end">8</property>
-                <property name="hexpand">1</property>
-                <property name="label" translatable="yes">PIN:</property>
+                <property name="label" translatable="yes">To authenticate Corebird, you need a PIN from twitter.com with the account you wish to add</property>
+                <property name="xalign">0</property>
+                <property name="max-width-chars">20</property>
+                <property name="width-chars">20</property>
+                <property name="wrap">1</property>
+                <property name="wrap-mode">word-char</property>
               </object>
             </child>
-            <child>
-              <object class="GtkEntry" id="pin_entry">
-                <property name="visible">1</property>
-                <property name="can-focus">1</property>
-                <property name="valign">baseline</property>
-                <property name="hexpand">1</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">1</property>
             <child>
               <object class="GtkButton" id="request_pin_button">
-                <property name="label" translatable="yes">Request PIN</property>
                 <property name="visible">1</property>
-                <property name="can-focus">1</property>
-                <property name="receives-default">1</property>
-                <property name="margin-end">8</property>
+                <property name="label" translatable="yes">Request PIN</property>
                 <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
               </object>
             </child>
+
+            <child>
+              <object class="GtkLabel" id="info_label">
+                <property name="visible">1</property>
+                <property name="use-markup">1</property>
+                <style>
+                  <class name="dim-label" />
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="name">intro</property>
+          </packing>
+        </child>
+
+        <child>
+          <object class="GtkGrid">
+            <property name="visible">1</property>
+            <property name="row-spacing">24</property>
+            <property name="column-spacing">12</property>
+            <property name="column-homogeneous">1</property>
+
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">1</property>
+                <property name="label" translatable="yes">Enter PIN from twitter.com below:</property>
+                <property name="hexpand">1</property>
+                <property name="wrap-mode">word-char</property>
+                <property name="wrap">1</property>
+                <property name="halign">center</property>
+                <property name="width-chars">20</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+
+            <child>
+              <object class="GtkEntry" id="pin_entry">
+                <property name="visible">1</property>
+                <property name="placeholder-text" translatable="yes">PIN</property>
+                <property name="hexpand">1</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
+            <child>
+              <object class="GtkButton">
+                <property name="visible">1</property>
+                <property name="label" translatable="yes">Retry</property>
+                <property name="halign">fill</property>
+                <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+
             <child>
               <object class="GtkButton" id="confirm_button">
-                <property name="label" translatable="yes">Confirm</property>
                 <property name="visible">1</property>
-                <property name="can-focus">1</property>
-                <property name="receives-default">1</property>
-                <property name="hexpand">1</property>
+                <property name="label" translatable="yes">Confirm</property>
+                <property name="halign">fill</property>
                 <property name="sensitive">0</property>
                 <signal name="clicked" handler="confirm_button_clicked_cb" swapped="no"/>
                 <style>
-                  <class name="suggested-action"/>
+                  <class name="suggested-action" />
                 </style>
               </object>
               <packing>
-                <property name="position">1</property>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="position">1</property>
+            <property name="name">pin</property>
           </packing>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
+    </child> <!-- End Stack -->
+
     <child>
       <object class="GtkLabel" id="error_label">
-        <property name="no-show-all">1</property>
-        <property name="margin-top">8</property>
-        <property name="use-markup">1</property>
+        <property name="visible">0</property>
         <property name="wrap">1</property>
         <property name="wrap-mode">word-char</property>
         <property name="selectable">1</property>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="info_label">
-        <property name="visible">1</property>
-        <property name="margin-top">20</property>
-        <property name="use-markup">1</property>
-        <style>
-          <class name="dim-label"/>
-        </style>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">3</property>
-      </packing>
     </child>
   </template>
-  <object class="GtkSizeGroup">
-    <widgets>
-      <widget name="confirm_button"/>
-      <widget name="request_pin_button"/>
-    </widgets>
-  </object>
 </interface>
