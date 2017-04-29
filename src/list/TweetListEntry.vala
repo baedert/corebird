@@ -686,7 +686,6 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       quote_reply_label.activate_link.connect (quote_link_activated_cb);
       quote_reply_label.get_style_context ().add_class ("dim-label");
       quote_reply_label.get_style_context ().add_class ("invisible-links");
-      quote_reply_label.set_no_show_all (true);
 
       quote_grid.attach (quote_reply_label, 0, 1, 3, 1);
     }

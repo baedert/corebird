@@ -458,7 +458,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         if (this.compose_image_manager.n_images > 0)
           row.set_sensitive (false);
 
-        row.show_all ();
         fav_image_list.add (row);
       } else {
         debug ("Can't handle '%s'", text);
