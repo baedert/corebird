@@ -44,5 +44,26 @@
 
   <url type="donation">https://flattr.com/profile/baedert</url>
 
+  <releases>
+    <release version="1.5" date="">
+      <p>Changes in Corebird 1.5:</p>
+      <ul>Media attached to tweets can be downloaded using Right Click and selecting "save as"</ul>
+      <ul>Profiles use the profile background color set in the Twitter settings if no banner is set</ul>
+      <ul>Support sending Direct Messages to oneself</ul>
+      <ul>The tweet compose window now features a "favorite image" view that allows users to save often send images and quickly add them to tweets</ul>
+      <ul>The media dialog now show Previous/Next buttons to quickly switch between multiple media attachments of a tweet></ul>
+      <ul>The Vine support has been removed since the project is discontinued</ul>
+      <ul>Allow text selection in Direct Messages</ul>
+      <ul>New --account parameter allows opening the window for the given account only</ul>
+      <ul>Support tweets with up to 50 replied-to users.</ul>
+      <ul>Add back verified icons next to user avatars</ul>
+      <ul>Redesign the account creation UI</ul>
+    </release>
+  </releases>
+
+  <provides>
+    <binary>corebird</binary>
+  </provides>
+
   <!--<url type="help">[> http://www.homepage.com/docs/ <]</url>-->
 </component>
