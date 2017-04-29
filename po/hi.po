@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-28 18:18+0200\n"
+"POT-Creation-Date: 2017-04-29 18:29+0200\n"
 "PO-Revision-Date: 2016-12-19 08:56+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Hindi (India) (http://www.transifex.com/corebird/corebird/"
@@ -115,7 +115,7 @@ msgid "Could not load tweets"
 msgstr ""
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:520
+#: src/TweetInfoPage.vala:521
 msgid "Favorites"
 msgstr ""
 
@@ -186,19 +186,19 @@ msgstr ""
 msgid "Could not show tweet"
 msgstr ""
 
-#: src/TweetInfoPage.vala:519
+#: src/TweetInfoPage.vala:520
 msgid "Retweets"
 msgstr ""
 
-#: src/TweetInfoPage.vala:528 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:529 src/widgets/MediaButton.vala:104
 msgid "Open in Browser"
 msgstr ""
 
-#: src/TweetInfoPage.vala:528
+#: src/TweetInfoPage.vala:529
 msgid "Source"
 msgstr ""
 
-#: src/TweetInfoPage.vala:574
+#: src/TweetInfoPage.vala:575
 msgid "Tweet Details"
 msgstr ""
 
@@ -217,16 +217,16 @@ msgstr[1] ""
 msgid "Delete"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:450
+#: src/list/TweetListEntry.vala:453
 #, c-format
 msgid "Block %s"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:606
+#: src/list/TweetListEntry.vala:609
 msgid "This tweet contains images marked as inappropriate"
 msgstr ""
 
-#: src/list/TweetListEntry.vala:613
+#: src/list/TweetListEntry.vala:616
 msgid "Show anyway"
 msgstr ""
 
@@ -244,32 +244,34 @@ msgstr ""
 msgid "%dh"
 msgstr ""
 
-#: src/widgets/AccountCreateWidget.vala:40
-msgid "Don't have an account yet?"
+#: src/widgets/AccountCreateWidget.vala:42
+#, fuzzy
+msgid "Don’t have a Twitter account yet?"
 msgstr "अब तक कोई खाता नहीं है?"
 
-#: src/widgets/AccountCreateWidget.vala:40
+#: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "अभि बनाये"
 
-#: src/widgets/AccountCreateWidget.vala:55
+#: src/widgets/AccountCreateWidget.vala:57
+#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there's something wrong with "
+"Unauthorized. Most of the time, this means that there’s something wrong with "
 "the Twitter servers and you should try again later"
 msgstr ""
 "अनधिकृत। अधिकांश इसका है मतलब ट्विटर सर्वर के साथ कुछ गड़बड़ है और को आप बाद में फिर से "
 "कोशिश करनी चाहिए"
 
-#: src/widgets/AccountCreateWidget.vala:67
+#: src/widgets/AccountCreateWidget.vala:69
 #, c-format
 msgid "Could not open %s"
 msgstr "%s नहीं खोल पाये"
 
-#: src/widgets/AccountCreateWidget.vala:89
+#: src/widgets/AccountCreateWidget.vala:92
 msgid "Wrong PIN"
 msgstr "गलत पिन"
 
-#: src/widgets/AccountCreateWidget.vala:115
+#: src/widgets/AccountCreateWidget.vala:118
 msgid "Account already in use"
 msgstr "यह खता पहले से उपयोग में है"
 
@@ -302,9 +304,9 @@ msgid "Save Image"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
-#: src/window/ComposeTweetWindow.vala:232
-#: src/window/ComposeTweetWindow.vala:262
-#: src/window/ComposeTweetWindow.vala:371 src/window/UserListDialog.vala:47
+#: src/window/ComposeTweetWindow.vala:241
+#: src/window/ComposeTweetWindow.vala:271
+#: src/window/ComposeTweetWindow.vala:380 src/window/UserListDialog.vala:47
 #: ui/account-dialog.ui:25 ui/account-dialog.ui:246 ui/compose-window.ui:41
 #: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
 #: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
@@ -320,14 +322,15 @@ msgid "Save"
 msgstr "सहेजें"
 
 #: src/widgets/TweetListBox.vala:123
-msgid "Loading..."
+#, fuzzy
+msgid "Loading…"
 msgstr "लोड हो रहा है"
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
 msgstr "कोई अभिलेख नही मिला"
 
-#: src/widgets/TweetListBox.vala:137
+#: src/widgets/TweetListBox.vala:137 ui/account-create-widget.ui:119
 msgid "Retry"
 msgstr "पुन: प्रयास करें"
 
@@ -335,8 +338,8 @@ msgstr "पुन: प्रयास करें"
 msgid "Select Banner Image"
 msgstr ""
 
-#: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:264
-#: src/window/ComposeTweetWindow.vala:373
+#: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
+#: src/window/ComposeTweetWindow.vala:382
 msgid "Open"
 msgstr ""
 
@@ -366,24 +369,24 @@ msgstr ""
 msgid "Quote tweet"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:259
-#: src/window/ComposeTweetWindow.vala:368
+#: src/window/ComposeTweetWindow.vala:268
+#: src/window/ComposeTweetWindow.vala:377
 msgid "Select Image"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:288
+#: src/window/ComposeTweetWindow.vala:297
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:290
-#: src/window/ComposeTweetWindow.vala:296
-#: src/window/ComposeTweetWindow.vala:324
+#: src/window/ComposeTweetWindow.vala:299
+#: src/window/ComposeTweetWindow.vala:305
+#: src/window/ComposeTweetWindow.vala:333
 msgid "Back"
 msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:295
+#: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
 msgstr ""
 
@@ -396,7 +399,7 @@ msgid "Matches"
 msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:78
-msgid "Doesn't match"
+msgid "Doesn’t match"
 msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
@@ -404,11 +407,11 @@ msgid "Modify Snippet"
 msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:63
-msgid "Snippet can't be empty"
+msgid "Snippet can’t be empty"
 msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-msgid "Replacement can't be empty"
+msgid "Replacement can’t be empty"
 msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
@@ -437,19 +440,29 @@ msgstr "आपके पास कोई सूची नही है"
 msgid "About Corebird"
 msgstr ""
 
-#: ui/account-create-widget.ui:16
+#: ui/account-create-widget.ui:28
 msgid "New Account"
 msgstr ""
 
-#: ui/account-create-widget.ui:44
-msgid "PIN:"
+#: ui/account-create-widget.ui:47
+msgid ""
+"To authenticate Corebird, you need a PIN from twitter.com with the account "
+"you wish to add"
 msgstr ""
 
-#: ui/account-create-widget.ui:65
+#: ui/account-create-widget.ui:58
 msgid "Request PIN"
 msgstr ""
 
-#: ui/account-create-widget.ui:75 ui/list-statuses-page.ui:358
+#: ui/account-create-widget.ui:88
+msgid "Enter PIN from twitter.com below:"
+msgstr ""
+
+#: ui/account-create-widget.ui:106
+msgid "PIN"
+msgstr ""
+
+#: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
 msgstr ""
 
