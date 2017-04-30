@@ -105,6 +105,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (mode == Mode.QUOTE) {
       assert (reply_to != null);
       this.title_label.label = _("Quote tweet");
+      add_image_button.sensitive = false;
+      fav_image_button.sensitive = false;
     }
 
     /* Let the text view immediately grab the keyboard focus */
