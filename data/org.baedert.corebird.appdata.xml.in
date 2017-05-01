@@ -45,7 +45,8 @@
   <url type="donation">https://flattr.com/profile/baedert</url>
 
   <releases>
-    <release version="1.5" date="">
+    <!-- Not the real release date! -->
+    <release version="1.5" date="2017-05-01">
       <p>Changes in Corebird 1.5:</p>
       <ul>Media attached to tweets can be downloaded using Right Click and selecting "save as"</ul>
       <ul>Profiles use the profile background color set in the Twitter settings if no banner is set</ul>
