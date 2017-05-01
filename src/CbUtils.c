@@ -273,7 +273,7 @@ cb_utils_parse_date (const char *_in)
         month = 2;
         break;
       case 'M':
-        if (month_str[1] == 'a')
+        if (month_str[1] == 'a' && month_str[2] == 'r')
           month = 3;
         else
           month = 5;
