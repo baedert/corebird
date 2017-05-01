@@ -60,9 +60,9 @@ cb_utils_linkify_user (const CbUserIdentity *user,
       s3 = cb_utils_escape_quotes (s2);
       s4 = cb_utils_escape_ampersands (s3);
 
-      g_string_append (str, "title='");
+      g_string_append (str, "title=\"");
       g_string_append (str, s4);
-      g_string_append_c (str, '\'');
+      g_string_append_c (str, '"');
 
       g_free (s1);
       g_free (s2);
