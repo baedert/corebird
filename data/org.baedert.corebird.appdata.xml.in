@@ -17,15 +17,15 @@
   <url type="homepage">https://corebird.baedert.org/</url>
   <screenshots>
     <screenshot height="450" width="800" type="default">
-      <image>https://corebird.baedert.org/appdata/1.2/1.png</image>
+      <image>https://corebird.baedert.org/appdata/1.5/1.png</image>
       <caption>Generic timeline view when using Corebird</caption>
     </screenshot>
     <screenshot height="450" width="800">
-      <image>https://corebird.baedert.org/appdata/1.2/2.png</image>
+      <image>https://corebird.baedert.org/appdata/1.5/2.png</image>
       <caption>Typical Twitter profile</caption>
     </screenshot>
     <screenshot height="450" width="800">
-      <image>https://corebird.baedert.org/appdata/1.2/3.png</image>
+      <image>https://corebird.baedert.org/appdata/1.5/3.png</image>
       <caption>Account settings can be configured</caption>
     </screenshot>
   </screenshots>
