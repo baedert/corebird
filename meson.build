@@ -1,5 +1,5 @@
 project('Corebird', ['vala', 'c'],
-        version: '1.4.2')
+        version: '1.5')
 
 gnome = import('gnome')
 srcdir = include_directories('src')
