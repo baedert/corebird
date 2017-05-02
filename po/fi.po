@@ -3,20 +3,19 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2014-2016
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2014-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 11:14+0000\n"
+"PO-Revision-Date: 2017-04-30 13:58+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
-"Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
-"fi/)\n"
-"Language: fi\n"
+"Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "Twitter-sovellus"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa "
-"yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
+msgstr "Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan "
-"sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -59,41 +54,42 @@ msgstr "Tilin asetuksia on mahdollista muuttaa"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Käytä Twitteriä tavallisella työpöytäsovelluksella"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "Vastaa twiittiin"
+msgstr "Vastataan taholle"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:98 src/TweetInfoPage.vala:491
 msgid "and"
-msgstr ""
+msgstr "ja"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
 #: src/CbUtils.c:107
 #, c-format
 msgid "and %d others"
-msgstr ""
+msgstr "ja %d muulle"
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -250,22 +246,18 @@ msgid "%dh"
 msgstr "%d t"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "Oletko vailla tiliä?"
+msgstr "Ei vielä Twitter-tiliä?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "Luo uusi tili"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Ei valtuutusta. Yleensä tämä tarkoittaa, että jotain on vialla Twitter-"
-"palvelimien kanssa, joten yritä uudelleen myöhemmin"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Ei valtuutusta. Yleensä tämä tarkoittaa, että Twitter-palvelimilla on ongelmia, joten yritä pian uudelleen"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -298,16 +290,15 @@ msgstr "Kopioi osoite"
 
 #: src/widgets/MediaButton.vala:106
 msgid "Save as…"
-msgstr ""
+msgstr "Tallenna nimellä…"
 
 #: src/widgets/MediaButton.vala:269
 msgid "Save Video"
-msgstr ""
+msgstr "Tallenna video"
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "Valitse kuva"
+msgstr "Tallenna kuva"
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -328,9 +319,8 @@ msgid "Save"
 msgstr "Tallenna"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "Ladataan..."
+msgstr "Ladataan…"
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -341,9 +331,8 @@ msgid "Retry"
 msgstr "Yritä uudelleen"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "Valitse kuva"
+msgstr "Valitse bannerikuva"
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -352,25 +341,25 @@ msgstr "Avaa"
 
 #: src/window/AccountDialog.vala:348
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "Kuva ei täytä vähimmäisvaatimuksia koon suhteen:"
 
 #: src/window/AccountDialog.vala:349
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vähimmäisleveys: %d pikseli"
+msgstr[1] "Vähimmäisleveys: %d pikseliä"
 
 #: src/window/AccountDialog.vala:351
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vähimmäiskorkeus: %d pikseli"
+msgstr[1] "Vähimmäiskorkeus: %d pikseliä"
 
 #: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
 msgid "Pick"
-msgstr ""
+msgstr "Valitse"
 
 #: src/window/ComposeTweetWindow.vala:107
 msgid "Quote tweet"
@@ -385,8 +374,7 @@ msgstr "Valitse kuva"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"Valittu kuva on liian suuri. Kuva voi olla kooltaan korkeintaan %'d Mt."
+msgstr "Valittu kuva on liian suuri. Kuva voi olla kooltaan korkeintaan %'d Mt."
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -396,7 +384,7 @@ msgstr "Takaisin"
 
 #: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "Vain yksi GIF-tiedosto per twiitti on sallittu."
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -407,7 +395,6 @@ msgid "Matches"
 msgstr "Vastaa"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
 msgstr "Ei vastaa"
 
@@ -416,12 +403,10 @@ msgid "Modify Snippet"
 msgstr "Muokkaa tekstileikettä"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
 msgstr "Tekstileike ei voi olla tyhjä"
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
 msgstr "Korvike ei voi olla tyhjä"
 
@@ -437,9 +422,7 @@ msgstr "Tekstileike on jo olemassa"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -461,7 +444,7 @@ msgstr "Uusi tili"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "Asettaaksesi Corebirdin tunnistautumisen tulee sinun noutaa twitter.comista PIN sille tilille, jonka haluat lisätä"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -469,12 +452,11 @@ msgstr "Pyydä PIN"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Kirjoita PIN twitter.comista alapuolelle:"
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr "PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -514,7 +496,7 @@ msgstr "Lisää kuva"
 
 #: ui/compose-window.ui:159
 msgid "Show favorite images"
-msgstr ""
+msgstr "Näytä suosikkikuvat"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -754,8 +736,7 @@ msgstr "Tekstileikkeitä ei ole määritetty."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
+msgstr "Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -904,6 +885,3 @@ msgstr "Luotu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Tilannut"
-
-#~ msgid "Copy link"
-#~ msgstr "Kopioi linkki"

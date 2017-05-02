@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Korean (Korea) (http://www.transifex.com/corebird/corebird/"
-"language/ko_KR/)\n"
-"Language: ko\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/corebird/corebird/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ko_KR\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "트위터 클라이언트"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird 는 다이렉트 메시지 (DMs), 트윗 알림, 대화 보기 등의 중요 특징을 제공"
-"하는 순수 GTK+ 트위터 클라이언트 입니다."
+msgstr "Corebird 는 다이렉트 메시지 (DMs), 트윗 알림, 대화 보기 등의 중요 특징을 제공하는 순수 GTK+ 트위터 클라이언트 입니다."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"추가적인 특징으로는 비디오 보기, 복수의 이미지, 리스트, 필터, 멀티 계정, 등등"
-"이 포함됩니다."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "추가적인 특징으로는 비디오 보기, 복수의 이미지, 리스트, 필터, 멀티 계정, 등등이 포함됩니다."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -65,21 +60,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr "일반 데스크탑 앱에서 트위터 사용하기"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "트위터;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr "코어버드"
+msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "트윗에 답장"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -247,22 +243,18 @@ msgid "%dh"
 msgstr "%d시"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "아직 계정이 없나요?"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "하나 만들기"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
-"허용되지 않음. 이러한 문제는 대부분 트위터 서버 측의 문제이므로 나중에 다시 "
-"시도 하세요"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -302,9 +294,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "이미지 선택"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -325,9 +316,8 @@ msgid "Save"
 msgstr "저장"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "불러오는 중..."
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -338,9 +328,8 @@ msgid "Retry"
 msgstr "재시도"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "이미지 선택"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -401,23 +390,20 @@ msgid "Matches"
 msgstr "일치함"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "일치하지 않음"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
 msgstr "조각 수정"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
-msgstr "조각을 비울 수 없음"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
-msgstr "대체재를 비울 수 없음"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -431,8 +417,7 @@ msgstr "조각이 이미 존재함"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"헤이, 새로운 #Corebird 버젼을 확인하세요! \\ (•◡•) / #cool #newisalwaysbetter"
+msgstr "헤이, 새로운 #Corebird 버젼을 확인하세요! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -465,9 +450,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -896,6 +880,3 @@ msgstr "만들어짐"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "을 구독함"
-
-#~ msgid "Copy link"
-#~ msgstr "링크 복사"

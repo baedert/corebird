@@ -3,26 +3,25 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# HybridGlucose <a07051226@gmail.com>, 2016
+# HybridGlucose <a07051226@gmail.com>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/corebird/corebird/"
-"language/zh_TW/)\n"
-"Language: zh_TW\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/corebird/corebird/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -33,25 +32,25 @@ msgstr "Twitter用戶端"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
+msgstr "Corebird 是原生的 GTK+ Twitter 用戶端，具有訊息、推文通知、以對話形式檢視回覆等等功能。"
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "其他功能包括直接觀賞影片、顯示多張影像、列表、過濾器及多重帳戶登入等等。"
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "使用 Corebird 以時間軸方式瀏覽"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "典型的 Twitter 個人檔案"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "可以設定帳戶資料"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
@@ -59,23 +58,24 @@ msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "在普通的桌面應用程式內使用 Twitter"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr ""
+msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr ""
+msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "回覆"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -112,7 +112,7 @@ msgstr "訊息"
 
 #: src/DefaultTimeline.vala:357
 msgid "Could not load tweets"
-msgstr ""
+msgstr "無法載入推文"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
 #: src/TweetInfoPage.vala:521
@@ -121,11 +121,11 @@ msgstr "喜歡"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "新增過濾器"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "過濾器"
 
 #: src/HomeTimeline.vala:140
 #, c-format
@@ -157,12 +157,12 @@ msgstr "列表"
 
 #: src/MainWindow.vala:79
 msgid "Add new Account"
-msgstr ""
+msgstr "新增新帳戶"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
 msgid "%s mentioned %s"
-msgstr ""
+msgstr "%s 提及 %s"
 
 #: src/MentionsTimeline.vala:108 src/MentionsTimeline.vala:112
 msgid "Mentions"
@@ -218,15 +218,15 @@ msgstr "刪除"
 #: src/list/TweetListEntry.vala:453
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "封鎖 %s"
 
 #: src/list/TweetListEntry.vala:609
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "這則推文被標記為敏感內容"
 
 #: src/list/TweetListEntry.vala:616
 msgid "Show anyway"
-msgstr ""
+msgstr "顯示它"
 
 #: src/util/Utils.vala:168
 msgid "Now"
@@ -243,20 +243,18 @@ msgid "%dh"
 msgstr "%d小時"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "還沒有帳戶？"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "註冊一個"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr "驗證失敗。通常這是因為Twitter伺服器出錯，請稍後再試。"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -269,11 +267,11 @@ msgstr "PIN 錯誤"
 
 #: src/widgets/AccountCreateWidget.vala:118
 msgid "Account already in use"
-msgstr "使用者名稱已經被使用了"
+msgstr "此帳戶已被加入過"
 
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
-msgstr ""
+msgstr "沒有找到用戶"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -285,7 +283,7 @@ msgstr "取消跟隨"
 
 #: src/widgets/MediaButton.vala:48
 msgid "Copy URL"
-msgstr ""
+msgstr "複製網址"
 
 #: src/widgets/MediaButton.vala:106
 msgid "Save as…"
@@ -296,9 +294,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "新增圖片"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -319,9 +316,8 @@ msgid "Save"
 msgstr "儲存"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "讀取中..."
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -332,14 +328,13 @@ msgid "Retry"
 msgstr "重試"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "新增圖片"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
 msgid "Open"
-msgstr ""
+msgstr "開啟"
 
 #: src/window/AccountDialog.vala:348
 msgid "Image does not meet minimum size requirements:"
@@ -368,13 +363,13 @@ msgstr "引用推文"
 #: src/window/ComposeTweetWindow.vala:268
 #: src/window/ComposeTweetWindow.vala:377
 msgid "Select Image"
-msgstr ""
+msgstr "選擇媒體"
 
 #: src/window/ComposeTweetWindow.vala:297
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "所選擇的媒體檔案太大。大小上限為 %'d MB。"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -395,13 +390,12 @@ msgid "Matches"
 msgstr "相符"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "不相符"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "編輯片語"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
@@ -413,11 +407,11 @@ msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "片語關鍵字不可包含空白"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "片語關鍵字已存在"
 
 #: src/window/SettingsDialog.vala:83
 msgid ""
@@ -456,9 +450,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN："
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -546,7 +539,7 @@ msgstr "公開"
 
 #: ui/list-statuses-page.ui:296
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: ui/load-more-entry.ui:11
 msgid "Load more"
@@ -570,7 +563,7 @@ msgstr "設定"
 
 #: ui/menus.ui:10
 msgid "Shortcuts"
-msgstr ""
+msgstr "快捷鍵"
 
 #: ui/menus.ui:15
 msgid "About"
@@ -594,7 +587,7 @@ msgstr "關鍵字"
 
 #: ui/modify-snippet-dialog.ui:72
 msgid "Replacement"
-msgstr "更換成"
+msgstr "替換成"
 
 #: ui/new-list-entry.ui:30
 msgid "Create New List"
@@ -622,7 +615,7 @@ msgstr "封鎖"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "靜音"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -646,19 +639,19 @@ msgstr "正在關注"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr ""
+msgstr "顯示推文中媒體"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
-msgstr ""
+msgstr "永遠顯示"
 
 #: ui/settings-dialog.ui:79
 msgid "Always hide"
-msgstr ""
+msgstr "永遠隱藏"
 
 #: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
-msgstr ""
+msgstr "在時間軸上隱藏"
 
 #: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
@@ -757,12 +750,12 @@ msgstr "撰寫新推文"
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
-msgstr "顯示帳號設定"
+msgstr "顯示帳戶設定"
 
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
-msgstr ""
+msgstr "顯示帳戶列表"
 
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
@@ -772,22 +765,22 @@ msgstr "顯示程式設定"
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
 msgid "Toggle Topbar"
-msgstr ""
+msgstr "顯示/隱藏頂端分頁"
 
 #: ui/shortcuts-window.ui:52
 msgctxt "shortcuts window"
 msgid "Go Back"
-msgstr ""
+msgstr "上一頁"
 
 #: ui/shortcuts-window.ui:59
 msgctxt "shortcuts window"
 msgid "Go Forward"
-msgstr ""
+msgstr "下一頁"
 
 #: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
-msgstr ""
+msgstr "切換第...分頁"
 
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
@@ -812,7 +805,7 @@ msgstr "回覆"
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr ""
+msgstr "引用"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -878,7 +871,7 @@ msgstr "在新視窗中開啟"
 
 #: ui/user-list-entry.ui:116
 msgid "Go to profile"
-msgstr ""
+msgstr "前往個人檔案"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
@@ -887,6 +880,3 @@ msgstr "建立"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "訂閱的"
-
-#~ msgid "Copy link"
-#~ msgstr "複製連結"

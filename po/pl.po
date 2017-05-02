@@ -3,22 +3,20 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# Piotr Drąg <piotrdrag@gmail.com>, 2014-2016
+# Piotr Drąg <piotrdrag@gmail.com>, 2014-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 13:39+0000\n"
+"PO-Revision-Date: 2017-04-30 09:54+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish (http://www.transifex.com/corebird/corebird/language/"
-"pl/)\n"
-"Language: pl\n"
+"Language-Team: Polish (http://www.transifex.com/corebird/corebird/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -34,18 +32,13 @@ msgstr "Klient Twittera"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird jest klientem Twittera natywnym dla biblioteki GTK+ dostarczającym "
-"takie ważne funkcje, jak prywatne wiadomości, powiadomienia o tweetach oraz "
-"widok rozmowy."
+msgstr "Corebird jest klientem Twittera natywnym dla biblioteki GTK+ dostarczającym takie ważne funkcje, jak prywatne wiadomości, powiadomienia o tweetach oraz widok rozmowy."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Dodatkowe funkcje obejmują lokalne wyświetlanie nagrań wideo i wielu obrazów "
-"osadzonych w tweetach oraz obsługę list, filtrów i wielu kont na raz."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Dodatkowe funkcje obejmują lokalne wyświetlanie filmów i wielu obrazów osadzonych w tweetach oraz obsługę list, filtrów i wielu kont na raz."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -61,41 +54,42 @@ msgstr "Można konfigurować ustawienia konta"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Korzystanie z Twittera w zwykłym programie"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "Odpowiedz na tweet"
+msgstr "W odpowiedzi do"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:98 src/TweetInfoPage.vala:491
 msgid "and"
-msgstr ""
+msgstr "i"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
 #: src/CbUtils.c:107
 #, c-format
 msgid "and %d others"
-msgstr ""
+msgstr "i %d innych"
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -108,6 +102,7 @@ msgid_plural "%d new Messages from %s"
 msgstr[0] "%d nowa wiadomość od %s"
 msgstr[1] "%d nowe wiadomości od %s"
 msgstr[2] "%d nowych wiadomości od %s"
+msgstr[3] "%d nowych wiadomości od %s"
 
 #: src/DMThreadsPage.vala:211 src/UserEventReceiver.vala:94
 #, c-format
@@ -152,6 +147,7 @@ msgid_plural "%d new Tweets!"
 msgstr[0] "%d nowy tweet"
 msgstr[1] "%d nowe tweety"
 msgstr[2] "%d nowych tweetów"
+msgstr[3] "%d nowych tweetów"
 
 #: src/HomeTimeline.vala:187
 msgid "Home"
@@ -218,6 +214,7 @@ msgid_plural "(%d unread)"
 msgstr[0] "(%d nieprzeczytana)"
 msgstr[1] "(%d nieprzeczytane)"
 msgstr[2] "(%d nieprzeczytanych)"
+msgstr[3] "(%d nieprzeczytanych)"
 
 #: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
 #: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
@@ -247,30 +244,26 @@ msgstr "Teraz"
 #: src/util/Utils.vala:170
 #, c-format
 msgid "%dm"
-msgstr "%d m"
+msgstr "%d min"
 
 #: src/util/Utils.vala:174
 #, c-format
 msgid "%dh"
-msgstr "%d g"
+msgstr "%d godz."
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "Nie masz jeszcze konta?"
+msgstr "Nie masz jeszcze konta serwisu Twitter?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "Utwórz konto"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Brak upoważnienia. Zwykle oznacza to, że coś jest nie tak z serwerami "
-"Twittera i powinno się spróbować później"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Brak upoważnienia. Zwykle oznacza to, że coś jest nie tak z serwerami Twittera i powinno się spróbować później"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -303,16 +296,15 @@ msgstr "Skopiuj adres URL"
 
 #: src/widgets/MediaButton.vala:106
 msgid "Save as…"
-msgstr ""
+msgstr "Zapisz jako…"
 
 #: src/widgets/MediaButton.vala:269
 msgid "Save Video"
-msgstr ""
+msgstr "Zapis filmu"
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "Wybór obrazu"
+msgstr "Zapis obrazu"
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -333,7 +325,6 @@ msgid "Save"
 msgstr "Zapisz"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
 msgstr "Wczytywanie…"
 
@@ -346,9 +337,8 @@ msgid "Retry"
 msgstr "Ponów"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "Wybór obrazu"
+msgstr "Wybór obrazu banera"
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -357,27 +347,29 @@ msgstr "Otwórz"
 
 #: src/window/AccountDialog.vala:348
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "Obraz nie spełnia minimalnych wymaganych wymiarów:"
 
 #: src/window/AccountDialog.vala:349
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Minimalna szerokość: %d piksel"
+msgstr[1] "Minimalna szerokość: %d piksele"
+msgstr[2] "Minimalna szerokość: %d pikseli"
+msgstr[3] "Minimalna szerokość: %d pikseli"
 
 #: src/window/AccountDialog.vala:351
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Minimalna wysokość: %d piksel"
+msgstr[1] "Minimalna wysokość: %d piksele"
+msgstr[2] "Minimalna wysokość: %d pikseli"
+msgstr[3] "Minimalna wysokość: %d pikseli"
 
 #: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
 msgid "Pick"
-msgstr ""
+msgstr "Wybierz"
 
 #: src/window/ComposeTweetWindow.vala:107
 msgid "Quote tweet"
@@ -392,8 +384,7 @@ msgstr "Wybór obrazu"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"Wybrany obraz jest za duży. Maksymalny rozmiar pliku na obraz to %'d MB."
+msgstr "Wybrany obraz jest za duży. Maksymalny rozmiar pliku na obraz to %'d MB."
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -403,7 +394,7 @@ msgstr "Wstecz"
 
 #: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "Dozwolony jest tylko jeden plik GIF na tweet."
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -414,7 +405,6 @@ msgid "Matches"
 msgstr "Pasujące"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
 msgstr "Niepasujące"
 
@@ -423,12 +413,10 @@ msgid "Modify Snippet"
 msgstr "Modyfikacja wstawki"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
 msgstr "Wstawka nie może być pusta"
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
 msgstr "Zamiennik nie może być pusty"
 
@@ -466,7 +454,7 @@ msgstr "Nowe konto"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "Aby uwierzytelnić program Corebird, należy podać PIN z serwisu twitter.com dla dodawanego konta"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -474,12 +462,11 @@ msgstr "Zażądaj kod PIN"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Proszę podać kod PIN z serwisu twitter.com poniżej:"
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr "Kod PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -519,7 +506,7 @@ msgstr "Dodaj obraz"
 
 #: ui/compose-window.ui:159
 msgid "Show favorite images"
-msgstr ""
+msgstr "Wyświetla ulubione obrazy"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -759,8 +746,7 @@ msgstr "Nie skonfigurowano żadnych wstawek."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Można aktywować wstawkę pisząc słowo kluczowe i naciskając klawisz Tab."
+msgstr "Można aktywować wstawkę pisząc słowo kluczowe i naciskając klawisz Tab."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -909,6 +895,3 @@ msgstr "Utworzono"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subskrybowano do"
-
-#~ msgid "Copy link"
-#~ msgstr "Skopiuj odnośnik"
