@@ -17,17 +17,14 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-01-17 17:35+0000\n"
-"Last-Translator: Yevgeny Kvitchenko <kvit4.ko@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/"
-"ru/)\n"
-"Language: ru\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
-"%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -43,17 +40,13 @@ msgstr "Клиент Твиттер"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird является родным GTK + клиентом Twitter, который поддерживает такие "
-"функции,  как прямые сообщения (DMS), уведомления и беседы."
+msgstr "Corebird является родным GTK + клиентом Twitter, который поддерживает такие функции,  как прямые сообщения (DMS), уведомления и беседы."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Дополнительные функции включают в себя:  просмотр видео и изображений в "
-"клиенте, списки, фильтры, несколько учетных записей и т.д."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Дополнительные функции включают в себя:  просмотр видео и изображений в клиенте, списки, фильтры, несколько учетных записей и т.д."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -75,21 +68,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Пользуйтесь Твиттером как обычным приложением"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "Ответить"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -266,22 +260,18 @@ msgid "%dh"
 msgstr "%dч"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "Ещё не зарегистрирован?"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "Создать"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
-"Не авторизован. Возможно серверы Твиттер поломались, попробуй немного "
-"позднее."
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -321,9 +311,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "Выбрать изображение"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -344,9 +333,8 @@ msgid "Save"
 msgstr "Сохранить"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "Загрузка..."
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -357,9 +345,8 @@ msgid "Retry"
 msgstr "Повтор"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "Выбрать изображение"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -405,9 +392,7 @@ msgstr "Выбрать изображение"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"Выбранное изображение слишком велико. Максимальный размер файла изображения "
-"%'d MB"
+msgstr "Выбранное изображение слишком велико. Максимальный размер файла изображения %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -428,23 +413,20 @@ msgid "Matches"
 msgstr "Совпадения"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "Не совпадает"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
 msgstr "Изменить сниппет"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
-msgstr "Сниппет не может быть пустым"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
-msgstr "Замена не может быть пустой"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -458,8 +440,7 @@ msgstr "Сниппеты уже существуют"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Привет, появилась новая версия #Corebird! \\ (•◡•) / #cool #newisalwaysbetter"
+msgstr "Привет, появилась новая версия #Corebird! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -492,9 +473,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -923,6 +903,3 @@ msgstr "Создан"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Подписаться"
-
-#~ msgid "Copy link"
-#~ msgstr "Скопировать ссылку"

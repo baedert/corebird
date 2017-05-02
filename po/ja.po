@@ -4,25 +4,25 @@
 #
 # Translators:
 # kumar8600 <kumar8600@gmail.com>, 2014
+# Yuki Katsura <katsura.y.ac@icloud.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Japanese (Japan) (http://www.transifex.com/corebird/corebird/"
-"language/ja_JP/)\n"
-"Language: ja\n"
+"Language-Team: Japanese (Japan) (http://www.transifex.com/corebird/corebird/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
 msgid "Corebird"
-msgstr ""
+msgstr "Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:6
 #: data/org.baedert.corebird.desktop.in:4
@@ -33,15 +33,13 @@ msgstr "Twitter Client"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird はGTK+ネイティブなTwitterクライアントで、ダイレクトメッセージ "
-"(DM) ・ツイート通知・会話ビューといった重要機能を提供します。"
+msgstr "Corebird はGTK+ネイティブなTwitterクライアントで、ダイレクトメッセージ (DM) ・ツイート通知・会話ビューといった重要機能を提供します。"
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "加えて、ビデオの表示・インラインでの画像の表示・リスト・フィルター・複数のアカウントなどをサポートします"
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -63,21 +61,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
-msgstr ""
+msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "返信する"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -101,7 +100,7 @@ msgstr ""
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
-msgstr[0] ""
+msgstr[0] "%2$s から %1$d 件の新着メッセージ"
 
 #: src/DMThreadsPage.vala:211 src/UserEventReceiver.vala:94
 #, c-format
@@ -114,7 +113,7 @@ msgstr "ダイレクトメッセージ"
 
 #: src/DefaultTimeline.vala:357
 msgid "Could not load tweets"
-msgstr ""
+msgstr "ツイートをロードできませんでした"
 
 #: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
 #: src/TweetInfoPage.vala:521
@@ -123,11 +122,11 @@ msgstr "お気に入り"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr ""
+msgstr "フィルターを追加する"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
-msgstr ""
+msgstr "フィルター"
 
 #: src/HomeTimeline.vala:140
 #, c-format
@@ -143,7 +142,7 @@ msgstr "%s がツイート"
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
-msgstr[0] ""
+msgstr[0] "%d 件の新着ツイート！"
 
 #: src/HomeTimeline.vala:187
 msgid "Home"
@@ -159,7 +158,7 @@ msgstr "リスト"
 
 #: src/MainWindow.vala:79
 msgid "Add new Account"
-msgstr ""
+msgstr "アカウントを追加する"
 
 #: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
 #, c-format
@@ -185,7 +184,7 @@ msgstr "検索"
 
 #: src/TweetInfoPage.vala:303
 msgid "Could not show tweet"
-msgstr ""
+msgstr "ツイートを表示できませんでした"
 
 #: src/TweetInfoPage.vala:520
 msgid "Retweets"
@@ -207,7 +206,7 @@ msgstr "ツイートの詳細"
 #, c-format
 msgid "(%d unread)"
 msgid_plural "(%d unread)"
-msgstr[0] ""
+msgstr[0] "(%d 件の未読)"
 
 #: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
 #: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
@@ -220,15 +219,15 @@ msgstr "削除"
 #: src/list/TweetListEntry.vala:453
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "%sをブロック"
 
 #: src/list/TweetListEntry.vala:609
 msgid "This tweet contains images marked as inappropriate"
-msgstr ""
+msgstr "このツイートは不適切な画像を含んでいます"
 
 #: src/list/TweetListEntry.vala:616
 msgid "Show anyway"
-msgstr ""
+msgstr "常に表示する"
 
 #: src/util/Utils.vala:168
 msgid "Now"
@@ -253,18 +252,15 @@ msgid "Create one"
 msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
-"許可されていません。大抵の場合Twitterのサーバーがなにかおかしくなったというこ"
-"とですから、あとでもう一度試してみてください"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
 msgid "Could not open %s"
-msgstr ""
+msgstr "%sを開けませんでした"
 
 #: src/widgets/AccountCreateWidget.vala:92
 msgid "Wrong PIN"
@@ -272,11 +268,11 @@ msgstr "誤ったPIN"
 
 #: src/widgets/AccountCreateWidget.vala:118
 msgid "Account already in use"
-msgstr ""
+msgstr "アカウントはすでに使われています"
 
 #: src/widgets/CompletionTextView.vala:40
 msgid "No users found"
-msgstr ""
+msgstr "ユーザが見つかりません"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -374,13 +370,13 @@ msgstr ""
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "選択された画像は大きすぎます。最大ファイルサイズは%'dMBです"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
 #: src/window/ComposeTweetWindow.vala:333
 msgid "Back"
-msgstr ""
+msgstr "戻る"
 
 #: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
@@ -388,16 +384,15 @@ msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
-msgstr ""
+msgstr "フィルターを編集"
 
 #: src/window/ModifyFilterDialog.vala:76
 msgid "Matches"
 msgstr "一致"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "一致しない"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
@@ -423,15 +418,15 @@ msgstr ""
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
+msgstr "さあ、新しい#Corebird のバージョンをチェックしてください！\\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
-msgstr ""
+msgstr "リストからユーザを追加、削除する"
 
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
-msgstr ""
+msgstr "リストがありません"
 
 #: ui/about-dialog.ui:5
 msgid "About Corebird"
@@ -439,7 +434,7 @@ msgstr "Corebird について"
 
 #: ui/account-create-widget.ui:28
 msgid "New Account"
-msgstr ""
+msgstr "新しいアカウント"
 
 #: ui/account-create-widget.ui:47
 msgid ""
@@ -449,28 +444,27 @@ msgstr ""
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
-msgstr ""
+msgstr "PINを要求"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
-msgstr "承認"
+msgstr "確認"
 
 #: ui/account-dialog.ui:19
 msgid "Account Settings"
-msgstr ""
+msgstr "アカウントの設定"
 
 #: ui/account-dialog.ui:88
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: ui/account-dialog.ui:117
 msgid "Website"
@@ -478,11 +472,11 @@ msgstr ""
 
 #: ui/account-dialog.ui:171
 msgid "Autostart"
-msgstr ""
+msgstr "自動起動"
 
 #: ui/account-dialog.ui:234
 msgid "Do you really want to delete this account?"
-msgstr ""
+msgstr "このアカウントを削除しますか？"
 
 #: ui/compose-window.ui:11 ui/compose-window.ui:25
 msgid "Compose Tweet"
@@ -494,7 +488,7 @@ msgstr "送信"
 
 #: ui/compose-window.ui:151
 msgid "Add Image"
-msgstr ""
+msgstr "画像を追加"
 
 #: ui/compose-window.ui:159
 msgid "Show favorite images"
@@ -554,11 +548,11 @@ msgstr "更に読み込む"
 
 #: ui/main-window.ui:64
 msgid "Show configured accounts"
-msgstr ""
+msgstr "アカウントの設定を表示"
 
 #: ui/main-window.ui:82
 msgid "Compose tweet"
-msgstr ""
+msgstr "ツイートの編集"
 
 #: ui/main-window.ui:99
 msgid "New tweet"
@@ -570,7 +564,7 @@ msgstr "設定"
 
 #: ui/menus.ui:10
 msgid "Shortcuts"
-msgstr ""
+msgstr "ショートカット"
 
 #: ui/menus.ui:15
 msgid "About"
@@ -792,37 +786,37 @@ msgstr ""
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
 msgid "Tweets"
-msgstr ""
+msgstr "ツイート"
 
 #: ui/shortcuts-window.ui:79
 msgctxt "shortcuts window"
 msgid "Retweet"
-msgstr ""
+msgstr "リツイート"
 
 #: ui/shortcuts-window.ui:86
 msgctxt "shortcuts window"
 msgid "Favorite"
-msgstr ""
+msgstr "お気に入り"
 
 #: ui/shortcuts-window.ui:93
 msgctxt "shortcuts window"
 msgid "Reply"
-msgstr ""
+msgstr "返信"
 
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr ""
+msgstr "引用"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
 msgid "Show Details"
-msgstr ""
+msgstr "詳細を表示"
 
 #: ui/shortcuts-window.ui:114
 msgctxt "shortcuts window"
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -858,11 +852,11 @@ msgstr "詳細"
 
 #: ui/tweet-list-entry.ui:60
 msgid "Favorite"
-msgstr ""
+msgstr "お気に入り"
 
 #: ui/tweet-list-entry.ui:81
 msgid "Reply"
-msgstr ""
+msgstr "リプライ"
 
 #: ui/user-filter-entry.ui:125
 msgid "Unblock"
@@ -870,23 +864,20 @@ msgstr ""
 
 #: ui/user-list-entry.ui:67
 msgid "Show settings of this account"
-msgstr ""
+msgstr "このアカウントの設定を表示"
 
 #: ui/user-list-entry.ui:92
 msgid "Open in new window"
-msgstr ""
+msgstr "新しいウィンドウで開く"
 
 #: ui/user-list-entry.ui:116
 msgid "Go to profile"
-msgstr ""
+msgstr "プロファイルを開く"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
-msgstr "既成"
+msgstr "作成"
 
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "購読中"
-
-#~ msgid "Copy link"
-#~ msgstr "リンク アドレスをコピー"

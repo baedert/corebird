@@ -3,20 +3,19 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# Åka Sikrom, 2016
+# Åka Sikrom, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Norwegian Bokmål (http://www.transifex.com/corebird/corebird/"
-"language/nb/)\n"
-"Language: nb\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/corebird/corebird/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "Twitter-klient"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird er en GTK+-basert Twitter-klient som tilbyr viktige funksjoner som "
-"direktemeldinger, tweet-varslinger og samtalevisning."
+msgstr "Corebird er en GTK+-basert Twitter-klient som tilbyr viktige funksjoner som direktemeldinger, tweet-varslinger og samtalevisning."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Du kan også se videoer, flerbilde-tweets, lister, filtre og bruke ulike "
-"kontoer samtidig i programmet."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Du kan også se videoer, flerbilde-tweets, lister, filtre og bruke ulike kontoer samtidig i programmet."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -65,21 +60,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Bruk Twitter som et vanlig skrivebordsprogram"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "Svar på tweet"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -250,22 +246,18 @@ msgid "%dh"
 msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "Har du ikke konto?"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "Lag konto"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
-"Uautorisert. Dette betyr som regel at det er noe galt med Twitters "
-"tjenermaskiner. Du bør prøve igjen senere."
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -305,9 +297,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "Velg bild"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -328,9 +319,8 @@ msgid "Save"
 msgstr "Lagre"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "Laster inn …"
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -341,9 +331,8 @@ msgid "Retry"
 msgstr "Prøv på nyt"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "Velg bild"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -385,7 +374,7 @@ msgstr "Velg bild"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "Valgt bilde er for stort. Maksimal filstørrelse per bilde er %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -406,23 +395,20 @@ msgid "Matches"
 msgstr "Treff"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "Samsvarer ikke"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
 msgstr "Endre kodesnut"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
-msgstr "Kodesnutt kan ikke være tom"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
-msgstr "Erstatning kan ikke være tom"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -469,9 +455,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -825,7 +810,7 @@ msgstr "Svar"
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr ""
+msgstr "Sitat"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -900,6 +885,3 @@ msgstr "Laget"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Abonnert på"
-
-#~ msgid "Copy link"
-#~ msgstr "Kopier lenke"

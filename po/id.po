@@ -5,20 +5,19 @@
 # Translators:
 # Krisan Alfa Timur <krisan47@gmail.com>, 2015
 # Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2015-2016
-# Reza Faiz A Rahman <rezafaizarahman@gmail.com>, 2015
+# Reza Faiz A. Rahman <rezafaizarahman@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-30 03:29+0000\n"
-"Last-Translator: Mahyuddin Idram Ahmad <dotovr@di.blankon.in>\n"
-"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/corebird/"
-"corebird/language/id_ID/)\n"
-"Language: id\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Indonesian (Indonesia) (http://www.transifex.com/corebird/corebird/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: id_ID\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -35,17 +34,13 @@ msgstr "Twitter Klien"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird adalah GTK+ twitter klien native yang menyediakan fitur penting "
-"seperti Pesan Langsung (DMS), tweet pemberitahuan, pemandangan percakapan."
+msgstr "Corebird adalah GTK+ twitter klien native yang menyediakan fitur penting seperti Pesan Langsung (DMS), tweet pemberitahuan, pemandangan percakapan."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Fitur tambahan termasuk melihat video lokal, beberapa gambar di baris, "
-"Daftar, Penyaring, beberapa akun, dll"
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Fitur tambahan termasuk melihat video lokal, beberapa gambar di baris, Daftar, Penyaring, beberapa akun, dll"
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -67,21 +62,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Gunakan Twitter dari aplikasi desktop normal"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "Balas ke tweet"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -249,22 +245,18 @@ msgid "%dh"
 msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "Belum memiliki akun?"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "Buat satu"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
-"Tidak sah. Sebagian besar waktu, ini berarti bahwa ada sesuatu yang salah "
-"dengan server Twitter dan Anda harus mencoba lagi nanti"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -304,9 +296,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "Pilih Gambar"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -327,9 +318,8 @@ msgid "Save"
 msgstr "Simpan"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "Memuat..."
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -340,9 +330,8 @@ msgid "Retry"
 msgstr "Coba lagi"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "Pilih Gambar"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -382,9 +371,7 @@ msgstr "Pilih Gambar"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"Gambar yang dipilih terlalu besar. Ukuran berkas maksimum per gambar adalah"
-"%'d'd MB"
+msgstr "Gambar yang dipilih terlalu besar. Ukuran berkas maksimum per gambar adalah%'d'd MB"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -405,23 +392,20 @@ msgid "Matches"
 msgstr "Cocok"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "Tidak cocok"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
 msgstr "Ubah Cuplikan"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
-msgstr "Cuplikan tidak boleh kosong"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
-msgstr "Penggantian tidak boleh kosong"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -435,9 +419,7 @@ msgstr "Cuplikan sudah ada"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hai, coba lihat versi baru dari #Corebird! \\ (•◡•) / #keren "
-"#yangbaruselalulebihbaik"
+msgstr "Hai, coba lihat versi baru dari #Corebird! \\ (•◡•) / #keren #yangbaruselalulebihbaik"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -470,9 +452,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -752,9 +733,7 @@ msgstr "Tidak ada potongan yang terkonfigurasi."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Kamu bisa mengaktifkan potongan dengan menuliskan kata kuncinya dan tekan "
-"tombol TAB."
+msgstr "Kamu bisa mengaktifkan potongan dengan menuliskan kata kuncinya dan tekan tombol TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -903,6 +882,3 @@ msgstr "Dibuat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Berlangganan ke"
-
-#~ msgid "Copy link"
-#~ msgstr "Salin tautan"

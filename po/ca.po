@@ -12,14 +12,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-23 11:54+0000\n"
-"Last-Translator: Guillem Arias <gariasfa7@alumnes.ub.edu>\n"
-"Language-Team: Catalan (http://www.transifex.com/corebird/corebird/language/"
-"ca/)\n"
-"Language: ca\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Catalan (http://www.transifex.com/corebird/corebird/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -36,18 +35,13 @@ msgstr "Client del Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"El Corebird és un client del twitter natiu GTK+ que proveeix "
-"característiques bàsiques com missatges directes, notificacions de piulades "
-"i visualització de converses. "
+msgstr "El Corebird és un client del twitter natiu GTK+ que proveeix característiques bàsiques com missatges directes, notificacions de piulades i visualització de converses. "
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Característiques addicionals inclouen vista local de vídeos, múltiples "
-"imatges inline, Llistes, Filtres, múltiples comptes, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Característiques addicionals inclouen vista local de vídeos, múltiples imatges inline, Llistes, Filtres, múltiples comptes, etc."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -69,21 +63,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Utilitza Twitter en una aplicació d'escriptori normal"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "Respon a la piulada"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -254,22 +249,18 @@ msgid "%dh"
 msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "Encara no teniu un compte?"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "Creeu-ne un"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
-"No s'ha autoritzat. Normalment això es produeix perquè alguna cosa no "
-"funciona bé als servidors del Twitter. Proveu més tard"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -309,9 +300,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "Seleccionar imatge"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -332,9 +322,8 @@ msgid "Save"
 msgstr "Desa"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "Carregant..."
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -345,9 +334,8 @@ msgid "Retry"
 msgstr "Prova de nou"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "Seleccionar imatge"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -389,8 +377,7 @@ msgstr "Seleccionar imatge"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"La imatge seleccionada és massa gran. La mida máxima per imatge es %'d MB"
+msgstr "La imatge seleccionada és massa gran. La mida máxima per imatge es %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -411,23 +398,20 @@ msgid "Matches"
 msgstr "Coincideix"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "No conincideix"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
 msgstr "Modificar Snippet"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
-msgstr "El Snippet no pot estar buit"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
-msgstr "El reemplaçament no pot estar buit"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -441,8 +425,7 @@ msgstr "El Snippet ja existeix"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Ei, prova aquesta nova versió de #Corebird! (•◡•) / #cool #newisalwaysbetter"
+msgstr "Ei, prova aquesta nova versió de #Corebird! (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -475,9 +458,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -906,6 +888,3 @@ msgstr "Creat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subscrit a"
-
-#~ msgid "Copy link"
-#~ msgstr "Copia l'enllaç"

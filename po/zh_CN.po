@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# colindemian <colindemian@outlook.com>, 2015-2016
+# colindemian <colindemian@outlook.com>, 2015-2016-2016
 # Dianjin Wang <1132321739qq@gmail.com>, 2014
 # hmingming1222 <hmingming1222@gmail.com>, 2015
 # S Shen, 2016
@@ -13,14 +13,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2016-12-19 08:56+0000\n"
+"PO-Revision-Date: 2017-04-30 09:37+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/"
-"language/zh_CN/)\n"
-"Language: zh_CN\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/corebird/corebird/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -37,14 +36,12 @@ msgstr "Twitter 客户端"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird 是一款原生的 GTK+ Twitter 客户端，能提供多种基础功能如直接消息(私"
-"信)、提醒、会话视图等。"
+msgstr "Corebird 是一款原生的 GTK+ Twitter 客户端，能提供多种基础功能如直接消息(私信)、提醒、会话视图等。"
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr "高级功能包括本地观看视频、插入多个图片、列表、过滤、多帐号等。"
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -53,7 +50,7 @@ msgstr "使用 Corebird 时启用常规时间线视图"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr "常见 Twitter 资料"
+msgstr "常规 Twitter 资料"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
@@ -67,21 +64,22 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr "桌面应用般的 Twitter 使用体验"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
-#, fuzzy
 msgid "Replying to"
-msgstr "回复推文"
+msgstr ""
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -249,20 +247,18 @@ msgid "%dh"
 msgstr "%d小时"
 
 #: src/widgets/AccountCreateWidget.vala:42
-#, fuzzy
 msgid "Don’t have a Twitter account yet?"
-msgstr "没有帐号？"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
 msgstr "注册一个"
 
 #: src/widgets/AccountCreateWidget.vala:57
-#, fuzzy
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr "认证失败。此情况通常是 Twitter 服务器出了问题，请稍后重试。"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -302,9 +298,8 @@ msgid "Save Video"
 msgstr ""
 
 #: src/widgets/MediaButton.vala:271
-#, fuzzy
 msgid "Save Image"
-msgstr "选择图片"
+msgstr ""
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -325,9 +320,8 @@ msgid "Save"
 msgstr "保存"
 
 #: src/widgets/TweetListBox.vala:123
-#, fuzzy
 msgid "Loading…"
-msgstr "载入中..."
+msgstr ""
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -338,9 +332,8 @@ msgid "Retry"
 msgstr "重试"
 
 #: src/window/AccountDialog.vala:311
-#, fuzzy
 msgid "Select Banner Image"
-msgstr "选择图片"
+msgstr ""
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -380,7 +373,7 @@ msgstr "选择图片"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "所选图像过大，每张图象大小上限为 %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:299
 #: src/window/ComposeTweetWindow.vala:305
@@ -401,23 +394,20 @@ msgid "Matches"
 msgstr "匹配"
 
 #: src/window/ModifyFilterDialog.vala:78
-#, fuzzy
 msgid "Doesn’t match"
-msgstr "不匹配"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
 msgstr "修改插件"
 
 #: src/window/ModifySnippetDialog.vala:63
-#, fuzzy
 msgid "Snippet can’t be empty"
-msgstr "插件不能为空"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:70
-#, fuzzy
 msgid "Replacement can’t be empty"
-msgstr "Replacement 不可为空"
+msgstr ""
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -464,9 +454,8 @@ msgid "Enter PIN from twitter.com below:"
 msgstr ""
 
 #: ui/account-create-widget.ui:106
-#, fuzzy
 msgid "PIN"
-msgstr "PIN："
+msgstr ""
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -522,7 +511,7 @@ msgstr "取消订阅"
 
 #: ui/list-statuses-page.ui:26
 msgid "Subscribers:"
-msgstr "订阅："
+msgstr "订阅者："
 
 #: ui/list-statuses-page.ui:49
 msgid "Members:"
@@ -742,7 +731,7 @@ msgstr "隐藏不适宜内容"
 
 #: ui/settings-dialog.ui:441
 msgid "No snippets configured."
-msgstr "未配置任何插件。"
+msgstr "未配置任何插件"
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
@@ -820,7 +809,7 @@ msgstr "回复"
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr ""
+msgstr "引用"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -895,6 +884,3 @@ msgstr "已创建"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "订阅到"
-
-#~ msgid "Copy link"
-#~ msgstr "复制链接"
