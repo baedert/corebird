@@ -194,7 +194,7 @@ public class Corebird : Gtk.Application {
     base.startup ();
     this.set_resource_base_path ("/org/baedert/corebird");
 
-    typeof (LazyMenuButton).ensure ();
+    new LazyMenuButton();
 
 #if DEBUG
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "corebird", true);
