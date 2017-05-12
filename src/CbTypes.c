@@ -668,6 +668,7 @@ cb_mini_tweet_deserialize (GVariant    *variant,
     {
       t->entities = NULL;
     }
+  g_variant_iter_free (entity_iter);
 
   if (t->n_medias > 0)
     {
@@ -686,6 +687,7 @@ cb_mini_tweet_deserialize (GVariant    *variant,
     {
       t->medias = NULL;
     }
+  g_variant_iter_free (media_iter);
 
   if (t->n_reply_users > 0)
     {
@@ -702,6 +704,8 @@ cb_mini_tweet_deserialize (GVariant    *variant,
     {
       t->reply_users = NULL;
     }
+  g_variant_iter_free (reply_users_iter);
 
   cb_user_identity_deserialize (author_variant, &t->author);
+  g_variant_unref (author_variant);
 }

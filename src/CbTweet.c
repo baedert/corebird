@@ -501,12 +501,14 @@ cb_tweet_deserialize (GVariant *variant)
   g_assert (source_tweet_variant != NULL);
 
   cb_mini_tweet_deserialize (source_tweet_variant, &t->source_tweet);
+  g_variant_unref (source_tweet_variant);
 
   if (retweet_variant != NULL)
     {
       t->retweeted_tweet = g_malloc (sizeof (CbMiniTweet));
       cb_mini_tweet_init (t->retweeted_tweet); /* TODO: This should be unnecessary */
       cb_mini_tweet_deserialize (retweet_variant, t->retweeted_tweet);
+      g_variant_unref (retweet_variant);
     }
 
   if (quote_variant != NULL)
@@ -514,6 +516,7 @@ cb_tweet_deserialize (GVariant *variant)
       t->quoted_tweet = g_malloc (sizeof (CbMiniTweet));
       cb_mini_tweet_init (t->quoted_tweet); /* TODO: This should be unnecessary */
       cb_mini_tweet_deserialize (quote_variant, t->quoted_tweet);
+      g_variant_unref (quote_variant);
     }
 
   return t;
@@ -523,12 +526,16 @@ CbTweet *
 cb_tweet_deserialize_from_bytes (GBytes *bytes)
 {
   GVariant *variant;
+  CbTweet *tweet;
 
   variant = g_variant_new_from_bytes (G_VARIANT_TYPE (CB_TWEET_VARIANT_TYPE),
                                       bytes,
                                       FALSE); /* XXX Really? */
 
-  return cb_tweet_deserialize (variant);
+  tweet = cb_tweet_deserialize (variant);
+
+  g_variant_unref (variant);
+  return tweet;
 }
 
 CbTweet *
