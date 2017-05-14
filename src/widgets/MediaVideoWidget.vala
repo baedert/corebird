@@ -36,7 +36,7 @@ class MediaVideoWidget : Gtk.Stack {
     var image_surface = (Cairo.ImageSurface) media.surface;
     video_progress.show ();
     int h;
-    video_progress.get_preferred_height (out h, null);
+    video_progress.measure (Gtk.Orientation.VERTICAL, -1, out h, null, null, null);
     this.set_size_request (image_surface.get_width (), image_surface.get_height () + h);
 #if VIDEO
 

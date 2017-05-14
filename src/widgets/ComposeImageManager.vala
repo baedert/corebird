@@ -88,7 +88,7 @@ class ComposeImageManager : Gtk.Container {
   }
 
   // GtkContainer API {{{
-  public override void forall_internal (Gtk.Callback cb) {
+  public override void forall (Gtk.Callback cb) {
     assert (buttons.length == close_buttons.length);
     assert (buttons.length == progress_bars.length);
 
@@ -168,7 +168,8 @@ class ComposeImageManager : Gtk.Container {
 
       /* Actual image button */
       AddImageButton aib = this.buttons.get (i);
-      aib.get_preferred_width_for_height (child_allocation.height, out min, out nat);
+      aib.measure (Gtk.Orientation.HORIZONTAL, child_allocation.height,
+                   out min, out nat, null, null);
 
       child_allocation.width = int.min (default_button_width, nat);
       aib.size_allocate (child_allocation);
@@ -177,8 +178,8 @@ class ComposeImageManager : Gtk.Container {
       /* Remove button */
       int n;
       Gtk.Widget btn = this.close_buttons.get (i);
-      btn.get_preferred_width (out close_allocation.width, out n);
-      btn.get_preferred_height (out close_allocation.height, out n);
+      btn.measure (Gtk.Orientation.HORIZONTAL, -1, out close_allocation.width,  null, null, null);
+      btn.measure (Gtk.Orientation.VERTICAL,   -1, out close_allocation.height, null, null, null);
       close_allocation.x = child_allocation.x + child_allocation.width
                            - close_allocation.width + BUTTON_DELTA;
 
@@ -192,9 +193,9 @@ class ComposeImageManager : Gtk.Container {
       Gtk.Widget bar = this.progress_bars.get (i);
       Gtk.Allocation bar_allocation = {0};
       bar_allocation.x = child_allocation.x + 6;
-      bar.get_preferred_width (out bar_allocation.width, out n);
+      bar.measure (Gtk.Orientation.HORIZONTAL, -1, out bar_allocation.width, null, null, null);
       bar_allocation.width = int.max (button_width - 12, bar_allocation.width);
-      bar.get_preferred_height (out bar_allocation.height, out n);
+      bar.measure (Gtk.Orientation.VERTICAL, -1, out bar_allocation.height, null, null, null);
       bar_allocation.y = child_allocation.y + button_height - bar_allocation.height - 6;
 
       bar.size_allocate (bar_allocation);
