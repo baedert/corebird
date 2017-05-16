@@ -35,6 +35,7 @@ public class Corebird : Gtk.Application {
     {"show-window",       show_window,              "x"    },
     {"mark-read",         mark_read_activated,      "(xx)" },
     {"reply-to-tweet",    reply_to_tweet_activated, "(xx)" },
+    {"save-state",        save_state_activated,            },
 #if DEBUG
     {"post-json",         post_json,                "(ss)" },
 #endif
@@ -221,11 +222,11 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("app.show-settings", {Settings.get_accel ("show-settings")});
     this.set_accels_for_action ("app.quit", {"<Primary>Q"});
     this.set_accels_for_action ("app.show-shortcuts", {"<Primary>question", "<Primary>F1"});
+    this.set_accels_for_action ("app.save-state", {"<Primary>S"});
     this.set_accels_for_action ("win.show-account-dialog", {Settings.get_accel ("show-account-dialog")});
     this.set_accels_for_action ("win.show-account-list", {Settings.get_accel ("show-account-list")});
     this.set_accels_for_action ("win.previous", {"<Alt>Left", "Back"});
     this.set_accels_for_action ("win.next", {"<Alt>Right", "Forward"});
-    this.set_accels_for_action ("win.save-state", {"<Primary>S"});
 
     // TweetInfoPage
     this.set_accels_for_action ("tweet.reply",    {"r"});
@@ -555,6 +556,31 @@ public class Corebird : Gtk.Application {
     if (is_window_open_for_user_id (account_id, out main_window)) {
       main_window.reply_to_tweet (tweet_id);
       main_window.present ();
+    }
+  }
+
+  private void save_state_activated (GLib.SimpleAction a, GLib.Variant? v) {
+    this.save_state ();
+  }
+
+  private void save_state () {
+    unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
+
+    foreach (var win in windows) {
+      if (win is MainWindow) {
+        var mw = (MainWindow)win;
+
+        var window_state = mw.serialize ();
+        string state_file = Dirs.cache (mw.account.id.to_string () + ".state");
+        try {
+          GLib.FileUtils.set_contents (state_file,
+                                       (string)window_state.get_data (),
+                                       (ssize_t)window_state.get_size ());
+        } catch (GLib.FileError e) {
+          warning ("Could not save state: %s", e.message);
+          message ("State:\n%s\n", window_state.print (true));
+        }
+      }
     }
   }
 

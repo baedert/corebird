@@ -17,6 +17,8 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
+  private const int BINARY_VERSION = 2;
+  private const string VARIANT_STRING = "(iii)";
   private const GLib.ActionEntry[] win_entries = {
     {"compose-tweet",       show_hide_compose_window},
     {"toggle-topbar",       Settings.toggle_topbar_visible},
@@ -25,7 +27,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"show-account-list",   show_account_list},
     {"previous",            previous},
     {"next",                next},
-    {"save-state",          save_state},
   };
   [GtkChild]
   private Gtk.HeaderBar headerbar;
@@ -143,7 +144,15 @@ public class MainWindow : Gtk.ApplicationWindow {
     thumb_button_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     thumb_button_gesture.pressed.connect (thumb_button_pressed_cb);
 
-    load_geometry ();
+    string state_file = Dirs.cache (account.id.to_string () + ".state");
+    uint8[] input;
+    try {
+      GLib.FileUtils.get_data (state_file, out input);
+      var bytes = new GLib.Bytes.take (input);
+      this.deserialize (bytes);
+    } catch (GLib.Error e) {
+      warning ("Could not load window state: %s", e.message);
+    }
   }
 
   [GtkCallback]
@@ -430,32 +439,6 @@ public class MainWindow : Gtk.ApplicationWindow {
   }
 
   /**
-   *
-   */
-  private void load_geometry () {
-    if (account == null || account.screen_name == Account.DUMMY) {
-      debug ("Could not load geometry, account == null");
-      return;
-    }
-    GLib.Variant win_geom = Settings.get ().get_value ("window-geometry");
-    int x = 0,
-        y = 0,
-        w = 0,
-        h = 0;
-
-    if (!win_geom.lookup (account.screen_name, "(iiii)", &x, &y, &w, &h)) {
-      warning ("Couldn't load window geometry for screen_name `%s'", account.screen_name);
-      return;
-    }
-
-    if (w == 0 || h == 0)
-      return;
-
-    move (x, y);
-    this.set_default_size (w, h);
-  }
-
-  /**
    * Saves this window's geometry in the window-geometry gsettings key.
    */
   public void save_geometry () {
@@ -546,16 +529,47 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
   }
 
-  private void save_state () {
-    HomeTimeline home_timeline = ((HomeTimeline)this.main_widget.get_page(Page.STREAM));
-    var model = home_timeline.tweet_list.model;
-    string dir = Dirs.cache ("state/");
-    for (uint i = 0; i < model.get_n_items (); i ++) {
-      var v = ((Cb.Tweet)model.get_object (i)).serialize ();
-      GLib.FileUtils.set_contents (dir + i.to_string () + ".cbtweet",
-                                   (string)v.get_data (),
-                                   (ssize_t)v.get_size ());
+  public GLib.Variant serialize () {
+    var builder = new GLib.VariantBuilder (new GLib.VariantType (VARIANT_STRING));
+    //builder.add ("i", BINARY_VERSION);
+    builder.add ("i", this.cur_page_id);
 
-    }
+    int window_width, window_height;
+    this.get_size (out window_width, out window_height);
+    builder.add ("i", window_width);
+    builder.add ("i", window_height);
+
+    return builder.end ();
+  }
+
+  /*
+   * Returns whether we actually deserialized anything or bailed out.
+   */
+  public bool deserialize (GLib.Bytes bytes) {
+    GLib.Variant v = new GLib.Variant.from_bytes (new GLib.VariantType (VARIANT_STRING),
+                                                  bytes, true);
+
+    int page_id = 0;
+    int window_width = 0;
+    int window_height = 0;
+
+    // TODO: We have to serialize version and the rest of the data separately
+    //int version = 0;
+    //version = v.get_int32 ();
+
+    //if (version != BINARY_VERSION) {
+      //debug ("Bailing out of deserialization because of version mismatch: %d != %d", version, BINARY_VERSION);
+      //return false;
+    //}
+
+    v.get (VARIANT_STRING,
+           out page_id,
+           out window_width,
+           out window_height);
+
+    this.main_widget.switch_page (page_id);
+    this.set_default_size (window_width, window_height);
+
+    return true;
   }
 }
