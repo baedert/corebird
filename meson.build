@@ -2,6 +2,7 @@ project('Corebird', ['vala', 'c'],
         version: '1.5',
         default_options: [
           'buildtype=debug'
+          'buildtype=debugoptimized'
         ])
 
 gnome = import('gnome')
