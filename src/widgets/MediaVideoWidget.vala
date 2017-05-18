@@ -63,6 +63,8 @@ class MediaVideoWidget : Gtk.Stack {
     error_label.margin = 20;
     error_label.wrap = true;
     error_label.selectable = true;
+    error_label.halign = Gtk.Align.CENTER;
+    error_label.valign = Gtk.Align.CENTER;
     error_label.show ();
 
     surface_progress = new SurfaceProgress ();
