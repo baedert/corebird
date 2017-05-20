@@ -50,7 +50,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private GLib.Cancellable? cancellable = null;
 
   [GtkChild]
-  private Gtk.Grid grid;
+  private Gtk.Box main_box;
   [GtkChild]
   private MultiMediaWidget mm_widget;
   [GtkChild]
@@ -148,7 +148,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
 
     reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
-    main_stack.visible_child = grid;
+    main_stack.visible_child = main_box;
 
 
     if (existing) {
