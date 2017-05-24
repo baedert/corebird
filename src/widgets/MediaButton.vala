@@ -188,15 +188,16 @@ private class MediaButton : Gtk.Widget {
     height = (int)(this._media.height * scale);
   }
 
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
     int widget_width = get_allocated_width ();
     int widget_height = get_allocated_height ();
+    Graphene.Rect bounds = {};
+    bounds.init (0, 0, widget_width, widget_height);
 
+    var ct = snapshot.append_cairo (bounds, "MediaButton");;
 
     /* Draw thumbnail */
     if (_media != null && _media.surface != null && _media.loaded) {
-
-
       int draw_width, draw_height;
       double scale;
       this.get_draw_size (out draw_width, out draw_height, out scale);
@@ -242,9 +243,6 @@ private class MediaButton : Gtk.Widget {
       layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
       sc.render_layout (ct, layout_x, layout_y, layout);
     }
-
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
   private void copy_url_activated (GLib.SimpleAction a, GLib.Variant? v) {
