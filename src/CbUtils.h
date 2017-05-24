@@ -27,6 +27,9 @@ void cb_utils_bind_model (GtkWidget                  *listbox,
                           GtkListBoxCreateWidgetFunc  func,
                           void                       *data);
 
+GskTexture *cb_utils_surface_to_texture (cairo_surface_t *surface,
+                                         int              scale);
+
 void cb_utils_linkify_user (const CbUserIdentity *user,
                             GString              *str);
 
