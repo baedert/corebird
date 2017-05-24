@@ -145,62 +145,48 @@ public class AvatarWidget : Gtk.Widget {
     bounds.origin.y = 0;
     bounds.size.width = width;
     bounds.size.height = height;
-    var ctx = snapshot.append_cairo (bounds, "Avatar Surface", null);
-    double surface_scale;
-    this._surface.get_device_scale (out surface_scale, out surface_scale);
 
     if (width != height) {
       warning ("Avatar with mapped with width %d and height %d", width, height);
     }
 
-    var surface = new Cairo.Surface.similar (ctx.get_target (),
-                                             Cairo.Content.COLOR_ALPHA,
-                                             width, height);
-    var ct = new Cairo.Context (surface);
+    // TODO: Ultimately, we should save GskTextures everywhere instead of
+    //       cairo surfaces
+    var texture = Cb.Utils.surface_to_texture (this._surface,
+                                               this.get_scale_factor ());
 
-    double scale = (double)this.get_allocated_width () /
-                   (double) (this._surface.get_width () / surface_scale);
-
-    ct.rectangle (0, 0, width, height);
-    ct.scale (scale, scale);
-    ct.set_source_surface (this._surface, 0, 0);
-    ct.fill();
-
-    int y;
     if (overlap)
-      y = - OVERLAP_DIST;
-    else
-      y = 0;
+      snapshot.offset (0, -OVERLAP_DIST);
 
     if (_round) {
-      ct.scale (1.0/scale, 1.0/scale);
-      ct.set_operator (Cairo.Operator.DEST_IN);
-      ct.arc ((width / 2.0), (height / 2.0),
-              (width / 2.0) - 0.5, // Radius
-              0,                   //Angle from
-              2 * Math.PI);        // Angle to
-      ct.fill ();
-
-      this.get_style_context ().render_frame (ctx, 0, y, width, height);
+      Gsk.RoundedRect round_clip = {};
+      round_clip.init_from_rect (bounds, width); // radius = width => round.
+      snapshot.push_rounded_clip (round_clip, "Avatar clip");
     }
 
+    snapshot.append_texture (texture, bounds, "Avatar Image");
 
-    ctx.set_source_surface (surface, 0, y);
-    ctx.paint_with_alpha (alpha);
-
-    if (verified) {
-      int index = SMALL;
-      if (width > 48)
-        index = LARGE;
-
-      int scale_factor = this.get_scale_factor () - 1;
-      Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
-      ctx.set_source_surface (verified_img,
-                              width - VERIFIED_SIZES[index],
-                              y);
-      ctx.paint_with_alpha (this.alpha);
+    if (_round) {
+      snapshot.pop ();
     }
 
+    if (overlap)
+      snapshot.offset (0, OVERLAP_DIST);
+
+
+    // TODO: Re-enable this.
+    //if (verified) {
+      //int index = SMALL;
+      //if (width > 48)
+        //index = LARGE;
+
+      //int scale_factor = this.get_scale_factor () - 1;
+      //Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
+      //ctx.set_source_surface (verified_img,
+                              //width - VERIFIED_SIZES[index],
+                              //y);
+      //ctx.paint_with_alpha (this.alpha);
+    //}
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
