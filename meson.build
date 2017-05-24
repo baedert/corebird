@@ -11,7 +11,7 @@ srcdir = include_directories('src')
 min_glib_version = '2.44'
 
 glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
-gtk_dep  = dependency('gtk+-3.0', version: '>=3.18')
+gtk_dep  = dependency('gtk+-3.0', version: '>=3.20')
 json_dep = dependency('json-glib-1.0')
 rest_dep = dependency('rest-0.7', version: '>=0.7.91')
 sql_dep  = dependency('sqlite3')

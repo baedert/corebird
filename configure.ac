@@ -49,7 +49,7 @@ AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$disable_spellcheck" = "yes"])
 
 
 
-pkg_modules="gtk+-3.0 >= 3.18
+pkg_modules="gtk+-3.0 >= 3.20
              glib-2.0 >= 2.44
              rest-0.7 >= 0.7.93
              libsoup-2.4
