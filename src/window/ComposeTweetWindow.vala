@@ -268,59 +268,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
-    var filechooser = new Gtk.FileChooserDialog (_("Select Image"),
+    var filechooser = new Gtk.FileChooserNative (_("Select Image"),
                                                  this,
                                                  Gtk.FileChooserAction.OPEN,
-                                                 _("Cancel"),
-                                                 Gtk.ResponseType.CANCEL,
                                                  _("Open"),
-                                                 Gtk.ResponseType.ACCEPT);
-    filechooser.select_multiple = false;
-    filechooser.modal = true;
+                                                 _("Cancel"));
 
-    filechooser.response.connect ((id) => {
-      var filename = filechooser.get_filename ();
-      if (id == Gtk.ResponseType.ACCEPT) {
-        debug ("Loading %s", filename);
-
-        /* Get file size */
-        var file = GLib.File.new_for_path (filename);
-        GLib.FileInfo info;
-        try {
-          info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
-                                  GLib.FileAttribute.STANDARD_SIZE, 0);
-        } catch (GLib.Error e) {
-          warning ("%s (%s)", e.message, filename);
-          // TODO: Proper error checking
-          return;
-        }
-
-        if (info.get_size () > Twitter.MAX_BYTES_PER_IMAGE) {
-          stack.visible_child = image_error_grid;
-          image_error_label.label = _("The selected image is too big. The maximum file size per image is %'d MB")
-                                    .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
-          cancel_button.label = _("Back");
-          send_button.sensitive = false;
-        } else if (filename.has_suffix (".gif") &&
-                   this.compose_image_manager.n_images > 0) {
-          stack.visible_child = image_error_grid;
-          image_error_label.label = _("Only one GIF file per tweet is allowed.");
-          cancel_button.label = _("Back");
-          send_button.sensitive = false;
-        } else {
-          this.compose_image_manager.show ();
-          this.compose_image_manager.load_image (filename, null);
-          if (this.compose_image_manager.n_images > 0) {
-            this.disable_fav_gifs ();
-          }
-          if (this.compose_image_manager.full) {
-            this.add_image_button.sensitive = false;
-            this.fav_image_button.sensitive = false;
-          }
-        }
-      }
-      filechooser.destroy ();
-    });
 
     var filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
@@ -328,7 +281,46 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     filter.add_mime_type ("image/gif");
     filechooser.set_filter (filter);
 
-    filechooser.show_all ();
+    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+      var filename = filechooser.get_filename ();
+      debug ("Loading %s", filename);
+
+      /* Get file size */
+      var file = GLib.File.new_for_path (filename);
+      GLib.FileInfo info;
+      try {
+        info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
+                                GLib.FileAttribute.STANDARD_SIZE, 0);
+      } catch (GLib.Error e) {
+        warning ("%s (%s)", e.message, filename);
+        // TODO: Proper error checking
+        return;
+      }
+
+      if (info.get_size () > Twitter.MAX_BYTES_PER_IMAGE) {
+        stack.visible_child = image_error_grid;
+        image_error_label.label = _("The selected image is too big. The maximum file size per image is %'d MB")
+                                  .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
+        cancel_button.label = _("Back");
+        send_button.sensitive = false;
+      } else if (filename.has_suffix (".gif") &&
+                 this.compose_image_manager.n_images > 0) {
+        stack.visible_child = image_error_grid;
+        image_error_label.label = _("Only one GIF file per tweet is allowed.");
+        cancel_button.label = _("Back");
+        send_button.sensitive = false;
+      } else {
+        this.compose_image_manager.show ();
+        this.compose_image_manager.load_image (filename, null);
+        if (this.compose_image_manager.n_images > 0) {
+          this.disable_fav_gifs ();
+        }
+        if (this.compose_image_manager.full) {
+          this.add_image_button.sensitive = false;
+          this.fav_image_button.sensitive = false;
+        }
+      }
+    }
   }
 
   [GtkCallback]
@@ -377,57 +369,47 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void new_fav_image_button_clicked_cb () {
-    var filechooser = new Gtk.FileChooserDialog (_("Select Image"),
+    var filechooser = new Gtk.FileChooserNative (_("Select Image"),
                                                  this,
                                                  Gtk.FileChooserAction.OPEN,
-                                                 _("Cancel"),
-                                                 Gtk.ResponseType.CANCEL,
                                                  _("Open"),
-                                                 Gtk.ResponseType.ACCEPT);
-    filechooser.select_multiple = false;
-    filechooser.modal = true;
-
-    filechooser.response.connect ((id) => {
-      if (id == Gtk.ResponseType.ACCEPT) {
-        try {
-          /* First, take the selected file and copy it into the image-favorites folder */
-          var file = GLib.File.new_for_path (filechooser.get_filename ());
-          var file_info = file.query_info ("standard::name", GLib.FileQueryInfoFlags.NONE);
-          var dest_dir = GLib.File.new_for_path (Dirs.config ("image-favorites"));
-
-          /* Explicitly check whether the destination file already exists, and rename
-             it if it does */
-          var dest_file = dest_dir.get_child (file_info.get_name ());
-          if (GLib.FileUtils.test (dest_file.get_path (), GLib.FileTest.EXISTS)) {
-            debug ("File '%s' already exists", dest_file.get_path ());
-            dest_file = dest_dir.get_child ("%s_%s".printf (GLib.get_monotonic_time ().to_string (),
-                                                            file_info.get_name ()));
-            debug ("New name: '%s'", dest_file.get_path ());
-          }
-
-          file.copy (dest_file, GLib.FileCopyFlags.NONE);
-
-          var row = new FavImageRow (dest_file.get_path ());
-          if (this.compose_image_manager.n_images > 0)
-            row.set_sensitive (false);
-
-          row.show_all ();
-          fav_image_list.add (row);
-
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
-      }
-      filechooser.destroy ();
-    });
-
+                                                 _("Cancel"));
     var filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
     filter.add_mime_type ("image/jpeg");
     filter.add_mime_type ("image/gif");
     filechooser.set_filter (filter);
 
-    filechooser.show_all ();
+    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+      try {
+        /* First, take the selected file and copy it into the image-favorites folder */
+        var file = GLib.File.new_for_path (filechooser.get_filename ());
+        var file_info = file.query_info ("standard::name", GLib.FileQueryInfoFlags.NONE);
+        var dest_dir = GLib.File.new_for_path (Dirs.config ("image-favorites"));
+
+        /* Explicitly check whether the destination file already exists, and rename
+           it if it does */
+        var dest_file = dest_dir.get_child (file_info.get_name ());
+        if (GLib.FileUtils.test (dest_file.get_path (), GLib.FileTest.EXISTS)) {
+          debug ("File '%s' already exists", dest_file.get_path ());
+          dest_file = dest_dir.get_child ("%s_%s".printf (GLib.get_monotonic_time ().to_string (),
+                                                          file_info.get_name ()));
+          debug ("New name: '%s'", dest_file.get_path ());
+        }
+
+        file.copy (dest_file, GLib.FileCopyFlags.NONE);
+
+        var row = new FavImageRow (dest_file.get_path ());
+        if (this.compose_image_manager.n_images > 0)
+          row.set_sensitive (false);
+
+        row.show_all ();
+        fav_image_list.add (row);
+
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
+    }
   }
 
   [GtkCallback]

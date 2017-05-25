@@ -270,42 +270,34 @@ private class MediaButton : Gtk.Widget {
     else
       title = _("Save Image");
 
-    var filechooser = new Gtk.FileChooserDialog (title,
+    var filechooser = new Gtk.FileChooserNative (title,
                                                  this.window,
                                                  Gtk.FileChooserAction.SAVE,
-                                                 _("Cancel"),
-                                                 Gtk.ResponseType.CANCEL,
                                                  _("Save"),
-                                                 Gtk.ResponseType.ACCEPT);
+                                                 _("Cancel"));
 
     filechooser.set_current_name (Utils.get_media_display_name (_media));
-    filechooser.response.connect ((id) => {
-      if (id == Gtk.ResponseType.ACCEPT) {
-        var file = GLib.File.new_for_path (filechooser.get_filename ());
-        // Download the file
-        Utils.get_media_display_name (_media);
-        string url = _media.target_url ?? _media.url;
-        debug ("Downloading %s to %s", url, filechooser.get_filename ());
+    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+      var file = GLib.File.new_for_path (filechooser.get_filename ());
+      // Download the file
+      Utils.get_media_display_name (_media);
+      string url = _media.target_url ?? _media.url;
+      debug ("Downloading %s to %s", url, filechooser.get_filename ());
 
-        GLib.OutputStream? out_stream = null;
-        try {
-          out_stream = file.create (0, null);
-        } catch (GLib.Error e) {
-          Utils.show_error_dialog (e.message, this.window);
-          warning (e.message);
-        }
-
-        if (out_stream != null) {
-          Utils.download_file.begin (url, out_stream, () => {
-            debug ("Download of %s finished", url);
-          });
-        }
+      GLib.OutputStream? out_stream = null;
+      try {
+        out_stream = file.create (0, null);
+      } catch (GLib.Error e) {
+        Utils.show_error_dialog (e.message, this.window);
+        warning (e.message);
       }
 
-      filechooser.destroy ();
-    });
-
-    filechooser.show_all ();
+      if (out_stream != null) {
+        Utils.download_file.begin (url, out_stream, () => {
+          debug ("Download of %s finished", url);
+        });
+      }
+    }
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
