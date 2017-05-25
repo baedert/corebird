@@ -179,15 +179,9 @@ public class Corebird : Gtk.Application {
   }
 
   private void show_shortcuts_activated () {
-    // TODO: Remove this once the required gtk version is >= 3.20
-    if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () >= 19) {
-      var builder = new Gtk.Builder.from_resource ("/org/baedert/corebird/ui/shortcuts-window.ui");
-      var shortcuts_window = (Gtk.Window) builder.get_object ("shortcuts_window");
-      shortcuts_window.show ();
-    } else {
-      warning ("The shortcuts window is only available in gtk+ >= 3.20, version is %u.%u",
-               Gtk.get_major_version (), Gtk.get_minor_version ());
-    }
+    var builder = new Gtk.Builder.from_resource ("/org/baedert/corebird/ui/shortcuts-window.ui");
+    var shortcuts_window = (Gtk.Window) builder.get_object ("shortcuts_window");
+    shortcuts_window.show ();
   }
 
   public override void startup () {
@@ -236,11 +230,6 @@ public class Corebird : Gtk.Application {
     this.set_accels_for_action ("tweet.favorite", {"f"});
 
     this.add_action_entries (app_entries, this);
-
-    // TODO: Remove this once the required gtk version is >= 3.20
-    if (Gtk.get_major_version () == 3 && Gtk.get_minor_version () < 19) {
-      ((GLib.SimpleAction)this.lookup_action ("show-shortcuts")).set_enabled (false);
-    }
 
     // If the user wants the dark theme, apply it
     var gtk_s = Gtk.Settings.get_default ();
