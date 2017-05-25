@@ -308,64 +308,54 @@ public class AccountDialog : Gtk.Window {
   }
 
   private void show_crop_image_selector () {
-    var filechooser = new Gtk.FileChooserDialog (_("Select Banner Image"),
+    var filechooser = new Gtk.FileChooserNative (_("Select Banner Image"),
                                                  this,
                                                  Gtk.FileChooserAction.OPEN,
-                                                 _("Cancel"),
-                                                 Gtk.ResponseType.CANCEL,
                                                  _("Open"),
-                                                 Gtk.ResponseType.ACCEPT);
-    filechooser.select_multiple = false;
-    filechooser.modal = true;
-
-    filechooser.response.connect ((id) => {
-      if (id == Gtk.ResponseType.ACCEPT) {
-        string selected_file = filechooser.get_filename ();
-        Gdk.Pixbuf? image = null;
-        try {
-          image = new Gdk.Pixbuf.from_file (selected_file);
-        } catch (GLib.Error e) {
-          warning (e.message);
-          return;
-        }
-
-        /* Values for banner */
-        int min_width = 200;
-        int min_height = 100;
-
-        if (crop_widget.desired_aspect_ratio == 1.0) {
-          /* Avatar */
-          min_width = 48;
-          min_height = 48;
-        }
-
-        if (image.get_width () >= min_width &&
-            image.get_height () >= min_height) {
-          crop_widget.set_image (image);
-          save_button.sensitive = true;
-        } else {
-          string error_str = "";
-          error_str += _("Image does not meet minimum size requirements:") + "\n";
-          error_str += ngettext ("Minimum width: %d pixel", "Minimum width: %d pixels", min_width)
-                       .printf (min_width) + "\n";
-          error_str += ngettext ("Minimum height: %d pixel", "Minimum height: %d pixels", min_height)
-                       .printf (min_height);
-          error_label.label = error_str;
-          content_stack.visible_child = error_label;
-          save_button.sensitive = false;
-        }
-      } else {
-        content_stack.visible_child = info_box;
-      }
-      filechooser.destroy ();
-    });
-
+                                                 _("Cancel"));
     var filter = new Gtk.FileFilter ();
     filter.add_mime_type ("image/png");
     filter.add_mime_type ("image/jpeg");
     filechooser.set_filter (filter);
 
-    filechooser.show ();
+    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+      string selected_file = filechooser.get_filename ();
+      Gdk.Pixbuf? image = null;
+      try {
+        image = new Gdk.Pixbuf.from_file (selected_file);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        return;
+      }
+
+      /* Values for banner */
+      int min_width = 200;
+      int min_height = 100;
+
+      if (crop_widget.desired_aspect_ratio == 1.0) {
+        /* Avatar */
+        min_width = 48;
+        min_height = 48;
+      }
+
+      if (image.get_width () >= min_width &&
+          image.get_height () >= min_height) {
+        crop_widget.set_image (image);
+        save_button.sensitive = true;
+      } else {
+        string error_str = "";
+        error_str += _("Image does not meet minimum size requirements:") + "\n";
+        error_str += ngettext ("Minimum width: %d pixel", "Minimum width: %d pixels", min_width)
+                     .printf (min_width) + "\n";
+        error_str += ngettext ("Minimum height: %d pixel", "Minimum height: %d pixels", min_height)
+                     .printf (min_height);
+        error_label.label = error_str;
+        content_stack.visible_child = error_label;
+        save_button.sensitive = false;
+      }
+    } else {
+      content_stack.visible_child = info_box;
+    }
   }
 
   [GtkCallback]
