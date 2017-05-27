@@ -109,7 +109,7 @@ class MaxSizeContainer : Gtk.Bin {
     this.set_window (window);
     window.ref ();
 
-    this.event_window = new Gdk.Window.child (window, this.get_events (), alloc);
+    this.event_window = new Gdk.Window.child (window, 0, alloc);
     this.register_window (this.event_window);
 
     if (this.get_child () != null)
