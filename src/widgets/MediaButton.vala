@@ -21,7 +21,6 @@ private class MediaButton : Gtk.Widget {
   /* We use MIN_ constants in case the media has not yet been loaded */
   private const int MIN_HEIGHT     = 40;
   private const int MIN_WIDTH      = 40;
-  private Gdk.Window? event_window = null;
   private Cb.Media? _media = null;
   private static Cairo.Surface[] play_icons;
   public Cb.Media? media {
@@ -348,91 +347,6 @@ private class MediaButton : Gtk.Widget {
         nat = size;
       }
     }
-  }
-
-  public override void realize () {
-    this.set_realized (true);
-    int draw_width;
-    int draw_height;
-    double scale;
-    Gdk.Rectangle window_rect;
-
-    this.get_draw_size (out draw_width, out draw_height, out scale);
-
-    Gdk.Window window = this.get_parent_window ();
-    this.set_window (window);
-    window.ref ();
-
-    window_rect = {0, 0, draw_width, draw_height};
-    this.event_window = new Gdk.Window.input (window,
-                                              this.get_events () |
-                                              Gdk.EventMask.BUTTON_PRESS_MASK |
-                                              Gdk.EventMask.BUTTON_RELEASE_MASK |
-                                              Gdk.EventMask.TOUCH_MASK |
-                                              Gdk.EventMask.ENTER_NOTIFY_MASK |
-                                              Gdk.EventMask.LEAVE_NOTIFY_MASK,
-                                              window_rect);
-
-    this.register_window (this.event_window);
-  }
-
-  public override void unrealize () {
-    if (this.event_window != null) {
-      this.unregister_window (this.event_window);
-      this.event_window.destroy ();
-      this.event_window = null;
-    }
-    base.unrealize ();
-  }
-
-  public override void map () {
-    base.map ();
-
-    if (this.event_window != null)
-      this.event_window.show ();
-  }
-
-  public override void unmap () {
-
-    if (this.event_window != null)
-      this.event_window.hide ();
-
-    base.unmap ();
-  }
-
-  public override void size_allocate (Gtk.Allocation alloc) {
-    base.size_allocate (alloc);
-
-    int draw_width;
-    int draw_height;
-    double scale;
-
-    if (this.get_realized ()) {
-      this.get_draw_size (out draw_width, out draw_height, out scale);
-      int draw_x = (alloc.width / 2) - (draw_width / 2);
-      this.event_window.move_resize (alloc.x + draw_x,     alloc.y,
-                                     draw_width, draw_height);
-    }
-  }
-
-  public override bool enter_notify_event (Gdk.EventCrossing evt) {
-    if (evt.window == this.event_window &&
-        evt.detail != Gdk.NotifyType.INFERIOR) {
-      this.set_state_flags (this.get_state_flags () | Gtk.StateFlags.PRELIGHT,
-                            true);
-    }
-
-    return Gdk.EVENT_PROPAGATE;
-  }
-
-  public override bool leave_notify_event (Gdk.EventCrossing evt) {
-    if (evt.window == this.event_window &&
-        evt.detail != Gdk.NotifyType.INFERIOR) {
-      this.set_state_flags (this.get_state_flags () & ~Gtk.StateFlags.PRELIGHT,
-                            true);
-    }
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
   private void gesture_pressed_cb (int    n_press,
