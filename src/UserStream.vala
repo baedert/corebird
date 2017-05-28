@@ -262,8 +262,8 @@ public class UserStream : Object {
       try {
         parser.load_from_data (actual_data);
       } catch (GLib.Error e) {
-        critical (e.message);
-        critical (data.str);
+        warning (e.message);
+        warning (data.str);
         data.erase ();
         return;
       }
