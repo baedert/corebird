@@ -183,7 +183,7 @@ configure_file(
 
 # library (for unit tests)
 cb_lib = library(
-  'libcorebird',
+  'corebird',
   corebird_lib_sources,
   dependencies: cb_deps,
   include_directories: srcdir,
