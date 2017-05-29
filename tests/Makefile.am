@@ -5,7 +5,6 @@ AM_CPPFLAGS = \
 	-include $(CONFIG_HEADER) \
 	-DDATADIR=\"$(datadir)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-g \
 	-O0 \
 	-Wno-inline \
 	-D DEBUG
@@ -17,8 +16,7 @@ AM_VALAFLAGS = \
 	--vapidir $(top_srcdir)/vapi \
 	--pkg corebird-internal \
 	--gresources $(top_srcdir)/corebird.gresource.xml \
-	-C \
-	-g
+	-C
 
 TESTS_ENVIRONMENT = GSETTINGS_SCHEMA_DIR=$(abs_top_builddir)/data
 

@@ -21,7 +21,7 @@ public class MainWidget : Gtk.Box {
 
   private Gtk.RadioButton dummy_button  = new Gtk.RadioButton (null);
   private IPage[] pages;
-  private BundleHistory history         = new BundleHistory (10);
+  private Cb.BundleHistory history      = new Cb.BundleHistory ();
   private bool page_switch_lock         = false;
   private ImpostorWidget stack_impostor  = new ImpostorWidget ();
 
@@ -34,7 +34,7 @@ public class MainWidget : Gtk.Box {
   private Gtk.Revealer sidebar_revealer;
   public int cur_page_id {
     get {
-      return history.current;
+      return history.get_current ();
     }
   }
 
@@ -92,13 +92,13 @@ public class MainWidget : Gtk.Box {
    *
    */
   public void switch_page (int page_id, Cb.Bundle? args = null) {
-    if (page_id == history.current) {
+    if (page_id == history.get_current ()) {
       if (pages[page_id].handles_double_open ())
         pages[page_id].double_open ();
 
-      if ((history.current_bundle != null &&
-          history.current_bundle.equals (args)) ||
-          history.current_bundle == args)
+      if ((history.get_current_bundle () != null &&
+          history.get_current_bundle ().equals (args)) ||
+          history.get_current_bundle () == args)
         return;
     }
 
@@ -106,12 +106,12 @@ public class MainWidget : Gtk.Box {
 
 
     // Set the correct transition type
-    if (page_id == Page.PREVIOUS || page_id < history.current)
+    if (page_id == Page.PREVIOUS || page_id < history.get_current ())
       stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
-    else if (page_id == Page.NEXT || page_id > history.current)
+    else if (page_id == Page.NEXT || page_id > history.get_current ())
       stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT;
 
-    int current_page = history.current;
+    int current_page = history.get_current ();
     // If we go forward/back, we don't need to update the history.
     if (page_id == Page.PREVIOUS) {
       if (history.at_start ())
@@ -119,14 +119,14 @@ public class MainWidget : Gtk.Box {
 
       push = false;
       page_id = history.back ();
-      args = history.current_bundle;
+      args = history.get_current_bundle ();
     } else if (page_id == Page.NEXT) {
       if (history.at_end ())
         return;
 
       push = false;
       page_id = history.forward ();
-      args = history.current_bundle;
+      args = history.get_current_bundle ();
     }
 
     if (page_id == current_page) {

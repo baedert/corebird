@@ -25,7 +25,7 @@ foreach test_name : tests
     dependencies: cb_dep,
     vala_args: [
       '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
-    ]
+    ],
   )
   test(test_name, testcase)
 endforeach

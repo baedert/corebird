@@ -83,7 +83,6 @@ libcorebird_la_VALASOURCES = \
 	widgets/ComposeImageManager.vala \
 	util/TweetUtils.vala \
 	util/Utils.vala \
-	util/BundleHistory.vala \
 	util/UserCompletion.vala \
 	util/Dirs.vala \
 	util/UserUtils.vala \
@@ -152,7 +151,9 @@ libcorebird_la_SOURCES = \
 	CbUtils.h \
 	CbUtils.c \
 	CbBundle.h \
-	CbBundle.c
+	CbBundle.c \
+	CbBundleHistory.h \
+	CbBundleHistory.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \
