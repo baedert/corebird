@@ -1,7 +1,7 @@
 project('Corebird', ['vala', 'c'],
         version: '1.5',
         default_options: [
-          'buildtype=debugoptimized'
+          'buildtype=debug'
         ])
 
 gnome = import('gnome')
@@ -41,6 +41,7 @@ endif
 enable_debug = get_option('debug')
 if (enable_debug)
   add_project_arguments('-g', language: 'c')
+  add_project_arguments('-g', language: 'vala')
   add_project_arguments('-DDEBUG', language: 'c')
   add_project_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
   add_project_arguments('-D', 'DEBUG', language: 'vala')
@@ -107,7 +108,6 @@ corebird_lib_sources = files([
   'src/sql/SelectStatement.vala',
   'src/sql/UpdateStatement.vala',
   'src/util/Benchmark.vala',
-  'src/util/BundleHistory.vala',
   'src/util/Dirs.vala',
   'src/util/TweetUtils.vala',
   'src/util/UserCompletion.vala',
@@ -164,6 +164,7 @@ corebird_lib_sources = files([
   'src/CbDeltaUpdater.c',
   'src/CbUtils.c',
   'src/CbBundle.c',
+  'src/CbBundleHistory.c',
   'vapi/corebird-internal.vapi'
 ])
 

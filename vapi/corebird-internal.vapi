@@ -289,4 +289,23 @@ namespace Cb {
 
     public bool equals (Bundle? other);
   }
+
+  [CCode (cprefix = "CbBundleHistory_", lower_case_cprefix = "cb_bundle_history_", cheader_filename =
+          "CbBundleHistory.h")]
+  public class BundleHistory : GLib.Object {
+    public BundleHistory ();
+
+    public void push (int v, Cb.Bundle? b);
+    public int forward ();
+    public int back ();
+    public bool at_start ();
+    public bool at_end ();
+
+    public void remove_current ();
+
+    public int get_current ();
+    public unowned Cb.Bundle? get_current_bundle ();
+
+  }
+
 }
