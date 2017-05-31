@@ -83,7 +83,6 @@ corebird_lib_sources = files([
   'src/ProfilePage.vala',
   'src/SearchPage.vala',
   'src/Settings.vala',
-  'src/SnippetManager.vala',
   'src/TweetInfoPage.vala',
   'src/Twitter.vala',
   'src/UserEventReceiver.vala',
@@ -165,6 +164,7 @@ corebird_lib_sources = files([
   'src/CbUtils.c',
   'src/CbBundle.c',
   'src/CbBundleHistory.c',
+  'src/CbSnippetManager.c',
   'vapi/corebird-internal.vapi'
 ])
 

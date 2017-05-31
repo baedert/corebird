@@ -307,5 +307,15 @@ namespace Cb {
     public unowned Cb.Bundle? get_current_bundle ();
 
   }
-
+  [CCode (cprefix = "CbSnippetManager_", lower_case_cprefix = "cb_snippet_manager_", cheader_filename =
+          "CbSnippetManager.h")]
+  public class SnippetManager : GLib.Object {
+    public SnippetManager (Sqlite.Database db);
+    public unowned string get_snippet (string key);
+    public uint n_snippets ();
+    public void query_snippets (GLib.HFunc func);
+    public void set_snippet (string old_key, string key, string value);
+    public void remove_snippet (string key);
+    public void insert_snippet (string key, string value);
+  }
 }

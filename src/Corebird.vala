@@ -17,7 +17,7 @@
 
 public class Corebird : Gtk.Application {
   public static Sql.Database db;
-  public static SnippetManager snippet_manager;
+  public static Cb.SnippetManager snippet_manager;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
@@ -46,7 +46,6 @@ public class Corebird : Gtk.Application {
     GLib.Object(application_id:   "org.baedert.corebird",
                 flags:            ApplicationFlags.HANDLES_COMMAND_LINE);
                 //register_session: true);
-    snippet_manager = new SnippetManager ();
     active_accounts = new GLib.GenericArray<Account> ();
 
     /* Create the directories here already since the database below needs it */
@@ -54,6 +53,8 @@ public class Corebird : Gtk.Application {
     db = new Sql.Database (Dirs.config ("Corebird.db"),
                            Sql.COREBIRD_INIT_FILE,
                            Sql.COREBIRD_SQL_VERSION);
+
+    snippet_manager = new Cb.SnippetManager (db.get_sqlite_db ());
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
