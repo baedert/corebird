@@ -146,7 +146,7 @@ class SettingsDialog : Gtk.Window {
 
     // Fill snippet list box
     Corebird.snippet_manager.query_snippets ((key, value) => {
-      var e = new SnippetListEntry (key, value);
+      var e = new SnippetListEntry ((string)key, (string)value);
       e.show_all ();
       snippet_list_box.add (e);
     });

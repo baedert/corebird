@@ -53,7 +53,6 @@ libcorebird_la_VALASOURCES = \
 	FavoritesTimeline.vala \
 	FilterPage.vala \
 	UserEventReceiver.vala \
-	SnippetManager.vala \
 	DMManager.vala \
 	widgets/TweetListBox.vala \
 	widgets/MaxSizeContainer.vala \
@@ -153,7 +152,9 @@ libcorebird_la_SOURCES = \
 	CbBundle.h \
 	CbBundle.c \
 	CbBundleHistory.h \
-	CbBundleHistory.c
+	CbBundleHistory.c \
+	CbSnippetManager.h \
+	CbSnippetManager.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \
