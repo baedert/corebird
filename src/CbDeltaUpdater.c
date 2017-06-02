@@ -29,7 +29,7 @@ minutely_cb (gpointer user_data)
   GList *l;
 
   if (!GTK_IS_WIDGET (self->listbox))
-    return G_SOURCE_CONTINUE;
+    return G_SOURCE_REMOVE;
 
   widgets = gtk_container_get_children (GTK_CONTAINER (self->listbox));
   now = g_date_time_new_now_local ();
