@@ -71,14 +71,12 @@ libcorebird_la_VALASOURCES = \
 	widgets/MultiMediaWidget.vala \
 	widgets/AvatarWidget.vala \
 	widgets/AvatarBannerWidget.vala \
-	widgets/MediaVideoWidget.vala \
 	widgets/CropWidget.vala \
 	widgets/AddImageButton.vala \
 	widgets/CompletionTextView.vala \
 	widgets/LazyMenuButton.vala \
 	widgets/ImpostorWidget.vala \
 	widgets/FollowButton.vala \
-	widgets/SurfaceProgress.vala \
 	widgets/MediaButton.vala \
 	widgets/ComposeImageManager.vala \
 	util/TweetUtils.vala \
@@ -155,7 +153,11 @@ libcorebird_la_SOURCES = \
 	CbBundleHistory.h \
 	CbBundleHistory.c \
 	CbSnippetManager.h \
-	CbSnippetManager.c
+	CbSnippetManager.c \
+	CbMediaVideoWidget.h \
+	CbMediaVideoWidget.c \
+	CbSurfaceProgress.h \
+	CbSurfaceProgress.c
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

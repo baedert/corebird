@@ -318,4 +318,10 @@ namespace Cb {
     public void remove_snippet (string key);
     public void insert_snippet (string key, string value);
   }
+  [CCode (cprefix = "CbMediaVideoWidget_", lower_case_cprefix = "cb_media_video_widget_", cheader_filename =
+          "CbMediaVideoWidget.h")]
+  public class MediaVideoWidget : Gtk.Stack {
+    public MediaVideoWidget (Media media);
+    public void start ();
+  }
 }
