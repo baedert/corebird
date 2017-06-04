@@ -129,13 +129,11 @@ corebird_lib_sources = files([
   'src/widgets/LazyMenuButton.vala',
   'src/widgets/MaxSizeContainer.vala',
   'src/widgets/MediaButton.vala',
-  'src/widgets/MediaVideoWidget.vala',
   'src/widgets/MultiMediaWidget.vala',
   'src/widgets/PixbufButton.vala',
   'src/widgets/ReplyEntry.vala',
   'src/widgets/ReplyIndicator.vala',
   'src/widgets/ScrollWidget.vala',
-  'src/widgets/SurfaceProgress.vala',
   'src/widgets/TextButton.vala',
   'src/widgets/TweetListBox.vala',
   'src/widgets/UserListsWidget.vala',
@@ -165,6 +163,8 @@ corebird_lib_sources = files([
   'src/CbBundle.c',
   'src/CbBundleHistory.c',
   'src/CbSnippetManager.c',
+  'src/CbSurfaceProgress.c',
+  'src/CbMediaVideoWidget.c',
   'vapi/corebird-internal.vapi'
 ])
 

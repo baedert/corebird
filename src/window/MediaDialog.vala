@@ -65,9 +65,9 @@ class MediaDialog : Gtk.Window {
 
     Gtk.Widget new_widget = null;
     if (media.is_video ()) {
-      new_widget = new MediaVideoWidget (media);
+      new_widget = new Cb.MediaVideoWidget (media);
       frame.add (new_widget);
-      ((MediaVideoWidget)new_widget).init ();
+      ((Cb.MediaVideoWidget)new_widget).start ();
     } else {
       new_widget = new Cb.MediaImageWidget (media);
       frame.add (new_widget);
