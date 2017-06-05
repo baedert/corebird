@@ -148,6 +148,7 @@ video_progress_timeout_cb (gpointer user_data)
   return G_SOURCE_CONTINUE;
 }
 
+#ifdef VIDEO
 static gboolean
 watch_cb (GstBus     *bus,
           GstMessage *message,
@@ -207,6 +208,7 @@ watch_cb (GstBus     *bus,
 
   return TRUE;
 }
+#endif
 
 static void
 cb_media_video_widget_destroy (GtkWidget *widget)
