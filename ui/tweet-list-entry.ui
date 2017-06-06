@@ -118,7 +118,10 @@
         <child>
           <object class="GtkGrid" id="grid">
             <property name="visible">1</property>
-            <property name="margin">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">12</property>
             <child>
               <object class="AvatarWidget" id="avatar_image">
                 <property name="size">48</property>
@@ -211,7 +214,6 @@
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin-top">4</property>
-                <property name="margin-end">6</property>
                 <property name="lines">0</property>
                 <style>
                   <class name="dim-label"/>
