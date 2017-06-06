@@ -74,8 +74,8 @@ cb_bundle_history_push (CbBundleHistory *self,
    else
      {
        /* No space left. Move everything one place to the start and then add @bundle */
-       memcpy (self->elements, self->elements + 1, sizeof (int) * (HISTORY_SIZE - 1));
-       memcpy (self->bundles,  self->bundles  + 1, sizeof (CbBundle *) * (HISTORY_SIZE - 1));
+       memmove (self->elements, self->elements + 1, sizeof (int) * (HISTORY_SIZE - 1));
+       memmove (self->bundles,  self->bundles  + 1, sizeof (CbBundle *) * (HISTORY_SIZE - 1));
      }
 
    self->elements[self->pos] = v;
@@ -139,11 +139,11 @@ cb_bundle_history_remove_current (CbBundleHistory *self)
   if (self->pos + 1 < HISTORY_SIZE - 1 &&
       self->elements[self->pos + 1] != -1)
     {
-      memcpy (self->elements + self->pos,
+      memmove (self->elements + self->pos,
               self->elements + self->pos + 1,
               (HISTORY_SIZE - self->pos - 1) * sizeof (int));
 
-      memcpy (self->bundles + self->pos,
+      memmove (self->bundles + self->pos,
               self->bundles + self->pos + 1,
               (HISTORY_SIZE - self->pos - 1) * sizeof (CbBundle*));
     }
