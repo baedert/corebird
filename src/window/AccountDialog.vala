@@ -198,7 +198,7 @@ public class AccountDialog : Gtk.Window {
       call.invoke_async.begin (null, (obj, res) => {
         try {
           call.invoke_async.end (res);
-          debug ("Banner succesfully updated");
+          debug ("Banner successfully updated");
         } catch (GLib.Error e) {
           Utils.show_error_object (call.get_payload (), "Could not update your banner",
                                    GLib.Log.LINE, GLib.Log.FILE, this);
