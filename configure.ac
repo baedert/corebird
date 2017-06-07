@@ -34,18 +34,16 @@ AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enab
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 
 # --disable-video
-AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),
-              disable_video=yes, disable_video=no)
-AM_CONDITIONAL([DISABLE_VIDEO], [ test "$disable_video" = "yes"])
+AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]))
+AM_CONDITIONAL([DISABLE_VIDEO], [ test "$enable_video" != "yes"])
 
 # --disable-gst-check
-AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, disable_gst_check=no)
-AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$disable_gst_check" = "yes"])
+AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]))
+AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$enable_gst_check" != "yes"])
 
 # --disable-spellcheck
-AC_ARG_ENABLE(spellcheck, AS_HELP_STRING([--disable-spellcheck], [Disable spellchecking supoprt]),
-              disable_spellcheck=yes, disable_spellcheck=no)
-AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$disable_spellcheck" = "yes"])
+AC_ARG_ENABLE(spellcheck, AS_HELP_STRING([--disable-spellcheck], [Disable spellchecking support]))
+AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$enable_spellcheck" = "yes"])
 
 
 
@@ -175,7 +173,7 @@ echo "
            valac version: ${VALAC_VERSION}
               C Compiler: ${CC} ${CFLAGS}
                Debugging: $enable_debug
-          Video disabled: $disable_video
-      Gst check disabled: $disable_gst_check
-  Spellchecking disabled: $disable_spellcheck
+           Video enabled: $enable_video
+       Gst check enabled: $enable_gst_check
+   Spellchecking enabled: $enable_spellcheck
 "
