@@ -54,11 +54,11 @@ pkg_modules="gtk+-3.0 >= 3.20
              json-glib-1.0
              sqlite3"
 
-if test "$disable_video" = "no"; then
+if test "$enable_video" != "no"; then
   pkg_modules="$pkg_modules gstreamer-video-1.0 >= 1.6"
 fi
 
-if test "$disable_spellcheck" = "no"; then
+if test "$enable_spellcheck" != "no"; then
   pkg_modules="$pkg_modules gspell-1 >= 1.0"
 fi
 
@@ -105,7 +105,7 @@ if test "${CC}" = "clang"; then
   CB_CFLAGS="$CB_CFLAGS -Wno-incompatible-pointer-types -Wno-incompatible-pointer-types-discards-qualifiers"
 fi
 
-if test "$disable_video" = "no"; then
+if test "$enable_video" != "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS \
                  -D VIDEO \
                  --pkg gstreamer-video-1.0"
@@ -117,12 +117,12 @@ if test "$enable_debug" = "yes"; then
   CB_CFLAGS="$CB_CFLAGS -D DEBUG -D G_DISABLE_CAST_CHECKS"
 fi
 
-if test "$disable_spellcheck" = "no"; then
+if test "$enable_spellcheck" != "no"; then
   CB_VALA_FLAGS="$CB_VALA_FLAGS -D SPELLCHECK --pkg gspell-1"
   CB_CFLAGS="$CB_CFLAGS -D SPELLCHECK"
 fi
 
-if test "$disable_gst_check" = "no"; then
+if test "$enable_gst_check" != "no"; then
   # Check for gtksink
   GST_ELEMENT_CHECK([gtksink], [1.0], [], [])
 fi
