@@ -634,7 +634,7 @@ msgstr "Retweets desativados"
 
 #: ui/profile-page.ui:166
 msgid "Follows you"
-msgstr "Você segue"
+msgstr "Segue você"
 
 #: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
