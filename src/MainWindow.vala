@@ -185,6 +185,7 @@ public class MainWindow : Gtk.ApplicationWindow {
           app_menu_button.add (new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU));
           app_menu_button.get_style_context ().add_class ("image-button");
           app_menu_button.menu_model = cb.app_menu;
+          app_menu_button.show_all ();
           headerbar.pack_end (app_menu_button);
         } else
           app_menu_button.show ();
