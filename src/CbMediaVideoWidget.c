@@ -186,7 +186,8 @@ watch_cb (GstBus     *bus,
           g_debug ("ASYNC DONE");
           gtk_stack_set_visible_child_name (GTK_STACK (self), "video");
           gst_element_set_state (self->src, GST_STATE_PLAYING);
-          self->video_progress_id = g_timeout_add (50, video_progress_timeout_cb, self);
+          if (self->video_progress_id == 0)
+            self->video_progress_id = g_timeout_add (50, video_progress_timeout_cb, self);
         }
       break;
 
