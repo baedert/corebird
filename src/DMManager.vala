@@ -153,16 +153,11 @@ class DMManager : GLib.Object {
   }
 
   public void insert_message (Json.Object dm_obj) {
-    if (dm_obj.get_int_member ("sender_id") == account.id) {
-      //save_message (dm_obj, false);
-      update_thread (dm_obj, false);
-    } else {
-      update_thread (dm_obj, false);
-    }
+    update_thread (dm_obj, false);
   }
 
-  /* We are ONLY calling this for RECEIVED messages, not sent ones. */
   private void update_thread (Json.Object dm_obj, bool initial) {
+    int64 recipient_id = dm_obj.get_int_member ("recipient_id");
     int64 sender_id  = dm_obj.get_int_member ("sender_id");
     int64 message_id = dm_obj.get_int_member ("id");
 
@@ -208,7 +203,7 @@ class DMManager : GLib.Object {
              .val ("last_message", text)
              .vali64 ("last_message_id", message_id)
              .run ();
-    } else {
+    } else if (sender_id != account.id || (recipient_id == account.id)) {
       DMThread thread = threads_model.get_thread (sender_id);
       if (message_id > thread.last_message_id) {
         this.threads_model.update_last_message (sender_id, message_id, text);
@@ -224,8 +219,7 @@ class DMManager : GLib.Object {
 
     /* This will exctract the json data again, etc. but it's still easier than
      * replacing entities here... */
-    if (sender_id != account.id)
-      save_message (dm_obj, initial);
+    save_message (dm_obj, initial);
   }
 
 
