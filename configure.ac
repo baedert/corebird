@@ -34,15 +34,15 @@ AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug], [Enable debugging]),, enab
 AM_CONDITIONAL([ENABLE_DEBUG], [ test "$enable_debug" = "yes"])
 
 # --disable-video
-AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]))
+AC_ARG_ENABLE(video, AS_HELP_STRING([--disable-video], [Disable video support]),, enable_video=yes)
 AM_CONDITIONAL([DISABLE_VIDEO], [ test "$enable_video" != "yes"])
 
 # --disable-gst-check
-AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]))
+AC_ARG_ENABLE(gst_check, AS_HELP_STRING([--disable-gst-check], [Disable check for needed gstreamer elements]),, enable_gst_check=yes)
 AM_CONDITIONAL([DISABLE_GST_CHECK], [ test "$enable_gst_check" != "yes"])
 
 # --disable-spellcheck
-AC_ARG_ENABLE(spellcheck, AS_HELP_STRING([--disable-spellcheck], [Disable spellchecking support]))
+AC_ARG_ENABLE(spellcheck, AS_HELP_STRING([--disable-spellcheck], [Disable spellchecking support]),, enable_spellcheck=yes)
 AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$enable_spellcheck" = "yes"])
 
 
