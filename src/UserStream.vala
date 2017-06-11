@@ -20,6 +20,7 @@
 public enum StreamMessageType {
   UNSUPPORTED,
   DELETE,
+  DM_DELETE,
   SCRUB_GEO,
   LIMIT,
   DISCONNECT,
@@ -275,9 +276,12 @@ public class UserStream : Object {
 
       StreamMessageType type = 0;
 
-      if (root.has_member ("delete"))
-        type = StreamMessageType.DELETE;
-      else if (root.has_member ("scrub_geo"))
+      if (root.has_member ("delete")) {
+        if (root.get_object_member ("delete").has_member ("direct_message"))
+          type = StreamMessageType.DM_DELETE;
+        else
+          type = StreamMessageType.DELETE;
+      } else if (root.has_member ("scrub_geo"))
         type = StreamMessageType.SCRUB_GEO;
       else if (root.has_member ("limit"))
         type = StreamMessageType.LIMIT;
