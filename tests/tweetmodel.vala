@@ -414,6 +414,23 @@ void empty_hidden_tweets () {
   assert (tm.hidden_tweets.length == 0);
 }
 
+void same_id () {
+  var tm = new Cb.TweetModel ();
+  var t = new Cb.Tweet ();
+  t.id = 1337;
+
+  tm.add (t);
+  assert (tm.get_n_items () == 1);
+  assert (tm.min_id == 1337);
+  assert (tm.max_id == 1337);
+
+  tm.add (t);
+  /* No change */
+  assert (tm.get_n_items () == 1);
+  assert (tm.min_id == 1337);
+  assert (tm.max_id == 1337);
+}
+
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
@@ -431,6 +448,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweetmodel/tweet-count", tweet_count);
   GLib.Test.add_func ("/tweetmodel/empty-hidden-tweets", empty_hidden_tweets);
   GLib.Test.add_func ("/tweetmodel/hidden-remove-last-n-visible", hidden_remove_last_n_visible);
+  GLib.Test.add_func ("/tweetmodel/same-id", same_id);
 
   return GLib.Test.run ();
 }
