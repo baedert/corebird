@@ -227,7 +227,13 @@ insert_sorted (CbTweetModel *self,
         }
     }
 
-  g_assert (insert_pos != -1);
+  if (insert_pos == -1)
+    {
+      /* This can happen if the same tweet gets inserted into an empty model twice.
+       * Generally, we'd like to ignore double insertions, at least right now I can't
+       * think of a good use case for it. (2017-06-13) */
+      return;
+    }
 
   g_object_ref (tweet);
   g_ptr_array_insert (self->tweets, insert_pos, tweet);
