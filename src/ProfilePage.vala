@@ -226,7 +226,7 @@ class ProfilePage : ScrollWidget, IPage, IMessageReceiver {
 
     // We don't use our AvatarCache here because this (100×100) avatar is only
     // ever loaded here.
-    TweetUtils.download_avatar.begin (avatar_url, 100 * scale, (obj, res) => {
+    TweetUtils.download_avatar.begin (avatar_url, 100 * scale, data_cancellable, (obj, res) => {
       Cairo.Surface surface;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
