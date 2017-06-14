@@ -70,6 +70,8 @@ cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
   cairo_set_source_surface (ct, tmp_surface, 0, 0);
   cairo_fill (ct);
 
+  cairo_surface_destroy (tmp_surface);
+
   return GDK_EVENT_PROPAGATE;
 }
 
