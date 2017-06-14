@@ -147,6 +147,7 @@
   border-bottom: 1px solid transparent;
   min-height: 0px;
   margin-bottom: -1px;
+  outline-offset: 0;
 }
 
 .text-only-button:hover {
