@@ -141,7 +141,7 @@
                   <object class="GtkBox" id="reply_box">
                     <property name="visible">1</property>
                     <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
+                    <property name="margin-top">12</property>
                     <style>
                       <class name="dim-label" />
                     </style>
