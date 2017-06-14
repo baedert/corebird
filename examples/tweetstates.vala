@@ -14,7 +14,7 @@ Cb.Tweet parse_tweet (string input) {
 }
 
 void main (string[] args) {
-  Gtk.init (ref args);
+  Gtk.init ();
   Settings.init ();
   Utils.load_custom_css ();
   Utils.load_custom_icons ();
@@ -140,7 +140,7 @@ void main (string[] args) {
   box.add (list3);
   scroller.add (box);
   window.add (scroller);
-  window.show_all ();
+  window.show ();
   window.resize (1500, 900);
   Gtk.main ();
 }
