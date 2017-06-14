@@ -179,8 +179,28 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       this.screen_name = args.get_string (KEY_SCREEN_NAME);
     }
 
-
     query_tweet_info (existing);
+  }
+
+  private void load_user_avatar (string url) {
+    string avatar_url = url.replace ("_normal", "_bigger");
+    int scale = this.get_scale_factor ();
+
+    TweetUtils.download_avatar.begin (avatar_url, 73 * scale, cancellable, (obj, res) => {
+      Cairo.Surface surface;
+      try {
+        var pixbuf = TweetUtils.download_avatar.end (res);
+        if (pixbuf == null) {
+          surface = scale_surface ((Cairo.ImageSurface)Twitter.no_avatar, 73, 73);
+        } else {
+          surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, scale, null);
+        }
+      } catch (GLib.Error e) {
+        warning (e.message);
+        surface = Twitter.no_avatar;
+      }
+      avatar_image.surface = surface;
+    });
   }
 
   private void rearrange_tweets (int64 new_id) {
@@ -214,7 +234,12 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
       //error ("wtf");
   }
 
-  public void on_leave () {}
+  public void on_leave () {
+    if (cancellable != null) {
+      cancellable.cancel ();
+      cancellable = null;
+    }
+  }
 
 
   [GtkCallback]
@@ -461,7 +486,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     text_label.label = tweet.get_formatted_text ();
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
-    Twitter.get ().get_avatar.begin (tweet.get_user_id (), tweet.avatar_url, avatar_image);
+    load_user_avatar (tweet.avatar_url);
     update_rt_fav_labels ();
     time_label.label = time_format;
     retweet_button.active  = tweet.is_flag_set (Cb.TweetState.RETWEETED);

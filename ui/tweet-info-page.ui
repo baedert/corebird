@@ -59,7 +59,7 @@
                         <property name="margin-end">6</property>
                         <property name="halign">start</property>
                         <property name="valign">center</property>
-                        <property name="size">72</property>
+                        <property name="size">73</property>
                       </object>
                     </child>
                     <child>
