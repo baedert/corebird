@@ -75,7 +75,6 @@
                             <child>
                               <object class="TextButton" id="name_button">
                                 <property name="visible">True</property>
-                                <property name="can-focus">True</property>
                                 <property name="halign">start</property>
                                 <property name="valign">baseline</property>
                                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
@@ -179,7 +178,6 @@
                 <child>
                   <object class="GtkLabel" id="text_label">
                     <property name="visible">1</property>
-                    <property name="can-focus">1</property>
                     <property name="margin-bottom">12</property>
                     <property name="margin-top">12</property>
                     <property name="hexpand">1</property>
@@ -248,9 +246,7 @@
                 <child>
                   <object class="GtkToggleButton" id="retweet_button">
                     <property name="visible">1</property>
-                    <property name="can-focus">1</property>
                     <property name="valign">baseline</property>
-                    <property name="receives-default">1</property>
                     <property name="tooltip-text" translatable="yes">Retweet tweet</property>
                     <property name="relief">none</property>
                     <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
@@ -275,9 +271,7 @@
                 <child>
                   <object class="GtkToggleButton" id="favorite_button">
                     <property name="visible">1</property>
-                    <property name="can-focus">1</property>
                     <property name="valign">baseline</property>
-                    <property name="receives-default">1</property>
                     <property name="tooltip-text" translatable="yes">Favorite tweet</property>
                     <property name="relief">none</property>
                     <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
@@ -302,9 +296,7 @@
                 <child>
                   <object class="GtkButton" id="reply_button">
                     <property name="visible">1</property>
-                    <property name="can-focus">1</property>
                     <property name="valign">baseline</property>
-                    <property name="receives-default">1</property>
                     <property name="tooltip-text" translatable="yes">Reply to tweet</property>
                     <property name="relief">none</property>
                     <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
@@ -329,7 +321,6 @@
                 <child>
                   <object class="GtkMenuButton">
                     <property name="visible">1</property>
-                    <property name="can-focus">1</property>
                     <property name="valign">baseline</property>
                     <property name="relief">none</property>
                     <property name="menu-model">actions_menu</property>
@@ -361,7 +352,6 @@
             <child>
               <object class="TweetListBox" id="bottom_list_box">
                 <property name="visible">1</property>
-                <property name="can-focus">0</property>
                 <property name="selection-mode">none</property>
                 <property name="margin-top">6</property>
                 <property name="hexpand">1</property>
