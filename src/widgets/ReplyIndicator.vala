@@ -17,7 +17,6 @@
 
 public class ReplyIndicator : Gtk.Widget {
   private const int FINAL_HEIGHT = 5;
-  private double height = 0;
   private bool replies = false;
   public bool replies_available {
     set {
@@ -27,6 +26,7 @@ public class ReplyIndicator : Gtk.Widget {
     get { return replies; }
   }
   private int64 start_time;
+  private double show_factor = 0.0;
 
   construct {
     set_has_window (false);
@@ -40,17 +40,17 @@ public class ReplyIndicator : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-
   public override void get_preferred_height_for_width (int     width,
                                                        out int min_height,
                                                        out int nat_height) {
-    min_height = FINAL_HEIGHT;
-    nat_height = FINAL_HEIGHT;
+    min_height = (int)(FINAL_HEIGHT * show_factor);
+    nat_height = (int)(FINAL_HEIGHT * show_factor);
   }
 
   private void on_replies_available () {
     if (!replies) {
-      height = 0.0;
+      show_factor = 0.0;
+      queue_resize ();
       return;
     }
     start_time = this.get_frame_clock ().get_frame_time ();
@@ -59,39 +59,36 @@ public class ReplyIndicator : Gtk.Widget {
 
   private bool tick_callback (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
     if (!this.get_mapped ()) {
-      height = FINAL_HEIGHT;
-      this.queue_draw ();
-      return false;
+      this.queue_resize ();
+      return GLib.Source.REMOVE;
     }
 
     int64 now = frame_clock.get_frame_time ();
-    int64 end_time = this.start_time + (750 * 1000); /* .75s */
+    int64 end_time = this.start_time + TRANSITION_DURATION;
     double t = 1.0;
     if (now < end_time)
       t = (now - start_time) / (double)(end_time - start_time);
 
     t = ease_out_cubic (t);
+    this.show_factor = t;
+    this.queue_resize ();
 
-    height = t * FINAL_HEIGHT;
-    if (height >= FINAL_HEIGHT) {
-      height = FINAL_HEIGHT;
-      this.queue_draw ();
-      return false;
+    if (t >= 1.0) {
+      return GLib.Source.REMOVE;
     }
 
-    this.queue_draw ();
-    return true;
+    return GLib.Source.CONTINUE;
   }
 
   public override bool draw (Cairo.Context ct) {
     if (!replies) {
-      return false;
+      return Gdk.EVENT_PROPAGATE;
     }
+
     var style_context = this.get_style_context ();
-    int width = this.get_allocated_width ();
 
-    style_context.render_background (ct, 0, 0, width, height);
+    style_context.render_background (ct, 0, 0, get_allocated_width(), get_allocated_height ());
 
-    return false;
+    return Gdk.EVENT_PROPAGATE;
   }
 }
