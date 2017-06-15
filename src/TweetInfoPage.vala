@@ -50,6 +50,8 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
   private GLib.Cancellable? cancellable = null;
 
   [GtkChild]
+  private Gtk.Grid grid;
+  [GtkChild]
   private Gtk.Box main_box;
   [GtkChild]
   private MultiMediaWidget mm_widget;
@@ -96,6 +98,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     this.top_list_box.account = account;
     this.bottom_list_box.account = account;
 
+    grid.set_redraw_on_allocate (true);
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, main_window, i));
     this.scroll_event.connect ((evt) => {
