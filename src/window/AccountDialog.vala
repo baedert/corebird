@@ -132,6 +132,7 @@ public class AccountDialog : Gtk.Window {
       call.invoke_async.begin (null, (obj, res) => {
         try {
           call.invoke_async.end (res);
+          debug ("Profile successfully updated");
         } catch (GLib.Error e) {
           warning (e.message);
           Utils.show_error_object (call.get_payload (), "Could not update profile",
