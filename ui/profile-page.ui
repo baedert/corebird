@@ -226,6 +226,7 @@
                         <property name="visible">1</property>
                         <property name="hexpand">1</property>
                         <property name="draw-indicator">0</property>
+                        <property name="relief">none</property>
                         <style>
                           <class name="profile-button"/>
                         </style>
@@ -267,6 +268,7 @@
                         <property name="hexpand">1</property>
                         <property name="group">tweets_button</property>
                         <property name="draw-indicator">0</property>
+                        <property name="relief">none</property>
                         <style>
                           <class name="profile-button"/>
                         </style>
@@ -308,6 +310,7 @@
                         <property name="hexpand">1</property>
                         <property name="group">tweets_button</property>
                         <property name="draw-indicator">0</property>
+                        <property name="relief">none</property>
                         <style>
                           <class name="profile-button"/>
                         </style>
@@ -349,6 +352,7 @@
                         <property name="hexpand">1</property>
                         <property name="group">tweets_button</property>
                         <property name="draw-indicator">0</property>
+                        <property name="relief">none</property>
                         <style>
                           <class name="profile-button"/>
                         </style>

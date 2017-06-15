@@ -165,7 +165,8 @@
 }
 
 .text-only-button:active {
-  background-color: shade(currentColor, 2.3);
+  color: inherit;
+  background-color: alpha(currentColor, 0.4);
 }
 
 .text-only-button:backdrop {
@@ -203,23 +204,30 @@ replyindicator {
 }
 
 .profile-button {
-  background-image: none;
-  background-color: alpha(white,0);
-  box-shadow: none;
-  border: none;
   border-radius: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-top-width: 0px;
+  border-bottom: 2px solid transparent;
+  box-shadow: none;
 }
 
 .profile-button:checked {
+  border: none;
+  box-shadow: none;
+  background-image: none;
+  background-color: transparent;
+  color: inherit;
   border-bottom: 2px solid #4a90d9;
 }
 
 .profile-button:hover {
+  background-image: none;
   background-color: alpha(white, 0.3);
 }
 
 .profile-button:active {
-  background-color: alpha(white, 0.5);
+  color: inherit;
   border-bottom: 2px solid grey;
 }
 
