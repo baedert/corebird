@@ -486,6 +486,11 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     text_label.label = tweet.get_formatted_text ();
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
+    /* If we have an avatar in the cache already, use that and load the
+       larger one anyway. */
+    if (Twitter.get ().has_avatar (tweet.get_user_id ())) {
+      avatar_image.surface = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
+    }
     load_user_avatar (tweet.avatar_url);
     update_rt_fav_labels ();
     time_label.label = time_format;
