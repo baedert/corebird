@@ -30,7 +30,10 @@ public class ReplyIndicator : Gtk.Widget {
 
   construct {
     set_has_window (false);
-    get_style_context ().add_class ("reply-indicator");
+  }
+
+  static construct {
+    set_css_name ("replyindicator");
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
