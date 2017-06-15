@@ -45,9 +45,10 @@
             <child>
               <object class="GtkGrid" id="grid">
                 <property name="visible">1</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
-                <property name="margin-top">12</property>
+                <style>
+                  <class name="view" />
+                  <class name="tweet-info-grid" />
+                </style>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">1</property>
