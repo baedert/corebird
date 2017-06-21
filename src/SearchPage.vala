@@ -116,11 +116,13 @@ class SearchPage : IPage, Gtk.Box {
     search_for (term, true);
   }
 
-  ~SearchPage () {
+  public override void dispose () {
     if (this.remove_content_timeout != 0) {
       GLib.Source.remove (this.remove_content_timeout);
       this.remove_content_timeout = 0;
     }
+
+    base.dispose ();
   }
 
   public void on_leave () {
