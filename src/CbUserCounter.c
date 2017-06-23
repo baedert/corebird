@@ -114,7 +114,7 @@ cb_user_counter_save (CbUserCounter *counter,
           continue;
         }
 
-      sqlite3_bind_int (stmt,  1, ui->user_id);
+      sqlite3_bind_int64 (stmt,  1, ui->user_id);
       sqlite3_bind_text (stmt, 2, ui->screen_name, -1, NULL);
       sqlite3_bind_text (stmt, 3, ui->user_name, -1, NULL);
       sqlite3_bind_int (stmt,  4, ui->score);
