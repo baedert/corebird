@@ -115,9 +115,14 @@ class FavImageView : Gtk.Box {
                                                      uint              time) {
     if (info == 0) {
       /* Text */
-      string? text = selection_data.get_text ().strip ();
+      string?text = selection_data.get_text ().strip ();
       if (text.has_prefix ("file://")) {
         var file = GLib.File.new_for_uri (text);
+        if (!file.query_exists ()) {
+          debug ("File '%s' does not exist.", text);
+          return;
+        }
+
         try {
           var file_info = file.query_info ("standard::content-type", GLib.FileQueryInfoFlags.NONE);
           var row = new FavImageRow (GLib.File.new_for_uri (text).get_path ());
