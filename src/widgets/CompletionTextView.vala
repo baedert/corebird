@@ -171,6 +171,7 @@ class CompletionTextView : Gtk.TextView {
 
       this.current_match = (current_match + 1) % n_results;
       var row = completion_list.get_row_at_index (current_match);
+      row.grab_focus ();
       completion_list.select_row (row);
 
       return Gdk.EVENT_STOP;
@@ -178,6 +179,7 @@ class CompletionTextView : Gtk.TextView {
       current_match --;
       if (current_match < 0) current_match = n_results - 1;
       var row = completion_list.get_row_at_index (current_match);
+      row.grab_focus ();
       completion_list.select_row (row);
 
       return Gdk.EVENT_STOP;
