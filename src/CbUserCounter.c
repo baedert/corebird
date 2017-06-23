@@ -146,11 +146,11 @@ query_sqlite_cb (void  *user_data,
   } *query_data = user_data;
   CbUserInfo *ui;
   guint i;
-  int user_id;
+  gint64 user_id;
 
   g_assert (n_columns == 4);
 
-  user_id = atoi (columns[0]);
+  user_id = strtoull (columns[0], NULL, 10);
 
   /* Check for duplicates first */
   for (i = 0; i < query_data->infos->len; i ++)
@@ -159,7 +159,6 @@ query_sqlite_cb (void  *user_data,
       if (_ui->user_id == user_id)
         return 0;
     }
-
 
   g_array_set_size (query_data->infos, query_data->infos->len + 1);
   ui = &g_array_index (query_data->infos, CbUserInfo, query_data->infos->len - 1);
