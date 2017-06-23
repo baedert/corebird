@@ -213,50 +213,11 @@
         </child>
 
         <child>
-          <object class="GtkBox">
+          <object class="FavImageView" id="fav_image_view">
             <property name="visible">1</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="visible">1</property>
-                <property name="hscrollbar-policy">never</property>
-                <property name="vexpand">1</property>
-                <child>
-                  <object class="GtkFlowBox" id="fav_image_list">
-                    <property name="visible">1</property>
-                    <property name="selection-mode">none</property>
-                    <signal name="child-activated" handler="fav_image_box_child_activated_cb" />
-                    <signal name="drag-data-received" handler="fav_image_box_drag_data_received_cb" />
-                    <style>
-                      <class name="view" />
-                      <class name="fav-image-box" />
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkSeparator">
-                <property name="visible">1</property>
-                <property name="orientation">horizontal</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="visible">1</property>
-                <property name="halign">start</property>
-                <property name="margin">6</property>
-                <signal name="clicked" handler="new_fav_image_button_clicked_cb" />
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">1</property>
-                    <property name="icon-name">list-add-symbolic</property>
-                    <property name="icon-size">1</property>
-                  </object>
-                </child>
-              </object>
-            </child>
+            <signal name="image-selected" handler="favorite_image_selected_cb" />
           </object>
+
           <packing>
             <property name="name">fav-images</property>
           </packing>

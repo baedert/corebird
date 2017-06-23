@@ -78,6 +78,7 @@ libcorebird_la_VALASOURCES = \
 	widgets/FollowButton.vala \
 	widgets/MediaButton.vala \
 	widgets/ComposeImageManager.vala \
+	widgets/FavImageView.vala \
 	util/TweetUtils.vala \
 	util/Utils.vala \
 	util/UserCompletion.vala \

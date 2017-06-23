@@ -52,7 +52,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Button cancel_button;
   [GtkChild]
-  private Gtk.FlowBox fav_image_list;
+  private FavImageView fav_image_view;
   [GtkChild]
   private Gtk.Button fav_image_button;
   private unowned Account account;
@@ -125,7 +125,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
       if (this.compose_image_manager.n_images == 0) {
         this.compose_image_manager.hide ();
-        this.enable_fav_gifs ();
+        fav_image_view.set_gifs_enabled (true);
       }
     });
 
@@ -140,12 +140,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     var image_target_list = new Gtk.TargetList (null);
     image_target_list.add_text_targets (0);
-
-    Gtk.drag_dest_set (fav_image_list,
-                       Gtk.DestDefaults.ALL,
-                       null,
-                       Gdk.DragAction.COPY);
-    Gtk.drag_dest_set_target_list (fav_image_list, image_target_list);
 
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
@@ -313,7 +307,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         this.compose_image_manager.show ();
         this.compose_image_manager.load_image (filename, null);
         if (this.compose_image_manager.n_images > 0) {
-          this.disable_fav_gifs ();
+          fav_image_view.set_gifs_enabled (false);
         }
         if (this.compose_image_manager.full) {
           this.add_image_button.sensitive = false;
@@ -327,147 +321,20 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   public void fav_image_button_clicked_cb () {
     cancel_button.label = _("Back");
     stack.visible_child_name = "fav-images";
-    this.load_fav_images ();
-  }
-
-  private void load_fav_images () {
-    if (fav_image_list.get_children ().length () > 0)
-      return;
-
-    const int MAX_IMAGES = 50;
-    string fav_image_dir = Dirs.config ("image-favorites/");
-    try {
-      var dir = File.new_for_path (fav_image_dir);
-      var iter = dir.enumerate_children ("standard::display-name,standard::content-type",
-                                         GLib.FileQueryInfoFlags.NONE);
-
-      int i = 0;
-      FileInfo? info = null;
-      while ((info = iter.next_file ()) != null) {
-        var content_type = info.get_content_type ();
-
-        if (content_type == "image/jpeg" ||
-            content_type == "image/png" ||
-            content_type == "image/gif") {
-          var file = dir.get_child (info.get_name ());
-          var row = new FavImageRow (file.get_path ());
-          if (this.compose_image_manager.n_images > 0)
-            row.set_sensitive (false);
-
-          row.show_all ();
-          fav_image_list.add (row);
-
-          i ++;
-          if (i >= MAX_IMAGES)
-            break;
-        }
-      }
-    } catch (GLib.Error e) {
-      warning (e.message);
-    }
+    this.fav_image_view.load_images ();
   }
 
   [GtkCallback]
-  private void new_fav_image_button_clicked_cb () {
-    var filechooser = new Gtk.FileChooserNative (_("Select Image"),
-                                                 this,
-                                                 Gtk.FileChooserAction.OPEN,
-                                                 _("Open"),
-                                                 _("Cancel"));
-    var filter = new Gtk.FileFilter ();
-    filter.add_mime_type ("image/png");
-    filter.add_mime_type ("image/jpeg");
-    filter.add_mime_type ("image/gif");
-    filechooser.set_filter (filter);
-
-    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
-      try {
-        /* First, take the selected file and copy it into the image-favorites folder */
-        var file = GLib.File.new_for_path (filechooser.get_filename ());
-        var file_info = file.query_info ("standard::name", GLib.FileQueryInfoFlags.NONE);
-        var dest_dir = GLib.File.new_for_path (Dirs.config ("image-favorites"));
-
-        /* Explicitly check whether the destination file already exists, and rename
-           it if it does */
-        var dest_file = dest_dir.get_child (file_info.get_name ());
-        if (GLib.FileUtils.test (dest_file.get_path (), GLib.FileTest.EXISTS)) {
-          debug ("File '%s' already exists", dest_file.get_path ());
-          dest_file = dest_dir.get_child ("%s_%s".printf (GLib.get_monotonic_time ().to_string (),
-                                                          file_info.get_name ()));
-          debug ("New name: '%s'", dest_file.get_path ());
-        }
-
-        file.copy (dest_file, GLib.FileCopyFlags.NONE);
-
-        var row = new FavImageRow (dest_file.get_path ());
-        if (this.compose_image_manager.n_images > 0)
-          row.set_sensitive (false);
-
-        row.show_all ();
-        fav_image_list.add (row);
-
-      } catch (GLib.Error e) {
-        warning (e.message);
-      }
-    }
-  }
-
-  [GtkCallback]
-  private void fav_image_box_child_activated_cb (Gtk.FlowBoxChild _child) {
-    FavImageRow child = (FavImageRow) _child;
-
+  public void favorite_image_selected_cb (string path) {
     cancel_clicked ();
     this.compose_image_manager.show ();
-    this.compose_image_manager.load_image (child.get_image_path (), null);
+    this.compose_image_manager.load_image (path, null);
     if (this.compose_image_manager.full) {
       this.add_image_button.sensitive = false;
       this.fav_image_button.sensitive = false;
     }
 
     if (this.compose_image_manager.n_images > 0)
-      this.disable_fav_gifs ();
-  }
-
-  [GtkCallback]
-  private void fav_image_box_drag_data_received_cb (Gdk.DragContext   context,
-                                                    int               x,
-                                                    int               y,
-                                                    Gtk.SelectionData selection_data,
-                                                    uint              info,
-                                                    uint              time) {
-    if (info == 0) {
-      /* Text */
-      string? text = selection_data.get_text ().strip ();
-      if (text.has_prefix ("file://")) {
-        var row = new FavImageRow (GLib.File.new_for_uri (text).get_path ());
-        if (this.compose_image_manager.n_images > 0)
-          row.set_sensitive (false);
-
-        row.show_all ();
-        fav_image_list.add (row);
-      } else {
-        debug ("Can't handle '%s'", text);
-      }
-    } else {
-      warning ("Unknown drag data info %u", info);
-    }
-  }
-
-  private void disable_fav_gifs () {
-    foreach (var child in this.fav_image_list.get_children ()) {
-      var btn = (FavImageRow) child;
-      if (btn.get_image_path ().down ().has_suffix (".gif")) {
-        btn.set_sensitive (false);
-      }
-    }
-  }
-
-  private void enable_fav_gifs () {
-    foreach (var child in this.fav_image_list.get_children ()) {
-      var btn = (FavImageRow) child;
-      if (btn.get_image_path ().down ().has_suffix (".gif")) {
-        btn.set_sensitive (true);
-      }
-    }
+      fav_image_view.set_gifs_enabled (false);
   }
 }

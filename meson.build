@@ -137,6 +137,7 @@ corebird_lib_sources = files([
   'src/widgets/TextButton.vala',
   'src/widgets/TweetListBox.vala',
   'src/widgets/UserListsWidget.vala',
+  'src/widgets/FavImageView.vala',
   'src/window/AboutDialog.vala',
   'src/window/AccountDialog.vala',
   'src/window/ComposeTweetWindow.vala',
