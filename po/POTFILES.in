@@ -24,6 +24,7 @@ src/util/Utils.vala
 src/widgets/AccountCreateWidget.vala
 src/widgets/AvatarBannerWidget.vala
 src/widgets/CompletionTextView.vala
+src/widgets/FavImageView.vala
 src/widgets/FollowButton.vala
 src/widgets/MediaButton.vala
 src/widgets/PixbufButton.vala
