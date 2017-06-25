@@ -21,6 +21,7 @@ src/util/Utils.c
 src/widgets/AccountCreateWidget.c
 src/widgets/AvatarBannerWidget.c
 src/widgets/CompletionTextView.c
+src/widgets/FavImageView.c
 src/widgets/FollowButton.c
 src/widgets/MediaButton.c
 src/widgets/PixbufButton.c
