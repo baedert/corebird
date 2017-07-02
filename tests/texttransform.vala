@@ -435,6 +435,19 @@ void new_reply () {
   assert (!text.contains ("t.co"));
 }
 
+void bug1 () {
+  var t = new Cb.Tweet ();
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (BUG1_DATA);
+    t.load_from_json (parser.get_root (), 1337, new GLib.DateTime.now_local ());
+  } catch (GLib.Error e) {
+    assert (false);
+  }
+
+  string filter_text = t.get_filter_text ();
+}
+
 int main (string[] args) {
   GLib.Environment.set_variable ("GSETTINGS_BACKEND", "memory", true);
   Intl.setlocale (LocaleCategory.ALL, "");
@@ -453,6 +466,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/trailing-hashtags-media-link-after", trailing_hashtags_link_after);
   GLib.Test.add_func ("/tt/no-quoted-link", no_quoted_link);
   GLib.Test.add_func ("/tt/new-reply", new_reply);
+  GLib.Test.add_func ("/tt/bug1", bug1);
 
   return GLib.Test.run ();
 }
@@ -668,6 +682,11 @@ const string REPLY_TWEET_DATA = """
   "lang" : "en"
 }
 
+""";
+
+const string BUG1_DATA =
+"""
+{"created_at":"Fri Jun 30 19:23:24 +0000 2017","id":880869394750087169,"id_str":"880869394750087169","full_text":"@hguemar @RedHat_France @ehsavoie @thekittster @hadessuk @dmsimard @YanisGuenane @picsoung @EmilienMacchi @jfenal @WilliamRedHat @juldanjou @danielveillard @chmouel @sylvainbauza Tu m'a oubli\u00e9 :-(\n;-)","truncated":false,"display_text_range":[179,200],"entities":{"hashtags":[],"symbols":[],"user_mentions":[{"screen_name":"hguemar","name":"N\u00e9o-thermidorien","id":311899396,"id_str":"311899396","indices":[0,8]},{"screen_name":"RedHat_France","name":"Red Hat France","id":1112616968,"id_str":"1112616968","indices":[9,23]},{"screen_name":"ehsavoie","name":"ehsavoie","id":29676966,"id_str":"29676966","indices":[24,33]},{"screen_name":"thekittster","name":"Stephen Kitt","id":34969160,"id_str":"34969160","indices":[34,46]},{"screen_name":"hadessuk","name":"Bastien Nocera","id":126045734,"id_str":"126045734","indices":[47,56]},{"screen_name":"dmsimard","name":"David Moreau Simard","id":25678303,"id_str":"25678303","indices":[57,66]},{"screen_name":"YanisGuenane","name":"Yanis Guenane","id":202164660,"id_str":"202164660","indices":[67,80]},{"screen_name":"picsoung","name":"Nicolas Greni\u00e9","id":7681652,"id_str":"7681652","indices":[81,90]},{"screen_name":"EmilienMacchi","name":"Emilien Macchi","id":108224692,"id_str":"108224692","indices":[91,105]},{"screen_name":"jfenal","name":"J\u00e9r\u00f4me Fenal","id":362380525,"id_str":"362380525","indices":[106,113]},{"screen_name":"WilliamRedHat","name":"WilliamRedHat","id":3163073295,"id_str":"3163073295","indices":[114,128]},{"screen_name":"juldanjou","name":"Julien Danjou","id":324491552,"id_str":"324491552","indices":[129,139]},{"screen_name":"danielveillard","name":"Daniel Veillard","id":2179734534,"id_str":"2179734534","indices":[140,155]},{"screen_name":"chmouel","name":"Chmouel Boudjnah","id":17409082,"id_str":"17409082","indices":[156,164]},{"screen_name":"sylvainbauza","name":"Sylvain Bauza","id":18722481,"id_str":"18722481","indices":[165,178]}],"urls":[]},"source":"\u003ca href=\"http:\/\/twitter.com\/download\/android\" rel=\"nofollow\"\u003eTwitter for Android\u003c\/a\u003e","in_reply_to_status_id":880714471030886402,"in_reply_to_status_id_str":"880714471030886402","in_reply_to_user_id":311899396,"in_reply_to_user_id_str":"311899396","in_reply_to_screen_name":"hguemar","user":{"id":15376576,"id_str":"15376576","name":"Dave Neary","screen_name":"nearyd","location":"Greater Boston","description":"Free Software. Cloud & virt. NFV. Sometimes blockchain. Runner. Father.","url":"http:\/\/t.co\/1mqTJMsR8i","entities":{"url":{"urls":[{"url":"http:\/\/t.co\/1mqTJMsR8i","expanded_url":"http:\/\/community.redhat.com","display_url":"community.redhat.com","indices":[0,22]}]},"description":{"urls":[]}},"protected":false,"followers_count":2250,"friends_count":1030,"listed_count":168,"created_at":"Thu Jul 10 11:59:32 +0000 2008","favourites_count":2496,"utc_offset":-14400,"time_zone":"America\/Detroit","geo_enabled":false,"verified":false,"statuses_count":16756,"lang":"en","contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"C0DEED","profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_tile":false,"profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/811244918282850304\/SNO6Qipf_normal.jpg","profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/811244918282850304\/SNO6Qipf_normal.jpg","profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/15376576\/1491581813","profile_link_color":"1DA1F2","profile_sidebar_border_color":"C0DEED","profile_sidebar_fill_color":"DDEEF6","profile_text_color":"333333","profile_use_background_image":true,"has_extended_profile":false,"default_profile":true,"default_profile_image":false,"following":false,"follow_request_sent":false,"notifications":false,"translator_type":"none"},"geo":null,"coordinates":null,"place":null,"contributors":null,"is_quote_status":false,"retweet_count":1,"favorite_count":1,"favorited":false,"retweeted":false,"lang":"fr"}
 """;
 
 // }}}
