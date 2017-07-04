@@ -129,6 +129,9 @@ public class UserStream : Object {
   public void start () {
     debug ("Starting stream for %s", this.account_name);
     // Reset state of the stream
+    if (proxy_call != null) {
+      proxy_call.cancel ();
+    }
     proxy_call = proxy.new_call ();
     proxy_call.set_function ("1.1/user.json");
     proxy_call.set_method ("GET");
@@ -166,7 +169,6 @@ public class UserStream : Object {
     restarting = true;
     stop ();
     start ();
-    //restarting = false;
   }
 
   private void start_network_timeout () {
