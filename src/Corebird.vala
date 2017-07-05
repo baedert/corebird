@@ -15,6 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+bool STRESSTEST = false;
+
 public class Corebird : Gtk.Application {
   public static Sql.Database db;
   public static Cb.SnippetManager snippet_manager;
@@ -62,9 +64,10 @@ public class Corebird : Gtk.Application {
     bool start_service = false;
     bool stop_service = false;
     bool print_startup_accounts = false;
+    bool stresstest = false;
     string? account_name = null;
 
-    OptionEntry[] options = new OptionEntry[6];
+    OptionEntry[] options = new OptionEntry[7];
     options[0] = {"tweet", 't', 0, OptionArg.STRING, ref compose_screen_name,
                   "Shows only the 'compose tweet' window for the given account, nothing else.", "account name"};
     options[1] = {"start-service", 's', 0, OptionArg.NONE, ref start_service,
@@ -75,8 +78,10 @@ public class Corebird : Gtk.Application {
                   "Print configured startup accounts", null};
     options[4] = {"account", 'c', 0, OptionArg.STRING, ref account_name,
                   "Open the window for the given account", "account name"};
+    options[5] = {"stresstest", 'r', 0, OptionArg.NONE, ref stresstest,
+                  "Debugging only.", null};
 
-    options[5] = {null};
+    options[6] = {null};
 
     string[] args = cmd.get_arguments ();
     string*[] _args = new string[args.length];
@@ -103,6 +108,9 @@ public class Corebird : Gtk.Application {
     if (stop_service && start_service) {
       error ("Can't stop and start service at the same time.");
     }
+
+    if (stresstest)
+      STRESSTEST = true;
 
 
     if (stop_service) {

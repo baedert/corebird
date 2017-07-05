@@ -83,12 +83,22 @@ public class UserStream : Object {
     this.account = account;
     this.receivers = new GLib.GenericArray<unowned IMessageReceiver> ();
     debug ("CREATING USER STREAM FOR " + account_name);
-    proxy = new Rest.OAuthProxy(
-          Settings.get_consumer_key (),
-          Settings.get_consumer_secret (),
-          "https://userstream.twitter.com/", //Url Format
-          false
-        );
+
+    if (STRESSTEST) {
+      proxy = new Rest.OAuthProxy(
+            Settings.get_consumer_key (),
+            Settings.get_consumer_secret (),
+            "https://stream.twitter.com/",
+            false
+          );
+    } else {
+      proxy = new Rest.OAuthProxy(
+            Settings.get_consumer_key (),
+            Settings.get_consumer_secret (),
+            "https://userstream.twitter.com/",
+            false
+          );
+    }
     network_monitor = GLib.NetworkMonitor.get_default ();
     network_available = network_monitor.get_network_available ();
     network_monitor.network_changed.connect (network_changed_cb);
@@ -133,7 +143,11 @@ public class UserStream : Object {
       proxy_call.cancel ();
     }
     proxy_call = proxy.new_call ();
-    proxy_call.set_function ("1.1/user.json");
+    if (STRESSTEST) {
+      proxy_call.set_function ("1.1/statuses/sample.json");
+    } else {
+      proxy_call.set_function ("1.1/user.json");
+    }
     proxy_call.set_method ("GET");
     start_heartbeat_timeout ();
     try {
