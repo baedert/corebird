@@ -419,10 +419,10 @@ void new_reply () {
 
   assert (t.source_tweet.display_range_start == 115);
 
-  message ("Entities:");
-  foreach (var e in t.source_tweet.entities) {
-    message ("'%s': %u, %u", e.display_text, e.from, e.to);
-  }
+  //message ("Entities:");
+  //foreach (var e in t.source_tweet.entities) {
+    //message ("'%s': %u, %u", e.display_text, e.from, e.to);
+  //}
 
   var text = t.get_trimmed_text (Cb.TransformFlags.EXPAND_LINKS);
   message (text);
