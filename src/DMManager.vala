@@ -187,7 +187,16 @@ class DMManager : GLib.Object {
     string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name")
                                                             .strip ().replace ("&", "&amp;");
 
-    if (!threads_model.has_thread (sender_id)) {
+    int64 thread_user_id = 0;
+
+    /* Here we get both messages sent by the user themselves, to other people including themselves
+       *and* messages sent TO the user. */
+    if (sender_id == account.id)
+      thread_user_id = recipient_id;
+    else
+      thread_user_id = sender_id;
+
+    if (!threads_model.has_thread (thread_user_id)) {
       DMThread thread = new DMThread ();
       thread.user.id = sender_id;
       thread.user.screen_name = sender_screen_name;
