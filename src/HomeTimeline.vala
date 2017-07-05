@@ -102,7 +102,10 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
                  _main_window.cur_page_id == this.id &&
                  auto_scroll));
 
-    bool should_focus = (tweet_list.get_first_visible_row ().is_focus && this.scrolled_up);
+    bool focused = tweet_list.get_first_visible_row () != null &&
+                   tweet_list.get_first_visible_row ().is_focus;
+
+    bool should_focus = (focused && this.scrolled_up);
 
     tweet_list.model.add (t);
 
