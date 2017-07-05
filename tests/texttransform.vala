@@ -687,7 +687,335 @@ const string REPLY_TWEET_DATA = """
 
 const string BUG1_DATA =
 """
-{"created_at":"Fri Jun 30 19:23:24 +0000 2017","id":880869394750087169,"id_str":"880869394750087169","full_text":"@hguemar @RedHat_France @ehsavoie @thekittster @hadessuk @dmsimard @YanisGuenane @picsoung @EmilienMacchi @jfenal @WilliamRedHat @juldanjou @danielveillard @chmouel @sylvainbauza Tu m'a oubli\u00e9 :-(\n;-)","truncated":false,"display_text_range":[179,200],"entities":{"hashtags":[],"symbols":[],"user_mentions":[{"screen_name":"hguemar","name":"N\u00e9o-thermidorien","id":311899396,"id_str":"311899396","indices":[0,8]},{"screen_name":"RedHat_France","name":"Red Hat France","id":1112616968,"id_str":"1112616968","indices":[9,23]},{"screen_name":"ehsavoie","name":"ehsavoie","id":29676966,"id_str":"29676966","indices":[24,33]},{"screen_name":"thekittster","name":"Stephen Kitt","id":34969160,"id_str":"34969160","indices":[34,46]},{"screen_name":"hadessuk","name":"Bastien Nocera","id":126045734,"id_str":"126045734","indices":[47,56]},{"screen_name":"dmsimard","name":"David Moreau Simard","id":25678303,"id_str":"25678303","indices":[57,66]},{"screen_name":"YanisGuenane","name":"Yanis Guenane","id":202164660,"id_str":"202164660","indices":[67,80]},{"screen_name":"picsoung","name":"Nicolas Greni\u00e9","id":7681652,"id_str":"7681652","indices":[81,90]},{"screen_name":"EmilienMacchi","name":"Emilien Macchi","id":108224692,"id_str":"108224692","indices":[91,105]},{"screen_name":"jfenal","name":"J\u00e9r\u00f4me Fenal","id":362380525,"id_str":"362380525","indices":[106,113]},{"screen_name":"WilliamRedHat","name":"WilliamRedHat","id":3163073295,"id_str":"3163073295","indices":[114,128]},{"screen_name":"juldanjou","name":"Julien Danjou","id":324491552,"id_str":"324491552","indices":[129,139]},{"screen_name":"danielveillard","name":"Daniel Veillard","id":2179734534,"id_str":"2179734534","indices":[140,155]},{"screen_name":"chmouel","name":"Chmouel Boudjnah","id":17409082,"id_str":"17409082","indices":[156,164]},{"screen_name":"sylvainbauza","name":"Sylvain Bauza","id":18722481,"id_str":"18722481","indices":[165,178]}],"urls":[]},"source":"\u003ca href=\"http:\/\/twitter.com\/download\/android\" rel=\"nofollow\"\u003eTwitter for Android\u003c\/a\u003e","in_reply_to_status_id":880714471030886402,"in_reply_to_status_id_str":"880714471030886402","in_reply_to_user_id":311899396,"in_reply_to_user_id_str":"311899396","in_reply_to_screen_name":"hguemar","user":{"id":15376576,"id_str":"15376576","name":"Dave Neary","screen_name":"nearyd","location":"Greater Boston","description":"Free Software. Cloud & virt. NFV. Sometimes blockchain. Runner. Father.","url":"http:\/\/t.co\/1mqTJMsR8i","entities":{"url":{"urls":[{"url":"http:\/\/t.co\/1mqTJMsR8i","expanded_url":"http:\/\/community.redhat.com","display_url":"community.redhat.com","indices":[0,22]}]},"description":{"urls":[]}},"protected":false,"followers_count":2250,"friends_count":1030,"listed_count":168,"created_at":"Thu Jul 10 11:59:32 +0000 2008","favourites_count":2496,"utc_offset":-14400,"time_zone":"America\/Detroit","geo_enabled":false,"verified":false,"statuses_count":16756,"lang":"en","contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"C0DEED","profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_tile":false,"profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/811244918282850304\/SNO6Qipf_normal.jpg","profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/811244918282850304\/SNO6Qipf_normal.jpg","profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/15376576\/1491581813","profile_link_color":"1DA1F2","profile_sidebar_border_color":"C0DEED","profile_sidebar_fill_color":"DDEEF6","profile_text_color":"333333","profile_use_background_image":true,"has_extended_profile":false,"default_profile":true,"default_profile_image":false,"following":false,"follow_request_sent":false,"notifications":false,"translator_type":"none"},"geo":null,"coordinates":null,"place":null,"contributors":null,"is_quote_status":false,"retweet_count":1,"favorite_count":1,"favorited":false,"retweeted":false,"lang":"fr"}
-""";
+{
+   "created_at":"Wed Jul 05 19:38:02 +0000 2017",
+   "id":882685018904068105,
+   "id_str":"882685018904068105",
+   "text":"@maljehani10 @sWs8ycsI3krjWrE @bnt_alhofuf @itiihade12 @A_algrni @berota_q8 @fayadhalshamari @OKadour82 @K_ibraheem\u2026 https:\/\/t.co\/9uPkhLBtv4",
+   "display_text_range":[
+      117,
+      140
+   ],
+   "source":"\u003ca href=\"http:\/\/twitter.com\/download\/iphone\" rel=\"nofollow\"\u003eTwitter for iPhone\u003c\/a\u003e",
+   "truncated":true,
+   "in_reply_to_status_id":882681872479813633,
+   "in_reply_to_status_id_str":"882681872479813633",
+   "in_reply_to_user_id":784249163206815744,
+   "in_reply_to_user_id_str":"784249163206815744",
+   "in_reply_to_screen_name":"maljehani10",
+   "user":{
+      "id":328900753,
+      "id_str":"328900753",
+      "name":"\u0627\u062a\u062d\u0627\u062f\u064a \u0644\u0644\u0646\u062e\u0627\u0639",
+      "screen_name":"LudKadol",
+      "location":"21.469328,39.268171",
+      "url":null,
+      "description":"\u0627\u0644\u0639\u064a\u0646 \u062a\u0631\u0649 \u0648 \u062a\u0645\u064a\u0644 \u0648 \u0627\u0644\u0642\u0644\u0628 \u064a\u0639\u0634\u0642 \u0643\u0644 \u062c\u0645\u064a\u0644 \u062d\u0628\u0643 \u064a\u0627 \u0627\u062a\u064a \u064a\u062f\u0627\u0648\u064a \u0643\u0644 \u0639\u0644\u064a\u0644 \u0627\u062a\u062d\u0627\u062f\u064a \u060c \u0627\u0631\u0633\u0646\u0627\u0644\u064a \u060c \u0645\u064a\u0644\u0627\u0646\u064a \u060c \u0645\u062f\u0631\u064a\u062f\u064a  D2ABFF98",
+      "protected":false,
+      "verified":false,
+      "followers_count":1771,
+      "friends_count":2111,
+      "listed_count":3,
+      "favourites_count":609,
+      "statuses_count":19199,
+      "created_at":"Mon Jul 04 06:57:10 +0000 2011",
+      "utc_offset":10800,
+      "time_zone":"Riyadh",
+      "geo_enabled":false,
+      "lang":"ar",
+      "contributors_enabled":false,
+      "is_translator":false,
+      "profile_background_color":"C0DEED",
+      "profile_background_image_url":"http:\/\/pbs.twimg.com\/profile_background_images\/396412541\/Abstract_3d_8.jpg",
+      "profile_background_image_url_https":"https:\/\/pbs.twimg.com\/profile_background_images\/396412541\/Abstract_3d_8.jpg",
+      "profile_background_tile":false,
+      "profile_link_color":"0084B4",
+      "profile_sidebar_border_color":"C0DEED",
+      "profile_sidebar_fill_color":"DDEEF6",
+      "profile_text_color":"333333",
+      "profile_use_background_image":true,
+      "profile_image_url":"http:\/\/pbs.twimg.com\/profile_images\/823799368255938560\/HhgWWlCA_normal.jpg",
+      "profile_image_url_https":"https:\/\/pbs.twimg.com\/profile_images\/823799368255938560\/HhgWWlCA_normal.jpg",
+      "profile_banner_url":"https:\/\/pbs.twimg.com\/profile_banners\/328900753\/1436433030",
+      "default_profile":false,
+      "default_profile_image":false,
+      "following":null,
+      "follow_request_sent":null,
+      "notifications":null
+   },
+   "geo":null,
+   "coordinates":null,
+   "place":null,
+   "contributors":null,
+   "is_quote_status":false,
+   "extended_tweet":{
+      "full_text":"@maljehani10 @sWs8ycsI3krjWrE @bnt_alhofuf @itiihade12 @A_algrni @berota_q8 @fayadhalshamari @OKadour82 @K_ibraheem @Adnan_Jas @othmanmali @ADEL_MARDI @battalalgoos \u0628\u0648\u0644\u0648\u0646\u064a \u0628\u064a\u062a\u0648\u0631\u0643\u0627 \u062a\u0631\u0627\u0648\u0633\u064a \u0645\u0627\u0631\u0643\u064a\u0646\u0647\u0648 \u062c\u064a\u0632\u0627\u0648\u064a \u0646\u0627\u062f\u064a \u0647\u062c\u0631 \u062f\u064a\u0627\u0643\u064a\u062a\u064a \u0645\u0648\u0646\u062a\u0627\u0631\u064a \u0627\u0644\u062e ...",
+      "display_text_range":[
+         165,
+         235
+      ],
+      "entities":{
+         "hashtags":[
 
+         ],
+         "urls":[
+
+         ],
+         "user_mentions":[
+            {
+               "screen_name":"maljehani10",
+               "name":"\u0645\u062d\u0645\u062f \u0623\u0628\u0648 \u0633\u0627\u0631\u064a",
+               "id":784249163206815744,
+               "id_str":"784249163206815744",
+               "indices":[
+                  0,
+                  12
+               ]
+            },
+            {
+               "screen_name":"sWs8ycsI3krjWrE",
+               "name":"mwni6xx6mwni",
+               "id":859152891076018176,
+               "id_str":"859152891076018176",
+               "indices":[
+                  13,
+                  29
+               ]
+            },
+            {
+               "screen_name":"bnt_alhofuf",
+               "name":"\u0627\u0645 \u0631\u064a\u0646\u0627\u062f \u2665 \u0625\u062a\u062d\u0627\u062f\u064a\u0629 \u2665",
+               "id":2214026312,
+               "id_str":"2214026312",
+               "indices":[
+                  30,
+                  42
+               ]
+            },
+            {
+               "screen_name":"itiihade12",
+               "name":"\u0628\u0637\u0644 \u0643\u0623\u0633 \u0648\u0644\u064a \u0627\u0644\u0639\u0647\u062f",
+               "id":806883635634769921,
+               "id_str":"806883635634769921",
+               "indices":[
+                  43,
+                  54
+               ]
+            },
+            {
+               "screen_name":"A_algrni",
+               "name":"#\u0639\u0628\u062f\u0627\u0644\u0631\u062d\u0645\u0646_\u0627\u0644\u0642\u0631\u0646\u064a",
+               "id":370497227,
+               "id_str":"370497227",
+               "indices":[
+                  55,
+                  64
+               ]
+            },
+            {
+               "screen_name":"berota_q8",
+               "name":"\u0639\u0628\u0640\u064a\u0640\u0631~\u0627\u0644\u0625\u062a\u062d\u0627\u062f",
+               "id":396583124,
+               "id_str":"396583124",
+               "indices":[
+                  65,
+                  75
+               ]
+            },
+            {
+               "screen_name":"fayadhalshamari",
+               "name":"\u0641\u064a\u0627\u0636 \u0627\u0644\u0634\u0645\u0631\u064a",
+               "id":377591886,
+               "id_str":"377591886",
+               "indices":[
+                  76,
+                  92
+               ]
+            },
+            {
+               "screen_name":"OKadour82",
+               "name":"\u0639\u0628\u064a\u062f \u0643\u0639\u062f\u0648\u0631",
+               "id":1358991192,
+               "id_str":"1358991192",
+               "indices":[
+                  93,
+                  103
+               ]
+            },
+            {
+               "screen_name":"K_ibraheem",
+               "name":"\u062e\u0644\u064a\u0644 \u0625\u0628\u0631\u0627\u0647\u064a\u0645",
+               "id":271130300,
+               "id_str":"271130300",
+               "indices":[
+                  104,
+                  115
+               ]
+            },
+            {
+               "screen_name":"Adnan_Jas",
+               "name":"\u0639\u062f\u0646\u0627\u0646 \u062c\u0633\u062a\u0646\u064a\u0647",
+               "id":416120500,
+               "id_str":"416120500",
+               "indices":[
+                  116,
+                  126
+               ]
+            },
+            {
+               "screen_name":"othmanmali",
+               "name":"\u0639\u062b\u0645\u0627\u0646 \u0627\u0628\u0648\u0628\u0643\u0631 \u0645\u0627\u0644\u064a",
+               "id":299213308,
+               "id_str":"299213308",
+               "indices":[
+                  127,
+                  138
+               ]
+            },
+            {
+               "screen_name":"ADEL_MARDI",
+               "name":"\u0639\u0627\u062f\u0644 \u0627\u0644\u0645\u0631\u0636\u064a",
+               "id":508105416,
+               "id_str":"508105416",
+               "indices":[
+                  139,
+                  150
+               ]
+            },
+            {
+               "screen_name":"battalalgoos",
+               "name":"\u0628\u062a\u0627\u0644 \u0627\u0644\u0642\u0648\u0633",
+               "id":251600033,
+               "id_str":"251600033",
+               "indices":[
+                  151,
+                  164
+               ]
+            }
+         ],
+         "symbols":[
+
+         ]
+      }
+   },
+   "retweet_count":0,
+   "favorite_count":0,
+   "entities":{
+      "hashtags":[
+
+      ],
+      "urls":[
+         {
+            "url":"https:\/\/t.co\/9uPkhLBtv4",
+            "expanded_url":"https:\/\/twitter.com\/i\/web\/status\/882685018904068105",
+            "display_url":"twitter.com\/i\/web\/status\/8\u2026",
+            "indices":[
+               117,
+               140
+            ]
+         }
+      ],
+      "user_mentions":[
+         {
+            "screen_name":"maljehani10",
+            "name":"\u0645\u062d\u0645\u062f \u0623\u0628\u0648 \u0633\u0627\u0631\u064a",
+            "id":784249163206815744,
+            "id_str":"784249163206815744",
+            "indices":[
+               0,
+               12
+            ]
+         },
+         {
+            "screen_name":"sWs8ycsI3krjWrE",
+            "name":"mwni6xx6mwni",
+            "id":859152891076018176,
+            "id_str":"859152891076018176",
+            "indices":[
+               13,
+               29
+            ]
+         },
+         {
+            "screen_name":"bnt_alhofuf",
+            "name":"\u0627\u0645 \u0631\u064a\u0646\u0627\u062f \u2665 \u0625\u062a\u062d\u0627\u062f\u064a\u0629 \u2665",
+            "id":2214026312,
+            "id_str":"2214026312",
+            "indices":[
+               30,
+               42
+            ]
+         },
+         {
+            "screen_name":"itiihade12",
+            "name":"\u0628\u0637\u0644 \u0643\u0623\u0633 \u0648\u0644\u064a \u0627\u0644\u0639\u0647\u062f",
+            "id":806883635634769921,
+            "id_str":"806883635634769921",
+            "indices":[
+               43,
+               54
+            ]
+         },
+         {
+            "screen_name":"A_algrni",
+            "name":"#\u0639\u0628\u062f\u0627\u0644\u0631\u062d\u0645\u0646_\u0627\u0644\u0642\u0631\u0646\u064a",
+            "id":370497227,
+            "id_str":"370497227",
+            "indices":[
+               55,
+               64
+            ]
+         },
+         {
+            "screen_name":"berota_q8",
+            "name":"\u0639\u0628\u0640\u064a\u0640\u0631~\u0627\u0644\u0625\u062a\u062d\u0627\u062f",
+            "id":396583124,
+            "id_str":"396583124",
+            "indices":[
+               65,
+               75
+            ]
+         },
+         {
+            "screen_name":"fayadhalshamari",
+            "name":"\u0641\u064a\u0627\u0636 \u0627\u0644\u0634\u0645\u0631\u064a",
+            "id":377591886,
+            "id_str":"377591886",
+            "indices":[
+               76,
+               92
+            ]
+         },
+         {
+            "screen_name":"OKadour82",
+            "name":"\u0639\u0628\u064a\u062f \u0643\u0639\u062f\u0648\u0631",
+            "id":1358991192,
+            "id_str":"1358991192",
+            "indices":[
+               93,
+               103
+            ]
+         },
+         {
+            "screen_name":"K_ibraheem",
+            "name":"\u062e\u0644\u064a\u0644 \u0625\u0628\u0631\u0627\u0647\u064a\u0645",
+            "id":271130300,
+            "id_str":"271130300",
+            "indices":[
+               104,
+               115
+            ]
+         }
+      ],
+      "symbols":[
+
+      ]
+   },
+   "favorited":false,
+   "retweeted":false,
+   "filter_level":"low",
+   "lang":"ar",
+   "timestamp_ms":"1499283482658"
+}
+""";
 // }}}
