@@ -149,11 +149,11 @@ cb_mini_tweet_parse (CbMiniTweet *t,
   else
     tweet_text = json_object_get_string_member (extended_object, "text");
 
-  if (json_object_has_member (obj, "display_text_range"))
+  if (json_object_has_member (extended_object, "display_text_range"))
     {
       /* We only remove the prefix */
       guint start = (guint)json_array_get_int_element (
-                          json_object_get_array_member (obj, "display_text_range"),
+                          json_object_get_array_member (extended_object, "display_text_range"),
                           0);
       guint i;
       const char *p = tweet_text;
