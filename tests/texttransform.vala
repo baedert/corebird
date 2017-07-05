@@ -446,6 +446,7 @@ void bug1 () {
   }
 
   string filter_text = t.get_filter_text ();
+  assert (filter_text.length > 0);
 }
 
 int main (string[] args) {
