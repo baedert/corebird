@@ -80,6 +80,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   }
 
   public virtual void on_join (int page_id, Cb.Bundle? args) {
+    if (STRESSTEST)
+      return;
+
     if (!initialized) {
       load_newest ();
 
