@@ -78,7 +78,7 @@ public class Corebird : Gtk.Application {
                   "Print configured startup accounts", null};
     options[4] = {"account", 'c', 0, OptionArg.STRING, ref account_name,
                   "Open the window for the given account", "account name"};
-    options[5] = {"stresstest", 'r', 0, OptionArg.NONE, ref stresstest,
+    options[5] = {"stresstest", 'r', GLib.OptionFlags.HIDDEN, OptionArg.NONE, ref stresstest,
                   "Debugging only.", null};
 
     options[6] = {null};
