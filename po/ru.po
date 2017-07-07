@@ -10,7 +10,7 @@
 # Ivlev Denis <ivlevdenis.ru@gmail.com>, 2015
 # Max Koloskov <mirrherow@gmail.com>, 2015
 # Mikhail Ivanov <mivanov@mirantis.com>, 2016
-# NetFoHack <vanek316@gmail.com>, 2015
+# NetForHack <vanek316@gmail.com>, 2015
 # Yevgeny Kvitchenko <kvit4.ko@gmail.com>, 2017
 msgid ""
 msgstr ""

@@ -4,7 +4,7 @@
 #
 # Translators:
 # baedert <mail@baedert.org>, 2014-2015
-# brainscript <niklas.higi@web.de>, 2016
+# brainscript <inactive+brainscript@transifex.com>, 2016
 # encbladexp <service+transifex@stefan-betz.net>, 2014
 # fgreinus <florian.greinus@googlemail.com>, 2015
 # Heiko Adams <HeikoAdams@users.noreply.github.com>, 2016
