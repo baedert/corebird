@@ -277,8 +277,8 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       this.media_stack.visible_child = mm_widget;
   }
 
-  private void media_clicked_cb (Cb.Media m, int index) {
-    TweetUtils.handle_media_click (this.tweet, this.main_window, index);
+  private void media_clicked_cb (Cb.Media m, int index, double px, double py) {
+    TweetUtils.handle_media_click (this.tweet, this.main_window, index, px, py);
   }
 
   private void delete_tweet_activated () {

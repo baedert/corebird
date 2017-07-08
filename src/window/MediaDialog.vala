@@ -26,8 +26,13 @@ class MediaDialog : Gtk.Window {
   private unowned Cb.Tweet tweet;
   private int cur_index = 0;
   private Gtk.GestureMultiPress button_gesture;
+  private double initial_px;
+  private double initial_py;
 
-  public MediaDialog (Cb.Tweet tweet, int start_media_index) {
+  public MediaDialog (Cb.Tweet tweet,
+                      int      start_media_index,
+                      double   px = 0.0,
+                      double   py = 0.0) {
     Cb.Media cur_media = tweet.get_medias()[start_media_index];
     this.tweet = tweet;
     this.cur_index = start_media_index;
@@ -35,6 +40,9 @@ class MediaDialog : Gtk.Window {
     this.button_gesture.set_button (0);
     this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     this.button_gesture.released.connect (button_released_cb);
+
+    this.initial_px = px;
+    this.initial_py = py;
 
     if (tweet.get_medias ().length == 1) {
       next_revealer.hide ();
@@ -70,7 +78,12 @@ class MediaDialog : Gtk.Window {
       ((Cb.MediaVideoWidget)new_widget).start ();
     } else {
       new_widget = new Cb.MediaImageWidget (media);
+      ((Cb.MediaImageWidget)new_widget).scroll_to (this.initial_px, this.initial_py);
       frame.add (new_widget);
+
+      /* Reset to default values */
+      this.initial_px = 0.5;
+      this.initial_py = 0.0;
     }
 
     new_widget.show_all ();

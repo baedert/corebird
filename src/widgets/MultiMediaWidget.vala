@@ -22,7 +22,7 @@ public class MultiMediaWidget : Gtk.Box {
   private MediaButton[] media_buttons;
   private int media_count = 0;
 
-  public signal void media_clicked (Cb.Media m, int index);
+  public signal void media_clicked (Cb.Media m, int index, double px, double py);
   private bool media_invalid_fired = false;
   public signal void media_invalid ();
 
@@ -71,10 +71,10 @@ public class MultiMediaWidget : Gtk.Box {
     this.queue_draw ();
   }
 
-  private void button_clicked_cb (MediaButton source) {
+  private void button_clicked_cb (MediaButton source, double px, double py) {
     if (source.media != null && source.media.loaded) {
       int index = source.get_data ("pos");
-      media_clicked (source.media, index);
+      media_clicked (source.media, index, px, py);
     }
   }
 
