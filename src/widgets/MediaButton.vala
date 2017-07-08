@@ -64,7 +64,7 @@ private class MediaButton : Gtk.Widget {
   private double media_alpha = 0.0;
 
 
-  public signal void clicked (MediaButton source);
+  public signal void clicked (MediaButton source, double px, double py);
 
   static construct {
     try {
@@ -375,14 +375,16 @@ private class MediaButton : Gtk.Widget {
 
     if (button == Gdk.BUTTON_PRIMARY) {
       this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
-      this.clicked (this);
+      double px = x / (double)this.get_allocated_width ();
+      double py = y / (double)this.get_allocated_height ();
+      this.clicked (this, px, py);
     }
   }
 
   public override bool key_press_event (Gdk.EventKey event) {
     if (event.keyval == Gdk.Key.Return ||
         event.keyval == Gdk.Key.KP_Enter) {
-      this.clicked (this);
+      this.clicked (this, 0.5, 0.5);
       return Gdk.EVENT_STOP;
     }
 
