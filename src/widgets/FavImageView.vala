@@ -59,7 +59,7 @@ class FavImageView : Gtk.Box {
     Gtk.drag_dest_set_target_list (this, image_target_list);
 
     /* Fuck it */
-    this.show_all ();
+    this.show ();
   }
 
   public void load_images () {
@@ -87,7 +87,7 @@ class FavImageView : Gtk.Box {
           if (content_type == "image/gif" && !gifs_enabled)
             row.set_sensitive (false);
 
-          row.show_all ();
+          row.show ();
           fav_image_list.add (row);
 
           i ++;
@@ -131,7 +131,7 @@ class FavImageView : Gtk.Box {
             row.set_sensitive (false);
           }
 
-          row.show_all ();
+          row.show ();
           fav_image_list.add (row);
         } catch (GLib.Error e) {
           warning (e.message);
@@ -180,7 +180,6 @@ class FavImageView : Gtk.Box {
           row.set_sensitive (false);
         }
 
-        row.show_all ();
         fav_image_list.add (row);
 
       } catch (GLib.Error e) {
