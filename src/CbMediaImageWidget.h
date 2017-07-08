@@ -14,6 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #ifndef CB_MEDIA_IMAGE_WIDGET_H
 #define CB_MEDIA_IMAGE_WIDGET_H
 
@@ -40,6 +41,12 @@ struct _CbMediaImageWidget
 
   double drag_start_hvalue;
   double drag_start_vvalue;
+
+  double initial_scroll_x;
+  double initial_scroll_y;
+
+  gulong hadj_changed_id;
+  gulong vadj_changed_id;
 };
 
 struct _CbMediaImageWidgetClass
@@ -51,5 +58,8 @@ GType cb_media_image_widget_get_type (void) G_GNUC_CONST;
 
 GtkWidget *cb_media_image_widget_new (CbMedia *media);
 
+void       cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
+                                            double              px,
+                                            double              py);
 
 #endif

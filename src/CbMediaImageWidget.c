@@ -79,6 +79,9 @@ cb_media_image_widget_init (CbMediaImageWidget *self)
   self->image = gtk_image_new ();
   gtk_container_add (GTK_CONTAINER (self), self->image);
 
+  self->initial_scroll_x = 0.5;
+  self->initial_scroll_y = 0.5;
+
   self->drag_gesture = gtk_gesture_drag_new (GTK_WIDGET (self));
   gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->drag_gesture), GDK_BUTTON_MIDDLE);
   gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (self->drag_gesture), GTK_PHASE_CAPTURE);
@@ -134,4 +137,58 @@ cb_media_image_widget_new (CbMedia *media)
   gtk_widget_set_size_request (GTK_WIDGET (self), win_width, win_height);
 
   return GTK_WIDGET (self);
+}
+
+static void
+hadjustment_changed_cb (GtkAdjustment *adjustment,
+                        gpointer       user_data)
+{
+  CbMediaImageWidget *self = user_data;
+  double upper;
+  double new_value;
+
+  upper = gtk_adjustment_get_upper (adjustment);
+  new_value = upper * self->initial_scroll_x;
+
+  gtk_adjustment_set_value (adjustment, new_value);
+
+  g_signal_handler_disconnect (adjustment, self->hadj_changed_id);
+}
+
+static void
+vadjustment_changed_cb (GtkAdjustment *adjustment,
+                        gpointer       user_data)
+{
+  CbMediaImageWidget *self = user_data;
+  double upper;
+  double new_value;
+
+  upper = gtk_adjustment_get_upper (adjustment);
+  new_value = upper * self->initial_scroll_y;
+
+  gtk_adjustment_set_value (adjustment, new_value);
+
+  g_signal_handler_disconnect (adjustment, self->vadj_changed_id);
+}
+
+void
+cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
+                                 double              px,
+                                 double              py)
+{
+  GtkAdjustment *hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self));
+  GtkAdjustment *vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self));
+
+  self->initial_scroll_x = px;
+  self->initial_scroll_y = py;
+
+  /* Defer the scrolling to a point where the adjustment actually has values */
+  self->hadj_changed_id = g_signal_connect (G_OBJECT (hadj),
+                                            "changed",
+                                            G_CALLBACK (hadjustment_changed_cb),
+                                            self);
+  self->vadj_changed_id = g_signal_connect (G_OBJECT (vadj),
+                                            "changed",
+                                            G_CALLBACK (vadjustment_changed_cb),
+                                            self);
 }
