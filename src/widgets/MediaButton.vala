@@ -339,6 +339,9 @@ private class MediaButton : Gtk.Widget {
         nat = size;
       }
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   private void gesture_pressed_cb (int    n_press,

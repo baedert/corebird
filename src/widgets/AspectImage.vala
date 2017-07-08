@@ -88,6 +88,8 @@ class AspectImage : Gtk.Widget {
     if (pixbuf_surface == null) {
       min = 0;
       nat = 1;
+      min_baseline = -1;
+      nat_baseline = -1;
       return;
     }
 
@@ -98,6 +100,9 @@ class AspectImage : Gtk.Widget {
       min = pixbuf_surface.get_height ();
       nat = pixbuf_surface.get_height ();
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {

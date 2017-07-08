@@ -176,7 +176,6 @@ class ComposeImageManager : Gtk.Container {
 
 
       /* Remove button */
-      int n;
       Gtk.Widget btn = this.close_buttons.get (i);
       btn.measure (Gtk.Orientation.HORIZONTAL, -1, out close_allocation.width,  null, null, null);
       btn.measure (Gtk.Orientation.VERTICAL,   -1, out close_allocation.height, null, null, null);
@@ -236,6 +235,9 @@ class ComposeImageManager : Gtk.Container {
       min += BUTTON_DELTA;
       nat += BUTTON_DELTA;
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   public override bool draw (Cairo.Context ct) {

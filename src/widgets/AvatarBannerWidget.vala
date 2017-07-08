@@ -89,6 +89,9 @@ public class AvatarBannerWidget : Gtk.Container {
       min = (AVATAR_SIZE / 3) + MIN_HEIGHT;
       nat = int.max (min, int.min (MAX_HEIGHT, (int)(for_size * BANNER_RATIO) + (AVATAR_SIZE / 3)));
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   private async void fetch_banner () {

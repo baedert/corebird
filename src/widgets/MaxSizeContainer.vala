@@ -59,6 +59,9 @@ class MaxSizeContainer : Gtk.Bin {
       min = min_child;
       nat = nat_child;
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {

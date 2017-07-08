@@ -51,6 +51,9 @@ public class ReplyIndicator : Gtk.Widget {
     } else {
       min = nat = (int)(FINAL_HEIGHT * show_factor);
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   private void on_replies_available () {

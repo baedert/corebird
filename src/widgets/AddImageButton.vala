@@ -136,6 +136,9 @@ class AddImageButton : Gtk.Widget {
 
       min = nat = (int)(size * this.delete_factor);
     }
+
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 
   private bool delete_tick_cb (Gtk.Widget     widget,
