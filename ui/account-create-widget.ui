@@ -158,15 +158,5 @@
         <property name="selectable">1</property>
       </object>
     </child>
-    <child>
-      <object class="GtkLabel" id="info_label">
-        <property name="visible">1</property>
-        <property name="margin-top">20</property>
-        <property name="use-markup">1</property>
-        <style>
-          <class name="dim-label"/>
-        </style>
-      </object>
-    </child>
   </template>
 </interface>
