@@ -48,6 +48,9 @@ class MaxSizeContainer : Gtk.Bin {
     get_child ().measure (orientation, for_size, out min_child, out nat_child, null, null);
 
     if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min = min_child;
+      nat = nat_child;
+    } else {
       if (max_size >= min_child) {
         min = min_child;
         nat = nat_child;
@@ -55,9 +58,6 @@ class MaxSizeContainer : Gtk.Bin {
         min = max_size;
         nat = max_size;
       }
-    } else {
-      min = min_child;
-      nat = nat_child;
     }
 
     min_baseline = -1;
@@ -65,8 +65,6 @@ class MaxSizeContainer : Gtk.Bin {
   }
 
   public override void size_allocate (Gtk.Allocation alloc) {
-    base.size_allocate (alloc);
-
     if (get_child () == null || !get_child ().visible) {
       if (this.event_window != null)
         event_window.move_resize (alloc.x, alloc.y, alloc.width, alloc.height);
