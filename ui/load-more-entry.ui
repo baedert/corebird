@@ -21,16 +21,6 @@
             </style>
           </object>
         </child>
-        <child>
-          <object class="GtkSpinner" id="progress_spinner">
-            <property name="width-request">20</property>
-            <property name="margin-end">5</property>
-            <property name="active">1</property>
-          </object>
-          <packing>
-            <property name="position">1</property>
-          </packing>
-        </child>
       </object>
     </child>
   </template>
