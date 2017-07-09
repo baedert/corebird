@@ -63,6 +63,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   public MainWindow (Gtk.Application app, Account? account = null) {
     set_default_size (530, 700);
+    set_show_menubar (false);
 
     var group = new Gtk.WindowGroup ();
     group.add_window (this);
