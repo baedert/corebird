@@ -72,18 +72,7 @@ public class TweetListBox : Gtk.ListBox {
     Gdk.EventButton event = (Gdk.EventButton)this.press_gesture.get_last_event (sequence);
 
     if (event.triggers_context_menu ()) {
-      /* From gtklistbox.c */
-      Gdk.Window? event_window = event.window;
-      Gdk.Window window = this.get_window ();
-      double relative_y = event.y;
-      double parent_y;
-
-      while ((event_window != null) && (event_window != window)) {
-        event_window.coords_to_parent (0, relative_y, null, out parent_y);
-        relative_y = parent_y;
-        event_window = event_window.get_parent ();
-      }
-      Gtk.Widget row = this.get_row_at_y ((int)relative_y);
+      Gtk.Widget row = this.get_row_at_y ((int)y);
       if (row is TweetListEntry && row.sensitive) {
         var tle = (TweetListEntry) row;
         if (tle != this._action_entry && this._action_entry != null &&
