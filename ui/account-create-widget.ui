@@ -156,6 +156,7 @@
         <property name="wrap">1</property>
         <property name="wrap-mode">word-char</property>
         <property name="selectable">1</property>
+        <property name="use-markup">1</property>
       </object>
     </child>
   </template>
