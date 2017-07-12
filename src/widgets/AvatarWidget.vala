@@ -189,13 +189,11 @@ public class AvatarWidget : Gtk.Widget {
     //}
   }
 
-  public override void size_allocate (Gtk.Allocation alloc) {
+  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
     if (overlap) {
       alloc.y -= OVERLAP_DIST;
       alloc.height += OVERLAP_DIST;
-      this.set_clip (alloc);
-    } else {
-      this.set_clip (alloc);
+      out_clip = alloc;
     }
   }
 

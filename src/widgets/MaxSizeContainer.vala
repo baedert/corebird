@@ -57,7 +57,7 @@ class MaxSizeContainer : Gtk.Bin {
     nat_baseline = -1;
   }
 
-  public override void size_allocate (Gtk.Allocation alloc) {
+  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
     if (get_child () == null || !get_child ().visible) {
       return;
     }
@@ -81,7 +81,7 @@ class MaxSizeContainer : Gtk.Bin {
                              null, null);
       child_alloc.height = int.max (child_alloc.height, min_height);
 
-      get_child ().size_allocate (child_alloc);
+      get_child ().size_allocate (child_alloc, baseline, out out_clip);
     }
   }
 

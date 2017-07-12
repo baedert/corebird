@@ -147,8 +147,8 @@ class ComposeImageManager : Gtk.Container {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void size_allocate (Gtk.Allocation allocation) {
-    base.size_allocate (allocation);
+  public override void size_allocate (Gtk.Allocation allocation, int baseline, out Gtk.Allocation out_clip) {
+    base.size_allocate (allocation, baseline, out out_clip);
     Gtk.Allocation child_allocation = {};
 
     if (this.buttons.length == 0) return;
@@ -172,7 +172,7 @@ class ComposeImageManager : Gtk.Container {
                    out min, out nat, null, null);
 
       child_allocation.width = int.min (default_button_width, nat);
-      aib.size_allocate (child_allocation);
+      aib.size_allocate (child_allocation, baseline, out out_clip);
 
 
       /* Remove button */
@@ -182,7 +182,7 @@ class ComposeImageManager : Gtk.Container {
       close_allocation.x = child_allocation.x + child_allocation.width
                            - close_allocation.width + BUTTON_DELTA;
 
-      btn.size_allocate (close_allocation);
+      btn.size_allocate (close_allocation, baseline, out out_clip);
 
 
       /* Progress bar */
@@ -197,7 +197,7 @@ class ComposeImageManager : Gtk.Container {
       bar.measure (Gtk.Orientation.VERTICAL, -1, out bar_allocation.height, null, null, null);
       bar_allocation.y = child_allocation.y + button_height - bar_allocation.height - 6;
 
-      bar.size_allocate (bar_allocation);
+      bar.size_allocate (bar_allocation, baseline, out out_clip);
 
       child_allocation.x += child_allocation.width + BUTTON_SPACING;
     }
