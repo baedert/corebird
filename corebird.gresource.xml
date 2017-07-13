@@ -32,36 +32,36 @@
     <file preprocess="xml-stripblanks">ui/media-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts-window.ui</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-compose-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-conversation-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-dms-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-filter-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-mentions-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-new-window-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-retweet-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-profile-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-favorite-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-user-home-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/16x16/apps/corebird-edit-find-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-compose-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-conversation-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-dms-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-filter-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-mentions-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-new-window-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-retweet-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-profile-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-favorite-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-user-home-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/32x32/apps/corebird-edit-find-symbolic.symbolic.png</file>
-    <file preprocess="to-pixdata">data/play.png</file>
-    <file preprocess="to-pixdata">data/play@2.png</file>
-    <file preprocess="to-pixdata">data/verified-small.png</file>
-    <file preprocess="to-pixdata">data/verified-small@2.png</file>
-    <file preprocess="to-pixdata">data/verified-large.png</file>
-    <file preprocess="to-pixdata">data/verified-large@2.png</file>
-    <file preprocess="to-pixdata">data/no_avatar.png</file>
-    <file preprocess="to-pixdata">data/no_banner.png</file>
+    <file>data/16x16/apps/corebird-compose-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-conversation-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-dms-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-filter-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-mentions-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-new-window-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-retweet-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-profile-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-favorite-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-user-home-symbolic.symbolic.png</file>
+    <file>data/16x16/apps/corebird-edit-find-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-compose-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-conversation-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-dms-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-filter-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-mentions-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-new-window-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-retweet-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-profile-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-favorite-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-user-home-symbolic.symbolic.png</file>
+    <file>data/32x32/apps/corebird-edit-find-symbolic.symbolic.png</file>
+    <file>data/play.png</file>
+    <file>data/play@2.png</file>
+    <file>data/verified-small.png</file>
+    <file>data/verified-small@2.png</file>
+    <file>data/verified-large.png</file>
+    <file>data/verified-large@2.png</file>
+    <file>data/no_avatar.png</file>
+    <file>data/no_banner.png</file>
     <file>ui/style.css</file>
     <file>sql/init/Create.1.sql</file>
     <file>sql/init/Create.2.sql</file>
