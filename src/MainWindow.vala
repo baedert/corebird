@@ -80,8 +80,8 @@ public class MainWindow : Gtk.ApplicationWindow {
     var add_entry = new AddListEntry (_("Add new Account"));
     account_list.add (add_entry);
 
-    for (uint i = 0; i < Account.get_n (); i ++) {
-      var acc = Account.get_nth (i);
+    for (uint i = 0; i < Corebird.account_manager.get_n (); i ++) {
+      var acc = Corebird.account_manager.get_nth (i);
       if (acc.screen_name == Account.DUMMY)
           continue;
       var e = new UserListEntry.from_account (acc);
@@ -206,7 +206,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
       this.title_label.label = "Corebird";
 
-      Account.add_account (acc_);
+      Corebird.account_manager.add_account (acc_);
       var create_widget = new AccountCreateWidget (acc_, cb, this);
       create_widget.result_received.connect ((result, acc) => {
         if (result) {
@@ -245,7 +245,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       return;
     }
 
-    Account? acc = Account.query_account_by_id (user_id);
+    Account? acc = Corebird.account_manager.query_account_by_id (user_id);
     if (acc != null) {
       change_account (acc);
       account_popover.popdown ();

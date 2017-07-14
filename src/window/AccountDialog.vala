@@ -262,10 +262,9 @@ public class AccountDialog : Gtk.Window {
 
 
     /* Remove the account from the global list of accounts */
-    Account acc_to_remove = Account.query_account_by_id (account.id);
+    Account acc_to_remove = Corebird.account_manager.query_account_by_id (account.id);
     cb.account_removed (acc_to_remove);
-    Account.remove_account (account.screen_name);
-
+    Corebird.account_manager.remove_account (account.screen_name);
 
     /* Close this dialog */
     this.destroy ();

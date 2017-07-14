@@ -20,6 +20,7 @@ bool STRESSTEST = false;
 public class Corebird : Gtk.Application {
   public static Sql.Database db;
   public static Cb.SnippetManager snippet_manager;
+  public static AccountManager account_manager;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
@@ -57,6 +58,7 @@ public class Corebird : Gtk.Application {
                            Sql.COREBIRD_SQL_VERSION);
 
     snippet_manager = new Cb.SnippetManager (db.get_sqlite_db ());
+    account_manager = new AccountManager ();
   }
 
   public override int command_line (ApplicationCommandLine cmd) {
@@ -144,11 +146,11 @@ public class Corebird : Gtk.Application {
         startup_accounts.resize (0);
 
       debug ("Configured startup accounts: %d", startup_accounts.length);
-      uint n_accounts = Account.get_n ();
+      uint n_accounts = account_manager.get_n ();
       debug ("Configured accounts: %u", n_accounts);
 
       foreach (unowned string screen_name in startup_accounts) {
-        Account? acc = Account.query_account (screen_name);
+        Account? acc = account_manager.query_account_by_screen_name (screen_name);
         if (acc != null) {
           debug ("Service: Starting account %s...", screen_name);
           this.start_account (acc);
@@ -270,7 +272,7 @@ public class Corebird : Gtk.Application {
     }
 
     if (compose_screen_name != null) {
-      Account? acc = Account.query_account (compose_screen_name);
+      Account? acc = account_manager.query_account_by_screen_name (compose_screen_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
                   account_name);
@@ -286,7 +288,7 @@ public class Corebird : Gtk.Application {
     }
 
     if (account_name != null) {
-      Account? acc = Account.query_account (account_name);
+      Account? acc = account_manager.query_account_by_screen_name (account_name);
       if (acc == null) {
         critical ("No account named `%s` is configured. Exiting.",
                   account_name);
@@ -304,11 +306,11 @@ public class Corebird : Gtk.Application {
     if (startup_accounts.length == 1 && startup_accounts[0] == "")
       startup_accounts.resize (0);
 
-    uint n_accounts = Account.get_n ();
+    uint n_accounts = account_manager.get_n ();
 
     if (startup_accounts.length == 0) {
       if (n_accounts == 1) {
-        add_window_for_screen_name (Account.get_nth (0).screen_name);
+        add_window_for_screen_name (account_manager.get_nth (0).screen_name);
       } else if (n_accounts == 0) {
         var window = new MainWindow (this, null);
         add_window (window);
@@ -317,7 +319,7 @@ public class Corebird : Gtk.Application {
         /* We have multiple configured accounts but still none in autostart.
            This should never happen but we handle the case anyway by just opening
            the first one. */
-        add_window_for_screen_name (Account.get_nth (0).screen_name);
+        add_window_for_screen_name (account_manager.get_nth (0).screen_name);
       }
     } else {
       bool opened_window = false;
@@ -334,8 +336,8 @@ public class Corebird : Gtk.Application {
         if (n_accounts > 0) {
           /* Check if *any* of the configured accounts (not just startup-accounts)
              is not opened in a window */
-          for (uint i = 0; i < Account.get_n (); i ++) {
-            var account = Account.get_nth (i);
+          for (uint i = 0; i < account_manager.get_n (); i ++) {
+            var account = account_manager.get_nth (i);
             if (!is_window_open_for_user_id (account.id, null)) {
               add_window_for_account (account);
               return;
@@ -366,7 +368,7 @@ public class Corebird : Gtk.Application {
    * @return true if a window has been opened, false otherwise
    */
   public bool add_window_for_screen_name (string screen_name) {
-    Account? acc = Account.query_account (screen_name);
+    Account? acc = account_manager.query_account_by_screen_name (screen_name);
     if (acc != null) {
       add_window_for_account (acc);
       return true;
@@ -510,7 +512,7 @@ public class Corebird : Gtk.Application {
       main_window.main_widget.switch_page (Page.DM, bundle);
       main_window.present ();
     } else {
-      var account = Account.query_account_by_id (account_id);
+      var account = account_manager.query_account_by_id (account_id);
       if (account == null) {
         /* Security measure, should never happen. */
         critical ("No account with id %s found", account_id.to_string ());
@@ -532,7 +534,7 @@ public class Corebird : Gtk.Application {
     if (is_window_open_for_user_id (user_id, out main_window)) {
       main_window.present ();
     } else {
-      var account = Account.query_account_by_id (user_id);
+      var account = account_manager.query_account_by_id (user_id);
       if (account == null) {
         /* Security measure, should never happen. */
         critical ("No account with id %s found", user_id.to_string ());

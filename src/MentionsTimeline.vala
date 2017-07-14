@@ -89,7 +89,7 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
           text = Utils.unescape_html (t.source_tweet.text);
 
         /* Ignore the mention if both accounts are configured */
-        if (Account.query_account_by_id (t.get_user_id ()) == null) {
+        if (Corebird.account_manager.query_account_by_id (t.get_user_id ()) == null) {
           string summary = _("%s mentioned %s").printf (Utils.unescape_html (t.get_user_name ()),
                                                         account.name);
           string id = "%s-%s".printf (account.id.to_string (), "mention");

@@ -111,7 +111,7 @@ class AccountCreateWidget : Gtk.Box {
       var root = parser.get_root ().get_object ();
       string screen_name = root.get_string_member ("screen_name");
       debug ("Checking for %s", screen_name);
-      Account? existing_account = Account.query_account (screen_name);
+      Account? existing_account = Corebird.account_manager.query_account_by_screen_name (screen_name);
       if (existing_account != null) {
         result_received (false, existing_account);
         critical ("Account is already in use");
@@ -153,7 +153,7 @@ class AccountCreateWidget : Gtk.Box {
 
   [GtkCallback]
   private bool delete_event_cb () {
-    Account.remove_account (Account.DUMMY);
+    Corebird.account_manager.remove_account (Account.DUMMY);
     return false;
   }
 }

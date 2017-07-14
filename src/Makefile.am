@@ -35,6 +35,7 @@ libcorebird_la_VALASOURCES = \
 	MainWindow.vala \
 	MainWidget.vala \
 	Account.vala \
+	AccountManager.vala \
 	HomeTimeline.vala \
 	MentionsTimeline.vala \
 	SearchPage.vala \
