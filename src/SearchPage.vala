@@ -45,7 +45,6 @@ class SearchPage : IPage, Gtk.Box {
   [GtkChild]
   private ScrollWidget scroll_widget;
   private Gtk.RadioButton radio_button;
-  public Cb.DeltaUpdater delta_updater;
   private GLib.Cancellable? cancellable = null;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -63,7 +62,6 @@ class SearchPage : IPage, Gtk.Box {
   public SearchPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.delta_updater = new Cb.DeltaUpdater (tweet_list);
 
     /* We are slightly abusing the TweetListBox here */
     tweet_list.bind_model (null, null);

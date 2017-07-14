@@ -30,7 +30,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     }
   }
   public unowned Account account;
-  public Cb.DeltaUpdater delta_updater;
   public int id                             { get; set; }
   [GtkChild]
   private Gtk.Button send_button;
@@ -49,7 +48,6 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
   public DMPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.delta_updater = new Cb.DeltaUpdater (messages_list);
     text_view.buffer.changed.connect (recalc_length);
     messages_list.set_sort_func (twitter_item_sort_func_inv);
     placeholder_box.show ();
