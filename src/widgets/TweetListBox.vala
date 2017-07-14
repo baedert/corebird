@@ -167,7 +167,8 @@ public class TweetListBox : Gtk.ListBox {
 
   public void remove_all () {
     this.foreach ((w) => {
-      remove (w);
+      if (w is Gtk.ListBoxRow)
+        remove (w);
     });
   }
 
