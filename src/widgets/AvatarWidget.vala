@@ -170,29 +170,32 @@ public class AvatarWidget : Gtk.Widget {
       snapshot.pop ();
     }
 
+    if (verified) {
+        Graphene.Rect verified_bounds = {};
+      float verified_scale = 1.0f;
+      int index = SMALL;
+      if (width > 48)
+        index = LARGE;
+
+      if (index == LARGE && this._size < 100) {
+        verified_scale = (float)this._size / 100.0f;
+      }
+
+      int scale_factor = this.get_scale_factor () - 1;
+      Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
+      var verified_texture = Cb.Utils.surface_to_texture (verified_img,
+                                                          this.get_scale_factor ());
+      verified_bounds.origin.x = width - (VERIFIED_SIZES[index] * verified_scale);
+      verified_bounds.origin.y = 0;
+      verified_bounds.size.width = VERIFIED_SIZES[index] * verified_scale;
+      verified_bounds.size.height = VERIFIED_SIZES[index] * verified_scale;
+
+      // TODO: Alpha?
+      snapshot.append_texture (verified_texture, verified_bounds, "Avatar Verified Indicator");
+    }
+
     if (overlap)
       snapshot.offset (0, OVERLAP_DIST);
-
-
-    // TODO: Re-enable this.
-    //if (verified) {
-      //double verified_scale = 1.0;
-      //int index = SMALL;
-      //if (width > 48)
-        //index = LARGE;
-
-      //if (index == LARGE && this._size < 100) {
-        //verified_scale = (double)this._size / 100.0;
-      //}
-
-      //int scale_factor = this.get_scale_factor () - 1;
-      //Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
-      //ctx.scale (verified_scale, verified_scale);
-      //ctx.set_source_surface (verified_img,
-                              //(width  - (VERIFIED_SIZES[index] * verified_scale)) / verified_scale,
-                              //y);
-      //ctx.paint_with_alpha (this.alpha);
-    //}
   }
 
   public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
