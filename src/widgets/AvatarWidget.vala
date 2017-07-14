@@ -185,14 +185,20 @@ public class AvatarWidget : Gtk.Widget {
     ctx.paint_with_alpha (alpha);
 
     if (verified) {
+      double verified_scale = 1.0;
       int index = SMALL;
       if (width > 48)
         index = LARGE;
 
+      if (index == LARGE && this._size < 100) {
+        verified_scale = (double)this._size / 100.0;
+      }
+
       int scale_factor = this.get_scale_factor () - 1;
       Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
+      ctx.scale (verified_scale, verified_scale);
       ctx.set_source_surface (verified_img,
-                              width - VERIFIED_SIZES[index],
+                              (width  - (VERIFIED_SIZES[index] * verified_scale)) / verified_scale,
                               y);
       ctx.paint_with_alpha (this.alpha);
     }
