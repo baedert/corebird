@@ -57,10 +57,9 @@ public class AvatarBannerWidget : Gtk.Container {
     set_avatar_button.set_bg ((Cairo.ImageSurface)account.get_avatar ());
   }
 
-  public override bool draw (Cairo.Context ct) {
-    this.propagate_draw (set_banner_button, ct);
-    this.propagate_draw (set_avatar_button, ct);
-    return true;
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    this.snapshot_child (set_banner_button, snapshot);
+    this.snapshot_child (set_avatar_button, snapshot);
   }
 
   private int get_avatar_x () {
