@@ -360,7 +360,8 @@ public class AccountDialog : Gtk.Window {
 
   [GtkCallback]
   private void avatar_clicked_cb () {
-    this.get_size (out old_width, out old_height);
+    // TODO: Re-enable this
+    //this.get_size (out old_width, out old_height);
     this.resize (400, 400);
     crop_widget.set_image (null);
     crop_widget.set_size_request (-1, 400);
@@ -373,7 +374,8 @@ public class AccountDialog : Gtk.Window {
 
   [GtkCallback]
   private void banner_clicked_cb () {
-    this.get_size (out old_width, out old_height);
+    // TODO: Re-enable this
+    //this.get_size (out old_width, out old_height);
     this.resize (700, 350);
     crop_widget.set_size_request (700, 350);
     crop_widget.set_image (null);
