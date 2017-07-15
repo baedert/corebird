@@ -88,16 +88,4 @@ public class ReplyIndicator : Gtk.Widget {
 
     return GLib.Source.CONTINUE;
   }
-
-  public override bool draw (Cairo.Context ct) {
-    if (!replies) {
-      return Gdk.EVENT_PROPAGATE;
-    }
-
-    var style_context = this.get_style_context ();
-
-    style_context.render_background (ct, 0, 0, get_allocated_width(), get_allocated_height ());
-
-    return Gdk.EVENT_PROPAGATE;
-  }
 }
