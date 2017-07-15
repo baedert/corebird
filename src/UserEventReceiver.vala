@@ -70,8 +70,8 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
           account.screen_name = user_obj.get_string_member ("screen_name");
           account.info_changed (account.screen_name,
                                 account.name,
-                                account.avatar_small,
-                                account.avatar);
+                                account.get_avatar_small (),
+                                account.get_avatar ());
           account.save_info ();
           Utils.update_startup_account (old_screen_name, account.screen_name);
         } else {

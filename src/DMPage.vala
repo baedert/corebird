@@ -297,7 +297,7 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     entry.text = GLib.Markup.escape_text (text_view.buffer.text);
     entry.main_window = _main_window;
     entry.name = account.name;
-    entry.avatar = account.avatar;
+    entry.avatar = account.get_avatar();
     entry.update_time_delta ();
     messages_list.add (entry);
     var call = account.proxy.new_call ();

@@ -73,9 +73,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
-    avatar_image.surface = acc.avatar;
-    acc.notify["avatar"].connect (() => {
-      avatar_image.surface = account.avatar;
+    avatar_image.surface = acc.get_avatar ();
+    acc.info_changed.connect ((screen_name, name, nop, avatar) => {
+      avatar_image.surface = avatar;
     });
 
     /* Just use recalc_tweet_length here so we have a central place where we update the

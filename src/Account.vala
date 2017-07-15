@@ -25,12 +25,9 @@ public class Account : GLib.Object {
   public string? banner_url       {public get; private set;}
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
-  public Cairo.Surface avatar_small {public get; public set;}
-  public Cairo.Surface avatar       {public get; public set;}
   public Rest.OAuthProxy proxy;
   public UserStream user_stream;
   public Cb.UserCounter user_counter;
-  private UserEventReceiver event_receiver;
   public NotificationManager notifications;
   public int64[] friends;
   public int64[] blocked;
@@ -40,6 +37,11 @@ public class Account : GLib.Object {
   public signal void info_changed (string screen_name, string name,
                                    Cairo.Surface avatar_small, Cairo.Surface avatar);
 
+  private Cairo.Surface avatar_small;
+  private Cairo.Surface avatar;
+  private UserEventReceiver event_receiver;
+
+
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
     this.screen_name = screen_name;
@@ -47,6 +49,24 @@ public class Account : GLib.Object {
     this.filters = new GLib.GenericArray<Cb.Filter> ();
     this.event_receiver = new UserEventReceiver (this);
     this.notifications = new NotificationManager (this);
+  }
+
+  public Cairo.Surface get_avatar () {
+    if (this.avatar == null) {
+      string path = Dirs.config (@"accounts/$(id).png");
+      this.avatar = load_surface (path);
+    }
+
+    return this.avatar;
+  }
+
+  public Cairo.Surface get_avatar_small () {
+    if (this.avatar == null) {
+      string small_path = Dirs.config (@"accounts/$(id)_small.png");
+      this.avatar_small = load_surface (small_path);
+    }
+
+    return this.avatar_small;
   }
 
   /**
@@ -106,27 +126,12 @@ public class Account : GLib.Object {
     this.user_stream = null;
   }
 
-  /**
-   * Loads the small and normally sized avatars from disk.
-   * Normal: accounts/ID.png
-   * Small:  accounts/ID_small.png
-   */
-  public void load_avatar () {
-    string small_path = Dirs.config (@"accounts/$(id)_small.png");
-    string path = Dirs.config (@"accounts/$(id).png");
-    this.avatar_small = load_surface (small_path);
-    this.avatar       = load_surface (path);
-    info_changed (screen_name, name, avatar, avatar_small);
-  }
-
   public void set_new_avatar (Cairo.Surface new_avatar) {
     string path       = Dirs.config (@"accounts/$(id).png");
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
 
-
     Cairo.Surface avatar = scale_surface ((Cairo.ImageSurface)new_avatar, 48, 48);
     Cairo.Surface avatar_small = scale_surface ((Cairo.ImageSurface)new_avatar, 24, 24);
-
 
     write_surface (avatar, path);
     write_surface (avatar_small, small_path);

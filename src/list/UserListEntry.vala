@@ -81,16 +81,13 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public UserListEntry.from_account (Account acc) {
     this.screen_name_label.label = "@" + acc.screen_name;
     this.name = acc.name;
-    this.avatar_surface = acc.avatar;
+    this.avatar_surface = acc.get_avatar ();
     this.account = acc;
     this.user_id = acc.id;
     acc.info_changed.connect ((screen_name, name, nop, avatar) => {
       this.screen_name_label.label = "@" + acc.screen_name;
       this.name = name;
       this.avatar_surface = avatar;
-    });
-    acc.notify["avatar"].connect (() => {
-      this.avatar_surface = this.account.avatar;
     });
     var cb = (Corebird) GLib.Application.get_default ();
     cb.window_added.connect ((window) => {

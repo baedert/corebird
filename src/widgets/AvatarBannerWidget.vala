@@ -54,7 +54,7 @@ public class AvatarBannerWidget : Gtk.Container {
     this.account = account;
     fetch_banner.begin ();
     this.queue_draw ();
-    set_avatar_button.set_bg ((Cairo.ImageSurface)account.avatar);
+    set_avatar_button.set_bg ((Cairo.ImageSurface)account.get_avatar ());
   }
 
   public override bool draw (Cairo.Context ct) {
