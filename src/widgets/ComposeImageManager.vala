@@ -240,27 +240,25 @@ class ComposeImageManager : Gtk.Container {
     nat_baseline = -1;
   }
 
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
     for (int i = 0, p = this.buttons.length; i < p; i ++) {
       Gtk.Widget btn = this.buttons.get (i);
-      this.propagate_draw (btn, ct);
+      this.snapshot_child (btn, snapshot);
     }
 
     for (int i = 0, p = this.close_buttons.length; i < p; i ++) {
       var btn = this.close_buttons.get (i);
-      this.propagate_draw (btn, ct);
+      this.snapshot_child (btn, snapshot);
     }
 
 #if REST081
     if (_upload_started) {
       for (int i = 0, p = this.progress_bars.length; i < p; i ++) {
         var bar = this.progress_bars.get (i);
-        this.propagate_draw (bar, ct);
+        this.snapshot_child (bar, snapshot);
       }
     }
 #endif
-
-    return Gdk.EVENT_PROPAGATE;
   }
   // }}}
 
