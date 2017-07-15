@@ -146,10 +146,6 @@ public class AvatarWidget : Gtk.Widget {
     bounds.size.width = width;
     bounds.size.height = height;
 
-    if (width != height) {
-      warning ("Avatar with mapped with width %d and height %d", width, height);
-    }
-
     // TODO: Ultimately, we should save GskTextures everywhere instead of
     //       cairo surfaces
     var texture = Cb.Utils.surface_to_texture (this._surface,
