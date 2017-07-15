@@ -109,48 +109,40 @@ class AspectImage : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    Graphene.Rect bounds = {};
     int width  = get_allocated_width ();
     int height = get_allocated_height ();
 
-    double scale_x = 1.0;
-    if (bg_color.alpha == 0.0)
-      scale_x = width  / (double)pixbuf_surface.get_width ();
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = width;
+    bounds.size.height = height;
 
-    scale_x = double.max (scale_x, 1.0);
-
-    ct.rectangle (0, 0, width, height);
-    ct.scale (scale_x, 1.0);
-
-
-    ct.push_group ();
+    // TODO: The old behavior here was to never scale the surface down, so keep scale >= 1.0
 
     if (this.old_surface != null) {
-      ct.set_source_surface (this.old_surface, 0, 0);
-      ct.paint ();
+      var old_texture = Cb.Utils.surface_to_texture (old_surface,
+                                                     this.get_scale_factor ());
+      snapshot.append_texture (old_texture, bounds, "Old Texture");
     } else if (bg_color.alpha > 0.0) {
-      ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
-      ct.fill ();
-    }else
+      snapshot.append_color (bg_color, bounds, "Background color");
+    } else {
       alpha = 1.0;
-
-
-    if (bg_color.alpha == 0.0) {
-      int x = (int)(width - (pixbuf_surface.get_width () * scale_x)) / 2;
-      ct.set_source_surface (this.pixbuf_surface, x, 0);
-    } else
-      ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
+    }
 
     if (in_transition)
-      ct.paint_with_alpha (alpha);
-    else
-      ct.paint ();
+      snapshot.push_opacity (alpha, "Alpha");
 
-    ct.pop_group_to_source ();
+    if (bg_color.alpha == 0.0) {
+      var texture = Cb.Utils.surface_to_texture (pixbuf_surface,
+                                                 this.get_scale_factor());
+      snapshot.append_texture (texture, bounds, "Pixbuf texture");
+    } else {
+      snapshot.append_color (bg_color, bounds, "Color");
+    }
 
-    ct.set_operator (Cairo.Operator.OVER);
-    ct.paint ();
-
-    return Gdk.EVENT_PROPAGATE;
+    if (in_transition)
+      snapshot.pop ();
   }
 }
