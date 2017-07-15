@@ -53,35 +53,33 @@ class AddImageButton : Gtk.Widget {
     height = (int)(this.surface.get_height () * scale);
   }
 
-  public override bool draw (Cairo.Context ct) {
-    int widget_width = get_allocated_width ();
-    int widget_height = get_allocated_height ();
-    var style_context = this.get_style_context ();
-
+  public override void snapshot (Gtk.Snapshot snapshot) {
     /* Draw thumbnail */
     if (this.surface != null) {
-      ct.save ();
-      ct.rectangle (0, 0, widget_width, widget_height);
-
+      Graphene.Rect bounds = {};
       int draw_width, draw_height;
       double scale;
+
+      var texture = Cb.Utils.surface_to_texture (this.surface,
+                                                 this.get_scale_factor ());
+
       this.get_draw_size (out draw_width, out draw_height, out scale);
+      bounds.origin.x = 0;
+      bounds.origin.y = 0;
+      bounds.size.width = draw_width;
+      bounds.size.height = draw_height;
 
       if (draw_width > 0 && draw_height > 0) {
-        ct.scale (scale, scale);
-        ct.set_source_surface (this.surface, 0, 0);
-        ct.fill ();
+        snapshot.append_texture (texture, bounds, "Texture");
       }
-      ct.restore ();
 
-      style_context.render_check (ct,
-                                  (widget_width / 2.0) - (ICON_SIZE / 2.0),
-                                  (widget_height / 2.0) - (ICON_SIZE / 2.0),
-                                  ICON_SIZE,
-                                  ICON_SIZE);
+      // TODO: What to do here?
+      //style_context.render_check (ct,
+                                  //(widget_width / 2.0) - (ICON_SIZE / 2.0),
+                                  //(widget_height / 2.0) - (ICON_SIZE / 2.0),
+                                  //ICON_SIZE,
+                                  //ICON_SIZE);
     }
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
