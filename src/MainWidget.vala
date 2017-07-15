@@ -71,7 +71,7 @@ public class MainWidget : Gtk.Box {
       stack.add (page);
       if (page.get_radio_button () != null) {
         top_box.add (page.get_radio_button ());
-        page.get_radio_button ().toggled.connect (() => {
+        page.get_radio_button ().clicked.connect (() => {
           if (page.get_radio_button ().active && !page_switch_lock) {
             switch_page (page.id);
           }
