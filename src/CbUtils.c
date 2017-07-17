@@ -52,6 +52,9 @@ cb_utils_surface_to_texture (cairo_surface_t *surface,
 
   width = cairo_image_surface_get_width (surface);
   height = cairo_image_surface_get_height (surface);
+  /* TODO: This is forced to 1 right now since that makes the drawing work.
+   *       It does look wrong, however... */
+  scale = 1;
 
   map = cairo_surface_map_to_image (surface,
                                     &(GdkRectangle) { 0, 0, width * scale, height * scale});
