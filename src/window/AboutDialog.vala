@@ -17,12 +17,4 @@
 
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/about-dialog.ui")]
-class AboutDialog : Gtk.AboutDialog {
-  [GtkCallback]
-  private void response_cb (int id) {
-    if (id == Gtk.ResponseType.DELETE_EVENT) {
-      this.close ();
-    } else
-      warning ("Unhandled response: %d", id);
-  }
-}
+class AboutDialog : Gtk.AboutDialog {}

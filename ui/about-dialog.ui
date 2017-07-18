@@ -11,6 +11,5 @@
 </property>
     <property name="logo-icon-name">corebird</property>
     <property name="license-type">gpl-3-0</property>
-    <signal name="response" handler="response_cb" swapped="no"/>
   </template>
 </interface>
