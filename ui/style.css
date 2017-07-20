@@ -232,7 +232,7 @@ replyindicator {
   box-shadow: none;
 }
 
-.avatar:disabled,
+avatar:disabled,
 .inline-media:disabled {
   opacity: 0.4;
 }

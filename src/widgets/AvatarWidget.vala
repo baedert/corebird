@@ -15,33 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* We use the AvatarWidget as a parent of the AvatarContainer widget
+   so we can move the latter up in the overlap=TRUE case. */
 public class AvatarWidget : Gtk.Widget {
-  private const int SMALL = 0;
-  private const int LARGE = 1;
   private const int OVERLAP_DIST = 40;
-  private bool _round = true;
-  public bool make_round {
-    get {
-      return _round;
-    }
-    set {
-      if (value == _round)
-        return;
-
-      if (value) {
-        this.get_style_context ().add_class ("avatar-round");
-      } else {
-        this.get_style_context ().remove_class ("avatar-round");
-      }
-
-      this._round = value;
-      this.queue_draw ();
-    }
-  }
-  public bool verified { get; set; default = false; }
   public bool overlap  { get; set; default = false; }
-  public int size      { get; set; default = 48;    }
-
+  public bool verified { get; set; default = false; }
   private Cairo.ImageSurface _surface;
   public Cairo.Surface surface {
     get {
@@ -62,14 +41,120 @@ public class AvatarWidget : Gtk.Widget {
       if (this._surface != null) {
         Twitter.get ().ref_avatar (this._surface);
         if (animate)
-          this.start_animation ();
+          container_widget.start_animation ();
       }
 
+      container_widget.surface = this._surface;
       this.queue_draw ();
     }
   }
+  private int _size = 48;
+  public int size {
+    set {
+      this._size = value;
+      container_widget.size = value;
+      this.queue_resize ();
+    }
+    default = 48;
+  }
+
+  private AvatarContainer container_widget;
+
+  static construct {
+    set_css_name ("avatar");
+  }
+
+  construct {
+    this.set_has_window (false);
+
+    container_widget = new AvatarContainer ();
+    container_widget.set_parent (this);
+  }
+
+  ~AvatarWidget () {
+    container_widget.unparent ();
+  }
+
+  public override void measure (Gtk.Orientation orientation,
+                                int for_size,
+                                out int min, out int nat,
+                                out int min_baseline, out int nat_baseline) {
+
+    int s = _size;
+    int m;
+
+    container_widget.measure (orientation, for_size, out m, null, null, null);
+
+    s = int.max (_size, m);
+
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min = s;
+      nat = s;
+    } else {
+      if (overlap) {
+        min = s - OVERLAP_DIST;
+        nat = s - OVERLAP_DIST;
+      } else {
+        min = s;
+        nat = s;
+      }
+    }
+
+    min_baseline = -1;
+    nat_baseline = -1;
+  }
+
+  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
+    Gtk.Allocation child_alloc = alloc;
+    Gtk.Allocation child_clip;
+    if (overlap) {
+      int height;
+      container_widget.measure (Gtk.Orientation.VERTICAL, -1, out height, null, null, null);
+
+      child_alloc.y -= OVERLAP_DIST;
+      child_alloc.height = height;
+    }
+
+    container_widget.size_allocate (child_alloc, -1, out child_clip);
+
+    /* XXX I want to do this, but valac won't let me. */
+    /* out_clip.union (child_clip, out out_clip); */
+  }
+
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    this.snapshot_child (container_widget, snapshot);
+  }
+
+}
+
+public class AvatarContainer : Gtk.Widget {
+  public bool verified = false;
+  public int size = 48;
+  private const int SMALL = 0;
+  private const int LARGE = 1;
+  private bool _round = true;
+  public bool make_round {
+    get {
+      return _round;
+    }
+    set {
+      if (value == _round)
+        return;
+
+      if (value) {
+        this.get_style_context ().add_class ("avatar-round");
+      } else {
+        this.get_style_context ().remove_class ("avatar-round");
+      }
+
+      this._round = value;
+      this.queue_draw ();
+    }
+  }
+
   private double alpha = 1.0f;
   private int64 start_time;
+  public Cairo.Surface surface;
 
 
   static Cairo.Surface[] verified_icons;
@@ -93,23 +178,24 @@ public class AvatarWidget : Gtk.Widget {
     } catch (GLib.Error e) {
       critical (e.message);
     }
+
+    set_css_name ("container");
   }
 
   construct {
     this.set_has_window (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
-    this.get_style_context ().add_class ("avatar");
     this.get_style_context ().add_class ("avatar-round"); // default is TRUE
   }
 
-  ~AvatarWidget () {
-    if (this._surface != null)
-      Twitter.get ().unref_avatar (this._surface);
+  ~AvatarContainer () {
+    if (this.surface != null)
+      Twitter.get ().unref_avatar (this.surface);
   }
 
 
-  private void start_animation () {
+  public void start_animation () {
     if (!this.get_realized ())
       return;
 
@@ -136,7 +222,7 @@ public class AvatarWidget : Gtk.Widget {
     int width  = this.size;
     int height = this.size;
 
-    if (this._surface == null) {
+    if (this.surface == null) {
       return;
     }
 
@@ -148,11 +234,8 @@ public class AvatarWidget : Gtk.Widget {
 
     // TODO: Ultimately, we should save GskTextures everywhere instead of
     //       cairo surfaces
-    var texture = Cb.Utils.surface_to_texture (this._surface,
+    var texture = Cb.Utils.surface_to_texture (this.surface,
                                                this.get_scale_factor ());
-
-    if (overlap)
-      snapshot.offset (0, -OVERLAP_DIST);
 
     if (_round) {
       Gsk.RoundedRect round_clip = {};
@@ -167,14 +250,14 @@ public class AvatarWidget : Gtk.Widget {
     }
 
     if (verified) {
-        Graphene.Rect verified_bounds = {};
+      Graphene.Rect verified_bounds = {};
       float verified_scale = 1.0f;
       int index = SMALL;
       if (width > 48)
         index = LARGE;
 
-      if (index == LARGE && this._size < 100) {
-        verified_scale = (float)this._size / 100.0f;
+      if (index == LARGE && this.size < 100) {
+        verified_scale = (float)this.size / 100.0f;
       }
 
       int scale_factor = this.get_scale_factor () - 1;
@@ -189,36 +272,14 @@ public class AvatarWidget : Gtk.Widget {
       // TODO: Alpha?
       snapshot.append_texture (verified_texture, verified_bounds, "Avatar Verified Indicator");
     }
-
-    if (overlap)
-      snapshot.offset (0, OVERLAP_DIST);
-  }
-
-  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
-    if (overlap) {
-      alloc.y -= OVERLAP_DIST;
-      alloc.height += OVERLAP_DIST;
-      out_clip = alloc;
-    }
   }
 
   public override void measure (Gtk.Orientation orientation,
                                 int for_size,
                                 out int min, out int nat,
                                 out int min_baseline, out int nat_baseline) {
-
-    if (orientation == Gtk.Orientation.HORIZONTAL) {
-      min = size;
-      nat = size;
-    } else {
-      if (overlap) {
-        min = size - OVERLAP_DIST;
-        nat = size - OVERLAP_DIST;
-      } else {
-        min = size;
-        nat = size;
-      }
-    }
+    min = size;
+    nat = size;
 
     min_baseline = -1;
     nat_baseline = -1;
