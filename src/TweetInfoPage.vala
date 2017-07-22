@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
-class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
+class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public const int KEY_MODE        = 0;
   public const int KEY_TWEET       = 1;
   public const int KEY_EXISTING    = 2;
@@ -636,9 +636,9 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
     return null;
   }
 
-  public void stream_message_received (StreamMessageType type,
+  public void stream_message_received (Cb.StreamMessageType type,
                                        Json.Node         root) {
-    if (type == StreamMessageType.TWEET) {
+    if (type == Cb.StreamMessageType.TWEET) {
       Json.Object root_obj = root.get_object ();
       if (Utils.usable_json_value (root_obj, "in_reply_to_status_id")) {
         int64 reply_id = root_obj.get_int_member ("in_reply_to_status_id");
@@ -651,7 +651,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
           this.reply_indicator.replies_available = true;
         }
       }
-    } else if (type == StreamMessageType.DELETE) {
+    } else if (type == Cb.StreamMessageType.DELETE) {
       int64 tweet_id = root.get_object ().get_object_member ("delete")
                                          .get_object_member ("status")
                                          .get_int_member ("id");
@@ -661,7 +661,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         debug ("Current tweet with id %s deleted!", tweet_id.to_string ());
         this._main_window.main_widget.remove_current_page ();
       }
-    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
       if (source_id == account.id && id == this.tweet_id) {
@@ -672,7 +672,7 @@ class TweetInfoPage : IPage, ScrollWidget, IMessageReceiver {
         this.values_set = true;
       }
 
-    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
       if (source_id == account.id && id == this.tweet_id) {

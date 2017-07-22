@@ -15,53 +15,53 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UserEventReceiver : GLib.Object, IMessageReceiver {
+class UserEventReceiver : GLib.Object, Cb.MessageReceiver {
   private unowned Account account;
 
   public UserEventReceiver (Account account) {
     this.account = account;
   }
 
-  public void stream_message_received (StreamMessageType type,
+  public void stream_message_received (Cb.StreamMessageType type,
                                        Json.Node         root_node) {
     switch (type) {
-      case StreamMessageType.EVENT_FOLLOW:
+      case Cb.StreamMessageType.EVENT_FOLLOW:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");
         account.follow_id (user_id);
         break;
 
-      case StreamMessageType.EVENT_UNFOLLOW:
+      case Cb.StreamMessageType.EVENT_UNFOLLOW:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");
         account.unfollow_id (user_id);
         break;
 
-      case StreamMessageType.EVENT_MUTE:
+      case Cb.StreamMessageType.EVENT_MUTE:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");
         account.mute_id (user_id);
         break;
 
-      case StreamMessageType.EVENT_UNMUTE:
+      case Cb.StreamMessageType.EVENT_UNMUTE:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");
         account.unmute_id (user_id);
         break;
 
-      case StreamMessageType.EVENT_BLOCK:
+      case Cb.StreamMessageType.EVENT_BLOCK:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");
         account.block_id (user_id);
         break;
 
-      case StreamMessageType.EVENT_UNBLOCK:
+      case Cb.StreamMessageType.EVENT_UNBLOCK:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");
         account.unblock_id (user_id);
         break;
 
-      case StreamMessageType.EVENT_USER_UPDATE:
+      case Cb.StreamMessageType.EVENT_USER_UPDATE:
         var user_obj = root_node.get_object ().get_object_member ("target");
         if (user_obj.get_int_member ("id") == account.id) {
           string old_screen_name = account.screen_name;
@@ -79,7 +79,7 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
         }
         break;
 
-      case StreamMessageType.DIRECT_MESSAGE:
+      case Cb.StreamMessageType.DIRECT_MESSAGE:
         var cb = (Corebird) GLib.Application.get_default ();
         if (!cb.is_window_open_for_user_id (account.id) &&
             Settings.notify_new_dms ()) {
@@ -96,7 +96,7 @@ class UserEventReceiver : GLib.Object, IMessageReceiver {
         }
         break;
 
-      case StreamMessageType.TWEET:
+      case Cb.StreamMessageType.TWEET:
         var cb = (Corebird) GLib.Application.get_default ();
         if (!cb.is_window_open_for_user_id (account.id) &&
             Settings.notify_new_mentions ()) {

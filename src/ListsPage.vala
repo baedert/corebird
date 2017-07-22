@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
-class ListsPage : IPage, ScrollWidget, IMessageReceiver {
+class ListsPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public const int KEY_MODE = 0;
   public const int KEY_LIST_ID = 1;
 
@@ -75,26 +75,26 @@ class ListsPage : IPage, ScrollWidget, IMessageReceiver {
     yield user_lists_widget.load_lists (user_id);
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) { // {{{
-    if (type == StreamMessageType.EVENT_LIST_CREATED ||
-        type == StreamMessageType.EVENT_LIST_SUBSCRIBED) {
+  private void stream_message_received (Cb.StreamMessageType type, Json.Node root) { // {{{
+    if (type == Cb.StreamMessageType.EVENT_LIST_CREATED ||
+        type == Cb.StreamMessageType.EVENT_LIST_SUBSCRIBED) {
       var obj = root.get_object ().get_object_member ("target_object");
       var entry = new ListListEntry.from_json_data (obj, account);
       user_lists_widget.add_list (entry);
-    } else if (type == StreamMessageType.EVENT_LIST_DESTROYED ||
-               type == StreamMessageType.EVENT_LIST_UNSUBSCRIBED) {
+    } else if (type == Cb.StreamMessageType.EVENT_LIST_DESTROYED ||
+               type == Cb.StreamMessageType.EVENT_LIST_UNSUBSCRIBED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
       user_lists_widget.remove_list (list_id);
-    } else if (type == StreamMessageType.EVENT_LIST_UPDATED) {
+    } else if (type == Cb.StreamMessageType.EVENT_LIST_UPDATED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
       update_list (list_id, obj);
-    } else if (type == StreamMessageType.EVENT_LIST_MEMBER_ADDED) {
+    } else if (type == Cb.StreamMessageType.EVENT_LIST_MEMBER_ADDED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
       user_lists_widget.update_member_count (list_id, 1);
-    } else if (type == StreamMessageType.EVENT_LIST_MEMBER_REMOVED) {
+    } else if (type == Cb.StreamMessageType.EVENT_LIST_MEMBER_REMOVED) {
       var obj = root.get_object ().get_object_member ("target_object");
       int64 list_id = obj.get_int_member ("id");
       user_lists_widget.update_member_count (list_id, -1);

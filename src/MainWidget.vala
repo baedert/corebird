@@ -64,8 +64,8 @@ public class MainWidget : Gtk.Box {
       IPage page = pages[i];
       page.main_window = parent;
 
-      if (page is IMessageReceiver)
-        account.user_stream.register ((IMessageReceiver)page);
+      if (page is Cb.MessageReceiver)
+        account.user_stream.register ((Cb.MessageReceiver)page);
 
       page.create_radio_button (dummy_button);
       stack.add (page);
@@ -180,8 +180,8 @@ public class MainWidget : Gtk.Box {
   public void stop () {
     for (int i = 0; i < pages.length; i++) {
       IPage page = pages[i];
-      if (page is IMessageReceiver)
-        account.user_stream.unregister ((IMessageReceiver)page);
+      if (page is Cb.MessageReceiver)
+        account.user_stream.unregister ((Cb.MessageReceiver)page);
     }
 
     ((Corebird)GLib.Application.get_default ()).stop_account (this.account);

@@ -15,46 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-// See https://dev.twitter.com/docs/streaming-apis/messages
-public enum StreamMessageType {
-  UNSUPPORTED,
-  DELETE,
-  DM_DELETE,
-  SCRUB_GEO,
-  LIMIT,
-  DISCONNECT,
-  FRIENDS,
-  EVENT,
-  WARNING,
-  DIRECT_MESSAGE,
-
-  TWEET,
-  EVENT_LIST_CREATED,
-  EVENT_LIST_DESTROYED,
-  EVENT_LIST_UPDATED,
-  EVENT_LIST_UNSUBSCRIBED,
-  EVENT_LIST_SUBSCRIBED,
-  EVENT_LIST_MEMBER_ADDED,
-  EVENT_LIST_MEMBER_REMOVED,
-  EVENT_FAVORITE,
-  EVENT_UNFAVORITE,
-  EVENT_FOLLOW,
-  EVENT_UNFOLLOW,
-  EVENT_BLOCK,
-  EVENT_UNBLOCK,
-  EVENT_MUTE,
-  EVENT_UNMUTE,
-  EVENT_USER_UPDATE,
-  EVENT_QUOTED_TWEET
-}
-
-
 public class UserStream : Object {
   private Rest.OAuthProxy proxy;
   private Rest.ProxyCall proxy_call;
   private StringBuilder data = new StringBuilder();
-  private GLib.GenericArray<unowned IMessageReceiver> receivers;
+  private GLib.GenericArray<unowned Cb.MessageReceiver> receivers;
   private GLib.NetworkMonitor network_monitor;
   private uint network_timeout_id   = 0;
   private uint heartbeat_timeout_id = 0;
@@ -81,7 +46,7 @@ public class UserStream : Object {
   public UserStream (Account account) {
     this.account_name = account.screen_name;
     this.account = account;
-    this.receivers = new GLib.GenericArray<unowned IMessageReceiver> ();
+    this.receivers = new GLib.GenericArray<unowned Cb.MessageReceiver> ();
     debug ("CREATING USER STREAM FOR " + account_name);
 
     if (STRESSTEST) {
@@ -106,11 +71,11 @@ public class UserStream : Object {
       start_network_timeout ();
   }
 
-  public void register (IMessageReceiver receiver) {
+  public void register (Cb.MessageReceiver receiver) {
     receivers.add (receiver);
   }
 
-  public void unregister (IMessageReceiver receiver) {
+  public void unregister (Cb.MessageReceiver receiver) {
     receivers.remove (receiver);
   }
 
@@ -290,37 +255,37 @@ public class UserStream : Object {
       var root_node = parser.get_root();
       var root = root_node.get_object ();
 
-      StreamMessageType type = 0;
+      Cb.StreamMessageType type = 0;
 
       if (root.has_member ("delete")) {
         if (root.get_object_member ("delete").has_member ("direct_message"))
-          type = StreamMessageType.DM_DELETE;
+          type = Cb.StreamMessageType.DM_DELETE;
         else
-          type = StreamMessageType.DELETE;
+          type = Cb.StreamMessageType.DELETE;
       } else if (root.has_member ("scrub_geo"))
-        type = StreamMessageType.SCRUB_GEO;
+        type = Cb.StreamMessageType.SCRUB_GEO;
       else if (root.has_member ("limit"))
-        type = StreamMessageType.LIMIT;
+        type = Cb.StreamMessageType.LIMIT;
       else if (root.has_member ("disconnect"))
-        type = StreamMessageType.DISCONNECT;
+        type = Cb.StreamMessageType.DISCONNECT;
       else if (root.has_member ("friends")) {
         account.set_friends (root.get_array_member ("friends"));
-        type = StreamMessageType.FRIENDS;
+        type = Cb.StreamMessageType.FRIENDS;
       } else if (root.has_member ("text"))
-        type = StreamMessageType.TWEET;
+        type = Cb.StreamMessageType.TWEET;
       else if (root.has_member ("event")) {
         string evt_str = root.get_string_member ("event");
         type = get_event_type (evt_str);
       }
       else if (root.has_member ("warning"))
-        type = StreamMessageType.WARNING;
+        type = Cb.StreamMessageType.WARNING;
       else if (root.has_member ("direct_message"))
-        type = StreamMessageType.DIRECT_MESSAGE;
+        type = Cb.StreamMessageType.DIRECT_MESSAGE;
       else if (root.has_member ("status_withheld"))
-        type = StreamMessageType.UNSUPPORTED;
+        type = Cb.StreamMessageType.UNSUPPORTED;
 
 #if DEBUG
-      stdout.printf ("Message with type %s on stream @%s\n", type.to_string (), this.account_name);
+      stdout.printf ("Message with type %d on stream @%s\n", type, this.account_name);
       stdout.printf (data.str+"\n\n");
 #endif
       for (int i = 0; i < receivers.length; i ++)
@@ -332,42 +297,42 @@ public class UserStream : Object {
   }
 
 
-  private StreamMessageType get_event_type (string evt_str) {
+  private Cb.StreamMessageType get_event_type (string evt_str) {
     switch (evt_str) {
       case "follow":
-        return StreamMessageType.EVENT_FOLLOW;
+        return Cb.StreamMessageType.EVENT_FOLLOW;
       case "list_created":
-        return StreamMessageType.EVENT_LIST_CREATED;
+        return Cb.StreamMessageType.EVENT_LIST_CREATED;
       case "list_destroyed":
-        return StreamMessageType.EVENT_LIST_DESTROYED;
+        return Cb.StreamMessageType.EVENT_LIST_DESTROYED;
       case "list_updated":
-        return StreamMessageType.EVENT_LIST_UPDATED;
+        return Cb.StreamMessageType.EVENT_LIST_UPDATED;
       case "list_user_unsubscribed":
-        return StreamMessageType.EVENT_LIST_UNSUBSCRIBED;
+        return Cb.StreamMessageType.EVENT_LIST_UNSUBSCRIBED;
       case "list_user_subscribed":
-        return StreamMessageType.EVENT_LIST_SUBSCRIBED;
+        return Cb.StreamMessageType.EVENT_LIST_SUBSCRIBED;
       case "list_member_added":
-        return StreamMessageType.EVENT_LIST_MEMBER_ADDED;
+        return Cb.StreamMessageType.EVENT_LIST_MEMBER_ADDED;
       case "list_member_removed":
-        return StreamMessageType.EVENT_LIST_MEMBER_REMOVED;
+        return Cb.StreamMessageType.EVENT_LIST_MEMBER_REMOVED;
       case "favorite":
-        return StreamMessageType.EVENT_FAVORITE;
+        return Cb.StreamMessageType.EVENT_FAVORITE;
       case "unfavorite":
-        return StreamMessageType.EVENT_UNFAVORITE;
+        return Cb.StreamMessageType.EVENT_UNFAVORITE;
       case "unfollow":
-        return StreamMessageType.EVENT_UNFOLLOW;
+        return Cb.StreamMessageType.EVENT_UNFOLLOW;
       case "block":
-        return StreamMessageType.EVENT_BLOCK;
+        return Cb.StreamMessageType.EVENT_BLOCK;
       case "unblock":
-        return StreamMessageType.EVENT_UNBLOCK;
+        return Cb.StreamMessageType.EVENT_UNBLOCK;
       case "mute":
-        return StreamMessageType.EVENT_MUTE;
+        return Cb.StreamMessageType.EVENT_MUTE;
       case "unmute":
-        return StreamMessageType.EVENT_UNMUTE;
+        return Cb.StreamMessageType.EVENT_UNMUTE;
       case "user_update":
-        return StreamMessageType.EVENT_USER_UPDATE;
+        return Cb.StreamMessageType.EVENT_USER_UPDATE;
       case "quoted_tweet":
-        return StreamMessageType.EVENT_QUOTED_TWEET;
+        return Cb.StreamMessageType.EVENT_QUOTED_TWEET;
     }
 
     return 0;
