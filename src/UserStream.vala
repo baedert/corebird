@@ -30,7 +30,6 @@ public class UserStream : Object {
   public string token_secret {
     set { proxy.token_secret = value; }
   }
-  private unowned Account account;
 
   // Signals
   public signal void interrupted ();
@@ -43,9 +42,8 @@ public class UserStream : Object {
 
 
 
-  public UserStream (Account account) {
-    this.account_name = account.screen_name;
-    this.account = account;
+  public UserStream (string account_name) {
+    this.account_name = account_name;
     this.receivers = new GLib.GenericArray<unowned Cb.MessageReceiver> ();
     debug ("CREATING USER STREAM FOR " + account_name);
 
