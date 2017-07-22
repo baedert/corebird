@@ -23,8 +23,12 @@ class UserEventReceiver : GLib.Object, Cb.MessageReceiver {
   }
 
   public void stream_message_received (Cb.StreamMessageType type,
-                                       Json.Node         root_node) {
+                                       Json.Node            root_node) {
     switch (type) {
+      case Cb.StreamMessageType.FRIENDS:
+        account.set_friends (root_node.get_object ().get_array_member ("friends"));
+        break;
+
       case Cb.StreamMessageType.EVENT_FOLLOW:
         int64 user_id = root_node.get_object ().get_object_member ("target")
                                  .get_int_member ("id");

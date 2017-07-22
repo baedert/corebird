@@ -269,7 +269,6 @@ public class UserStream : Object {
       else if (root.has_member ("disconnect"))
         type = Cb.StreamMessageType.DISCONNECT;
       else if (root.has_member ("friends")) {
-        account.set_friends (root.get_array_member ("friends"));
         type = Cb.StreamMessageType.FRIENDS;
       } else if (root.has_member ("text"))
         type = Cb.StreamMessageType.TWEET;
