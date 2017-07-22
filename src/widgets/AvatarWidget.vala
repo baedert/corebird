@@ -41,7 +41,9 @@ public class AvatarWidget : Gtk.Widget {
       if (this._surface != null) {
         Twitter.get ().ref_avatar (this._surface);
         if (animate)
-          container_widget.start_animation ();
+          this.start_animation ();
+        else
+          container_widget.set_opacity (1.0);
       }
 
       container_widget.surface = this._surface;
@@ -58,6 +60,7 @@ public class AvatarWidget : Gtk.Widget {
     default = 48;
   }
 
+  private int64 start_time;
   private AvatarContainer container_widget;
 
   static construct {
@@ -69,6 +72,7 @@ public class AvatarWidget : Gtk.Widget {
 
     container_widget = new AvatarContainer ();
     container_widget.set_parent (this);
+    container_widget.set_opacity (0.0);
   }
 
   ~AvatarWidget () {
@@ -125,6 +129,34 @@ public class AvatarWidget : Gtk.Widget {
     this.snapshot_child (container_widget, snapshot);
   }
 
+  /* We do the animation here so we can just set the avatar container's opacity,
+     which will make the border etc. also transition. */
+  public void start_animation () {
+    if (!this.get_realized ()) {
+      container_widget.set_opacity (1.0);
+      return;
+    }
+
+    container_widget.set_opacity (0.0);
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (fade_in_cb);
+  }
+
+  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    int64 now = frame_clock.get_frame_time ();
+    double t = (now - start_time) / (double) TRANSITION_DURATION;
+
+    if (t >= 1.0) {
+      t = 1.0;
+    }
+
+    container_widget.set_opacity (ease_out_cubic (t));
+    this.queue_draw ();
+
+    return t < 1.0;
+  }
+
+
 }
 
 public class AvatarContainer : Gtk.Widget {
@@ -152,8 +184,6 @@ public class AvatarContainer : Gtk.Widget {
     }
   }
 
-  private double alpha = 1.0f;
-  private int64 start_time;
   public Cairo.Surface surface;
 
 
@@ -192,30 +222,6 @@ public class AvatarContainer : Gtk.Widget {
   ~AvatarContainer () {
     if (this.surface != null)
       Twitter.get ().unref_avatar (this.surface);
-  }
-
-
-  public void start_animation () {
-    if (!this.get_realized ())
-      return;
-
-    alpha = 0.0;
-    this.start_time = this.get_frame_clock ().get_frame_time ();
-    this.add_tick_callback (fade_in_cb);
-  }
-
-  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
-    int64 now = frame_clock.get_frame_time ();
-    double t = (now - start_time) / (double) TRANSITION_DURATION;
-
-    if (t >= 1.0) {
-      t = 1.0;
-    }
-
-    this.alpha = ease_out_cubic (t);
-    this.queue_draw ();
-
-    return t < 1.0;
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
@@ -269,7 +275,6 @@ public class AvatarContainer : Gtk.Widget {
       verified_bounds.size.width = VERIFIED_SIZES[index] * verified_scale;
       verified_bounds.size.height = VERIFIED_SIZES[index] * verified_scale;
 
-      // TODO: Alpha?
       snapshot.append_texture (verified_texture, verified_bounds, "Avatar Verified Indicator");
     }
   }
