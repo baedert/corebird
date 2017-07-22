@@ -12,6 +12,39 @@ namespace Cb {
     UNKNOWN
   }
 
+  [CCode (cprefix = "CB_STREAM_MESSAGE_", cheader_filename = "CbUserStream.h")]
+  public enum StreamMessageType {
+    UNSUPPORTED,
+    DELETE,
+    DM_DELETE,
+    SCRUB_GEO,
+    LIMIT,
+    DISCONNECT,
+    FRIENDS,
+    EVENT,
+    WARNING,
+    DIRECT_MESSAGE,
+
+    TWEET,
+    EVENT_LIST_CREATED,
+    EVENT_LIST_DESTROYED,
+    EVENT_LIST_UPDATED,
+    EVENT_LIST_UNSUBSCRIBED,
+    EVENT_LIST_SUBSCRIBED,
+    EVENT_LIST_MEMBER_ADDED,
+    EVENT_LIST_MEMBER_REMOVED,
+    EVENT_FAVORITE,
+    EVENT_UNFAVORITE,
+    EVENT_FOLLOW,
+    EVENT_UNFOLLOW,
+    EVENT_BLOCK,
+    EVENT_UNBLOCK,
+    EVENT_MUTE,
+    EVENT_UNMUTE,
+    EVENT_USER_UPDATE,
+    EVENT_QUOTED_TWEET
+  }
+
   [CCode (cprefix = "CbMedia_", lower_case_cprefix = "cb_media_", cheader_filename = "CbMedia.h")]
   public class Media : GLib.Object {
     public int64 length;
@@ -251,6 +284,14 @@ namespace Cb {
     public abstract void set_last_set_timediff (GLib.TimeSpan span);
     public abstract GLib.TimeSpan get_last_set_timediff ();
   }
+
+  [CCode (cprefix = "CbMessageReceiverInterface_", lower_case_cprefix = "cb_message_receiver_", cheader_filename =
+          "CbMessageReceiver.h", type_cname = "CbMessageReceiverInterface")]
+  public interface MessageReceiver : GLib.Object {
+    public abstract void stream_message_received (Cb.StreamMessageType type,
+                                                  Json.Node node);
+  }
+
 
   [CCode (cprefix = "CbDeltaUpdater_", lower_case_cprefix = "cb_delta_updater_", cheader_filename =
           "CbDeltaUpdater.h")]

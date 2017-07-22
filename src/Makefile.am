@@ -39,7 +39,6 @@ libcorebird_la_VALASOURCES = \
 	SearchPage.vala \
 	DMPage.vala \
 	UserStream.vala \
-	IMessageReceiver.vala \
 	IPage.vala \
 	DefaultTimeline.vala \
 	DMThreadsPage.vala \
@@ -157,7 +156,10 @@ libcorebird_la_SOURCES = \
 	CbMediaVideoWidget.h \
 	CbMediaVideoWidget.c \
 	CbSurfaceProgress.h \
-	CbSurfaceProgress.c
+	CbSurfaceProgress.c \
+	CbMessageReceiver.h \
+	CbMessageReceiver.c \
+	CbUserStream.h
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \

@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class HomeTimeline : IMessageReceiver, DefaultTimeline {
+public class HomeTimeline : Cb.MessageReceiver, DefaultTimeline {
   protected override string function {
     get {
       return "1.1/statuses/home_timeline.json";
@@ -28,33 +28,33 @@ public class HomeTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account = account;
   }
 
-  public void stream_message_received (StreamMessageType type, Json.Node root) {
-    if (type == StreamMessageType.TWEET) {
+  public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
+    if (type == Cb.StreamMessageType.TWEET) {
       add_tweet (root);
-    } else if (type == StreamMessageType.DELETE) {
+    } else if (type == Cb.StreamMessageType.DELETE) {
       int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
       delete_tweet (id);
-    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
       if (source_id == account.id)
         toggle_favorite (id, true);
-    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       int64 source_id = root.get_object ().get_object_member ("source").get_int_member ("id");
       if (source_id == account.id)
         toggle_favorite (id, false);
-    } else if (type == StreamMessageType.EVENT_BLOCK) {
+    } else if (type == Cb.StreamMessageType.EVENT_BLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
       hide_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
-    } else if (type == StreamMessageType.EVENT_UNBLOCK) {
+    } else if (type == Cb.StreamMessageType.EVENT_UNBLOCK) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
       show_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_BLOCKED);
-    } else if (type == StreamMessageType.EVENT_MUTE) {
+    } else if (type == Cb.StreamMessageType.EVENT_MUTE) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
       hide_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_MUTED);
-    } else if (type == StreamMessageType.EVENT_UNMUTE) {
+    } else if (type == Cb.StreamMessageType.EVENT_UNMUTE) {
       int64 user_id = root.get_object ().get_object_member ("target").get_int_member ("id");
       show_tweets_from (user_id, Cb.TweetState.HIDDEN_AUTHOR_MUTED);
     }

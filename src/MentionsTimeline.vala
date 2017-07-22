@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class MentionsTimeline : IMessageReceiver, DefaultTimeline {
+class MentionsTimeline : Cb.MessageReceiver, DefaultTimeline {
   protected override string function {
     get {
       return "1.1/statuses/mentions_timeline.json";
@@ -28,17 +28,17 @@ class MentionsTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account= account;
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) {
-    if (type == StreamMessageType.TWEET) {
+  private void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
+    if (type == Cb.StreamMessageType.TWEET) {
       add_tweet (root);
-    } else if (type == StreamMessageType.DELETE) {
+    } else if (type == Cb.StreamMessageType.DELETE) {
       int64 id = root.get_object ().get_object_member ("delete")
                      .get_object_member ("status").get_int_member ("id");
       delete_tweet (id);
-    } else if (type == StreamMessageType.EVENT_FAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_FAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, true);
-    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);
     }

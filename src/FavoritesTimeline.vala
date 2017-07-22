@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
+class FavoritesTimeline : Cb.MessageReceiver, DefaultTimeline {
   protected override string function {
     get {
       return "1.1/favorites/list.json";
@@ -28,8 +28,8 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
     this.tweet_list.account = account;
   }
 
-  private void stream_message_received (StreamMessageType type, Json.Node root) {
-    if (type == StreamMessageType.EVENT_FAVORITE) {
+  private void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
+    if (type == Cb.StreamMessageType.EVENT_FAVORITE) {
       Json.Node tweet_obj = root.get_object ().get_member ("target_object");
       int64 tweet_id = tweet_obj.get_object ().get_int_member ("id");
 
@@ -49,7 +49,7 @@ class FavoritesTimeline : IMessageReceiver, DefaultTimeline {
       tweet.load_from_json (tweet_obj, account.id, new GLib.DateTime.now_local ());
       tweet.set_flag (Cb.TweetState.FAVORITED);
       this.tweet_list.model.add (tweet);
-    } else if (type == StreamMessageType.EVENT_UNFAVORITE) {
+    } else if (type == Cb.StreamMessageType.EVENT_UNFAVORITE) {
       int64 id = root.get_object ().get_object_member ("target_object").get_int_member ("id");
       toggle_favorite (id, false);
     }

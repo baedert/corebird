@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
-class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
+class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
   private bool initialized = false;
   private int _unread_count = 0;
   public int unread_count {
@@ -143,8 +143,8 @@ class DMThreadsPage : IPage, IMessageReceiver, ScrollWidget {
       }
     }
   }
-  public void stream_message_received (StreamMessageType type, Json.Node root) {
-    if (type == StreamMessageType.DIRECT_MESSAGE) {
+  public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
+    if (type == Cb.StreamMessageType.DIRECT_MESSAGE) {
       var obj = root.get_object ().get_object_member ("direct_message");
       this.manager.insert_message (obj);
     }

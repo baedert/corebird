@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
-class DMPage : IPage, IMessageReceiver, Gtk.Box {
+class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   public const int KEY_SENDER_ID   = 0;
   public const int KEY_SCREEN_NAME = 1;
   public const int KEY_USER_NAME   = 2;
@@ -66,8 +66,8 @@ class DMPage : IPage, IMessageReceiver, Gtk.Box {
     });
   }
 
-  public void stream_message_received (StreamMessageType type, Json.Node root) {
-    if (type == StreamMessageType.DIRECT_MESSAGE) {
+  public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
+    if (type == Cb.StreamMessageType.DIRECT_MESSAGE) {
       // Arriving new dms get already cached in the DMThreadsPage
       var obj = root.get_object ().get_object_member ("direct_message");
 
