@@ -322,7 +322,16 @@ continuous_cb (RestProxyCall *call,
       if (len == 2 &&
           buf[0] == '\r' && buf[1] == '\n')
         {
-          g_debug ("HEARTBEAT (%s)", self->account_name);
+#if DEBUG
+          char *date;
+          GDateTime *now = g_date_time_new_now_local ();
+
+          date = g_date_time_format (now, "%k:%M:%S");
+
+          g_debug ("HEARTBEAT (%s) %s", self->account_name, date);
+          g_free (date);
+          g_date_time_unref (now);
+#endif
           g_string_erase (self->data, 0, -1);
           if (self->heartbeat_timeout_id > 0)
             {
