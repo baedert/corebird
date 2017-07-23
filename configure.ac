@@ -49,7 +49,6 @@ AM_CONDITIONAL([DISABLE_SPELLCHECK], [ test "$enable_spellcheck" = "yes"])
 
 pkg_modules="gtk+-4.0 >= 3.89
              glib-2.0 >= 2.44
-             rest-0.7 >= 0.7.93
              libsoup-2.4
              json-glib-1.0
              sqlite3"
@@ -64,11 +63,14 @@ fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])
 
+# We do this again for librest. TODO: Do this only once.
+PKG_CHECK_MODULES(SOUP, libsoup-2.4 >= 2.42)
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.38)
+
 
 CB_VALA_FLAGS=" \
   --pkg gtk+-4.0 \
   --pkg json-glib-1.0 \
-  --pkg rest-0.7 \
   --pkg sqlite3 \
   --pkg libsoup-2.4 \
   --pkg glib-2.0 \
@@ -150,7 +152,8 @@ data/hicolor/16x16/Makefile
 data/hicolor/16x16/apps/Makefile
 po/Makefile.in
 tests/Makefile
-examples/Makefile
+src/rest/Makefile
+src/rest/rest/Makefile
 ])
 
 

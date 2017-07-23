@@ -72,24 +72,24 @@ namespace Rest {
 		public unowned global::string get_file_name ();
 		public unowned global::string get_name ();
 		public bool is_string ();
-		public Rest.Param @ref ();
+		public unowned Rest.Param @ref ();
 		[CCode (has_construct_function = false)]
 		public Param.string (global::string name, Rest.MemoryUse use, global::string string);
 		public void unref ();
 		[CCode (has_construct_function = false)]
 		public Param.with_owner (global::string name, [CCode (array_length_cname = "length", array_length_pos = 2.5, array_length_type = "gsize")] uint8[] data, global::string content_type, global::string? filename, owned void* owner, GLib.DestroyNotify? owner_dnotify);
 	}
-	[CCode (cheader_filename = "rest/rest-params.h")]
+	[CCode (cheader_filename = "rest/rest-params.h", has_type_id = false)]
 	[Compact]
 	public class Params {
-		public void add (Rest.Param param);
+		public void add (owned Rest.Param param);
 		public bool are_strings ();
-		public GLib.HashTable<string,string> as_string_hash_table ();
+		public GLib.HashTable<weak string,weak string> as_string_hash_table ();
 		public void free ();
-		public Rest.Param @get (string name);
+		public unowned Rest.Param? @get (string name);
 		public void remove (string name);
 	}
-	[CCode (cheader_filename = "rest/rest-params.h")]
+	[CCode (cheader_filename = "rest/rest-params.h", has_type_id = false)]
 	[Compact]
 	public class ParamsIter {
 		public void init (Rest.Params @params);
@@ -149,7 +149,7 @@ namespace Rest {
 		public unowned Rest.Params get_params ();
 		public unowned string get_payload ();
 		public int64 get_payload_length ();
-		public GLib.HashTable<weak void*,weak void*> get_response_headers ();
+		public GLib.HashTable<weak string,weak string> get_response_headers ();
 		public uint get_status_code ();
 		public unowned string get_status_message ();
 		public async bool invoke_async (GLib.Cancellable? cancellable) throws GLib.Error;
@@ -167,7 +167,7 @@ namespace Rest {
 		public void set_function (string function);
 		public void set_method (string method);
 		public bool sync () throws GLib.Error;
-		public bool upload ([CCode (delegate_target_pos = 2.1)] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
+		public bool upload ([CCode (delegate_target_pos = 2.1, scope = "async")] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
 		[NoAccessorMethod]
 		public Rest.Proxy proxy { owned get; construct; }
 	}
@@ -185,7 +185,7 @@ namespace Rest {
 		public void free ();
 		public unowned string get_attr (string attr_name);
 		public string print ();
-		public Rest.XmlNode @ref ();
+		public unowned Rest.XmlNode @ref ();
 		public void set_content (string value);
 		public void unref ();
 	}

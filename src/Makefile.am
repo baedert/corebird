@@ -1,10 +1,12 @@
+SUBDIRS = rest
 
 AM_CPPFLAGS = \
 	$(CB_CFLAGS) \
 	-include $(CONFIG_HEADER) \
 	-DDATADIR=\"$(datadir)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
-	-DG_LOG_DOMAIN=\"corebird\"
+	-DG_LOG_DOMAIN=\"corebird\" \
+	-Irest/
 
 
 AM_VALAFLAGS = \
@@ -20,6 +22,7 @@ AM_VALAFLAGS = \
 	-D G_LOG_DOMAIN=\"corebird\" \
 	$(top_srcdir)/vapi/config.vapi \
 	$(top_srcdir)/vapi/corebird-internal.vapi \
+	$(top_srcdir)/vapi/rest-0.7.vapi \
 	-C \
 	$(NULL)
 
@@ -185,7 +188,8 @@ nodist_corebird_SOURCES = \
 
 corebird_LDADD = \
 	$(CB_LIBS) \
-	$(builddir)/libcorebird.la
+	$(builddir)/libcorebird.la \
+	rest/rest/librest.la
 
 corebird_VALAFLAGS = \
 	$(CB_VALA_FLAGS) \
