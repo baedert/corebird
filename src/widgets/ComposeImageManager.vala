@@ -251,14 +251,12 @@ class ComposeImageManager : Gtk.Container {
       this.snapshot_child (btn, snapshot);
     }
 
-#if REST081
     if (_upload_started) {
       for (int i = 0, p = this.progress_bars.length; i < p; i ++) {
         var bar = this.progress_bars.get (i);
         this.snapshot_child (bar, snapshot);
       }
     }
-#endif
   }
   // }}}
 
