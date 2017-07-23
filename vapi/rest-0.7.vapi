@@ -72,7 +72,7 @@ namespace Rest {
 		public unowned global::string get_file_name ();
 		public unowned global::string get_name ();
 		public bool is_string ();
-		public unowned Rest.Param @ref ();
+		public Rest.Param @ref ();
 		[CCode (has_construct_function = false)]
 		public Param.string (global::string name, Rest.MemoryUse use, global::string string);
 		public void unref ();
@@ -124,7 +124,7 @@ namespace Rest {
 		public string username { owned get; set; }
 		public virtual signal bool authenticate (Rest.ProxyAuth auth, bool retrying);
 	}
-	[CCode (cheader_filename = "rest/oauth-proxy-call.h,rest/oauth-proxy.h,rest/oauth2-proxy-call.h,rest/oauth2-proxy.h,rest/rest-enum-types.h,rest/rest-param.h,rest/rest-params.h,rest/rest-proxy-auth.h,rest/rest-proxy-call.h,rest/rest-proxy.h,rest/rest-xml-node.h,rest/rest-xml-parser.h", type_id = "rest_proxy_auth_get_type ()")]
+	[CCode (cheader_filename = "rest/oauth-proxy-call.h,rest/oauth-proxy.h,rest/oauth2-proxy-call.h,rest/oauth2-proxy.h,rest/rest-enum-types.h,rest/rest-param.h,rest/rest-params.h,rest/rest-proxy-auth.h,rest/rest-proxy-call.h,rest/rest-proxy.h", type_id = "rest_proxy_auth_get_type ()")]
 	public class ProxyAuth : GLib.Object {
 		[CCode (has_construct_function = false)]
 		protected ProxyAuth ();
@@ -167,33 +167,9 @@ namespace Rest {
 		public void set_function (string function);
 		public void set_method (string method);
 		public bool sync () throws GLib.Error;
-		public bool upload ([CCode (delegate_target_pos = 2.1, scope = "async")] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
+		public bool upload ([CCode (delegate_target_pos = 2.1)] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
 		[NoAccessorMethod]
 		public Rest.Proxy proxy { owned get; construct; }
-	}
-	[CCode (cheader_filename = "rest/rest-xml-node.h", ref_function = "rest_xml_node_ref", type_id = "rest_xml_node_get_type ()", unref_function = "rest_xml_node_unref")]
-	[Compact]
-	public class XmlNode {
-		public weak GLib.HashTable<void*,void*> attrs;
-		public weak GLib.HashTable<void*,void*> children;
-		public weak string content;
-		public weak string name;
-		public weak Rest.XmlNode next;
-		public void add_attr (string attribute, string value);
-		public unowned Rest.XmlNode add_child (string tag);
-		public Rest.XmlNode find (string tag);
-		public void free ();
-		public unowned string get_attr (string attr_name);
-		public string print ();
-		public unowned Rest.XmlNode @ref ();
-		public void set_content (string value);
-		public void unref ();
-	}
-	[CCode (cheader_filename = "rest/rest-xml-parser.h", type_id = "rest_xml_parser_get_type ()")]
-	public class XmlParser : GLib.Object {
-		[CCode (has_construct_function = false)]
-		public XmlParser ();
-		public Rest.XmlNode parse_from_data (string data, int64 len);
 	}
 	[CCode (cheader_filename = "rest/rest-param.h", cprefix = "REST_MEMORY_", has_type_id = false)]
 	public enum MemoryUse {
