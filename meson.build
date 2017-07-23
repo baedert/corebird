@@ -86,7 +86,6 @@ corebird_lib_sources = files([
   'src/TweetInfoPage.vala',
   'src/Twitter.vala',
   'src/UserEventReceiver.vala',
-  'src/UserStream.vala',
   'src/async/Collect.vala',
   'src/async/ComposeJob.vala',
   'src/list/AddListEntry.vala',

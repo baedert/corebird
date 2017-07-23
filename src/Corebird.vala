@@ -576,8 +576,7 @@ public class Corebird : Gtk.Application {
     for (int i = 0; i < this.active_accounts.length; i ++) {
       var acc = this.active_accounts.get (i);
       if (acc.screen_name == screen_name) {
-        var fake_call = acc.proxy.new_call ();
-        acc.user_stream.parse_data_cb (fake_call, json, json.length, null);
+        acc.user_stream.push_data (json);
         return;
       }
     }

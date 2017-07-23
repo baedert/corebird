@@ -366,4 +366,19 @@ namespace Cb {
     public MediaVideoWidget (Media media);
     public void start ();
   }
+
+  [CCode (cprefix = "CbUserStream_", lower_case_cprefix = "cb_user_stream_", cheader_filename =
+          "CbUserStream.h")]
+  public class UserStream : GLib.Object {
+    public UserStream (string name);
+    public void register (MessageReceiver r);
+    public void unregister (MessageReceiver r);
+    public void push_data (string data);
+    public void start ();
+    public void stop ();
+    public void set_proxy_data (string a, string b);
+
+    public signal void interrupted ();
+    public signal void resumed ();
+  }
 }

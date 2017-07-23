@@ -41,7 +41,6 @@ libcorebird_la_VALASOURCES = \
 	MentionsTimeline.vala \
 	SearchPage.vala \
 	DMPage.vala \
-	UserStream.vala \
 	IPage.vala \
 	DefaultTimeline.vala \
 	DMThreadsPage.vala \
@@ -163,6 +162,7 @@ libcorebird_la_SOURCES = \
 	CbMessageReceiver.h \
 	CbMessageReceiver.c \
 	CbUserStream.h \
+	CbUserStream.c \
 	rest/rest/rest-param.c \
 	rest/rest/rest-params.c \
 	rest/rest/rest-proxy.c \

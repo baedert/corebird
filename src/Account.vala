@@ -26,7 +26,7 @@ public class Account : GLib.Object {
   public string? website          {public get; public  set;}
   public string? description      {public get; public  set;}
   public Rest.OAuthProxy proxy;
-  public UserStream user_stream;
+  public Cb.UserStream user_stream;
   public Cb.UserCounter user_counter;
   public NotificationManager notifications;
   public int64[] friends;
@@ -101,14 +101,15 @@ public class Account : GLib.Object {
                                       Settings.get_consumer_secret (),
                                       "https://api.twitter.com/",
                                       false);
-    this.user_stream = new UserStream (this.screen_name);
+    this.user_stream = new Cb.UserStream (this.screen_name);
     this.user_stream.register (this.event_receiver);
     if (load_secrets) {
       init_database ();
       int n_rows = db.select ("common").cols ("token", "token_secret")
                                        .run ((vals) => {
-        proxy.token = user_stream.token = vals[0];
-        proxy.token_secret = user_stream.token_secret = vals[1];
+        proxy.token = vals[0];
+        proxy.token_secret = vals[1];
+        user_stream.set_proxy_data (proxy.token, proxy.token_secret);
         return false; //stop
       });
 
