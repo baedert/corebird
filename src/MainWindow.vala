@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/main-window.ui")]
 public class MainWindow : Gtk.ApplicationWindow {
   private const GLib.ActionEntry[] win_entries = {
     {"compose-tweet",       show_hide_compose_window},
@@ -26,28 +25,17 @@ public class MainWindow : Gtk.ApplicationWindow {
     {"previous",            previous},
     {"next",                next}
   };
-  [GtkChild]
   private Gtk.HeaderBar headerbar;
-  [GtkChild]
   private AvatarWidget avatar_image;
-  [GtkChild]
   private Gtk.ListBox account_list;
-  [GtkChild]
   private Gtk.Popover account_popover;
-  [GtkChild]
   private Gtk.Box header_box;
-  [GtkChild]
   private Gtk.ToggleButton account_button;
-  [GtkChild]
-  public Gtk.Button back_button;
-  [GtkChild]
-  public Gtk.ToggleButton compose_tweet_button;
-  [GtkChild]
   private Gtk.Label title_label;
-  [GtkChild]
   private Gtk.Label last_page_label;
-  [GtkChild]
   private Gtk.Stack title_stack;
+  public Gtk.Button back_button;
+  public Gtk.ToggleButton compose_tweet_button;
 
   private Gtk.MenuButton app_menu_button = null;
   public MainWidget main_widget;
@@ -73,6 +61,67 @@ public class MainWindow : Gtk.ApplicationWindow {
       debug ("Focus widget now: %s %p", w != null ? __class_name (w) : "(null)", w);
     });
 #endif
+
+
+    /* Create widgets */
+    this.set_show_menubar (false);
+    this.set_icon_name ("corebird");
+    this.set_title ("Corebird");
+    this.delete_event.connect (window_delete_cb);
+
+    this.headerbar = new Gtk.HeaderBar ();
+    headerbar.set_title ("Corebird");
+    headerbar.set_show_close_button (true);
+
+    this.title_stack = new Gtk.Stack ();
+    this.title_label = new Gtk.Label ("");
+    title_label.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
+    title_label.get_style_context ().add_class ("title");
+    title_stack.add (title_label);
+    this.last_page_label = new Gtk.Label ("");
+    last_page_label.set_ellipsize (Pango.EllipsizeMode.MIDDLE);
+    last_page_label.get_style_context ().add_class ("title");
+    title_stack.add (last_page_label);
+    headerbar.set_custom_title (title_stack);
+
+    this.header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    this.account_button = new Gtk.ToggleButton ();
+    account_button.set_tooltip_text (_("Show configured accounts"));
+    account_button.clicked.connect (account_button_clicked_cb);
+    account_button.get_style_context ().add_class ("account-button");
+    this.avatar_image = new AvatarWidget ();
+    avatar_image.size = 24;
+    avatar_image.set_valign (Gtk.Align.CENTER);
+    account_button.add (avatar_image);
+    header_box.add (account_button);
+    this.compose_tweet_button = new Gtk.ToggleButton ();
+    compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic",
+                                                            Gtk.IconSize.BUTTON));
+    compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
+    compose_tweet_button.set_action_name ("win.compose-tweet");
+    compose_tweet_button.get_style_context ().add_class ("image-button");
+    header_box.add (compose_tweet_button);
+    this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
+    back_button.clicked.connect (back_button_clicked_cb);
+    header_box.add (back_button);
+    headerbar.pack_start (header_box);
+    headerbar.show_all ();
+    this.set_titlebar (headerbar);
+
+    this.account_popover = new Gtk.Popover (account_button);
+    account_popover.closed.connect (account_popover_closed_cb);
+    var frame = new Gtk.Frame (null);
+    frame.set_margin_start (6);
+    frame.set_margin_end (6);
+    frame.set_margin_top (6);
+    frame.set_margin_bottom (6);
+    this.account_list = new Gtk.ListBox ();
+    account_list.set_selection_mode (Gtk.SelectionMode.NONE);
+    account_list.row_activated.connect (account_row_activated_cb);
+    frame.add (account_list);
+    account_popover.add (frame);
+    account_popover.show_all ();
+
     change_account (account);
 
     account_list.set_sort_func (account_sort_func);
@@ -137,12 +186,9 @@ public class MainWindow : Gtk.ApplicationWindow {
     load_geometry ();
   }
 
-  [GtkCallback]
   private void back_button_clicked_cb () {
     main_widget.switch_page (Page.PREVIOUS);
   }
-
-
 
   public void change_account (Account? account) {
     int64? old_user_id = null;
@@ -217,7 +263,6 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   }
 
-  [GtkCallback]
   private void account_row_activated_cb (Gtk.ListBoxRow row) {
     if (row is AddListEntry) {
       account_popover.popdown ();
@@ -335,7 +380,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     return main_widget.get_page (page_id);
   }
 
-  [GtkCallback]
   private void account_button_clicked_cb () {
     if (account_popover.visible) {
       account_popover.popdown ();
@@ -344,12 +388,10 @@ public class MainWindow : Gtk.ApplicationWindow {
     }
   }
 
-  [GtkCallback]
   private void account_popover_closed_cb () {
     account_button.active = false;
   }
 
-  [GtkCallback]
   private bool window_delete_cb (Gdk.EventAny evt) {
     if (main_widget != null)
       main_widget.stop ();
