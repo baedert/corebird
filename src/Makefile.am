@@ -1,5 +1,3 @@
-SUBDIRS = rest
-
 AM_CPPFLAGS = \
 	$(CB_CFLAGS) \
 	-include $(CONFIG_HEADER) \
@@ -164,7 +162,31 @@ libcorebird_la_SOURCES = \
 	CbSurfaceProgress.c \
 	CbMessageReceiver.h \
 	CbMessageReceiver.c \
-	CbUserStream.h
+	CbUserStream.h \
+	rest/rest/rest-param.c \
+	rest/rest/rest-params.c \
+	rest/rest/rest-proxy.c \
+	rest/rest/rest-proxy-auth.c \
+	rest/rest/rest-proxy-auth-private.h \
+	rest/rest/rest-proxy-call.c \
+	rest/rest/rest-proxy-call-private.h \
+	rest/rest/rest-main.c \
+	rest/rest/rest-private.h \
+	rest/rest/oauth-proxy.c \
+	rest/rest/oauth-proxy-call.c \
+	rest/rest/oauth-proxy-private.h \
+	rest/rest/sha1.c \
+	rest/rest/sha1.h \
+	rest/rest/rest-param.h \
+	rest/rest/rest-params.h \
+	rest/rest/rest-proxy.h \
+	rest/rest/rest-proxy-auth.h \
+	rest/rest/rest-proxy-call.h \
+	rest/rest/oauth-proxy.h \
+	rest/rest/oauth-proxy-call.h
+
+
+
 
 libcorebird_la_vala.stamp: $(libcorebird_la_VALASOURCES) Makefile
 	@$(VALAC) \
@@ -188,8 +210,7 @@ nodist_corebird_SOURCES = \
 
 corebird_LDADD = \
 	$(CB_LIBS) \
-	$(builddir)/libcorebird.la \
-	rest/rest/librest.la
+	$(builddir)/libcorebird.la
 
 corebird_VALAFLAGS = \
 	$(CB_VALA_FLAGS) \
