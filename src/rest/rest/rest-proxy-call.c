@@ -626,7 +626,7 @@ _continuous_call_message_completed_cb (SoupSession *session,
   priv->status_code = message->status_code;
   priv->status_message = g_strdup (message->reason_phrase);
 
-  finish_call (call, message, &error);
+  _handle_error_from_message (message, &error);
 
   closure->callback (closure->call,
                      NULL,
@@ -1057,10 +1057,7 @@ _upload_call_message_completed_cb (SoupSession *session,
   call = closure->call;
   priv = GET_PRIVATE (call);
 
-  priv->status_code = message->status_code;
-  priv->status_message = g_strdup (message->reason_phrase);
-
-  _handle_error_from_message (message, &error);
+  finish_call (call, message, &error);
 
   closure->callback (closure->call,
                      closure->uploaded,
