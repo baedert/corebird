@@ -26,7 +26,6 @@
     <file preprocess="xml-stripblanks">ui/filter-list-entry.ui</file>
     <file preprocess="xml-stripblanks">ui/modify-filter-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/user-filter-entry.ui</file>
-    <file preprocess="xml-stripblanks">ui/main-widget.ui</file>
     <file preprocess="xml-stripblanks">ui/account-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/media-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
