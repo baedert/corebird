@@ -20,8 +20,7 @@
 
 #include <glib-object.h>
 #include <json-glib/json-glib.h>
-
-#include "CbUserStream.h"
+#include "CbTypes.h"
 
 #define CB_TYPE_MESSAGE_RECEIVER (cb_message_receiver_get_type())
 

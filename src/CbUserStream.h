@@ -19,43 +19,11 @@
 #define __CB_USER_STREAM_H__
 
 #include <glib-object.h>
-#include <rest/rest-proxy.h>
+#include "rest/rest/rest-proxy.h"
+#include "CbMessageReceiver.h"
+#include "CbTypes.h"
 
 G_BEGIN_DECLS
-
-typedef enum {
-  CB_STREAM_MESSAGE_UNSUPPORTED,
-  CB_STREAM_MESSAGE_DELETE,
-  CB_STREAM_MESSAGE_DM_DELETE,
-  CB_STREAM_MESSAGE_SCRUB_GEO,
-  CB_STREAM_MESSAGE_LIMIT,
-  CB_STREAM_MESSAGE_DISCONNECT,
-  CB_STREAM_MESSAGE_FRIENDS,
-  CB_STREAM_MESSAGE_EVENT,
-  CB_STREAM_MESSAGE_WARNING,
-  CB_STREAM_MESSAGE_DIRECT_MESSAGE,
-  CB_STREAM_MESSAGE_TWEET,
-
-  CB_STREAM_MESSAGE_EVENT_LIST_CREATED,
-  CB_STREAM_MESSAGE_EVENT_LIST_DESTROYED,
-  CB_STREAM_MESSAGE_EVENT_LIST_UPDATED,
-  CB_STREAM_MESSAGE_EVENT_LIST_UNSUBSCRIBED,
-  CB_STREAM_MESSAGE_EVENT_LIST_SUBSCRIBED,
-  CB_STREAM_MESSAGE_EVENT_LIST_MEMBER_ADDED,
-  CB_STREAM_MESSAGE_EVENT_LIST_MEMBER_REMOVED,
-  CB_STREAM_MESSAGE_EVENT_FAVORITE,
-  CB_STREAM_MESSAGE_EVENT_UNFAVORITE,
-  CB_STREAM_MESSAGE_EVENT_FOLLOW,
-  CB_STREAM_MESSAGE_EVENT_UNFOLLOW,
-  CB_STREAM_MESSAGE_EVENT_BLOCK,
-  CB_STREAM_MESSAGE_EVENT_UNBLOCK,
-  CB_STREAM_MESSAGE_EVENT_MUTE,
-  CB_STREAM_MESSAGE_EVENT_UNMUTE,
-  CB_STREAM_MESSAGE_EVENT_USER_UPDATE,
-  CB_STREAM_MESSAGE_EVENT_QUOTED_TWEET
-} CbStreamMessageType;
-
-#if 0
 typedef struct _CbUserStream      CbUserStream;
 
 #define CB_TYPE_USER_STREAM (cb_user_stream_get_type ())
@@ -65,9 +33,22 @@ struct _CbUserStream
 {
   GObject parent_instance;
 
+  GString *data;
   GPtrArray *receivers;
   RestProxy *proxy;
+  RestProxyCall *proxy_call;
   GNetworkMonitor *network_monitor;
+
+  guint network_timeout_id;
+  guint heartbeat_timeout_id;
+
+  char *account_name;
+
+  guint proxy_data_set : 1;
+  guint network_available: 1;
+  guint stopping : 1;
+  guint running : 1;
+  guint restarting : 1;
 };
 
 struct _CbUserStreamClass
@@ -82,8 +63,20 @@ void          cb_user_stream_set_proxy_data (CbUserStream *self,
                                              const char   *token,
                                              const char   *token_secret);
 
+void          cb_user_stream_register (CbUserStream      *self,
+                                       CbMessageReceiver *receiver);
+
+void          cb_user_stream_unregister (CbUserStream      *self,
+                                         CbMessageReceiver *receiver);
+
+void          cb_user_stream_start (CbUserStream *self);
+
+void          cb_user_stream_stop  (CbUserStream *self);
+
+void          cb_user_stream_push_data (CbUserStream *self,
+                                        const char   *data);
+
 
 G_END_DECLS;
 
-#endif
 #endif
