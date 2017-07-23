@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/main-widget.ui")]
 public class MainWidget : Gtk.Box {
   private unowned Account account;
 
@@ -24,14 +23,9 @@ public class MainWidget : Gtk.Box {
   private Cb.BundleHistory history      = new Cb.BundleHistory ();
   private bool page_switch_lock         = false;
   private ImpostorWidget stack_impostor  = new ImpostorWidget ();
-
-
-  [GtkChild]
   private Gtk.Box top_box;
-  [GtkChild]
   private Gtk.Stack stack;
-  [GtkChild]
-  private Gtk.Revealer sidebar_revealer;
+  private Gtk.Revealer topbar_revealer;
   public int cur_page_id {
     get {
       return history.get_current ();
@@ -43,6 +37,22 @@ public class MainWidget : Gtk.Box {
   public MainWidget (Account account, MainWindow parent, Corebird app) {
     this.account = account;
     app.start_account (account);
+
+    /* Create widgets */
+    this.set_orientation (Gtk.Orientation.VERTICAL);
+    this.topbar_revealer = new Gtk.Revealer ();
+    topbar_revealer.set_reveal_child (true);
+    topbar_revealer.set_transition_type (Gtk.RevealerTransitionType.SLIDE_UP);
+    this.top_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+    top_box.set_hexpand (true);
+    top_box.set_homogeneous (true);
+    top_box.get_style_context ().add_class ("topbar");
+    this.add (top_box);
+
+    this.stack = new Gtk.Stack ();
+    stack.set_hexpand (true);
+    stack.set_vexpand (true);
+    this.add (stack);
 
     stack.add (stack_impostor);
 
@@ -79,7 +89,7 @@ public class MainWidget : Gtk.Box {
       }
     }
 
-    Settings.get ().bind ("sidebar-visible", sidebar_revealer, "reveal-child",
+    Settings.get ().bind ("sidebar-visible", this.topbar_revealer, "reveal-child",
                           SettingsBindFlags.DEFAULT);
   }
 
