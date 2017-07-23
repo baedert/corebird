@@ -265,14 +265,12 @@ class ComposeImageManager : Gtk.Container {
       this.propagate_draw (btn, ct);
     }
 
-#if REST081
     if (_upload_started) {
       for (int i = 0, p = this.progress_bars.length; i < p; i ++) {
         var bar = this.progress_bars.get (i);
         this.propagate_draw (bar, ct);
       }
     }
-#endif
 
     return Gdk.EVENT_PROPAGATE;
   }

@@ -50,12 +50,6 @@ class ComposeJob : GLib.Object {
                                             path);
     call.add_param_full (param);
 
-#if REST081
-    /* rest_proxy_call_debug is broken in librest < 0.8.1,
-     * so we have to do this conditionally since 0.8.1
-     * is not available in the flatpak runtime nor in
-     * most distributions atm.
-     */
     int64 id = -1;
     debug ("rest_proxy_call_upload'ing %s...", path);
     call.upload ((call, total, uploaded, error) => {
@@ -87,22 +81,6 @@ class ComposeJob : GLib.Object {
     yield;
 
     return id;
-
-#else
-    yield call.invoke_async (cancellable);
-    var parser = new Json.Parser ();
-    try {
-      parser.load_from_data (call.get_payload ());
-    } catch (GLib.Error e) {
-      warning (e.message); //XXX Error handling
-      return -1;
-    }
-
-    if (cancellable.is_cancelled ()) return 0;
-
-    var root = parser.get_root ().get_object ();
-    return root.get_int_member ("media_id");
-#endif
   }
 
 
