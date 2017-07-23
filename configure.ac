@@ -161,8 +161,6 @@ data/hicolor/16x16/Makefile
 data/hicolor/16x16/apps/Makefile
 po/Makefile.in
 tests/Makefile
-src/rest/Makefile
-src/rest/rest/Makefile
 ])
 
 
