@@ -49,6 +49,7 @@ struct _CbUserStream
   guint stopping : 1;
   guint running : 1;
   guint restarting : 1;
+  guint stresstest : 1;
 };
 
 struct _CbUserStreamClass
@@ -58,7 +59,8 @@ struct _CbUserStreamClass
 
 GType cb_user_stream_get_type (void) G_GNUC_CONST;
 
-CbUserStream *cb_user_stream_new (const char *account_name);
+CbUserStream *cb_user_stream_new (const char *account_name,
+                                  gboolean    stresstest);
 void          cb_user_stream_set_proxy_data (CbUserStream *self,
                                              const char   *token,
                                              const char   *token_secret);

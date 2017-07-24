@@ -19,10 +19,6 @@
 #include "rest/rest/oauth-proxy.h"
 #include <string.h>
 
-#if DEBUG
-static gboolean STRESSTEST = FALSE;
-#endif
-
 G_DEFINE_TYPE (CbUserStream, cb_user_stream, G_TYPE_OBJECT);
 
 
@@ -143,13 +139,14 @@ cb_user_stream_init (CbUserStream *self)
   self->receivers = g_ptr_array_new ();
   self->data = g_string_new (NULL);
 
-#if DEBUG
-  if (STRESSTEST)
+  if (self->stresstest)
     {
-      /*self->proxy = */
+      self->proxy = oauth_proxy_new ("0rvHLdbzRULZd5dz6X1TUA",
+                                     "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
+                                     "https://stream.twitter.com/",
+                                     FALSE);
     }
   else
-#endif
     {
       /* TODO: We should be getting these from the settings */
       self->proxy = oauth_proxy_new ("0rvHLdbzRULZd5dz6X1TUA",
@@ -190,10 +187,12 @@ cb_user_stream_class_init (CbUserStreamClass *klass)
 }
 
 CbUserStream *
-cb_user_stream_new (const char *account_name)
+cb_user_stream_new (const char *account_name,
+                    gboolean    stresstest)
 {
   CbUserStream *self = CB_USER_STREAM (g_object_new (CB_TYPE_USER_STREAM, NULL));
   self->account_name = g_strdup (account_name);
+  self->stresstest = stresstest;
 
   return self;
 }
@@ -448,11 +447,9 @@ cb_user_stream_start (CbUserStream *self)
 
   self->proxy_call = rest_proxy_new_call (self->proxy);
 
-#if DEBUG
-  if (STRESSTEST)
+  if (self->stresstest)
     rest_proxy_call_set_function (self->proxy_call, "1.1/statuses/sample.json");
   else
- #endif
     rest_proxy_call_set_function (self->proxy_call, "1.1/user.json");
 
   rest_proxy_call_set_method (self->proxy_call, "GET");
