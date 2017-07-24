@@ -6,6 +6,7 @@ project('Corebird', ['vala', 'c'],
 
 gnome = import('gnome')
 srcdir = include_directories('src')
+restdir = include_directories('src/rest/')
 
 
 min_glib_version = '2.44'
@@ -13,7 +14,6 @@ min_glib_version = '2.44'
 glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
 gtk_dep  = dependency('gtk+-3.0', version: '>=3.20')
 json_dep = dependency('json-glib-1.0')
-rest_dep = dependency('rest-0.7', version: '>=0.7.91')
 sql_dep  = dependency('sqlite3')
 soup_dep = dependency('libsoup-2.4')
 
@@ -21,7 +21,6 @@ cb_deps = [
   glib_dep,
   gtk_dep,
   json_dep,
-  rest_dep,
   sql_dep,
   soup_dep
 ]
@@ -33,11 +32,6 @@ add_project_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c'
 add_project_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
 add_project_arguments('--enable-deprecated', language: 'vala')
 add_project_arguments('-D', 'GTK322', language: 'vala')
-
-if (rest_dep.version() >= '0.8.1')
-  add_project_arguments('-D', 'REST081', language: 'vala')
-  add_project_arguments('-DREST081', language: 'c')
-endif
 
 enable_debug = get_option('debug')
 if (enable_debug)
@@ -73,7 +67,6 @@ corebird_lib_sources = files([
   'src/FavoritesTimeline.vala',
   'src/FilterPage.vala',
   'src/HomeTimeline.vala',
-  'src/IMessageReceiver.vala',
   'src/IPage.vala',
   'src/ListStatusesPage.vala',
   'src/ListsPage.vala',
@@ -165,7 +158,36 @@ corebird_lib_sources = files([
   'src/CbSnippetManager.c',
   'src/CbSurfaceProgress.c',
   'src/CbMediaVideoWidget.c',
-  'vapi/corebird-internal.vapi'
+  'src/CbUserStream.c',
+  'src/CbMessageReceiver.c',
+
+
+  # Rest sources
+  'src/rest/rest/rest-param.c',
+  'src/rest/rest/rest-params.c',
+  'src/rest/rest/rest-proxy.c',
+  'src/rest/rest/rest-proxy-auth.c',
+  'src/rest/rest/rest-proxy-auth-private.h',
+  'src/rest/rest/rest-proxy-call.c',
+  'src/rest/rest/rest-proxy-call-private.h',
+  'src/rest/rest/rest-main.c',
+  'src/rest/rest/rest-private.h',
+  'src/rest/rest/oauth-proxy.c',
+  'src/rest/rest/oauth-proxy-call.c',
+  'src/rest/rest/oauth-proxy-private.h',
+  'src/rest/rest/sha1.c',
+  'src/rest/rest/sha1.h',
+  'src/rest/rest/rest-param.h',
+  'src/rest/rest/rest-params.h',
+  'src/rest/rest/rest-proxy.h',
+  'src/rest/rest/rest-proxy-auth.h',
+  'src/rest/rest/rest-proxy-call.h',
+  'src/rest/rest/oauth-proxy.h',
+  'src/rest/rest/oauth-proxy-call.h',
+
+  # Vapi files
+  'vapi/corebird-internal.vapi',
+  'vapi/rest-0.7.vapi'
 ])
 
 # glib resources
@@ -187,7 +209,7 @@ cb_lib = library(
   'corebird',
   corebird_lib_sources,
   dependencies: cb_deps,
-  include_directories: srcdir,
+  include_directories: [srcdir, restdir],
   vala_args: [
     meson.source_root() + '/vapi/config.vapi',
     '--target-glib=' + min_glib_version,
@@ -201,7 +223,7 @@ cb_lib = library(
 cb_dep = declare_dependency(
   link_with: cb_lib,
   dependencies: cb_deps,
-  include_directories: [srcdir, include_directories('.')],
+  include_directories: [srcdir, restdir, include_directories('.')],
 )
 
 
@@ -211,9 +233,10 @@ executable(
   'src/main.vala',
   cb_resources,
   dependencies: [cb_deps, cb_dep],
-  include_directories: srcdir,
+  include_directories: [srcdir, restdir],
   vala_args: [
     meson.source_root() + '/vapi/corebird-internal.vapi',
+    meson.source_root() + '/vapi/rest-0.7.vapi',
   ],
   install: true
 )
