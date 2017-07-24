@@ -25,7 +25,6 @@
 
 #include <libsoup/soup.h>
 
-#include "rest-marshal.h"
 #include "rest-proxy-auth-private.h"
 #include "rest-proxy.h"
 #include "rest-private.h"

@@ -4,7 +4,7 @@ AM_CPPFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	-DPKGDATADIR=\"$(pkgdatadir)\" \
 	-DG_LOG_DOMAIN=\"corebird\" \
-	-Irest/
+	-I$(top_srcdir)/src/rest/
 
 
 AM_VALAFLAGS = \
@@ -161,6 +161,7 @@ libcorebird_la_SOURCES = \
 	CbMessageReceiver.c \
 	CbUserStream.h \
 	CbUserStream.c \
+	CbGtkCompat.h \
 	rest/rest/rest-param.c \
 	rest/rest/rest-params.c \
 	rest/rest/rest-proxy.c \
