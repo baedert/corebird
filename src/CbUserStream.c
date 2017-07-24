@@ -19,7 +19,9 @@
 #include "rest/rest/oauth-proxy.h"
 #include <string.h>
 
+#if DEBUG
 static gboolean STRESSTEST = FALSE;
+#endif
 
 G_DEFINE_TYPE (CbUserStream, cb_user_stream, G_TYPE_OBJECT);
 
