@@ -85,6 +85,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     headerbar.set_custom_title (title_stack);
 
     this.header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    header_box.set_no_show_all (true);
     this.account_button = new Gtk.ToggleButton ();
     account_button.set_tooltip_text (_("Show configured accounts"));
     account_button.clicked.connect (account_button_clicked_cb);
@@ -93,6 +94,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     avatar_image.size = 24;
     avatar_image.set_valign (Gtk.Align.CENTER);
     account_button.add (avatar_image);
+    account_button.show_all ();
     header_box.add (account_button);
     this.compose_tweet_button = new Gtk.ToggleButton ();
     compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic",
@@ -100,10 +102,13 @@ public class MainWindow : Gtk.ApplicationWindow {
     compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
     compose_tweet_button.set_action_name ("win.compose-tweet");
     compose_tweet_button.get_style_context ().add_class ("image-button");
+    compose_tweet_button.show_all ();
     header_box.add (compose_tweet_button);
     this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
     back_button.clicked.connect (back_button_clicked_cb);
+    back_button.show_all ();
     header_box.add (back_button);
+    header_box.show_all ();
     headerbar.pack_start (header_box);
     headerbar.show_all ();
     this.set_titlebar (headerbar);
@@ -206,13 +211,10 @@ public class MainWindow : Gtk.ApplicationWindow {
       remove (get_child ());
     }
 
-    if (!header_box.visible) {
-      header_box.visible = true;
-    }
-
     Corebird cb = (Corebird) GLib.Application.get_default ();
 
     if (account != null && account.screen_name != Account.DUMMY) {
+      header_box.show ();
       main_widget = new MainWidget (account, this, cb);
       this.add (main_widget);
       main_widget.switch_page (0);
