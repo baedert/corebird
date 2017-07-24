@@ -369,7 +369,7 @@ namespace Cb {
   [CCode (cprefix = "CbUserStream_", lower_case_cprefix = "cb_user_stream_", cheader_filename =
           "CbUserStream.h")]
   public class UserStream : GLib.Object {
-    public UserStream (string name);
+    public UserStream (string name, bool b);
     public void register (MessageReceiver r);
     public void unregister (MessageReceiver r);
     public void push_data (string data);
