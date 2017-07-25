@@ -45,7 +45,6 @@ ui/filter-page.ui
 ui/list-list-entry.ui
 ui/list-statuses-page.ui
 ui/load-more-entry.ui
-ui/main-window.ui
 ui/menus.ui
 ui/modify-filter-dialog.ui
 ui/modify-snippet-dialog.ui
