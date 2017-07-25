@@ -85,7 +85,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     headerbar.set_custom_title (title_stack);
 
     this.header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-    header_box.set_no_show_all (true);
+    header_box.hide ();
     this.account_button = new Gtk.ToggleButton ();
     account_button.set_tooltip_text (_("Show configured accounts"));
     account_button.clicked.connect (account_button_clicked_cb);
@@ -94,7 +94,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     avatar_image.size = 24;
     avatar_image.set_valign (Gtk.Align.CENTER);
     account_button.add (avatar_image);
-    account_button.show_all ();
     header_box.add (account_button);
     this.compose_tweet_button = new Gtk.ToggleButton ();
     compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic",
@@ -102,15 +101,11 @@ public class MainWindow : Gtk.ApplicationWindow {
     compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
     compose_tweet_button.set_action_name ("win.compose-tweet");
     compose_tweet_button.get_style_context ().add_class ("image-button");
-    compose_tweet_button.show_all ();
     header_box.add (compose_tweet_button);
     this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
     back_button.clicked.connect (back_button_clicked_cb);
-    back_button.show_all ();
     header_box.add (back_button);
-    header_box.show_all ();
     headerbar.pack_start (header_box);
-    headerbar.show_all ();
     this.set_titlebar (headerbar);
 
     this.account_popover = new Gtk.Popover (account_button);
@@ -125,7 +120,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_list.row_activated.connect (account_row_activated_cb);
     frame.add (account_list);
     account_popover.add (frame);
-    account_popover.show_all ();
 
     change_account (account);
 
