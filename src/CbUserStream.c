@@ -28,6 +28,13 @@ enum {
   LAST_SIGNAL
 };
 
+enum {
+  STATE_STOPPED,    /* Initial state */
+  STATE_RUNNING,    /* Started and message received */
+  STATE_STARTED,    /* Started, but no message/heartbeat received yet */
+  STATE_STOPPING,   /* Stopping the stream */
+};
+
 static guint user_stream_signals[LAST_SIGNAL] = { 0 };
 
 static void
@@ -58,7 +65,7 @@ network_cb (gpointer user_data)
   CbUserStream *self = user_data;
   gboolean available;
 
-  if (self->running)
+  if (self->state == STATE_RUNNING)
     {
       self->network_timeout_id = 0;
       return G_SOURCE_REMOVE;
@@ -138,6 +145,8 @@ cb_user_stream_init (CbUserStream *self)
 {
   self->receivers = g_ptr_array_new ();
   self->data = g_string_new (NULL);
+  self->restarting = FALSE;
+  self->state = STATE_STOPPED;
 
   if (self->stresstest)
     {
@@ -299,7 +308,7 @@ continuous_cb (RestProxyCall *call,
       if (error != NULL)
         return;
 
-      if (!self->stopping)
+      if (self->state != STATE_STOPPING)
         {
           g_debug ("buf(%s) == NULL. Starting timeout...", self->account_name);
           start_network_timeout (self);
@@ -318,6 +327,8 @@ continuous_cb (RestProxyCall *call,
           g_signal_emit (self, user_stream_signals[RESUMED], 0);
           self->restarting = FALSE;
         }
+
+      self->state = STATE_RUNNING;
 
       /* Just \r\n messages are heartbeats. */
       if (len == 2 &&
@@ -364,7 +375,6 @@ continuous_cb (RestProxyCall *call,
             return;
           }
 
-        self->running = TRUE;
 
         root_node = json_parser_get_root (parser);
         root_object = json_node_get_object (root_node);
@@ -466,8 +476,6 @@ void cb_user_stream_stop (CbUserStream *self)
 {
   g_debug ("Stopping %s's stream", self->account_name);
 
-  self->running = FALSE;
-
   if (self->network_timeout_id != 0)
     {
       g_source_remove (self->network_timeout_id);
@@ -482,12 +490,13 @@ void cb_user_stream_stop (CbUserStream *self)
 
   if (self->proxy_call != NULL)
     {
-      self->stopping = TRUE;
+      self->state = STATE_STOPPING;
       rest_proxy_call_cancel (self->proxy_call);
-      self->stopping = FALSE;
       g_object_unref (self->proxy_call);
       self->proxy_call = NULL;
     }
+
+  self->state = STATE_STOPPED;
 }
 
 void
