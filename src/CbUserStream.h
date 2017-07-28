@@ -44,11 +44,11 @@ struct _CbUserStream
 
   char *account_name;
 
+  guint state;
+  guint restarting : 1;
   guint proxy_data_set : 1;
   guint network_available: 1;
-  guint stopping : 1;
-  guint running : 1;
-  guint restarting : 1;
+
   guint stresstest : 1;
 };
 
