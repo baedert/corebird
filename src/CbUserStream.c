@@ -75,7 +75,7 @@ network_cb (gpointer user_data)
 
   if (available)
     {
-      g_debug ("Restarting stream (reason: network available (timeout))");
+      g_debug ("%u Restarting stream (reason: network available (timeout))", self->state);
       self->network_timeout_id = 0;
       cb_user_stream_restart (self);
       return G_SOURCE_REMOVE;
@@ -107,12 +107,12 @@ network_changed_cb (GNetworkMonitor *monitor,
 
   if (available)
     {
-      g_debug ("Restarting stream (reason: Network available (callback))");
+      g_debug ("%u Restarting stream (reason: Network available (callback))", self->state);
       cb_user_stream_restart (self);
     }
   else
     {
-      g_debug ("Connection lost (%s) Reason: network unavailable", self->account_name);
+      g_debug ("%u Connection lost (%s) Reason: network unavailable", self->state, self->account_name);
       g_signal_emit (self, user_stream_signals[INTERRUPTED], 0);
       start_network_timeout (self);
     }
@@ -123,7 +123,7 @@ heartbeat_cb (gpointer user_data)
 {
   CbUserStream *self = user_data;
 
-  g_debug ("Connection lost (%s) Reason: heartbeat. Restarting...", self->account_name);
+  g_debug ("%u Connection lost (%s) Reason: heartbeat. Restarting...", self->state, self->account_name);
   cb_user_stream_restart (self);
   /* We do NOT set heartbeat_timeout_id to 0 here since the _start call in the restart() above
    * will already create a new one... */
@@ -310,7 +310,7 @@ continuous_cb (RestProxyCall *call,
 
       if (self->state != STATE_STOPPING)
         {
-          g_debug ("buf(%s) == NULL. Starting timeout...", self->account_name);
+          g_debug ("%u, buf(%s) == NULL. Starting timeout...", self->state, self->account_name);
           start_network_timeout (self);
         }
       return;
@@ -340,7 +340,7 @@ continuous_cb (RestProxyCall *call,
 
           date = g_date_time_format (now, "%k:%M:%S");
 
-          g_debug ("HEARTBEAT (%s) %s", self->account_name, date);
+          g_debug ("%u HEARTBEAT (%s) %s", self->state, self->account_name, date);
           g_free (date);
           g_date_time_unref (now);
 #endif
@@ -448,7 +448,7 @@ continuous_cb (RestProxyCall *call,
 void
 cb_user_stream_start (CbUserStream *self)
 {
-  g_debug ("Starting stream for %s", self->account_name);
+  g_debug ("%u Starting stream for %s", self->state, self->account_name);
 
   g_assert (self->proxy_data_set);
 
@@ -474,7 +474,7 @@ cb_user_stream_start (CbUserStream *self)
 
 void cb_user_stream_stop (CbUserStream *self)
 {
-  g_debug ("Stopping %s's stream", self->account_name);
+  g_debug ("%u Stopping %s's stream", self->state, self->account_name);
 
   if (self->network_timeout_id != 0)
     {
