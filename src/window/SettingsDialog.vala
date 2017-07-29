@@ -46,6 +46,8 @@ class SettingsDialog : Gtk.Window {
 
   private TweetListEntry sample_tweet_entry;
 
+  private bool block_flag_emission = false;
+
   public SettingsDialog (Corebird application) {
     this.application = application;
 
@@ -135,10 +137,11 @@ class SettingsDialog : Gtk.Window {
 
     var text_transform_flags = Settings.get_text_transform_flags ();
 
+    block_flag_emission = true;
     remove_trailing_hashtags_switch.active = (Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS in
                                               text_transform_flags);
     remove_media_links_switch.active = (Cb.TransformFlags.REMOVE_MEDIA_LINKS in text_transform_flags);
-
+    block_flag_emission = false;
 
     Settings.get ().bind ("hide-nsfw-content", hide_nsfw_content_switch, "active",
                           SettingsBindFlags.DEFAULT);
@@ -262,6 +265,9 @@ class SettingsDialog : Gtk.Window {
 
   [GtkCallback]
   private void remove_trailing_hashtags_cb () {
+    if (block_flag_emission)
+      return;
+
     if (remove_trailing_hashtags_switch.active) {
       Settings.add_text_transform_flag (Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS);
     } else {
@@ -271,6 +277,9 @@ class SettingsDialog : Gtk.Window {
 
   [GtkCallback]
   private void remove_media_links_cb () {
+    if (block_flag_emission)
+      return;
+
     if (remove_media_links_switch.active) {
       Settings.add_text_transform_flag (Cb.TransformFlags.REMOVE_MEDIA_LINKS);
     } else {
