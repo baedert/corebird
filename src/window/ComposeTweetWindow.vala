@@ -181,7 +181,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.sensitive = false;
     fav_image_button.sensitive = false;
     add_image_button.sensitive = false;
-    compose_image_manager.sensitive = false;
+    compose_image_manager.insensitivize_buttons ();
 
 
     Gtk.TextIter start, end;

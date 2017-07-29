@@ -127,7 +127,7 @@ class ComposeImageManager : Gtk.Container {
 
     var bar = new Gtk.ProgressBar ();
     bar.set_parent (this);
-    bar.show ();
+    bar.show_all ();
     this.progress_bars.add (bar);
   }
 
@@ -345,6 +345,12 @@ class ComposeImageManager : Gtk.Container {
         }
         break;
       }
+    }
+  }
+
+  public void insensitivize_buttons () {
+    for (int i = 0; i < close_buttons.length; i ++) {
+      close_buttons.get (i).set_sensitive (false);
     }
   }
 }
