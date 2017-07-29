@@ -260,10 +260,12 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     }
 
     if (this.mm_widget != null && this.tweet.quoted_tweet == null) {
+      Gtk.Widget w = media_stack != null ? ((Gtk.Widget)media_stack) : ((Gtk.Widget)mm_widget);
+
       if (text_label.label.length == 0)
-        this.grid.child_set (mm_widget, "top-attach", 2);
+        this.grid.child_set (w, "top-attach", 2);
       else
-        this.grid.child_set (mm_widget, "top-attach", 8);
+        this.grid.child_set (w, "top-attach", 8);
     }
   }
 
