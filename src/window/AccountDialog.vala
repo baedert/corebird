@@ -52,6 +52,8 @@ public class AccountDialog : Gtk.Window {
   private int old_width = 0;
   private int old_height = 0;
 
+  private bool account_was_not_initied = false;
+
 
   public AccountDialog (Account account) {
     this.account = account;
@@ -79,6 +81,7 @@ public class AccountDialog : Gtk.Window {
     });
 
     if (account.proxy == null) {
+      account_was_not_initied = true;
       account.init_proxy ();
       account.query_user_info_by_screen_name.begin (null, (obj, res) => {
         set_transient_data (account.website, account.description);
@@ -89,6 +92,18 @@ public class AccountDialog : Gtk.Window {
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
 
     this.add_accel_group (ag);
+  }
+
+  public override void destroy () {
+    if (account != null) {
+      if (account_was_not_initied) {
+        account.uninit ();
+      }
+
+      account = null;
+    }
+
+    base.destroy ();
   }
 
   private bool escape_pressed_cb () {
