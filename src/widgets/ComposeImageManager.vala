@@ -127,7 +127,7 @@ class ComposeImageManager : Gtk.Container {
 
     var bar = new Gtk.ProgressBar ();
     bar.set_parent (this);
-    bar.show_all ();
+    bar.show ();
     this.progress_bars.add (bar);
   }
 
