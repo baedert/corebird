@@ -41,6 +41,7 @@ struct _CbUserStream
 
   guint network_timeout_id;
   guint heartbeat_timeout_id;
+  guint network_changed_id;
 
   char *account_name;
 
