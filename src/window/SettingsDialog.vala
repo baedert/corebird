@@ -228,19 +228,18 @@ class SettingsDialog : Gtk.Window {
   }
 
   private void save_geometry () {
-    warning ("Reenable geometry saving");
-    //var builder = new GLib.VariantBuilder (GLib.VariantType.TUPLE);
-    //int x = 0,
-        //y = 0,
-        //w = 0,
-        //h = 0;
-    //this.get_position (out x, out y);
-    //this.get_size (out w, out h);
-    //builder.add_value (new GLib.Variant.int32(x));
-    //builder.add_value (new GLib.Variant.int32(y));
-    //builder.add_value (new GLib.Variant.int32(w));
-    //builder.add_value (new GLib.Variant.int32(h));
-    //Settings.get ().set_value ("settings-geometry", builder.end ());
+    var builder = new GLib.VariantBuilder (GLib.VariantType.TUPLE);
+    int x = 0,
+        y = 0,
+        w = 0,
+        h = 0;
+    this.get_position (out x, out y);
+    this.get_size (out w, out h);
+    builder.add_value (new GLib.Variant.int32(x));
+    builder.add_value (new GLib.Variant.int32(y));
+    builder.add_value (new GLib.Variant.int32(w));
+    builder.add_value (new GLib.Variant.int32(h));
+    Settings.get ().set_value ("settings-geometry", builder.end ());
   }
 
   private void add_accels () {

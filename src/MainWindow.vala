@@ -483,12 +483,10 @@ public class MainWindow : Gtk.ApplicationWindow {
       key = null; // Otherwise we leak key
     }
 
-    // TODO: This is currently disables since valac passes an int** instead of an int* to
-    //       them because the annotations in gtkwindow.c are wrong.
     /* Finally, add this window */
-    //this.get_position (out x, out y);
-    //this.get_size (out w, out h);
-    //builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
+    this.get_position (out x, out y);
+    this.get_size (out w, out h);
+    builder.add ("{s(iiii)}", account.screen_name, x, y, w, h);
     new_geom = builder.end ();
     debug ("Saving geomentry for %s: %d,%d,%d,%d", account.screen_name, x, y, w, h);
 
