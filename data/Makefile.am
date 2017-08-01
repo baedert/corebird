@@ -5,7 +5,7 @@ desktopdir = $(datarootdir)/applications
 desktop_in_files = org.baedert.corebird.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 
-appdatadir = $(datarootdir)/appdata
+appdatadir = $(datarootdir)/metainfo
 appdata_in_files = org.baedert.corebird.appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
