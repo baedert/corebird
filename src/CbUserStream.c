@@ -48,6 +48,11 @@ cb_user_stream_finalize (GObject *o)
   g_string_free (self->data, TRUE);
   g_free (self->account_name);
 
+  if (self->network_changed_id != 0)
+    {
+      g_signal_handler_disconnect (self->network_monitor, self->network_changed_id);
+    }
+
   G_OBJECT_CLASS (cb_user_stream_parent_class)->finalize (o);
 }
 
@@ -167,7 +172,9 @@ cb_user_stream_init (CbUserStream *self)
 
   self->network_monitor = g_network_monitor_get_default ();
   self->network_available = g_network_monitor_get_network_available (self->network_monitor);
-  g_signal_connect (self->network_monitor, "network-changed", G_CALLBACK (network_changed_cb), self);
+  self->network_changed_id = g_signal_connect (self->network_monitor,
+                                               "network-changed",
+                                               G_CALLBACK (network_changed_cb), self);
 
   if (!self->network_available)
     start_network_timeout (self);
@@ -202,6 +209,8 @@ cb_user_stream_new (const char *account_name,
   CbUserStream *self = CB_USER_STREAM (g_object_new (CB_TYPE_USER_STREAM, NULL));
   self->account_name = g_strdup (account_name);
   self->stresstest = stresstest;
+
+  g_debug ("Creating stream for %s", account_name);
 
   return self;
 }
