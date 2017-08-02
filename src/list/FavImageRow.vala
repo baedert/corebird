@@ -19,7 +19,6 @@ class FavImageRow : Gtk.FlowBoxChild {
   private const int THUMB_WIDTH  = 80;
   private const int THUMB_HEIGHT = 50;
 
-  private Gtk.EventBox event_box;
   private Gtk.Image image;
   private string file_path;
   private Gtk.GestureMultiPress gesture;
@@ -27,36 +26,17 @@ class FavImageRow : Gtk.FlowBoxChild {
   public FavImageRow (string path) {
     this.file_path = path;
 
-    event_box = new Gtk.EventBox ();
-    event_box.show ();
-
-
     image = new Gtk.Image ();
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
     image.set_halign (Gtk.Align.CENTER);
     image.set_valign (Gtk.Align.CENTER);
     image.margin = 3;
     image.show ();
-    event_box.add (image);
-    this.add (event_box);
+    this.add (image);
 
     this.set_valign (Gtk.Align.START);
 
-    /* Sigh */
-    event_box.enter_notify_event.connect (() => {
-      var flags = this.get_state_flags ();
-      this.set_state_flags (flags | Gtk.StateFlags.PRELIGHT, true);
-
-      return false;
-    });
-
-    event_box.leave_notify_event.connect (() => {
-      this.unset_state_flags (Gtk.StateFlags.PRELIGHT);
-
-      return false;
-    });
-
-    gesture = new Gtk.GestureMultiPress (event_box);
+    gesture = new Gtk.GestureMultiPress (this);
     gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     gesture.set_button (0);
     gesture.pressed.connect (() => {
