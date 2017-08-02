@@ -284,6 +284,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       GLib.FileInfo info;
       try {
         info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
+                                GLib.FileAttribute.STANDARD_CONTENT_TYPE + "," +
                                 GLib.FileAttribute.STANDARD_SIZE, 0);
       } catch (GLib.Error e) {
         warning ("%s (%s)", e.message, filename);
@@ -291,7 +292,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         return;
       }
 
-      if (info.get_size () > Twitter.MAX_BYTES_PER_IMAGE) {
+      if (!info.get_content_type ().has_prefix ("image/")) {
+        stack.visible_child = image_error_grid;
+        image_error_label.label = _("Selected file is not an image.");
+        cancel_button.label = _("Back");
+        send_button.sensitive = false;
+      } else if (info.get_size () > Twitter.MAX_BYTES_PER_IMAGE) {
         stack.visible_child = image_error_grid;
         image_error_label.label = _("The selected image is too big. The maximum file size per image is %'d MB")
                                   .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
