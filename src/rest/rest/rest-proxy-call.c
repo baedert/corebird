@@ -848,12 +848,6 @@ prepare_message (RestProxyCall *call, GError **error_out)
     soup_multipart_free (mp);
   }
 
-  /* Set the user agent, if one was set in the proxy */
-  user_agent = rest_proxy_get_user_agent (priv->proxy);
-  if (user_agent) {
-    soup_message_headers_append (message->request_headers, "User-Agent", user_agent);
-  }
-
   /* Set the headers */
   g_hash_table_foreach (priv->headers, set_header, message->request_headers);
 

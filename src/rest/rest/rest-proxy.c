@@ -37,9 +37,6 @@ typedef struct _RestProxyPrivate RestProxyPrivate;
 struct _RestProxyPrivate {
   gchar *url_format;
   gchar *url;
-  gchar *user_agent;
-  gchar *username;
-  gchar *password;
   gboolean binding_required;
   SoupSession *session;
   gboolean disable_cookies;
@@ -54,10 +51,7 @@ enum
   PROP0 = 0,
   PROP_URL_FORMAT,
   PROP_BINDING_REQUIRED,
-  PROP_USER_AGENT,
   PROP_DISABLE_COOKIES,
-  PROP_USERNAME,
-  PROP_PASSWORD,
   PROP_SSL_STRICT,
   PROP_SSL_CA_FILE
 };
@@ -94,17 +88,8 @@ rest_proxy_get_property (GObject   *object,
     case PROP_BINDING_REQUIRED:
       g_value_set_boolean (value, priv->binding_required);
       break;
-    case PROP_USER_AGENT:
-      g_value_set_string (value, priv->user_agent);
-      break;
     case PROP_DISABLE_COOKIES:
       g_value_set_boolean (value, priv->disable_cookies);
-      break;
-    case PROP_USERNAME:
-      g_value_set_string (value, priv->username);
-      break;
-    case PROP_PASSWORD:
-      g_value_set_string (value, priv->password);
       break;
     case PROP_SSL_STRICT: {
       gboolean ssl_strict;
@@ -147,20 +132,8 @@ rest_proxy_set_property (GObject      *object,
       g_free (priv->url);
       priv->url = NULL;
       break;
-    case PROP_USER_AGENT:
-      g_free (priv->user_agent);
-      priv->user_agent = g_value_dup_string (value);
-      break;
     case PROP_DISABLE_COOKIES:
       priv->disable_cookies = g_value_get_boolean (value);
-      break;
-    case PROP_USERNAME:
-      g_free (priv->username);
-      priv->username = g_value_dup_string (value);
-      break;
-    case PROP_PASSWORD:
-      g_free (priv->password);
-      priv->password = g_value_dup_string (value);
       break;
     case PROP_SSL_STRICT:
       g_object_set (G_OBJECT(priv->session),
@@ -187,23 +160,6 @@ rest_proxy_dispose (GObject *object)
 }
 
 static void
-authenticate (RestProxy   *self,
-              SoupMessage *msg,
-              SoupAuth    *soup_auth,
-              gboolean     retrying,
-              SoupSession *session)
-{
-  RestProxyPrivate *priv = GET_PRIVATE (self);
-  RestProxyAuth *rest_auth;
-  gboolean try_auth = !retrying;
-
-  rest_auth = rest_proxy_auth_new (self, session, msg, soup_auth);
-  if (try_auth && !rest_proxy_auth_is_paused (rest_auth))
-    soup_auth_authenticate (soup_auth, priv->username, priv->password);
-  g_object_unref (G_OBJECT (rest_auth));
-}
-
-static void
 rest_proxy_constructed (GObject *object)
 {
   RestProxyPrivate *priv = GET_PRIVATE (object);
@@ -220,10 +176,6 @@ rest_proxy_constructed (GObject *object)
     soup_session_add_feature (priv->session, logger);
     g_object_unref (logger);
   }
-
-  /* session lifetime is same as self, no need to keep signalid */
-  g_signal_connect_swapped (priv->session, "authenticate",
-                            G_CALLBACK(authenticate), object);
 }
 
 static void
@@ -233,9 +185,6 @@ rest_proxy_finalize (GObject *object)
 
   g_free (priv->url);
   g_free (priv->url_format);
-  g_free (priv->user_agent);
-  g_free (priv->username);
-  g_free (priv->password);
   g_free (priv->ssl_ca_file);
 
   G_OBJECT_CLASS (rest_proxy_parent_class)->finalize (object);
@@ -278,15 +227,6 @@ rest_proxy_class_init (RestProxyClass *klass)
                                    PROP_BINDING_REQUIRED,
                                    pspec);
 
-  pspec = g_param_spec_string ("user-agent",
-                               "user-agent",
-                               "The User-Agent of the client",
-                               NULL,
-                               G_PARAM_READWRITE);
-  g_object_class_install_property (object_class,
-                                   PROP_USER_AGENT,
-                                   pspec);
-
   pspec = g_param_spec_boolean ("disable-cookies",
                                 "disable-cookies",
                                 "Whether to disable cookie support",
@@ -294,24 +234,6 @@ rest_proxy_class_init (RestProxyClass *klass)
                                 G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
   g_object_class_install_property (object_class,
                                    PROP_DISABLE_COOKIES,
-                                   pspec);
-
-  pspec = g_param_spec_string ("username",
-                               "username",
-                               "The username for authentication",
-                               NULL,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class,
-                                   PROP_USERNAME,
-                                   pspec);
-
-  pspec = g_param_spec_string ("password",
-                               "password",
-                               "The password for authentication",
-                               NULL,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class,
-                                   PROP_PASSWORD,
                                    pspec);
 
   pspec = g_param_spec_boolean ("ssl-strict",
@@ -378,40 +300,6 @@ rest_proxy_new (const gchar *url_format,
                        NULL);
 }
 
-/**
- * rest_proxy_new_with_authentication:
- * @url_format: the endpoint URL
- * @binding_required: whether the URL needs to be bound before calling
- * @username: the username provided by the user or client
- * @password: the password provided by the user or client
- *
- * Create a new #RestProxy for the specified endpoint @url_format, using the
- * "GET" method.
- *
- * Set @binding_required to %TRUE if the URL contains string formatting
- * operations (for example "http://foo.com/%<!-- -->s".  These must be expanded
- * using rest_proxy_bind() before invoking the proxy.
- *
- * Returns: A new #RestProxy.
- */
-RestProxy *
-rest_proxy_new_with_authentication (const gchar *url_format,
-                                    gboolean     binding_required,
-                                    const gchar *username,
-                                    const gchar *password)
-{
-  g_return_val_if_fail (url_format != NULL, NULL);
-  g_return_val_if_fail (username != NULL, NULL);
-  g_return_val_if_fail (password != NULL, NULL);
-
-  return g_object_new (REST_TYPE_PROXY,
-                       "url-format", url_format,
-                       "binding-required", binding_required,
-                       "username", username,
-                       "password", password,
-                       NULL);
-}
-
 static gboolean
 _rest_proxy_bind_valist (RestProxy *proxy,
                          va_list    params)
@@ -452,26 +340,6 @@ rest_proxy_bind (RestProxy *proxy, ...)
   va_end (params);
 
   return res;
-}
-
-void
-rest_proxy_set_user_agent (RestProxy  *proxy,
-                           const char *user_agent)
-{
-  g_return_if_fail (REST_IS_PROXY (proxy));
-  g_return_if_fail (user_agent != NULL);
-
-  g_object_set (proxy, "user-agent", user_agent, NULL);
-}
-
-const gchar *
-rest_proxy_get_user_agent (RestProxy *proxy)
-{
-  RestProxyPrivate *priv = GET_PRIVATE (proxy);
-
-  g_return_val_if_fail (REST_IS_PROXY (proxy), NULL);
-
-  return priv->user_agent;
 }
 
 /**
