@@ -710,7 +710,6 @@ prepare_message (RestProxyCall *call, GError **error_out)
 {
   RestProxyCallPrivate *priv = GET_PRIVATE (call);
   RestProxyCallClass *call_class;
-  const gchar *user_agent;
   SoupMessage *message;
   GError *error = NULL;
 
