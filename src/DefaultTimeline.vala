@@ -183,7 +183,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
           return GLib.Source.REMOVE;
         }
 
-        tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - DefaultTimeline.REST);
+        /* Check again in case this changed in the last 500ms */
+        if (tweet_list.model.get_n_items () > DefaultTimeline.REST) {
+          tweet_list.model.remove_last_n_visible (tweet_list.model.get_n_items () - DefaultTimeline.REST);
+        }
         tweet_remove_timeout = 0;
         return GLib.Source.REMOVE;
       });
