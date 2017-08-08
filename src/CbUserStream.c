@@ -16,6 +16,7 @@
  */
 
 #include "CbUserStream.h"
+#include "CbUtils.h"
 #include "rest/rest/oauth-proxy.h"
 #include <string.h>
 
@@ -354,11 +355,7 @@ continuous_cb (RestProxyCall *call,
           g_date_time_unref (now);
 #endif
           g_string_erase (self->data, 0, -1);
-          if (self->heartbeat_timeout_id > 0)
-            {
-              g_source_remove (self->heartbeat_timeout_id);
-              self->heartbeat_timeout_id = 0;
-            }
+          cb_clear_source (&self->heartbeat_timeout_id);
 
           start_heartbeat_timeout (self);
           return;
@@ -485,17 +482,8 @@ void cb_user_stream_stop (CbUserStream *self)
 {
   g_debug ("%u Stopping %s's stream", self->state, self->account_name);
 
-  if (self->network_timeout_id != 0)
-    {
-      g_source_remove (self->network_timeout_id);
-      self->network_timeout_id = 0;
-    }
-
-  if (self->heartbeat_timeout_id != 0)
-    {
-      g_source_remove (self->heartbeat_timeout_id);
-      self->heartbeat_timeout_id = 0;
-    }
+  cb_clear_source (&self->network_timeout_id);
+  cb_clear_source (&self->heartbeat_timeout_id);
 
   if (self->proxy_call != NULL)
     {
