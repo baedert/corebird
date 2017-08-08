@@ -120,6 +120,8 @@ network_changed_cb (GNetworkMonitor *monitor,
     {
       g_debug ("%u Connection lost (%s) Reason: network unavailable", self->state, self->account_name);
       g_signal_emit (self, user_stream_signals[INTERRUPTED], 0);
+      cb_clear_source (&self->heartbeat_timeout_id);
+
       start_network_timeout (self);
     }
 }
