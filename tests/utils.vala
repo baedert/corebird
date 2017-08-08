@@ -3,17 +3,19 @@
 
 void file_type () {
   string p = "foobar.png";
-  assert (Utils.get_file_type (p) == "png");
+  assert (Cb.Utils.get_file_type (p) == "png");
 
   p = ".hidden.bar";
-  assert (Utils.get_file_type (p) == "bar");
+  assert (Cb.Utils.get_file_type (p) == "bar");
 
   p = "foo";
-  assert (Utils.get_file_type (p) == "");
+  assert (Cb.Utils.get_file_type (p) == "");
 
   p = "some.pointy.name.txt";
-  assert (Utils.get_file_type (p) == "txt");
+  assert (Cb.Utils.get_file_type (p) == "txt");
 
+  p = "/foo/bar/zomg.txt";
+  assert (Cb.Utils.get_file_type (p) == "txt");
 }
 
 

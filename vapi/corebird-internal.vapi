@@ -306,6 +306,7 @@ namespace Cb {
     public void linkify_user (ref Cb.UserIdentity id, GLib.StringBuilder str);
     public void write_reply_text (ref Cb.MiniTweet t, GLib.StringBuilder str);
     public GLib.DateTime parse_date (string _in);
+    public string get_file_type (string url);
   }
 
   [CCode (cprefix = "CbBundle_", lower_case_cprefix = "cb_bundle_", cheader_filename =

@@ -325,4 +325,33 @@ cb_utils_parse_date (const char *_in)
   return result_local;
 }
 
+char *
+cb_utils_get_file_type (const char *url)
+{
+  const char *filename;
+  const char *extension;
+  char *type;
 
+  filename = g_strrstr (url, "/");
+  if (filename == NULL)
+    filename = url;
+  else
+    filename += 1;
+
+  extension = g_strrstr (filename, ".");
+
+  if (extension == NULL)
+    return g_strdup ("");
+
+  extension += 1;
+
+  type = g_ascii_strdown (extension, -1);
+
+  if (strcmp (type, "jpg") == 0)
+    {
+      g_free (type);
+      return g_strdup ("jpeg");
+    }
+
+  return type;
+}

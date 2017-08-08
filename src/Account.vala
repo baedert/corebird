@@ -308,7 +308,7 @@ public class Account : GLib.Object {
       var msg = new Soup.Message ("GET", url);
       SOUP_SESSION.queue_message (msg, (_s, _msg) => {
         var data_stream = new MemoryInputStream.from_data (msg.response_body.data, GLib.g_free);
-        string type = Utils.get_file_type (url);
+        string type = Cb.Utils.get_file_type (url);
         Gdk.Pixbuf pixbuf;
         try {
           pixbuf = new Gdk.Pixbuf.from_stream(data_stream);

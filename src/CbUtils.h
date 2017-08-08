@@ -38,5 +38,7 @@ char * cb_utils_escape_ampersands (const char *in);
 
 GDateTime * cb_utils_parse_date (const char *_in);
 
+char * cb_utils_get_file_type (const char *url);
+
 
 #endif
