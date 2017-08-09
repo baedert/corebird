@@ -30,7 +30,6 @@ struct _CbMediaDownloader
   GObject parent_instance;
 
   guint        disabled : 1;
-  SoupSession *soup_session;
 };
 
 typedef struct _CbMediaDownloader CbMediaDownloader;

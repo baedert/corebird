@@ -22,6 +22,19 @@
 
 G_DEFINE_TYPE (CbMediaDownloader, cb_media_downloader, G_TYPE_OBJECT);
 
+typedef struct {
+  CbMedia *media;
+  SoupSession *soup_session;
+} LoadingData;
+
+static void
+loading_data_free (LoadingData *data)
+{
+  g_object_unref (data->media);
+  g_object_unref (data->soup_session);
+  g_free (data);
+}
+
 CbMediaDownloader *
 cb_media_downloader_get_default (void)
 {
@@ -119,14 +132,16 @@ out:
 
 static void
 cb_media_downloader_get_instagram_url (CbMediaDownloader *downloader,
-                                       CbMedia           *media)
+                                       LoadingData       *task_data)
 {
+  CbMedia     *media = task_data->media;
   SoupMessage *msg = soup_message_new ("GET", media->url);
   GRegex      *medium_regex;
   GRegex      *url_regex;
   GMatchInfo  *match_info;
 
-  soup_session_send_message (downloader->soup_session, msg);
+
+  soup_session_send_message (task_data->soup_session, msg);
   if (msg->status_code != SOUP_STATUS_OK)
     {
       g_object_unref (msg);
@@ -165,13 +180,14 @@ cb_media_downloader_get_instagram_url (CbMediaDownloader *downloader,
 
 static void
 cb_media_downloader_load_twitter_video (CbMediaDownloader *downloader,
-                                        CbMedia           *media)
+                                        LoadingData       *task_data)
 {
+  CbMedia     *media = task_data->media;
   SoupMessage *msg = soup_message_new ("GET", media->url);
   GRegex      *regex;
   GMatchInfo  *match_info;
 
-  soup_session_send_message (downloader->soup_session, msg);
+  soup_session_send_message (task_data->soup_session, msg);
   if (msg->status_code != SOUP_STATUS_OK)
     {
       mark_invalid (media);
@@ -217,15 +233,16 @@ cb_media_downloader_load_twitter_video (CbMediaDownloader *downloader,
 
 static void
 cb_media_downloader_load_real_url (CbMediaDownloader *downloader,
-                                   CbMedia           *media,
+                                   LoadingData       *task_data,
                                    const char        *regex_str1,
                                    int                match_index1)
 {
+  CbMedia *media = task_data->media;
   SoupMessage *msg = soup_message_new ("GET", media->url);
   GRegex *regex;
   GMatchInfo *match_info;
 
-  soup_session_send_message (downloader->soup_session, msg);
+  soup_session_send_message (task_data->soup_session, msg);
   if (msg->status_code != SOUP_STATUS_OK)
     {
       /* Will mark it invalid later */
@@ -259,15 +276,16 @@ update_media_progress (SoupMessage *msg,
 
 static void
 cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
-                                   CbMedia           *media)
+                                   LoadingData       *task_data)
 {
   const char *url;
   SoupMessage *msg;
   GInputStream *input_stream;
+  CbMedia *media;
 
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
-  g_return_if_fail (CB_IS_MEDIA (media));
-  g_return_if_fail (media->url != NULL);
+
+  media = task_data->media;
 
   url = canonicalize_url (media->url);
 
@@ -276,28 +294,28 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   if (g_str_has_prefix (url, "instagr.am") ||
       g_str_has_prefix (url, "instagram.com/p/"))
     {
-      cb_media_downloader_get_instagram_url (downloader, media);
+      cb_media_downloader_get_instagram_url (downloader, task_data);
     }
   else if (g_str_has_prefix (url, "ow.ly/i/") ||
            g_str_has_prefix (url, "flickr.com/photos/") ||
            g_str_has_prefix (url, "flic.kr/p/") ||
            g_str_has_prefix (url, "flic.kr/s/"))
     {
-      cb_media_downloader_load_real_url (downloader, media,
+      cb_media_downloader_load_real_url (downloader, task_data,
                                          "<meta property=\"og:image\" content=\"(.*?)\"", 1);
     }
   else if (g_str_has_prefix (url, "twitpic.com/"))
     {
-      cb_media_downloader_load_real_url (downloader, media,
+      cb_media_downloader_load_real_url (downloader, task_data,
                                          "<meta name=\"twitter:image\" value=\"(.*?)\"", 1);
     }
   else if (g_str_has_suffix (url, "/photo/1"))
     {
-      cb_media_downloader_load_twitter_video (downloader, media);
+      cb_media_downloader_load_twitter_video (downloader, task_data);
     }
   else if (g_str_has_prefix (url, "d.pr/i/"))
     {
-      cb_media_downloader_load_real_url (downloader, media,
+      cb_media_downloader_load_real_url (downloader, task_data,
                                          "<meta property=\"og:image\"\\s+content=\"(.*?)\"", 1);
     }
 
@@ -318,7 +336,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
       return;
     }
   g_signal_connect (msg, "got-chunk", G_CALLBACK (update_media_progress), media);
-  soup_session_send_message (downloader->soup_session, msg);
+  soup_session_send_message (task_data->soup_session, msg);
 
   if (msg->status_code != SOUP_STATUS_OK)
     {
@@ -348,9 +366,9 @@ load_in_thread (GTask        *task,
                 GCancellable *cancellable)
 {
   CbMediaDownloader *downloader = source_object;
-  CbMedia *media = task_data;
+  LoadingData *data = task_data;
 
-  cb_media_downloader_load_threaded (downloader, media);
+  cb_media_downloader_load_threaded (downloader, data);
 
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
@@ -363,6 +381,7 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
                                 gpointer             user_data)
 {
   GTask *task;
+  LoadingData *data;
 
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
   g_return_if_fail (CB_IS_MEDIA (media));
@@ -370,7 +389,10 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
   g_return_if_fail (media->surface == NULL);
 
   task = g_task_new (downloader, NULL, callback, user_data);
-  g_task_set_task_data (task, g_object_ref (media), g_object_unref);
+  data = g_new0 (LoadingData, 1);
+  data->media = g_object_ref (media);
+  data->soup_session = soup_session_new ();
+  g_task_set_task_data (task, data, (GDestroyNotify)loading_data_free);
 
   g_task_run_in_thread (task, load_in_thread);
 }
@@ -412,7 +434,6 @@ cb_media_downloader_shutdown (CbMediaDownloader *downloader)
 {
   g_debug ("MediaDownloader shutdown");
 
-  soup_session_abort (downloader->soup_session);
   // XXX OK?
   g_object_unref (downloader);
 }
@@ -444,7 +465,6 @@ static void
 cb_media_downloader_init (CbMediaDownloader *downloader)
 {
   downloader->disabled     = FALSE;
-  downloader->soup_session = soup_session_new ();
 }
 
 static void
