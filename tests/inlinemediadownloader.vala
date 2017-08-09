@@ -94,6 +94,22 @@ void double_download () {
   assert (collect_obj.done);
 }
 
+void shutdown () {
+  var main_loop = new GLib.MainLoop ();
+  var url = "http://pbs.twimg.com/media/BiHRjmFCYAAEKFg.png";
+  var media = new Cb.Media ();
+  media.url = url;
+
+  Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
+    var media2 = new Cb.Media ();
+    media2.url = url;
+    Cb.MediaDownloader.get_default ().load_async.begin (media2);
+    Cb.MediaDownloader.get_default ().shutdown ();
+    main_loop.quit ();
+  });
+
+  main_loop.run ();
+}
 
 
 int main (string[] args) {
@@ -107,6 +123,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/media/animation-download", animation_download);
   GLib.Test.add_func ("/media/download-twice", download_twice);
   GLib.Test.add_func ("/media/double-download", double_download);
+  GLib.Test.add_func ("/media/shutdown", shutdown);
 
 
 
