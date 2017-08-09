@@ -47,7 +47,8 @@ public class MainWidget : Gtk.Box {
     top_box.set_hexpand (true);
     top_box.set_homogeneous (true);
     top_box.get_style_context ().add_class ("topbar");
-    this.add (top_box);
+    topbar_revealer.add (top_box);
+    this.add (topbar_revealer);
 
     this.stack = new Gtk.Stack ();
     stack.set_hexpand (true);
