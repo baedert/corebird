@@ -74,7 +74,8 @@ canonicalize_url (const char *url)
 
 static void
 load_animation (GInputStream *input_stream,
-                CbMedia      *media)
+                CbMedia      *media,
+                GCancellable *cancellable)
 {
   GdkPixbufAnimation *animation;
   GdkPixbuf *frame;
@@ -92,6 +93,12 @@ load_animation (GInputStream *input_stream,
       return;
     }
   frame = gdk_pixbuf_animation_get_static_image (animation);
+
+  if (g_cancellable_is_cancelled (cancellable))
+    {
+      g_object_unref (animation);
+      return;
+    }
 
   if (!gdk_pixbuf_animation_is_static_image (animation))
     media->animation = animation; /* Takes ref */
@@ -276,7 +283,8 @@ update_media_progress (SoupMessage *msg,
 
 static void
 cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
-                                   LoadingData       *task_data)
+                                   LoadingData       *task_data,
+                                   GCancellable      *cancellable)
 {
   const char *url;
   SoupMessage *msg;
@@ -288,6 +296,10 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   media = task_data->media;
 
   url = canonicalize_url (media->url);
+
+  if (g_cancellable_is_cancelled (cancellable))
+    return;
+
 
   /* For these, we first need to download some html and get the real
      URL of the image we want to display */
@@ -326,6 +338,9 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
       return;
     }
 
+  if (g_cancellable_is_cancelled (cancellable))
+    return;
+
 
   msg = soup_message_new ("GET", media->thumb_url ? media->thumb_url : media->url);
   if (msg == NULL)
@@ -349,11 +364,14 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
       return;
     }
 
+  if (g_cancellable_is_cancelled (cancellable))
+    return;
+
   input_stream = g_memory_input_stream_new_from_data (msg->response_body->data,
                                                       msg->response_body->length,
                                                       NULL);
 
-  load_animation (input_stream, media);
+  load_animation (input_stream, media, cancellable);
   g_input_stream_close (input_stream, NULL, NULL);
   g_object_unref (input_stream);
   g_object_unref (msg);
@@ -368,7 +386,7 @@ load_in_thread (GTask        *task,
   CbMediaDownloader *downloader = source_object;
   LoadingData *data = task_data;
 
-  cb_media_downloader_load_threaded (downloader, data);
+  cb_media_downloader_load_threaded (downloader, data, cancellable);
 
   g_task_return_boolean (task, TRUE);
   g_object_unref (task);
@@ -388,7 +406,7 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
   g_return_if_fail (!media->loaded);
   g_return_if_fail (media->surface == NULL);
 
-  task = g_task_new (downloader, NULL, callback, user_data);
+  task = g_task_new (downloader, downloader->cancellable, callback, user_data);
   data = g_new0 (LoadingData, 1);
   data->media = g_object_ref (media);
   data->soup_session = soup_session_new ();
@@ -434,6 +452,9 @@ cb_media_downloader_shutdown (CbMediaDownloader *downloader)
 {
   g_debug ("MediaDownloader shutdown");
 
+  g_cancellable_cancel (downloader->cancellable);
+  g_object_unref (downloader->cancellable);
+
   // XXX OK?
   g_object_unref (downloader);
 }
@@ -464,7 +485,8 @@ is_media_candidate (const char *url)
 static void
 cb_media_downloader_init (CbMediaDownloader *downloader)
 {
-  downloader->disabled     = FALSE;
+  downloader->disabled    = FALSE;
+  downloader->cancellable = g_cancellable_new ();
 }
 
 static void

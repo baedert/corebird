@@ -29,7 +29,8 @@ struct _CbMediaDownloader
 {
   GObject parent_instance;
 
-  guint        disabled : 1;
+  GCancellable *cancellable;
+  guint         disabled : 1;
 };
 
 typedef struct _CbMediaDownloader CbMediaDownloader;
