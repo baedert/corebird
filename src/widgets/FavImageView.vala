@@ -158,13 +158,13 @@ class FavImageView : Gtk.Box {
 
     if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       try {
-         //First, take the selected file and copy it into the image-favorites folder
+        // First, take the selected file and copy it into the image-favorites folder
         var file = GLib.File.new_for_path (filechooser.get_filename ());
         var file_info = file.query_info ("standard::name,standard::content-type", GLib.FileQueryInfoFlags.NONE);
         var dest_dir = GLib.File.new_for_path (Dirs.config ("image-favorites"));
 
-         //Explicitly check whether the destination file already exists, and rename
-           //it if it does */
+        // Explicitly check whether the destination file already exists, and rename
+        // it if it does */
         var dest_file = dest_dir.get_child (file_info.get_name ());
         if (GLib.FileUtils.test (dest_file.get_path (), GLib.FileTest.EXISTS)) {
           debug ("File '%s' already exists", dest_file.get_path ());
