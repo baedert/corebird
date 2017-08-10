@@ -63,12 +63,12 @@ class StartConversationEntry : Gtk.ListBoxRow {
       completion_window.set_attached_to (this.name_entry);
       completion_window.set_transient_for ((Gtk.Window)this.get_toplevel ());
       position_popup_window ();
-      completion_window.show_all ();
+      completion_window.show ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
     });
     user_completion.populate_completion.connect ((screen_name, name) => {
       var l = new CompletionListEntry (screen_name, name);
-      l.show_all ();
+      l.show ();
       completion_list.add (l);
     });
 

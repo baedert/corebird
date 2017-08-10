@@ -12,7 +12,7 @@ restdir = include_directories('src/rest/')
 min_glib_version = '2.44'
 
 glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
-gtk_dep  = dependency('gtk+-3.0', version: '>=3.20')
+gtk_dep  = dependency('gtk+-4.0', version: '>=3.89')
 json_dep = dependency('json-glib-1.0')
 sql_dep  = dependency('sqlite3')
 soup_dep = dependency('libsoup-2.4')
@@ -54,9 +54,9 @@ if (enable_video)
 endif
 
 if (enable_spellcheck)
-  add_project_arguments('-DSPELLCHECK', language: 'c')
-  add_project_arguments('-D', 'SPELLCHECK', language: 'vala')
-  cb_deps += [dependency('gspell-1', version: '>=1.0')]
+  #add_project_arguments('-DSPELLCHECK', language: 'c')
+  #add_project_arguments('-D', 'SPELLCHECK', language: 'vala')
+  #cb_deps += [dependency('gspell-1', version: '>=1.0')]
 endif
 
 

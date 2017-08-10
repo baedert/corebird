@@ -25,10 +25,10 @@ class SearchPage : IPage, Gtk.Box {
   }
   public unowned Account account;
   public int id                         { get; set; }
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
 
@@ -178,11 +178,11 @@ class SearchPage : IPage, Gtk.Box {
     if (row is UserListEntry) {
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
-      main_window.main_widget.switch_page (Page.PROFILE, bundle);
+      _main_window.main_widget.switch_page (Page.PROFILE, bundle);
     } else if (row is TweetListEntry) {
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
-      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     }
   }
 
@@ -332,7 +332,7 @@ class SearchPage : IPage, Gtk.Box {
         tweet.load_from_json (node, account.id, now);
         if (tweet.id < lowest_tweet_id)
           lowest_tweet_id = tweet.id;
-        var entry = new TweetListEntry (tweet, main_window, account);
+        var entry = new TweetListEntry (tweet, _main_window, account);
         if (!collect_obj.done)
           entry.visible = false;
         else

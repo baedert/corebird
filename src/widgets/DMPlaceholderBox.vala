@@ -59,7 +59,5 @@ class DMPlaceholderBox : Gtk.Box {
     this.screen_name_label = new Gtk.Label ("");
     screen_name_label.get_style_context ().add_class ("dim-label");
     this.add (screen_name_label);
-
-    this.show_all ();
   }
 }

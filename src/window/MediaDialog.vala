@@ -86,7 +86,7 @@ class MediaDialog : Gtk.Window {
       this.initial_py = 0.0;
     }
 
-    new_widget.show_all ();
+    new_widget.show ();
 
     new_widget.get_size_request (out new_width, out new_height);
     if ((new_width != cur_width ||

@@ -18,35 +18,4 @@
 #define CB_GTK_COMPAT_H
 
 #include <gtk/gtk.h>
-
-#if GTK_CHECK_VERSION(3, 9, 1)
-void gtk_widget_measure (GtkWidget      *widget,
-                         GtkOrientation  orientation,
-                         int             for_size,
-                         int            *minimum,
-                         int            *natural,
-                         int            *minimum_baseline,
-                         int            *natural_baseline)
-{
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
-    {
-      g_assert (minimum_baseline == NULL);
-      g_assert (natural_baseline == NULL);
-      if (for_size == -1)
-        gtk_widget_get_preferred_width (widget, minimum, natural);
-      else
-        gtk_widget_get_preferred_width_for_height (widget, for_size, minimum, natural);
-    }
-  else /* VERTICAL */
-    {
-      gtk_widget_get_preferred_height_and_baseline_for_width (widget,
-                                                              for_size,
-                                                              minimum,
-                                                              natural,
-                                                              minimum_baseline,
-                                                              natural_baseline);
-    }
-}
-#endif
-
 #endif

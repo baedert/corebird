@@ -318,7 +318,7 @@ void hashtags () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
-  Gtk.init (ref args);
+  Gtk.init ();
   Twitter.get ().init ();
   Dirs.create_dirs ();
   Utils.init_soup_session ();

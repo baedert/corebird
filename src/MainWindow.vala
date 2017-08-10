@@ -83,7 +83,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     headerbar.set_custom_title (title_stack);
 
     this.header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-    header_box.set_no_show_all (true);
     this.account_button = new Gtk.ToggleButton ();
     account_button.set_tooltip_text (_("Show configured accounts"));
     account_button.clicked.connect (account_button_clicked_cb);
@@ -92,7 +91,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     avatar_image.size = 24;
     avatar_image.set_valign (Gtk.Align.CENTER);
     account_button.add (avatar_image);
-    account_button.show_all ();
+    account_button.show ();
     header_box.add (account_button);
     this.compose_tweet_button = new Gtk.ToggleButton ();
     compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic",
@@ -100,15 +99,15 @@ public class MainWindow : Gtk.ApplicationWindow {
     compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
     compose_tweet_button.set_action_name ("win.compose-tweet");
     compose_tweet_button.get_style_context ().add_class ("image-button");
-    compose_tweet_button.show_all ();
+    compose_tweet_button.show ();
     header_box.add (compose_tweet_button);
     this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
     back_button.clicked.connect (back_button_clicked_cb);
-    back_button.show_all ();
+    back_button.show ();
     header_box.add (back_button);
-    header_box.show_all ();
+    header_box.show ();
     headerbar.pack_start (header_box);
-    headerbar.show_all ();
+    headerbar.show ();
     this.set_titlebar (headerbar);
 
     this.account_popover = new Gtk.Popover (account_button);
@@ -123,14 +122,14 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_list.row_activated.connect (account_row_activated_cb);
     frame.add (account_list);
     account_popover.add (frame);
-    account_popover.show_all ();
+    account_popover.show ();
 
     change_account (account);
 
     account_list.set_sort_func (account_sort_func);
     account_list.set_header_func (default_header_func);
     var add_entry = new AddListEntry (_("Add new Account"));
-    add_entry.show_all ();
+    add_entry.show ();
     account_list.add (add_entry);
 
     for (uint i = 0; i < Account.get_n (); i ++) {
@@ -223,7 +222,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (account != null && account.screen_name != Account.DUMMY) {
       header_box.show ();
       main_widget = new MainWidget (account, this, cb);
-      main_widget.show_all ();
+      main_widget.show ();
       this.add (main_widget);
       main_widget.switch_page (0);
       this.set_window_title (main_widget.get_page (0).get_title ());
@@ -240,10 +239,9 @@ public class MainWindow : Gtk.ApplicationWindow {
       if (!Gtk.Settings.get_default ().gtk_shell_shows_app_menu) {
         if (app_menu_button == null) {
           app_menu_button = new Gtk.MenuButton ();
-          app_menu_button.image = new Gtk.Image.from_icon_name ("emblem-system-symbolic", Gtk.IconSize.MENU);
-          app_menu_button.get_style_context ().add_class ("image-button");
+          app_menu_button.set_icon_name ("emblem-system-symbolic");
           app_menu_button.menu_model = cb.app_menu;
-          app_menu_button.show_all ();
+          app_menu_button.show ();
           headerbar.pack_end (app_menu_button);
         } else
           app_menu_button.show ();
@@ -289,7 +287,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       Account dummy_acc = new Account (0, Account.DUMMY, "name");
       var window = new MainWindow (application, dummy_acc);
       get_application ().add_window (window);
-      window.show_all ();
+      window.show ();
       return;
     }
     var e = (UserListEntry)row;
@@ -568,7 +566,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     var ctw = new ComposeTweetWindow (this, this.account, tweet,
                                       ComposeTweetWindow.Mode.REPLY);
-    ctw.show_all ();
+    ctw.show ();
   }
 
   public void mark_tweet_as_read (int64 tweet_id) {

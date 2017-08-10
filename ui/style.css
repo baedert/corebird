@@ -1,11 +1,5 @@
 @define-color topbar_bg #333;
 
-* {
-  /* The default for this style property for gtk3 is 150
-   * so we have to get rid of that. */
-  -GtkProgressBar-min-horizontal-bar-width: 0;
-}
-
 .avatar-round {
   border: 1px solid grey;
   border-radius: 48px;
@@ -17,7 +11,7 @@
 
 .topbar button image,
 .topbar .button GtkImage {
-  icon-shadow: none;
+  -gtk-icon-shadow: none;
   color: #ddd;
 }
 
@@ -30,7 +24,6 @@
   background-color: @topbar_bg;
   outline-color: #999;
   margin: 0px;
-  -GtkWidget-window-dragging: 1;
 }
 
 .topbar button:hover,
@@ -228,19 +221,19 @@ replyindicator {
 .close-button {
   padding: 3px;
   border-radius: 50%;
-  outline-radius: 50%;
+  -gtk-outline-radius: 50%;
   min-height: 0px;
   min-width: 0px;
   box-shadow: none;
 }
 
-.avatar:insensitive,
-.inline-media:insensitive {
+.avatar:disabled,
+.inline-media:disabled {
   opacity: 0.4;
 }
 /* Override the earlier rule to read-only
  * inline media are still full-opacity */
-.read-only .inline-media:insensitive {
+.read-only .inline-media:disabled {
   opacity: 1.0;
 }
 

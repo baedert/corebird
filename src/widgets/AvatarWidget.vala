@@ -15,33 +15,12 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* We use the AvatarWidget as a parent of the AvatarContainer widget
+   so we can move the latter up in the overlap=TRUE case. */
 public class AvatarWidget : Gtk.Widget {
-  private const int SMALL = 0;
-  private const int LARGE = 1;
   private const int OVERLAP_DIST = 40;
-  private bool _round = true;
-  public bool make_round {
-    get {
-      return _round;
-    }
-    set {
-      if (value == _round)
-        return;
-
-      if (value) {
-        this.get_style_context ().add_class ("avatar-round");
-      } else {
-        this.get_style_context ().remove_class ("avatar-round");
-      }
-
-      this._round = value;
-      this.queue_draw ();
-    }
-  }
-  public bool verified { get; set; default = false; }
   public bool overlap  { get; set; default = false; }
-  public int size      { get; set; default = 48;    }
-
+  public bool verified { get; set; default = false; }
   private Cairo.ImageSurface _surface;
   public Cairo.Surface surface {
     get {
@@ -63,13 +42,161 @@ public class AvatarWidget : Gtk.Widget {
         Twitter.get ().ref_avatar (this._surface);
         if (animate)
           this.start_animation ();
+        else
+          container_widget.set_opacity (1.0);
       }
 
+      container_widget.surface = this._surface;
       this.queue_draw ();
     }
   }
-  private double alpha = 1.0f;
+  private int _size = 48;
+  public int size {
+    set {
+      this._size = value;
+      container_widget.size = value;
+      this.queue_resize ();
+    }
+    default = 48;
+  }
+
   private int64 start_time;
+  private AvatarContainer container_widget;
+
+  static construct {
+    set_css_name ("avatar");
+  }
+
+  construct {
+    this.set_has_window (false);
+
+    container_widget = new AvatarContainer ();
+    container_widget.set_parent (this);
+    container_widget.set_opacity (0.0);
+  }
+
+  ~AvatarWidget () {
+    container_widget.unparent ();
+  }
+
+  public override void measure (Gtk.Orientation orientation,
+                                int for_size,
+                                out int min, out int nat,
+                                out int min_baseline, out int nat_baseline) {
+
+    int s = _size;
+    int m;
+
+    container_widget.measure (orientation, for_size, out m, null, null, null);
+
+    s = int.max (_size, m);
+
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      min = s;
+      nat = s;
+    } else {
+      if (overlap) {
+        min = s - OVERLAP_DIST;
+        nat = s - OVERLAP_DIST;
+      } else {
+        min = s;
+        nat = s;
+      }
+    }
+
+    min_baseline = -1;
+    nat_baseline = -1;
+  }
+
+  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
+    Gtk.Allocation child_alloc = alloc;
+    Gtk.Allocation child_clip;
+    if (overlap) {
+      int height;
+      container_widget.measure (Gtk.Orientation.VERTICAL, -1, out height, null, null, null);
+
+      child_alloc.y -= OVERLAP_DIST;
+      child_alloc.height = height;
+    }
+
+    container_widget.size_allocate (child_alloc, -1, out child_clip);
+
+    /* XXX I want to do this, but valac won't let me. */
+    /* out_clip.union (child_clip, out out_clip); */
+
+    out_clip = alloc;
+  }
+
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    this.snapshot_child (container_widget, snapshot);
+  }
+
+  /* We do the animation here so we can just set the avatar container's opacity,
+     which will make the border etc. also transition. */
+  public void start_animation () {
+    if (!this.get_realized ()) {
+      container_widget.set_opacity (1.0);
+      return;
+    }
+
+    container_widget.set_opacity (0.0);
+    this.start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (fade_in_cb);
+  }
+
+  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    int64 now = frame_clock.get_frame_time ();
+    double t = (now - start_time) / (double) TRANSITION_DURATION;
+
+    if (t >= 1.0) {
+      t = 1.0;
+    }
+
+    container_widget.set_opacity (ease_out_cubic (t));
+    this.queue_draw ();
+
+    return t < 1.0;
+  }
+
+
+}
+
+public class AvatarContainer : Gtk.Widget {
+  public bool verified = false;
+  public int size = 48;
+  private const int SMALL = 0;
+  private const int LARGE = 1;
+  private bool _round = true;
+  public bool make_round {
+    get {
+      return _round;
+    }
+    set {
+      if (value == _round)
+        return;
+<<<<<<< HEAD
+
+      if (value) {
+        this.get_style_context ().add_class ("avatar-round");
+      } else {
+        this.get_style_context ().remove_class ("avatar-round");
+      }
+
+=======
+
+      if (value) {
+        this.get_style_context ().add_class ("avatar-round");
+      } else {
+        this.get_style_context ().remove_class ("avatar-round");
+      }
+
+>>>>>>> Simple gtk4 port
+      this._round = value;
+      this.queue_draw ();
+    }
+  }
+
+  public Cairo.Surface surface;
 
 
   static Cairo.Surface[] verified_icons;
@@ -93,143 +220,85 @@ public class AvatarWidget : Gtk.Widget {
     } catch (GLib.Error e) {
       critical (e.message);
     }
+
+    set_css_name ("container");
   }
 
   construct {
     this.set_has_window (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
-    this.get_style_context ().add_class ("avatar");
     this.get_style_context ().add_class ("avatar-round"); // default is TRUE
   }
 
-  ~AvatarWidget () {
-    if (this._surface != null)
-      Twitter.get ().unref_avatar (this._surface);
+  ~AvatarContainer () {
+    if (this.surface != null)
+      Twitter.get ().unref_avatar (this.surface);
   }
 
-
-  private void start_animation () {
-    if (!this.get_realized ())
-      return;
-
-    alpha = 0.0;
-    this.start_time = this.get_frame_clock ().get_frame_time ();
-    this.add_tick_callback (fade_in_cb);
-  }
-
-  private bool fade_in_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
-    int64 now = frame_clock.get_frame_time ();
-    double t = (now - start_time) / (double) TRANSITION_DURATION;
-
-    if (t >= 1.0) {
-      t = 1.0;
-    }
-
-    this.alpha = ease_out_cubic (t);
-    this.queue_draw ();
-
-    return t < 1.0;
-  }
-
-
-
-  public override bool draw (Cairo.Context ctx) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
     int width  = this.size;
     int height = this.size;
 
-    if (this._surface == null) {
-      return Gdk.EVENT_PROPAGATE;
+    if (this.surface == null) {
+      return;
     }
 
-    double surface_scale;
-    this._surface.get_device_scale (out surface_scale, out surface_scale);
+    Graphene.Rect bounds = {};
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = width;
+    bounds.size.height = height;
 
-    if (width != height) {
-      warning ("Avatar with mapped with width %d and height %d", width, height);
-    }
-
-    var surface = new Cairo.Surface.similar (ctx.get_target (),
-                                             Cairo.Content.COLOR_ALPHA,
-                                             width, height);
-    var ct = new Cairo.Context (surface);
-
-    double scale = (double)this.get_allocated_width () /
-                   (double) (this._surface.get_width () / surface_scale);
-
-    ct.rectangle (0, 0, width, height);
-    ct.scale (scale, scale);
-    ct.set_source_surface (this._surface, 0, 0);
-    ct.fill();
-
-    int y;
-    if (overlap)
-      y = - OVERLAP_DIST;
-    else
-      y = 0;
+    // TODO: Ultimately, we should save GskTextures everywhere instead of
+    //       cairo surfaces
+    var texture = Cb.Utils.surface_to_texture (this.surface,
+                                               this.get_scale_factor ());
 
     if (_round) {
-      ct.scale (1.0/scale, 1.0/scale);
-      ct.set_operator (Cairo.Operator.DEST_IN);
-      ct.arc ((width / 2.0), (height / 2.0),
-              (width / 2.0) - 0.5, // Radius
-              0,                   //Angle from
-              2 * Math.PI);        // Angle to
-      ct.fill ();
-
-      this.get_style_context ().render_frame (ctx, 0, y, width, height);
+      Gsk.RoundedRect round_clip = {};
+      round_clip.init_from_rect (bounds, width); // radius = width => round.
+      snapshot.push_rounded_clip (round_clip, "Avatar clip");
     }
 
+    snapshot.append_texture (texture, bounds, "Avatar Image");
 
-    ctx.set_source_surface (surface, 0, y);
-    ctx.paint_with_alpha (alpha);
+    if (_round) {
+      snapshot.pop ();
+    }
 
     if (verified) {
-      double verified_scale = 1.0;
+      Graphene.Rect verified_bounds = {};
+      float verified_scale = 1.0f;
       int index = SMALL;
       if (width > 48)
         index = LARGE;
 
-      if (index == LARGE && this._size < 100) {
-        verified_scale = (double)this._size / 100.0;
+      if (index == LARGE && this.size < 100) {
+        verified_scale = (float)this.size / 100.0f;
       }
 
       int scale_factor = this.get_scale_factor () - 1;
       Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
-      ctx.scale (verified_scale, verified_scale);
-      ctx.set_source_surface (verified_img,
-                              (width  - (VERIFIED_SIZES[index] * verified_scale)) / verified_scale,
-                              y);
-      ctx.paint_with_alpha (this.alpha);
-    }
+      var verified_texture = Cb.Utils.surface_to_texture (verified_img,
+                                                          this.get_scale_factor ());
+      verified_bounds.origin.x = width - (VERIFIED_SIZES[index] * verified_scale);
+      verified_bounds.origin.y = 0;
+      verified_bounds.size.width = VERIFIED_SIZES[index] * verified_scale;
+      verified_bounds.size.height = VERIFIED_SIZES[index] * verified_scale;
 
-    return Gdk.EVENT_PROPAGATE;
-  }
-
-  public override void size_allocate (Gtk.Allocation alloc) {
-    base.size_allocate (alloc);
-
-    if (overlap) {
-      alloc.y -= OVERLAP_DIST;
-      alloc.height += OVERLAP_DIST;
-      this.set_clip (alloc);
+      snapshot.append_texture (verified_texture, verified_bounds, "Avatar Verified Indicator");
     }
   }
 
-  public override void get_preferred_width (out int min, out int nat) {
+  public override void measure (Gtk.Orientation orientation,
+                                int for_size,
+                                out int min, out int nat,
+                                out int min_baseline, out int nat_baseline) {
     min = size;
     nat = size;
-  }
 
-  public override void get_preferred_height (out int min, out int nat) {
-    if (overlap) {
-      min = size - OVERLAP_DIST;
-      nat = size - OVERLAP_DIST;
-    } else {
-      min = size;
-      nat = size;
-    }
+    min_baseline = -1;
+    nat_baseline = -1;
   }
 }
-
-

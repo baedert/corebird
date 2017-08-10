@@ -53,44 +53,46 @@ class AddImageButton : Gtk.Widget {
     height = (int)(this.surface.get_height () * scale);
   }
 
-  public override bool draw (Cairo.Context ct) {
-    int widget_width = get_allocated_width ();
-    int widget_height = get_allocated_height ();
-    var style_context = this.get_style_context ();
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    if (this.surface == null)
+      return;
 
     /* Draw thumbnail */
-    if (this.surface != null) {
-      ct.save ();
-      ct.rectangle (0, 0, widget_width, widget_height);
+    Graphene.Rect bounds = {};
+    int draw_width, draw_height;
+    double scale;
 
-      int draw_width, draw_height;
-      double scale;
-      this.get_draw_size (out draw_width, out draw_height, out scale);
+    var texture = Cb.Utils.surface_to_texture (this.surface,
+                                               this.get_scale_factor ());
 
-      if (draw_width > 0 && draw_height > 0) {
-        ct.scale (scale, scale);
-        ct.set_source_surface (this.surface, 0, 0);
-        ct.fill ();
-      }
-      ct.restore ();
+    this.get_draw_size (out draw_width, out draw_height, out scale);
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = draw_width;
+    bounds.size.height = draw_height;
 
-      style_context.render_check (ct,
-                                  (draw_width / 2.0) - (ICON_SIZE / 2.0),
-                                  (draw_height / 2.0) - (ICON_SIZE / 2.0),
-                                  ICON_SIZE,
-                                  ICON_SIZE);
+    if (draw_width > 0 && draw_height > 0) {
+      snapshot.append_texture (texture, bounds, "Texture");
     }
 
-    return Gdk.EVENT_PROPAGATE;
+    // TODO: What to do here?
+    //style_context.render_check (ct,
+                                //(widget_width / 2.0) - (ICON_SIZE / 2.0),
+                                //(widget_height / 2.0) - (ICON_SIZE / 2.0),
+                                //ICON_SIZE,
+                                //ICON_SIZE);
   }
 
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int minimum,
-                                                       out int natural) {
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
     int media_width;
     int media_height;
 
@@ -102,57 +104,32 @@ class AddImageButton : Gtk.Widget {
       media_height = this.surface.get_height ();
     }
 
-    double width_ratio = (double)width / (double) media_width;
-    int height = int.min (media_height, (int)(media_height * width_ratio));
-    height = int.min (MAX_HEIGHT, height);
-    minimum = MIN_HEIGHT;
-    natural = int.max (minimum, (int)(height * this.delete_factor));
-  }
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      if (for_size == -1) {
+        minimum = (int)(int.min (media_width, MIN_WIDTH) * delete_factor);
+        natural = (int)(media_width * delete_factor);
+      } else {
+        double height_ratio = (double)for_size / (double) media_height;
+        int width = int.min (media_width, (int)(media_width * height_ratio));
+        width = int.max (MIN_WIDTH, width);
+        minimum = natural = (int)(width * this.delete_factor);
+      }
 
-  public override void get_preferred_width_for_height (int     height,
-                                                       out int minimum,
-                                                       out int natural) {
-    int media_width;
-    int media_height;
-
-    if (this.surface == null) {
-      media_width = MIN_WIDTH;
-      media_height = MAX_HEIGHT;
     } else {
-      media_width = this.surface.get_width ();
-      media_height = this.surface.get_height ();
+      if (for_size == -1) {
+        minimum = (int)(int.min (media_height, MIN_HEIGHT) * delete_factor);
+        natural = (int)(media_height * delete_factor);
+      } else {
+        double width_ratio = (double)for_size / (double) media_width;
+        int height = int.min (media_height, (int)(media_height * width_ratio));
+        height = int.min (MAX_HEIGHT, height);
+        minimum = MIN_HEIGHT;
+        natural = int.max (minimum, (int)(height * this.delete_factor));
+      }
     }
 
-    double height_ratio = (double)height / (double) media_height;
-    int width = int.min (media_width, (int)(media_width * height_ratio));
-    width = int.max (MIN_WIDTH, width);
-    minimum = natural = (int)(width * this.delete_factor);
-  }
-
-  public override void get_preferred_width (out int minimum,
-                                            out int natural) {
-    int media_width;
-    if (this.surface == null) {
-      media_width = 1;
-    } else {
-      media_width = this.surface.get_width ();
-    }
-
-    minimum = (int)(int.min (media_width, MIN_WIDTH) * delete_factor);
-    natural = (int)(media_width * delete_factor);
-  }
-
-  public override void get_preferred_height (out int minimum,
-                                             out int natural) {
-    int media_height;
-    if (this.surface == null) {
-      media_height = 1;
-    } else {
-      media_height = this.surface.get_height ();
-    }
-
-    minimum = (int)(int.min (media_height, MIN_HEIGHT) * delete_factor);
-    natural = (int)(media_height * delete_factor);
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
 
   private bool delete_tick_cb (Gtk.Widget     widget,

@@ -73,7 +73,7 @@ public class MainWidget : Gtk.Box {
     /* Initialize all containers */
     for (int i = 0; i < pages.length; i++) {
       IPage page = pages[i];
-      page.window = parent;
+      page.main_window = parent;
 
       if (page is Cb.MessageReceiver)
         account.user_stream.register ((Cb.MessageReceiver)page);
@@ -90,8 +90,9 @@ public class MainWidget : Gtk.Box {
       }
     }
 
-    Settings.get ().bind ("sidebar-visible", this.topbar_revealer, "reveal-child",
-                          SettingsBindFlags.DEFAULT);
+    // TODO: WTF?
+    //Settings.get ().bind ("sidebar-visible", this.topbar_revealer, "reveal-child",
+                          //SettingsBindFlags.DEFAULT);
   }
 
 

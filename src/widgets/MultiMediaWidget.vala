@@ -18,7 +18,7 @@
 public class MultiMediaWidget : Gtk.Box {
   public const int MAX_HEIGHT = 180;
   public bool restrict_height = false;
-  public unowned Gtk.Window window;
+  public unowned Gtk.Window main_window;
   private MediaButton[] media_buttons;
   private int media_count = 0;
 
@@ -56,7 +56,7 @@ public class MultiMediaWidget : Gtk.Box {
 
     var button = new MediaButton (null, this.restrict_height);
     button.set_data ("pos", index);
-    button.window = this.window;
+    button.main_window = this.main_window;
     media_buttons[index] = button;
 
     if (media.loaded) {
@@ -67,7 +67,7 @@ public class MultiMediaWidget : Gtk.Box {
     }
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
-    this.pack_start (button, true, true);
+    this.add (button);
     this.queue_draw ();
   }
 

@@ -20,6 +20,7 @@ class CropWidget : Gtk.DrawingArea {
 
   private Gtk.GestureDrag drag_gesture;
   private Gdk.Pixbuf? image;
+  private Cairo.Surface? surface;
   private Gdk.Rectangle selection_rect;
   private Gdk.Rectangle image_rect;
   private Gdk.Cursor drag_cursor;
@@ -45,10 +46,6 @@ class CropWidget : Gtk.DrawingArea {
 
 
   construct {
-    this.set_events (this.get_events () | Gdk.EventMask.POINTER_MOTION_MASK
-                                        | Gdk.EventMask.BUTTON1_MOTION_MASK
-                                        | Gdk.EventMask.BUTTON_PRESS_MASK
-                                        | Gdk.EventMask.BUTTON_RELEASE_MASK);
     this.motion_notify_event.connect (mouse_motion_cb);
     this.drag_cursor = new Gdk.Cursor.for_display (this.get_display (),
                                                    Gdk.CursorType.FLEUR);
@@ -227,6 +224,8 @@ class CropWidget : Gtk.DrawingArea {
 
   public void set_image (Gdk.Pixbuf? image) {
     this.image = image;
+    if (image != null)
+      this.surface = Gdk.cairo_surface_create_from_pixbuf (image, this.get_scale_factor (), null);
     calculate_image_rect ();
 
     /* Place the selection rect initially, using the maximum size
@@ -248,49 +247,112 @@ class CropWidget : Gtk.DrawingArea {
   }
 
 
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
     if (image == null)
-      return Gdk.EVENT_PROPAGATE;
+      return;
 
     int widget_width  = get_allocated_width ();
     int widget_height = get_allocated_height ();
 
-    ct.set_line_width (1.0);
+    Graphene.Rect bounds = {};
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = widget_width;
+    bounds.size.height = widget_height;
+
 
     /* Draw dark background */
-    ct.rectangle (0, 0, widget_width, widget_height);
-    ct.set_source_rgba (0.3, 0.3, 0.3, 1.0);
-    ct.fill ();
+    Gdk.RGBA bg_color = {0.3, 0.3, 0.3, 1.0};
+    snapshot.append_color (bg_color, bounds, "Background Color");
 
     /* Draw image */
-    ct.save ();
-    ct.rectangle (image_rect.x, image_rect.y,
-                  image_rect.width, image_rect.height);
-    ct.scale (current_scale, current_scale);
-    Gdk.cairo_set_source_pixbuf (ct, image,
-                                 image_rect.x / current_scale,
-                                 image_rect.y / current_scale);
-    ct.fill ();
-    ct.restore ();
+    Graphene.Rect image_bounds = {};
+    image_bounds.origin.x = image_rect.x;
+    image_bounds.origin.y = image_rect.y;
+    image_bounds.size.width = image_rect.width;
+    image_bounds.size.height = image_rect.height;
+    var texture = Cb.Utils.surface_to_texture (this.surface,
+                                               this.get_scale_factor ());
+    snapshot.append_texture (texture, image_bounds, "Crop Texture");
 
-    /* Draw selection rectangle border */
-    ct.rectangle (selection_rect.x, selection_rect.y,
-                  selection_rect.width, selection_rect.height);
-    ct.set_source_rgba (1.0, 1.0, 1.0, 1.0);
-    ct.stroke ();
+    /* Draw half-transparent dark over the non-selected part of the image */
+    Graphene.Rect dark_bounds = {};
+    Gdk.RGBA dark = { 0.0, 0.0, 0.0, 0.5};
 
-    /* Draw resize quad */
-    ct.rectangle (selection_rect.x + selection_rect.width - 15,
-                  selection_rect.y + selection_rect.height - 15,
-                  14.5,
-                  14.5);
-    if (resize_area_hovered || resize_area_grabbed)
-      ct.set_source_rgba (0.0, 0.0, 0.6, 0.7);
-    else
-      ct.set_source_rgba (1.0, 1.0, 1.0, 0.7);
-    ct.fill ();
+    /* Left */
+    dark_bounds.origin.x = image_rect.x;
+    dark_bounds.origin.y = image_rect.y;
+    dark_bounds.size.width = selection_rect.x - image_rect.x;
+    dark_bounds.size.height = image_rect.height;
+    snapshot.append_color (dark, dark_bounds, "Dark Left");
 
-    return Gdk.EVENT_PROPAGATE;
+    /* Top */
+    dark_bounds.origin.x = selection_rect.x;
+    dark_bounds.origin.y = image_rect.y;
+    dark_bounds.size.width = selection_rect.width;
+    dark_bounds.size.height = selection_rect.y - image_rect.y;
+    snapshot.append_color (dark, dark_bounds, "Dark Top");
+
+    /* Right */
+    dark_bounds.origin.x = selection_rect.x + selection_rect.width;
+    dark_bounds.origin.y = image_rect.y;
+    dark_bounds.size.width = image_rect.x + image_rect.width - (selection_rect.x + selection_rect.width);
+    dark_bounds.size.height = image_rect.height;
+    snapshot.append_color (dark, dark_bounds, "Dark Right");
+
+    /* Bottom */
+    dark_bounds.origin.x = selection_rect.x;
+    dark_bounds.origin.y = selection_rect.y + selection_rect.height;
+    dark_bounds.size.width = selection_rect.width;
+    dark_bounds.size.height = image_rect.y + image_rect.height - (selection_rect.y + selection_rect.height);
+    snapshot.append_color (dark, dark_bounds, "Dark Top");
+
+
+
+    /* Draw selection rectangle */
+    Gdk.RGBA selection_color = {1.0, 1.0, 1.0, 1.0};
+    int stroke_width = 2;
+    Graphene.Rect selection_bounds = {};
+
+    /* Left */
+    selection_bounds.origin.x = selection_rect.x;
+    selection_bounds.origin.y = selection_rect.y;
+    selection_bounds.size.width = stroke_width;
+    selection_bounds.size.height = selection_rect.height;
+    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Left");
+
+    /* Top */
+    selection_bounds.origin.x = selection_rect.x;
+    selection_bounds.origin.y = selection_rect.y;
+    selection_bounds.size.width = selection_rect.width;
+    selection_bounds.size.height = stroke_width;
+    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Top");
+
+    /* Right */
+    selection_bounds.origin.x = selection_rect.x + selection_rect.width - stroke_width;
+    selection_bounds.origin.y = selection_rect.y;
+    selection_bounds.size.width = stroke_width;
+    selection_bounds.size.height = selection_rect.height;
+    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Right");
+
+    /* Bottom */
+    selection_bounds.origin.x = selection_rect.x;
+    selection_bounds.origin.y = selection_rect.y + selection_rect.height - stroke_width;
+    selection_bounds.size.width = selection_rect.width;
+    selection_bounds.size.height = stroke_width;
+    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Bottom");
+
+    /* Resize quad */
+    Gdk.RGBA quad_color = {0.0, 0.0, 0.6, 0.7};
+    int quad_size = 15;
+    Graphene.Rect quad_bounds = {};
+
+    quad_bounds.origin.x = selection_rect.x + selection_rect.width - quad_size;
+    quad_bounds.origin.y = selection_rect.y + selection_rect.height - quad_size;
+    quad_bounds.size.width = quad_size;
+    quad_bounds.size.height = quad_size;
+
+    snapshot.append_color (quad_color, quad_bounds, "Resize quad");
   }
 
   private inline void set_cursor (Gdk.Cursor cursor) {
@@ -305,10 +367,11 @@ class CropWidget : Gtk.DrawingArea {
   }
 
 
-  public override void size_allocate (Gtk.Allocation alloc) {
-    base.size_allocate (alloc);
+  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
     calculate_image_rect ();
     restrict_selection_size ();
+
+    out_clip = alloc;
   }
 
   private void calculate_image_rect () {

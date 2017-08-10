@@ -6,7 +6,6 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="user_list_label">
-        <property name="no-show-all">1</property>
         <property name="halign">start</property>
         <property name="margin-start">24</property>
         <property name="margin-top">15</property>
@@ -14,8 +13,6 @@
         <property name="label" translatable="yes">Created</property>
       </object>
       <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
         <property name="position">0</property>
       </packing>
     </child>
@@ -71,14 +68,11 @@
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
         <property name="position">1</property>
       </packing>
     </child>
     <child>
       <object class="GtkLabel" id="subscribed_list_label">
-        <property name="no-show-all">1</property>
         <property name="halign">start</property>
         <property name="margin-start">25</property>
         <property name="margin-top">24</property>
@@ -87,14 +81,11 @@
         <property name="ellipsize">end</property>
       </object>
       <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
         <property name="position">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkFrame" id="subscribed_list_frame">
-        <property name="no-show-all">1</property>
         <property name="margin-start">25</property>
         <property name="margin-end">25</property>
         <property name="shadow-type">in</property>
@@ -108,8 +99,6 @@
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
         <property name="position">3</property>
       </packing>
     </child>

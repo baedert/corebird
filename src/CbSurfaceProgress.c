@@ -86,17 +86,13 @@ cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
 }
 
 static void
-cb_surface_progress_get_preferred_width (GtkWidget *widget,
-                                         int       *minimum,
-                                         int       *natural)
-{
-  *minimum = *natural = 1;
-}
-
-static void
-cb_surface_progress_get_preferred_height (GtkWidget *widget,
-                                          int       *minimum,
-                                          int       *natural)
+cb_surface_progress_measure (GtkWidget      *widget,
+                             GtkOrientation  orientation,
+                             int             for_size,
+                             int            *minimum,
+                             int            *natural,
+                             int            *minimum_baseline,
+                             int            *natural_baseline)
 {
   *minimum = *natural = 1;
 }
@@ -126,9 +122,8 @@ cb_surface_progress_class_init (CbSurfaceProgressClass *klass)
 
   object_class->finalize = cb_surface_progress_finalize;
 
+  widget_class->measure = cb_surface_progress_measure;
   widget_class->draw = cb_surface_progress_draw;
-  widget_class->get_preferred_width = cb_surface_progress_get_preferred_width;
-  widget_class->get_preferred_height = cb_surface_progress_get_preferred_height;
 }
 
 GtkWidget *
