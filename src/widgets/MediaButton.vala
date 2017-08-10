@@ -359,9 +359,8 @@ private class MediaButton : Gtk.Widget {
     if (this._media == null)
       return;
 
+    this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
     if (event.triggers_context_menu ()) {
-      this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
-
       if (this.menu == null) {
         this.menu = new Gtk.Menu.from_model (menu_model);
         this.menu.attach_to_widget (this, null);
