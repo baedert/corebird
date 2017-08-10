@@ -16,6 +16,7 @@
  */
 
 #include "CbMediaDownloader.h"
+#include "CbUtils.h"
 #include <libsoup/soup.h>
 #include <gdk/gdk.h>
 #include <string.h>
@@ -121,10 +122,12 @@ load_animation (GInputStream *input_stream,
   if (media->surface == NULL)
     {
       g_warning ("Surface of %p is null", media);
+      media->texture = NULL;
       mark_invalid (media);
       goto out;
     }
 
+  media->texture = cb_utils_surface_to_texture (media->surface, 1);
   media->width   = gdk_pixbuf_get_width (frame);
   media->height  = gdk_pixbuf_get_height (frame);
   media->loaded  = TRUE;
