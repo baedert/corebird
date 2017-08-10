@@ -385,14 +385,17 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  public void tweet_text_populate_popup_cb (Gtk.Menu popup) {
+  public void tweet_text_populate_popup_cb (Gtk.Widget popup) {
     if (this.emoji_chooser == null)
+      return;
+
+    if (!(popup is Gtk.Menu))
       return;
 
     var menuitem = new Gtk.MenuItem.with_label (_("Insert Emoji"));
     menuitem.activate.connect (show_emoji_chooser);
     menuitem.show ();
-    popup.add (menuitem);
+    ((Gtk.Container)popup).add (menuitem);
   }
 
   private void show_emoji_chooser () {

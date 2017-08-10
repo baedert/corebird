@@ -80,7 +80,6 @@
         <child>
           <object class="GtkLabel" id="unread_count_label">
             <property name="visible">1</property>
-            <property name="no-show-all">1</property>
             <property name="valign">start</property>
             <property name="margin-start">12</property>
             <property name="margin-end">12</property>

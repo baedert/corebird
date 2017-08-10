@@ -16,7 +16,6 @@
  */
 
 class MaxSizeContainer : Gtk.Bin {
-  private Gdk.Window? event_window = null;
   private int _max_size = 0;
   public int max_size {
     get {
@@ -28,38 +27,46 @@ class MaxSizeContainer : Gtk.Bin {
     }
   }
 
-  public override void add (Gtk.Widget widget) {
-    base.add (widget);
-    if (this.event_window != null)
-      widget.set_parent_window (this.event_window);
-  }
-
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    int min_child_height;
-    int nat_child_height;
-    get_child ().get_preferred_height_for_width (width, out min_child_height, out nat_child_height);
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
 
-    if (max_size >= min_child_height) {
-      min_height = min_child_height;
-      nat_height = nat_child_height;
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      base.measure (orientation, for_size,
+                    out minimum, out natural,
+                    out minimum_baseline, out natural_baseline);
     } else {
-      nat_height = max_size;
-      min_height = max_size;
+      int min_child_height;
+      int nat_child_height;
+      get_child ().measure (Gtk.Orientation.VERTICAL,
+                            for_size,
+                            out min_child_height,
+                            out nat_child_height,
+                            null, null);
+
+      if (max_size >= min_child_height) {
+        minimum = min_child_height;
+        natural = nat_child_height;
+      } else {
+        minimum = max_size;
+        natural = max_size;
+      }
     }
+
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
 
-  public override void size_allocate (Gtk.Allocation alloc) {
+  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
     if (get_child () == null || !get_child ().visible) {
-      if (this.event_window != null)
-        event_window.move_resize (alloc.x, alloc.y, alloc.width, alloc.height);
-
-      this.set_allocation (alloc);
+      out_clip = alloc;
       return;
     }
 
@@ -76,70 +83,23 @@ class MaxSizeContainer : Gtk.Bin {
       child_alloc.height = max_size;
     }
 
-    if (this.event_window != null)
-      this.event_window.move_resize (child_alloc.x, child_alloc.y,
-                                     child_alloc.width, child_alloc.height);
-
-    this.set_allocation (child_alloc);
     if (get_child () != null && get_child ().visible) {
       int min_height, nat_height;
-      get_child ().get_preferred_height_for_width (alloc.width, out min_height, out nat_height);
+      get_child ().measure (Gtk.Orientation.VERTICAL, alloc.width, out min_height, out nat_height, null, null);
       child_alloc.height = int.max (child_alloc.height, min_height);
 
-      get_child ().size_allocate (child_alloc);
-      if (this.get_realized ())
-        get_child ().show ();
-    }
-  }
-
-  public override void realize () {
-    base.realize ();
-    Gtk.Allocation alloc;
-    this.get_allocation (out alloc);
-
-    Gdk.WindowAttr attr = {};
-    attr.x = alloc.x;
-    attr.y = alloc.y;
-    attr.width = alloc.width;
-    attr.height = alloc.height;
-    attr.window_type = Gdk.WindowType.CHILD;
-    attr.visual = this.get_visual ();
-    attr.wclass = Gdk.WindowWindowClass.INPUT_OUTPUT;
-    attr.event_mask = this.get_events ();
-
-    Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
-                                         Gdk.WindowAttributesType.Y;
-    Gdk.Window window = this.get_parent_window ();
-    this.set_window (window);
-    window.ref ();
-
-    this.event_window = new Gdk.Window (window, attr, attr_mask);
-    this.register_window (this.event_window);
-
-    if (this.get_child () != null)
-      this.get_child ().set_parent_window (this.event_window);
-  }
-
-  public override void unrealize () {
-    if (this.event_window != null) {
-      this.unregister_window (this.event_window);
-      this.event_window.destroy ();
-      this.event_window = null;
+      get_child ().size_allocate (child_alloc, -1, out out_clip);
     }
 
-    base.unrealize ();
+    out_clip = alloc;
   }
 
-  public override void map () {
-    base.map ();
-    if (this.event_window != null)
-      this.event_window.show ();
-  }
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    Graphene.Rect clip_bounds = {};
+    clip_bounds.init (0, 0, this.get_allocated_width (), this.get_allocated_height ());
 
-  public override void unmap () {
-    if (this.event_window != null)
-      this.event_window.hide ();
-
-    base.unmap ();
+    snapshot.push_clip (clip_bounds, "MaxSizeContainer clip");
+    base.snapshot (snapshot);
+    snapshot.pop ();
   }
 }

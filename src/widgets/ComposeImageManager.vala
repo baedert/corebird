@@ -81,7 +81,7 @@ class ComposeImageManager : Gtk.Container {
   }
 
   // GtkContainer API {{{
-  public override void forall_internal (bool include_internals, Gtk.Callback cb) {
+  public override void forall (Gtk.Callback cb) {
     assert (buttons.length == close_buttons.length);
     assert (buttons.length == progress_bars.length);
 
@@ -120,7 +120,7 @@ class ComposeImageManager : Gtk.Container {
 
     var bar = new Gtk.ProgressBar ();
     bar.set_parent (this);
-    bar.show_all ();
+    bar.show ();
     this.progress_bars.add (bar);
   }
 
@@ -140,11 +140,13 @@ class ComposeImageManager : Gtk.Container {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void size_allocate (Gtk.Allocation allocation) {
-    base.size_allocate (allocation);
+  public override void size_allocate (Gtk.Allocation allocation, int baseline, out Gtk.Allocation out_clip) {
     Gtk.Allocation child_allocation = {};
 
-    if (this.buttons.length == 0) return;
+    if (this.buttons.length == 0) {
+      out_clip = allocation;
+      return;
+    }
 
 
     int default_button_width = (allocation.width - (buttons.length * BUTTON_SPACING)) /
@@ -161,21 +163,21 @@ class ComposeImageManager : Gtk.Container {
 
       /* Actual image button */
       AddImageButton aib = this.buttons.get (i);
-      aib.get_preferred_width_for_height (child_allocation.height, out min, out nat);
+      aib.measure (Gtk.Orientation.HORIZONTAL, child_allocation.height, out min, out nat, null, null);
+
 
       child_allocation.width = int.min (default_button_width, nat);
-      aib.size_allocate (child_allocation);
+      aib.size_allocate (child_allocation, -1, out out_clip);
 
 
       /* Remove button */
-      int n;
       Gtk.Widget btn = this.close_buttons.get (i);
-      btn.get_preferred_width (out close_allocation.width, out n);
-      btn.get_preferred_height (out close_allocation.height, out n);
+      btn.measure (Gtk.Orientation.HORIZONTAL, -1, out close_allocation.width, null, null, null);
+      btn.measure (Gtk.Orientation.VERTICAL, -1, out close_allocation.height, null, null, null);
       close_allocation.x = child_allocation.x + child_allocation.width
                            - close_allocation.width + BUTTON_DELTA;
 
-      btn.size_allocate (close_allocation);
+      btn.size_allocate (close_allocation, -1, out out_clip);
 
 
       /* Progress bar */
@@ -185,86 +187,76 @@ class ComposeImageManager : Gtk.Container {
       Gtk.Widget bar = this.progress_bars.get (i);
       Gtk.Allocation bar_allocation = {0};
       bar_allocation.x = child_allocation.x + 6;
-      bar.get_preferred_width (out bar_allocation.width, out n);
+      bar.measure (Gtk.Orientation.HORIZONTAL, -1, out bar_allocation.width, null, null, null);
       bar_allocation.width = int.max (button_width - 12, bar_allocation.width);
-      bar.get_preferred_height (out bar_allocation.height, out n);
+      bar.measure (Gtk.Orientation.VERTICAL, -1, out bar_allocation.height, null, null, null);
       bar_allocation.y = child_allocation.y + button_height - bar_allocation.height - 6;
 
-      bar.size_allocate (bar_allocation);
+      bar.size_allocate (bar_allocation, -1, out out_clip);
 
       child_allocation.x += child_allocation.width + BUTTON_SPACING;
     }
+
+    out_clip = allocation;
   }
 
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int minimum,
-                                                       out int natural) {
-    int min = 0;
-    int nat = 0;
-    for (int i = 0; i < buttons.length; i ++) {
-      var btn = buttons.get (i);
-      int m, n;
-      btn.get_preferred_height_for_width (width, out m, out n);
-      min = int.max (m, min);
-      nat = int.max (n, nat);
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
+
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      int min = 0;
+      int nat = 0;
+      for (int i = 0; i < buttons.length; i ++) {
+        var btn = buttons.get (i);
+        int m, n;
+        btn.measure (orientation, for_size, out m, out n, null, null);
+        min += m;
+        nat += n;
+      }
+
+      minimum = min + (buttons.length * BUTTON_SPACING);
+      natural = nat + (buttons.length * BUTTON_SPACING);
+    } else {
+      int min = 0;
+      int nat = 0;
+      for (int i = 0; i < buttons.length; i ++) {
+        var btn = buttons.get (i);
+        int m, n;
+        btn.measure (orientation, for_size, out m, out n, null, null);
+        min = int.max (m, min);
+        nat = int.max (n, nat);
+      }
+
+      minimum = min + BUTTON_DELTA;
+      natural = nat + BUTTON_DELTA;
     }
 
-    /* We subtract BUTTON_DELTA in size_allocate again */
-    minimum = min + BUTTON_DELTA;
-    natural = nat + BUTTON_DELTA;
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
 
-  public override void get_preferred_height (out int minimum,
-                                             out int natural) {
-    int min = 0;
-    int nat = 0;
-    for (int i = 0; i < buttons.length; i ++) {
-      var btn = buttons.get (i);
-      int m, n;
-      btn.get_preferred_height (out m, out n);
-      min = int.max (m, min);
-      nat = int.max (n, nat);
-    }
-
-    /* We subtract BUTTON_DELTA in size_allocate again */
-    minimum = min + BUTTON_DELTA;
-    natural = nat + BUTTON_DELTA;
-  }
-
-  public override void get_preferred_width (out int minimum,
-                                            out int natural) {
-    int min = 0;
-    int nat = 0;
-    for (int i = 0; i < buttons.length; i ++) {
-      var btn = buttons.get (i);
-      int m, n;
-      btn.get_preferred_width (out m, out n);
-      min += m;
-      nat += n;
-    }
-
-    minimum = min + (buttons.length * BUTTON_SPACING);
-    natural = nat + (buttons.length * BUTTON_SPACING);
-  }
-
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
     for (int i = 0, p = this.buttons.length; i < p; i ++) {
       Gtk.Widget btn = this.buttons.get (i);
-      this.propagate_draw (btn, ct);
+      this.snapshot_child (btn, snapshot);
     }
 
     for (int i = 0, p = this.close_buttons.length; i < p; i ++) {
       var btn = this.close_buttons.get (i);
-      this.propagate_draw (btn, ct);
+      this.snapshot_child (btn, snapshot);
     }
 
     for (int i = 0, p = this.progress_bars.length; i < p; i ++) {
       var bar = this.progress_bars.get (i);
-      this.propagate_draw (bar, ct);
+      this.snapshot_child (bar, snapshot);
     }
-
-    return Gdk.EVENT_PROPAGATE;
   }
+
+
   // }}}
 
   public void load_image (string path, Gdk.Pixbuf? image) {

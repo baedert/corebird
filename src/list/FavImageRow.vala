@@ -21,7 +21,6 @@ class FavImageRow : Gtk.FlowBoxChild {
 
   private static Cairo.ImageSurface play_icon;
 
-  private Gtk.EventBox event_box;
   private Gtk.Image image;
   private string file_path;
   private Gtk.GestureMultiPress gesture;
@@ -40,36 +39,17 @@ class FavImageRow : Gtk.FlowBoxChild {
   public FavImageRow (string path) {
     this.file_path = path;
 
-    event_box = new Gtk.EventBox ();
-    event_box.show ();
-
-
     image = new Gtk.Image ();
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
     image.set_halign (Gtk.Align.CENTER);
     image.set_valign (Gtk.Align.CENTER);
     image.margin = 3;
     image.show ();
-    event_box.add (image);
-    this.add (event_box);
+    this.add (image);
 
     this.set_valign (Gtk.Align.START);
 
-    /* Sigh */
-    event_box.enter_notify_event.connect (() => {
-      var flags = this.get_state_flags ();
-      this.set_state_flags (flags | Gtk.StateFlags.PRELIGHT, true);
-
-      return false;
-    });
-
-    event_box.leave_notify_event.connect (() => {
-      this.unset_state_flags (Gtk.StateFlags.PRELIGHT);
-
-      return false;
-    });
-
-    gesture = new Gtk.GestureMultiPress (event_box);
+    gesture = new Gtk.GestureMultiPress (this);
     gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     gesture.set_button (0);
     gesture.pressed.connect (() => {
@@ -89,14 +69,14 @@ class FavImageRow : Gtk.FlowBoxChild {
           try {
             var file = GLib.File.new_for_path (this.file_path);
             file.trash ();
-            flowbox.remove (this);
+            ((Gtk.Container)flowbox).remove (this);
           } catch (GLib.Error e) {
             warning (e.message);
           }
         });
         menu.add (delete_item);
         menu.attach_to_widget (this, null);
-        menu.show_all ();
+        menu.show ();
         menu.popup (null,
                     null,
                     null,
@@ -127,23 +107,26 @@ class FavImageRow : Gtk.FlowBoxChild {
     load_image.begin ();
   }
 
-  public override bool draw (Cairo.Context ct) {
-    base.draw (ct);
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    base.snapshot (snapshot);
 
     if (this.is_gif) {
-      double scale = 0.6;
+      float scale = 0.6f;
       int width = this.get_allocated_width ();
       int height = this.get_allocated_height ();
 
-      double x = (width / 2.0) / scale - (play_icon.get_width () / 2.0);
-      double y = (height / 2.0) / scale - (play_icon.get_height () / 2.0);
+      float x = (width / 2.0f) - (play_icon.get_width () * scale / 2.0f);
+      float y = (height / 2.0f) - (play_icon.get_height () * scale / 2.0f);
 
-      ct.scale (scale, scale);
-      ct.set_source_surface (play_icon, x, y);
-      ct.paint ();
+      var texture = Cb.Utils.surface_to_texture (play_icon, 1);
+      Graphene.Rect bounds = {};
+      bounds.origin.x = x;
+      bounds.origin.y = y;
+      bounds.size.width = (int)(play_icon.get_width () * scale);
+      bounds.size.height = (int)(play_icon.get_height () * scale);
+
+      snapshot.append_texture (texture, bounds, "GIF indicator");
     }
-
-    return false;
   }
 
   public unowned string get_image_path () {

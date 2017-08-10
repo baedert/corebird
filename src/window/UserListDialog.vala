@@ -51,7 +51,6 @@ class UserListDialog : Gtk.Dialog {
 
 
     var content_box = get_content_area ();
-    content_box.border_width = 0;
     var scroller = new Gtk.ScrolledWindow (null, null);
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
     list_list_box.set_header_func (default_header_func);
@@ -63,7 +62,7 @@ class UserListDialog : Gtk.Dialog {
       ((ListUserEntry)row).toggle ();
     });
     scroller.add (list_list_box);
-    content_box.pack_start (scroller, true, true);
+    content_box.add (scroller);
 
 
     placeholder_label = new Gtk.Label (_("You have no lists."));
@@ -84,7 +83,7 @@ class UserListDialog : Gtk.Dialog {
           l.disable ();
         list_list_box.add (l);
       }
-      this.show_all ();
+      this.show ();
     });
 
     var call = account.proxy.new_call ();
@@ -194,18 +193,18 @@ class ListUserEntry : Gtk.ListBoxRow {
     box.margin = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
     added_checkbox.margin_start = 6;
-    box.pack_start (added_checkbox, false, false);
+    box.add (added_checkbox);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);
     var label = new Gtk.Label ("<b>" + list_name + "</b>");
     label.use_markup = true;
     label.halign = Gtk.Align.START;
-    box2.pack_start (label, true, false);
+    box2.add (label);
     var desc_label = new Gtk.Label (description);
     desc_label.get_style_context ().add_class ("dim-label");
     desc_label.halign = Gtk.Align.START;
     desc_label.ellipsize = Pango.EllipsizeMode.END;
-    box2.pack_start (desc_label, true, false);
-    box.pack_start (box2, true, true);
+    box2.add (desc_label);
+    box.add (box2);
     add (box);
     added_checkbox.toggled.connect (() => {
       changed = !changed;

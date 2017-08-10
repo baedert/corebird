@@ -314,6 +314,7 @@ namespace Cb {
     public string rest_proxy_call_to_string (Rest.ProxyCall c);
     public async Json.Node? load_threaded_async (Rest.ProxyCall call, GLib.Cancellable? cancellable) throws GLib.Error;
     public async UserIdentity[] query_users_async (Rest.Proxy p, string q, GLib.Cancellable? cancellable) throws GLib.Error;
+    public Gsk.Texture surface_to_texture (Cairo.Surface s, int scale);
   }
 
   [CCode (cprefix = "CbBundle_", lower_case_cprefix = "cb_bundle_", cheader_filename =

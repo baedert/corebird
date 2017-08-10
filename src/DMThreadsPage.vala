@@ -28,10 +28,10 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
       radio_button.show_badge = (this._unread_count > 0);
     }
   }
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public unowned Account account;
@@ -98,7 +98,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
 
         var bundle = new Cb.Bundle ();
         bundle.put_int64 (DMPage.KEY_SENDER_ID, entry.user_id);
-        main_window.main_widget.switch_page (Page.DM, bundle);
+        _main_window.main_widget.switch_page (Page.DM, bundle);
       } else
         warning ("activated row is not a DMThreadEntry");
     });
@@ -112,7 +112,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
       bundle.put_string (DMPage.KEY_SCREEN_NAME, screen_name);
       bundle.put_string (DMPage.KEY_USER_NAME, name);
       bundle.put_string (DMPage.KEY_AVATAR_URL, avatar_url);
-      main_window.main_widget.switch_page (Page.DM, bundle);
+      _main_window.main_widget.switch_page (Page.DM, bundle);
     });
 
 
@@ -200,7 +200,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
             this.progress_row = null;
           }
 
-          top_list.show_all ();
+          top_list.show ();
 
           foreach (Gtk.Widget w in thread_list.get_children ()) {
             w.show ();
@@ -249,8 +249,8 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
   }
 
   private bool user_id_visible (int64 sender_id) {
-    return (main_window.cur_page_id == Page.DM &&
-            ((DMPage)main_window.get_page (Page.DM)).user_id == sender_id);
+    return (_main_window.cur_page_id == Page.DM &&
+            ((DMPage)_main_window.get_page (Page.DM)).user_id == sender_id);
   }
 
 

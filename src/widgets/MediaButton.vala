@@ -21,7 +21,6 @@ private class MediaButton : Gtk.Widget {
   /* We use MIN_ constants in case the media has not yet been loaded */
   private const int MIN_HEIGHT     = 40;
   private const int MIN_WIDTH      = 40;
-  private Gdk.Window? event_window = null;
   private Cb.Media? _media = null;
   private static Cairo.Surface[] play_icons;
   public Cb.Media? media {
@@ -49,7 +48,7 @@ private class MediaButton : Gtk.Widget {
       }
     }
   }
-  public unowned Gtk.Window window;
+  public unowned Gtk.Window main_window;
   private GLib.Menu menu_model;
   private Gtk.Menu? menu = null;
   private GLib.SimpleActionGroup actions;
@@ -270,7 +269,7 @@ private class MediaButton : Gtk.Widget {
       title = _("Save Image");
 
     var filechooser = new Gtk.FileChooserNative (title,
-                                                 this.window,
+                                                 this.main_window,
                                                  Gtk.FileChooserAction.SAVE,
                                                  _("Save"),
                                                  _("Cancel"));
@@ -286,7 +285,7 @@ private class MediaButton : Gtk.Widget {
       try {
         out_stream = file.create (0, null);
       } catch (GLib.Error e) {
-        Utils.show_error_dialog (e.message, this.window);
+        Utils.show_error_dialog (e.message, this.main_window);
         warning (e.message);
       }
 
@@ -302,168 +301,57 @@ private class MediaButton : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height (out int minimum,
-                                             out int natural) {
-    int media_height;
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
+
+    int media_size;
+    int other_media_size;
     if (this._media == null || this._media.height == -1) {
-      media_height = 1;
+      media_size = 0;
+      other_media_size = 0;
     } else {
-      media_height = this._media.height;
+      if (orientation == Gtk.Orientation.HORIZONTAL) {
+        media_size = this._media.width;
+        other_media_size = this._media.height;
+      } else {
+        media_size = this._media.height;
+        other_media_size = this._media.width;
+      }
     }
 
-    minimum = int.min (media_height, MAX_HEIGHT);
-
-    natural = media_height;
-  }
-
-  public override void get_preferred_height_for_width (int width,
-                                                       out int minimum,
-                                                       out int natural) {
-    int media_width;
-    int media_height;
-
-    if (this._media == null || this._media.width == -1 || this._media.height == -1) {
-      media_width = MIN_WIDTH;
-      media_height = MAX_HEIGHT;
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      if (for_size == -1) {
+        minimum = int.min (media_size, MIN_WIDTH);
+        natural = media_size;
+      } else {
+        double height_ratio = (double)for_size / (double)other_media_size;
+        int width = int.min (media_size, (int)(media_size* height_ratio));
+        minimum = int.min (media_size, MIN_WIDTH);
+        natural = width;
+      }
     } else {
-      media_width = this._media.width;
-      media_height = this._media.height;
+      if (for_size == -1) {
+        minimum = int.min (media_size, MAX_HEIGHT);
+        natural = media_size;
+      } else {
+        double width_ratio = (double)for_size / (double) other_media_size;
+        int height = int.min (media_size, (int)(media_size * width_ratio));
+        if (restrict_height) {
+          minimum = int.min (other_media_size, MAX_HEIGHT);
+          natural = minimum;
+        } else {
+          minimum = height;
+          natural = height;
+        }
+      }
     }
 
-    double width_ratio = (double)width / (double) media_width;
-    int height = int.min (media_height, (int)(media_height * width_ratio));
-    if (restrict_height) {
-      minimum = int.min (media_height, MAX_HEIGHT);
-      natural = minimum;
-    } else {
-      minimum = height;
-      natural = height;
-    }
-  }
-
-  public override void get_preferred_width_for_height (int height,
-                                                       out int minimum,
-                                                       out int natural) {
-    int media_width;
-    int media_height;
-
-    if (this._media == null || this._media.width == -1 || this._media.height == -1) {
-      media_width = MIN_WIDTH;
-      media_height = MAX_HEIGHT;
-    } else {
-      media_width = this._media.width;
-      media_height = this._media.height;
-    }
-
-    double height_ratio = (double)height / (double)media_height;
-    int width = int.min (media_width, (int)(media_width * height_ratio));
-    minimum = int.min (media_width, MIN_WIDTH);
-    natural = width;
-  }
-
-  public override void get_preferred_width (out int minimum,
-                                            out int natural) {
-    int media_width;
-    if (this._media == null || this._media.width == -1) {
-      media_width = 1;
-    } else {
-      media_width = this._media.width;
-    }
-
-    minimum = int.min (media_width, MIN_WIDTH);
-    natural = media_width;
-  }
-
-  public override void realize () {
-    this.set_realized (true);
-    int draw_width;
-    int draw_height;
-    double scale;
-
-    this.get_draw_size (out draw_width, out draw_height, out scale);
-
-    Gdk.WindowAttr attr = {};
-    attr.x = 0;
-    attr.y = 0;
-    attr.width = draw_width;
-    attr.height = draw_height;
-    attr.window_type = Gdk.WindowType.CHILD;
-    attr.visual = this.get_visual ();
-    attr.wclass = Gdk.WindowWindowClass.INPUT_ONLY;
-    attr.event_mask = this.get_events () |
-                      Gdk.EventMask.BUTTON_PRESS_MASK |
-                      Gdk.EventMask.BUTTON_RELEASE_MASK |
-                      Gdk.EventMask.TOUCH_MASK |
-                      Gdk.EventMask.ENTER_NOTIFY_MASK |
-                      Gdk.EventMask.LEAVE_NOTIFY_MASK;
-
-    Gdk.WindowAttributesType attr_mask = Gdk.WindowAttributesType.X |
-                                         Gdk.WindowAttributesType.Y;
-    Gdk.Window window = this.get_parent_window ();
-    this.set_window (window);
-    window.ref ();
-
-    this.event_window = new Gdk.Window (window, attr, attr_mask);
-    this.register_window (this.event_window);
-  }
-
-  public override void unrealize () {
-    if (this.event_window != null) {
-      this.unregister_window (this.event_window);
-      this.event_window.destroy ();
-      this.event_window = null;
-    }
-    base.unrealize ();
-  }
-
-  public override void map () {
-    base.map ();
-
-    if (this.event_window != null)
-      this.event_window.show ();
-  }
-
-  public override void unmap () {
-
-    if (this.event_window != null)
-      this.event_window.hide ();
-
-    base.unmap ();
-  }
-
-  public override void size_allocate (Gtk.Allocation alloc) {
-    base.size_allocate (alloc);
-
-    int draw_width;
-    int draw_height;
-    double scale;
-
-    if (this.get_realized ()) {
-      this.get_draw_size (out draw_width, out draw_height, out scale);
-      int draw_x = (alloc.width / 2) - (draw_width / 2);
-      this.event_window.move_resize (alloc.x + draw_x,     alloc.y,
-                                     draw_width, draw_height);
-    }
-  }
-
-  public override bool enter_notify_event (Gdk.EventCrossing evt) {
-    if (evt.window == this.event_window &&
-        evt.detail != Gdk.NotifyType.INFERIOR) {
-      this.set_state_flags (this.get_state_flags () | Gtk.StateFlags.PRELIGHT,
-                            true);
-    }
-
-    return Gdk.EVENT_PROPAGATE;
-  }
-
-  public override bool leave_notify_event (Gdk.EventCrossing evt) {
-    if (evt.window == this.event_window &&
-        evt.detail != Gdk.NotifyType.INFERIOR) {
-      this.set_state_flags (this.get_state_flags () & ~Gtk.StateFlags.PRELIGHT,
-                            true);
-    }
-
-    return Gdk.EVENT_PROPAGATE;
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
 
   private void gesture_pressed_cb (int    n_press,
@@ -483,7 +371,7 @@ private class MediaButton : Gtk.Widget {
         this.menu = new Gtk.Menu.from_model (menu_model);
         this.menu.attach_to_widget (this, null);
       }
-      menu.show_all ();
+      menu.show ();
       menu.popup (null, null, null, button, Gtk.get_current_event_time ());
     }
   }

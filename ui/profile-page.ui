@@ -159,7 +159,6 @@
                     </child>
                     <child>
                       <object class="GtkLabel" id="follows_you_label">
-                        <property name="no-show-all">1</property>
                         <property name="halign">end</property>
                         <property name="margin-end">14</property>
                         <property name="margin-top">6</property>
@@ -200,7 +199,6 @@
                 <child>
                   <object class="GtkLabel" id="url_label">
                     <property name="visible">0</property>
-                    <property name="no-show-all">1</property>
                     <property name="halign">center</property>
                     <property name="margin-bottom">12</property>
                     <property name="xalign">0</property>

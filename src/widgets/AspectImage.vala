@@ -79,66 +79,67 @@ class AspectImage : Gtk.Widget {
     return t < 1.0;
   }
 
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    if (pixbuf_surface == null) {
-      min_height = 0;
-      nat_height = 1;
-      return;
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
+
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      base.measure (orientation, for_size, out minimum, out natural, out minimum_baseline, out natural_baseline);
+    } else {
+      if (pixbuf_surface != null) {
+        minimum = pixbuf_surface.get_height ();
+        natural = pixbuf_surface.get_height ();
+      } else {
+        minimum = 0;
+        natural = 0;
+      }
     }
 
-    min_height = pixbuf_surface.get_height ();
-    nat_height = pixbuf_surface.get_height ();
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
-
 
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
+    Graphene.Rect bounds = {};
     int width  = get_allocated_width ();
     int height = get_allocated_height ();
 
-    double scale_x = 1.0;
-    if (bg_color.alpha == 0.0)
-      scale_x = width  / (double)pixbuf_surface.get_width ();
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = width;
+    bounds.size.height = height;
 
-    scale_x = double.max (scale_x, 1.0);
-
-    ct.rectangle (0, 0, width, height);
-    ct.scale (scale_x, 1.0);
-
-
-    ct.push_group ();
+    // TODO: The old behavior here was to never scale the surface down, so keep scale >= 1.0
 
     if (this.old_surface != null) {
-      ct.set_source_surface (this.old_surface, 0, 0);
-      ct.paint ();
+      var old_texture = Cb.Utils.surface_to_texture (old_surface,
+                                                     this.get_scale_factor ());
+      snapshot.append_texture (old_texture, bounds, "Old Texture");
     } else if (bg_color.alpha > 0.0) {
-      ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
-      ct.fill ();
-    }else
+      snapshot.append_color (bg_color, bounds, "Background color");
+    } else {
       alpha = 1.0;
-
-
-    if (bg_color.alpha == 0.0) {
-      int x = (int)(width - (pixbuf_surface.get_width () * scale_x)) / 2;
-      ct.set_source_surface (this.pixbuf_surface, x, 0);
-    } else
-      ct.set_source_rgba (bg_color.red, bg_color.green, bg_color.blue, bg_color.alpha);
+    }
 
     if (in_transition)
-      ct.paint_with_alpha (alpha);
-    else
-      ct.paint ();
+      snapshot.push_opacity (alpha, "Alpha");
 
-    ct.pop_group_to_source ();
+    if (bg_color.alpha == 0.0) {
+      var texture = Cb.Utils.surface_to_texture (pixbuf_surface,
+                                                 this.get_scale_factor());
+      snapshot.append_texture (texture, bounds, "Pixbuf texture");
+    } else {
+      snapshot.append_color (bg_color, bounds, "Color");
+    }
 
-    ct.set_operator (Cairo.Operator.OVER);
-    ct.paint ();
-
-    return Gdk.EVENT_PROPAGATE;
-  }
+    if (in_transition)
+      snapshot.pop ();
+}
 }

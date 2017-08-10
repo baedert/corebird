@@ -28,10 +28,10 @@ class ListStatusesPage : ScrollWidget, IPage {
   public const int KEY_LIST_ID       = 8;
 
   public int id                             { get; set; }
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public unowned Account account;
@@ -270,7 +270,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
       }
       edit_button.sensitive = true;
       delete_button.sensitive = true;
@@ -294,14 +294,14 @@ class ListStatusesPage : ScrollWidget, IPage {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
       }
     });
     // Go back to the ListsPage and tell it to remove this list
     var bundle = new Cb.Bundle ();
     bundle.put_int (ListsPage.KEY_MODE, ListsPage.MODE_DELETE);
     bundle.put_int64 (ListsPage.KEY_LIST_ID, list_id);
-    main_window.main_widget.switch_page (Page.LISTS, bundle);
+    _main_window.main_widget.switch_page (Page.LISTS, bundle);
   }
 
   [GtkCallback]
@@ -318,7 +318,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       var bundle = new Cb.Bundle ();
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
-      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     } else
       warning ("row is of unknown type");
   }

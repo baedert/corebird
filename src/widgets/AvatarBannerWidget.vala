@@ -38,13 +38,11 @@ public class AvatarBannerWidget : Gtk.Container {
 
     /* set_banner_button */
     this.set_banner_button = new PixbufButton ();
-    set_banner_button.show_all ();
     set_banner_button.clicked.connect (banner_clicked_cb);
     this.add (set_banner_button);
 
     /* set_avatar_button */
     this.set_avatar_button = new PixbufButton ();
-    set_avatar_button.show_all ();
     set_avatar_button.clicked.connect (avatar_clicked_cb);
     this.add (set_avatar_button);
     Settings.get ().bind ("round-avatars", set_avatar_button, "round",
@@ -57,13 +55,6 @@ public class AvatarBannerWidget : Gtk.Container {
     fetch_banner.begin ();
     this.queue_draw ();
     set_avatar_button.set_bg ((Cairo.ImageSurface)account.avatar);
-  }
-
-  public override bool draw (Cairo.Context ct) {
-    this.propagate_draw (set_banner_button, ct);
-    this.propagate_draw (set_avatar_button, ct);
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
   private int get_avatar_x () {
@@ -79,17 +70,23 @@ public class AvatarBannerWidget : Gtk.Container {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_width (out int min,
-                                            out int nat) {
-    min = AVATAR_SIZE + 40; // 20px margin on either side
-    nat = (int)(MIN_HEIGHT * (1 / BANNER_RATIO));
-  }
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
 
-  public override void get_preferred_height_for_width (int width,
-                                                       out int min,
-                                                       out int nat) {
-    min = (AVATAR_SIZE / 3) + MIN_HEIGHT;
-    nat = int.max (min, int.min (MAX_HEIGHT, (int)(width * BANNER_RATIO) + (AVATAR_SIZE / 3)));
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      minimum = AVATAR_SIZE + 40; // 20px margin on either side
+      natural = (int)(MIN_HEIGHT * (1 / BANNER_RATIO));
+    } else {
+      minimum = (AVATAR_SIZE / 3) + MIN_HEIGHT;
+      natural = int.max (minimum, int.min (MAX_HEIGHT, (int)(for_size * BANNER_RATIO) + (AVATAR_SIZE / 3)));
+    }
+
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
 
   private async void fetch_banner () {
@@ -102,29 +99,29 @@ public class AvatarBannerWidget : Gtk.Container {
     this.set_banner_button.set_pixbuf (pixbuf);
   }
 
-  public override void size_allocate (Gtk.Allocation allocation) {
-    base.size_allocate  (allocation);
-
+  public override void size_allocate (Gtk.Allocation allocation, int baseline, out Gtk.Allocation out_clip) {
     Gtk.Requisition child_requisition;
     Gtk.Allocation child_allocation = Gtk.Allocation();
 
     /* set_banner_button */
     set_banner_button.get_preferred_size (out child_requisition, null);
-    child_allocation.x = allocation.x;
-    child_allocation.y = allocation.y;
+    child_allocation.x = 0;
+    child_allocation.y = 0;
     child_allocation.width = int.max (allocation.width, child_requisition.width);
     child_allocation.height = (int)(allocation.width * BANNER_RATIO);
     child_allocation.height = int.max (allocation.height - (AVATAR_SIZE / 2), child_requisition.height);
-    set_banner_button.size_allocate (child_allocation);
+    set_banner_button.size_allocate (child_allocation, -1, out out_clip);
 
 
     /* set_avatar_button */
     set_avatar_button.get_preferred_size (out child_requisition, null);
-    child_allocation.x = get_avatar_x () + allocation.x;
-    child_allocation.y = get_avatar_y () + allocation.y;
+    child_allocation.x = get_avatar_x ();
+    child_allocation.y = get_avatar_y ();
     child_allocation.width = AVATAR_SIZE;
     child_allocation.height = AVATAR_SIZE;
-    set_avatar_button.size_allocate (child_allocation);
+    set_avatar_button.size_allocate (child_allocation, -1, out out_clip);
+
+    out_clip = allocation;
   }
 
   public override void add (Gtk.Widget w) {
@@ -135,7 +132,7 @@ public class AvatarBannerWidget : Gtk.Container {
     w.unparent ();
   }
 
-  public override void forall_internal (bool include_internals, Gtk.Callback cb) {
+  public override void forall (Gtk.Callback cb) {
     cb (set_banner_button);
     cb (set_avatar_button);
   }

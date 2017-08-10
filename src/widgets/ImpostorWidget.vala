@@ -24,18 +24,19 @@ class ImpostorWidget : Gtk.Image {
     this.valign = Gtk.Align.FILL;
   }
 
-
-
-  public override bool draw (Cairo.Context ct) {
+  public override void snapshot (Gtk.Snapshot snapshot) {
     if (this.surface == null)
-      return false;
+      return;
 
-    ct.set_source_surface (this.surface, 0, 0);
-    ct.rectangle (0, 0, this.get_allocated_width (), this.get_allocated_height ());
-    ct.fill ();
-    return false;
+    var texture = Cb.Utils.surface_to_texture (surface,
+                                               this.get_scale_factor ());
+    Graphene.Rect bounds = {};
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = get_allocated_width ();
+    bounds.size.height = get_allocated_height ();
+    snapshot.append_texture (texture, bounds, "Clone Texture");
   }
-
 
   public void clone (Gtk.Widget widget) {
     int widget_width  = widget.get_allocated_width ();

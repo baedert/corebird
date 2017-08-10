@@ -18,10 +18,10 @@
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
 class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
   public int id { get; set; }
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public unowned Account account;
@@ -47,14 +47,14 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
     filter_list.add (new AddListEntry (_("Add new Filter")));
     filter_list.row_activated.connect ((row) => {
       if (row is AddListEntry) {
-        var dialog = new ModifyFilterDialog (main_window, account);
+        var dialog = new ModifyFilterDialog (_main_window, account);
         dialog.filter_added.connect (filter_added_cb);
-        dialog.show_all ();
+        dialog.show ();
       } else if (row is FilterListEntry) {
         var filter_row = (FilterListEntry) row;
-        var dialog = new ModifyFilterDialog (main_window, account, filter_row.filter);
+        var dialog = new ModifyFilterDialog (_main_window, account, filter_row.filter);
         dialog.filter_added.connect (filter_added_cb);
-        dialog.show_all ();
+        dialog.show ();
       }
     });
 
@@ -66,7 +66,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
     if (!filters_loaded) {
       for (int i = 0; i < account.filters.length; i ++) {
         var f = account.filters.get (i);
-        var entry = new FilterListEntry (f, account, main_window);
+        var entry = new FilterListEntry (f, account, _main_window);
         filter_list.add (entry);
       }
       filters_loaded = true;
@@ -151,7 +151,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
    **/
   private void filter_added_cb (Cb.Filter f, bool created) {
     if (created) {
-      var entry = new FilterListEntry (f, account, main_window);
+      var entry = new FilterListEntry (f, account, _main_window);
       filter_list.add (entry);
     } else {
       var children = filter_list.get_children ();
@@ -262,7 +262,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         warning (e.message);
         return;
       }
@@ -282,7 +282,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         warning (e.message);
         return;
       }

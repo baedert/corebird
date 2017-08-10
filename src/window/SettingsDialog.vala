@@ -150,7 +150,7 @@ class SettingsDialog : Gtk.Window {
     // Fill snippet list box
     Corebird.snippet_manager.query_snippets ((key, value) => {
       var e = new SnippetListEntry ((string)key, (string)value);
-      e.show_all ();
+      e.show ();
       snippet_list_box.add (e);
     });
 
@@ -198,7 +198,6 @@ class SettingsDialog : Gtk.Window {
 
     if (old_key == null) {
       var e = new SnippetListEntry (key, value);
-      e.show_all ();
       snippet_list_box.add (e);
     } else {
       foreach (var _row in snippet_list_box.get_children ()) {
