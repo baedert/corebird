@@ -159,7 +159,7 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     var cb = (Corebird) GLib.Application.get_default ();
     var window = new MainWindow (cb, this.account);
     cb.add_window (window);
-    window.show_all ();
+    window.show ();
     action_clicked ();
   }
 

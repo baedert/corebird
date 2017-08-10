@@ -22,8 +22,7 @@ public interface IPage : Gtk.Widget {
   public abstract void create_radio_button(Gtk.RadioButton? group);
   public abstract Gtk.RadioButton? get_radio_button();
   public abstract string get_title ();
-  public abstract unowned MainWindow window { set; }
-
+  public abstract unowned MainWindow main_window { set; }
 
   public virtual bool handles_double_open () {
     return false;

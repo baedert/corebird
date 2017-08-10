@@ -23,10 +23,10 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   public const int KEY_AVATAR_URL  = 3;
 
   public int unread_count                   { get { return 0; } }
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
     }
   }
   public unowned Account account;
@@ -147,7 +147,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       new_msg.name = sender.get_string_member ("name");
       new_msg.screen_name = sender.get_string_member ("screen_name");
       new_msg.timestamp = Cb.Utils.parse_date (obj.get_string_member ("created_at")).to_unix ();
-      new_msg.main_window = main_window;
+      new_msg.main_window = _main_window;
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.update_time_delta ();
       new_msg.load_avatar (sender.get_string_member ("profile_image_url"));
@@ -185,7 +185,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       entry.text = vals[2];
       entry.name = vals[3];
       entry.screen_name = vals[4];
-      entry.main_window = main_window;
+      entry.main_window = _main_window;
       entry.update_time_delta (now);
       Twitter.get ().load_avatar_for_user_id.begin (account,
                                                     entry.user_id,
@@ -224,7 +224,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     messages_list.foreach ((w) => {messages_list.remove (w);});
 
     // Update unread count
-    DMThreadsPage threads_page = ((DMThreadsPage)main_window.get_page (Page.DM_THREADS));
+    DMThreadsPage threads_page = ((DMThreadsPage)_main_window.get_page (Page.DM_THREADS));
     threads_page.adjust_unread_count_for_user_id (user_id);
 
     var now = new GLib.DateTime.now_local ();
@@ -253,7 +253,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       name = vals[3];
       entry.screen_name = vals[4];
       screen_name = vals[4];
-      entry.main_window = main_window;
+      entry.main_window = _main_window;
       entry.update_time_delta (now);
       Twitter.get ().load_avatar_for_user_id.begin (account,
                                                     entry.user_id,
@@ -282,7 +282,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       return;
 
     // Withdraw the notification if there is one
-    DMThreadsPage threads_page = ((DMThreadsPage)main_window.get_page (Page.DM_THREADS));
+    DMThreadsPage threads_page = ((DMThreadsPage)_main_window.get_page (Page.DM_THREADS));
     string notification_id = threads_page.get_notification_id_for_user_id (this.user_id);
     if (notification_id != null)
       GLib.Application.get_default ().withdraw_notification (notification_id);
@@ -295,7 +295,6 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     entry.screen_name = account.screen_name;
     entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
     entry.text = GLib.Markup.escape_text (text_view.buffer.text);
-    entry.main_window = main_window;
     entry.name = account.name;
     entry.avatar = account.avatar;
     entry.update_time_delta ();
@@ -310,7 +309,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         return;
       }
     });

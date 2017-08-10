@@ -64,7 +64,7 @@ class SnippetListEntry : Gtk.ListBoxRow {
   public void reveal () {
     revealer.notify["child-revealed"].connect (() => {
       if (!revealer.child_revealed) {
-        this.get_parent ().remove (this);
+        ((Gtk.Container)this.get_parent ()).remove (this);
       }
     });
     revealer.reveal_child = false;

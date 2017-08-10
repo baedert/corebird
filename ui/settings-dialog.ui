@@ -14,7 +14,6 @@
     <property name="default-width">500</property>
     <property name="default-height">300</property>
     <property name="title" translatable="yes">Settings</property>
-    <property name="border-width">0</property>
     <signal name="delete_event" handler="window_destroy_cb" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
@@ -167,7 +166,6 @@
         <child>
           <object class="GtkGrid" id="notification_grid">
             <property name="visible">1</property>
-            <property name="border-width">10</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <property name="column-homogeneous">1</property>

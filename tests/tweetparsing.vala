@@ -2351,7 +2351,7 @@ void reply_id () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   Settings.init ();
-  Gtk.init (ref args);
+  Gtk.init ();
   Twitter.get ().init ();
   Utils.init_soup_session ();
   // Parsing tweets will otherwise cause media to be downloaded which is an async operation

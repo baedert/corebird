@@ -30,10 +30,10 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     get { return 0; }
   }
 
-  private unowned MainWindow main_window;
-  public unowned MainWindow window {
+  private unowned MainWindow _main_window;
+  public unowned MainWindow main_window {
     set {
-      main_window = value;
+      _main_window = value;
       user_lists.main_window = value;
     }
   }
@@ -121,19 +121,19 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       var bundle = new Cb.Bundle ();
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
-      main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     followers_list.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
-      main_window.main_widget.switch_page (Page.PROFILE, bundle);
+      _main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
     following_list.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
-      main_window.main_widget.switch_page (Page.PROFILE, bundle);
+      _main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
 
 
@@ -588,7 +588,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   [GtkCallback]
   private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
-    HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+    HomeTimeline ht = (HomeTimeline) _main_window.get_page (Page.STREAM);
     if (follow_button.following) {
       call.set_function( "1.1/friendships/destroy.json");
       ht.hide_tweets_from (this.user_id, Cb.TweetState.HIDDEN_UNFOLLOWED);
@@ -628,7 +628,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
   [GtkCallback]
   private bool activate_link (string uri) {
-    return TweetUtils.activate_link (uri, main_window);
+    return TweetUtils.activate_link (uri, _main_window);
   }
 
 
@@ -716,19 +716,19 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     bundle.put_string (DMPage.KEY_SCREEN_NAME, screen_name);
     bundle.put_string (DMPage.KEY_USER_NAME, name);
     bundle.put_string (DMPage.KEY_AVATAR_URL, avatar_url.replace ("_bigger", "_normal"));
-    main_window.main_widget.switch_page (Page.DM, bundle);
+    _main_window.main_widget.switch_page (Page.DM, bundle);
   }
 
   private void tweet_to_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    var cw = new ComposeTweetWindow (main_window, account, null);
+    var cw = new ComposeTweetWindow (_main_window, account, null);
     cw.set_text ("@" + screen_name + " ");
-    cw.show_all ();
+    cw.show ();
   }
 
   private void add_remove_list_activated (GLib.SimpleAction a, GLib.Variant? v) {
-    var uld = new UserListDialog (main_window, account, user_id);
+    var uld = new UserListDialog (_main_window, account, user_id);
     uld.load_lists ();
-    uld.show_all ();
+    uld.show ();
   }
 
 
@@ -739,7 +739,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     block_item_blocked = true;
 
     bool current_state = get_user_blocked ();
-    HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+    HomeTimeline ht = (HomeTimeline) _main_window.get_page (Page.STREAM);
     var call = account.proxy.new_call ();
     call.set_method ("POST");
     if (current_state) {
@@ -758,7 +758,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         /* Reset the state if the blocking failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }
@@ -773,7 +773,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     UserUtils.mute_user.begin (account,this.user_id, !setting, (obj, res) => {
       UserUtils.mute_user.end (res);
       mute_item_blocked = false;
-      HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+      HomeTimeline ht = (HomeTimeline) _main_window.get_page (Page.STREAM);
       if (setting) {
         ht.show_tweets_from (this.user_id, Cb.TweetState.HIDDEN_AUTHOR_MUTED);
         ht.show_retweets_from (this.user_id, Cb.TweetState.HIDDEN_RETWEETER_MUTED);
@@ -796,7 +796,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     call.set_method ("POST");
     call.add_param ("user_id", this.user_id.to_string ());
     call.add_param ("retweets", current_state.to_string ());
-    HomeTimeline ht = (HomeTimeline) main_window.get_page (Page.STREAM);
+    HomeTimeline ht = (HomeTimeline) _main_window.get_page (Page.STREAM);
     if (current_state) {
       ht.show_retweets_from (this.user_id, Cb.TweetState.HIDDEN_RTS_DISABLED);
       account.remove_disabled_rts_id (this.user_id);
@@ -810,7 +810,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this.main_window);
+                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         /* Reset the state if the retweeting failed */
         a.set_state (new GLib.Variant.boolean (current_state));
       }

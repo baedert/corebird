@@ -73,7 +73,7 @@ class CompletionTextView : Gtk.TextView {
     var style_context = this.get_style_context ();
     style_context.save ();
     style_context.set_state (Gtk.StateFlags.LINK);
-    Gdk.RGBA link_color = style_context.get_color (style_context.get_state ());
+    Gdk.RGBA link_color = style_context.get_color ();
     style_context.restore ();
 
     if (link_color.red ==   1.0 &&
@@ -332,7 +332,7 @@ class CompletionTextView : Gtk.TextView {
     completion_window.set_transient_for ((Gtk.Window) this.get_toplevel ());
     completion_window.move (x - 1, y);
     completion_window.resize (alloc.width + 2, 50);
-    completion_window.show_all ();
+    completion_window.show ();
   }
 
   private void hide_completion_window () {
@@ -431,7 +431,7 @@ class CompletionTextView : Gtk.TextView {
 
       this.current_word = cur_word;
 
-      completion_list.show_all ();
+      completion_list.show ();
     }
   }
 
@@ -540,7 +540,6 @@ class UserCompletionRow : Gtk.ListBoxRow {
 
     box.margin = 2;
     this.add (box);
-    this.show_all ();
   }
 
   public string get_screen_name () {

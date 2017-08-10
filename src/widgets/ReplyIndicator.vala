@@ -40,12 +40,25 @@ public class ReplyIndicator : Gtk.Widget {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }
 
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    min_height = (int)(FINAL_HEIGHT * show_factor);
-    nat_height = (int)(FINAL_HEIGHT * show_factor);
+  public override void measure (Gtk.Orientation orientation,
+                                int             for_size,
+                                out int         minimum,
+                                out int         natural,
+                                out int         minimum_baseline,
+                                out int         natural_baseline) {
+
+    if (orientation == Gtk.Orientation.HORIZONTAL) {
+      base.measure (orientation, for_size, out minimum, out natural, out minimum_baseline, out natural_baseline);
+    } else {
+      minimum = (int)(FINAL_HEIGHT * show_factor);
+      natural = (int)(FINAL_HEIGHT * show_factor);
+    }
+
+    minimum_baseline = -1;
+    natural_baseline = -1;
   }
+
+
 
   private void on_replies_available () {
     if (!replies) {
@@ -78,17 +91,5 @@ public class ReplyIndicator : Gtk.Widget {
     }
 
     return GLib.Source.CONTINUE;
-  }
-
-  public override bool draw (Cairo.Context ct) {
-    if (!replies) {
-      return Gdk.EVENT_PROPAGATE;
-    }
-
-    var style_context = this.get_style_context ();
-
-    style_context.render_background (ct, 0, 0, get_allocated_width(), get_allocated_height ());
-
-    return Gdk.EVENT_PROPAGATE;
   }
 }

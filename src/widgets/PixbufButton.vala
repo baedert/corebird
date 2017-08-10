@@ -33,16 +33,24 @@ class PixbufButton : Gtk.Button {
   }
 
   construct {
-    this.border_width = 0;
     get_style_context ().add_class ("pixbuf-button");
   }
 
   public PixbufButton () {}
 
-  public override bool draw (Cairo.Context ct) {
-    var sc = this.get_style_context ();
+  public override void snapshot (Gtk.Snapshot snapshot) {
     int widget_width = this.get_allocated_width ();
     int widget_height = this.get_allocated_height ();
+
+    Graphene.Rect bounds = {};
+    bounds.origin.x = 0;
+    bounds.origin.y = 0;
+    bounds.size.width = widget_width;
+    bounds.size.height = widget_height;
+
+    var ct = snapshot.append_cairo (bounds, "pixbuf button");
+
+    var sc = this.get_style_context ();
 
 
     if (bg != null) {
@@ -79,10 +87,6 @@ class PixbufButton : Gtk.Button {
       ct.set_source_surface (surface, 0, 0);
       ct.fill ();
     }
-
-    // The css-styled background should be transparent.
-    base.draw (ct);
-    return GLib.Source.CONTINUE;
   }
 
   public void set_bg (Cairo.ImageSurface bg) {

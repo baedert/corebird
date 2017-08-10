@@ -186,7 +186,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       mm_widget.set_all_media (tweet.get_medias ());
       mm_widget.media_clicked.connect (media_clicked_cb);
       mm_widget.media_invalid.connect (media_invalid_cb);
-      mm_widget.window = main_window;
+      mm_widget.main_window = main_window;
 
       if (text_label.label.length == 0 && tweet.quoted_tweet == null) {
         if (this.media_stack == null)
@@ -624,7 +624,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       box.add (button);
 
       media_stack.add_named (box, "nsfw");
-      media_stack.show_all ();
+      media_stack.show ();
       if (Settings.hide_nsfw_content ())
         media_stack.visible_child_name = "nsfw";
       else
@@ -638,7 +638,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       }
     } else {
       /* We will never have to hide mm_widget */
-      mm_widget.show_all ();
+      mm_widget.show ();
 
       if (this.tweet.quoted_tweet != null) {
         mm_widget.margin_start = 12;
@@ -692,7 +692,6 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       quote_reply_label.activate_link.connect (quote_link_activated_cb);
       quote_reply_label.get_style_context ().add_class ("dim-label");
       quote_reply_label.get_style_context ().add_class ("invisible-links");
-      quote_reply_label.set_no_show_all (true);
 
       quote_grid.attach (quote_reply_label, 0, 1, 3, 1);
     }
@@ -721,7 +720,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     quote_time_delta.get_style_context ().add_class ("dim-label");
     quote_grid.attach (quote_time_delta, 2, 0, 1, 1);
 
-    quote_grid.show_all ();
+    quote_grid.show ();
     this.grid.attach (quote_grid, 1, 3, 6, 1);
   }
 }

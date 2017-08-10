@@ -15,7 +15,6 @@
   <template class="TweetListEntry" parent="GtkListBoxRow">
     <property name="visible">1</property>
     <property name="can-focus">1</property>
-    <property name="no-show-all">1</property>
     <style>
       <class name="tweet"/>
     </style>
@@ -176,13 +175,13 @@
             </child>
             <child>
               <object class="GtkImage" id="fav_status_image">
+                <property name="visible">0</property>
                 <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="margin-end">6</property>
                 <property name="margin-top">4</property>
                 <property name="pixel-size">12</property>
                 <property name="icon-name">corebird-favorite-symbolic</property>
-                <property name="no-show-all">1</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -194,13 +193,13 @@
             </child>
             <child>
               <object class="GtkImage" id="rt_status_image">
+                <property name="visible">0</property>
                 <property name="halign">end</property>
                 <property name="valign">center</property>
                 <property name="margin-end">6</property>
                 <property name="margin-top">4</property>
                 <property name="pixel-size">12</property>
                 <property name="icon-name">corebird-retweet-symbolic</property>
-                <property name="no-show-all">1</property>
                 <style>
                   <class name="dim-label"/>
                 </style>
@@ -270,7 +269,7 @@
             </child>
             <child>
               <object class="GtkImage" id="rt_image">
-                <property name="no-show-all">1</property>
+                <property name="visible">0</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin-end">12</property>
@@ -288,7 +287,7 @@
             </child>
             <child>
               <object class="GtkLabel" id="rt_label">
-                <property name="no-show-all">1</property>
+                <property name="visible">0</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
                 <property name="margin-top">8</property>

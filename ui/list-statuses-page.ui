@@ -306,7 +306,6 @@
                 </child>
               </object>
               <packing>
-                <property name="expand">1</property>
               </packing>
             </child>
             <child>
