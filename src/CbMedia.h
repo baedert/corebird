@@ -21,6 +21,7 @@
 #include <glib-object.h>
 #include <cairo-gobject.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
@@ -53,6 +54,7 @@ struct _CbMedia
 
   cairo_surface_t *surface;
   GdkPixbufAnimation *animation;
+  GskTexture *texture;
 };
 
 typedef struct _CbMedia CbMedia;

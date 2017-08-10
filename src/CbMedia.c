@@ -32,7 +32,10 @@ cb_media_finalize (GObject *object)
 {
   CbMedia *media = CB_MEDIA (object);
 
-  cairo_surface_destroy (media->surface);
+  if (media->surface)
+    cairo_surface_destroy (media->surface);
+  if (media->texture)
+    g_object_unref (media->texture);
   g_free (media->thumb_url);
   g_free (media->target_url);
   g_free (media->url);

@@ -58,6 +58,7 @@ namespace Cb {
     public int height;
     public double percent_loaded;
     public Cairo.ImageSurface? surface;
+    public Gsk.Texture texture;
     public Gdk.PixbufAnimation? animation;
     public signal void progress();
 
