@@ -186,49 +186,47 @@ private class MediaButton : Gtk.Widget {
     height = (int)(this._media.height * scale);
   }
 
-  public override bool draw (Cairo.Context ct) {
+  /* TODO: We conceptually use the texture as a separate widget here... */
+  public override void snapshot (Gtk.Snapshot snapshot) {
     int widget_width = get_allocated_width ();
     int widget_height = get_allocated_height ();
 
-
     /* Draw thumbnail */
     if (_media != null && _media.surface != null && _media.loaded) {
-
-
+      Graphene.Rect texture_bounds = {};
       int draw_width, draw_height;
       double scale;
       this.get_draw_size (out draw_width, out draw_height, out scale);
 
       int draw_x = (widget_width / 2) - (draw_width / 2);
 
-      ct.save ();
-      ct.rectangle (0, 0, widget_width, widget_height);
-      ct.scale (scale, scale);
-      ct.set_source_surface (media.surface, draw_x / scale, 0);
-      ct.paint_with_alpha (this.media_alpha);
-      ct.restore ();
-      ct.new_path ();
+      if (media_alpha < 1.0)
+        snapshot.push_opacity (media_alpha, "Media Opacity");
+
+      texture_bounds.origin.x = draw_x;
+      texture_bounds.origin.y = 0;
+      texture_bounds.size.width = draw_width;
+      texture_bounds.size.height = draw_height;
+
+      snapshot.append_texture (media.texture, texture_bounds, "Media");
 
       /* Draw play indicator */
       if (_media.is_video ()) {
-        int x = (widget_width  / 2) - (PLAY_ICON_SIZE / 2);
-        int y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
+        Graphene.Rect icon_bounds = {};
 
-        ct.save ();
-        ct.rectangle (x, y, PLAY_ICON_SIZE, PLAY_ICON_SIZE);
-        ct.set_source_surface (play_icons[this.get_scale_factor () - 1], x, y);
-        ct.paint_with_alpha (this.media_alpha);
-        ct.restore ();
-        ct.new_path ();
+        // TODO: Do this only once
+        var icon = play_icons[this.get_scale_factor () - 1];
+        var icon_texture = Cb.Utils.surface_to_texture (icon, this.get_scale_factor ());
+        icon_bounds.origin.x = (widget_width  / 2) - (PLAY_ICON_SIZE / 2);
+        icon_bounds.origin.y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
+        icon_bounds.size.width = PLAY_ICON_SIZE;
+        icon_bounds.size.height = PLAY_ICON_SIZE;
+
+        snapshot.append_texture (icon_texture, icon_bounds, "Media Play Icon");
       }
 
-      var sc = this.get_style_context ();
-      sc.render_background (ct, draw_x, 0, draw_width, draw_height);
-      sc.render_frame      (ct, draw_x, 0, draw_width, draw_height);
-
-      if (this.has_visible_focus ()) {
-        sc.render_focus (ct, draw_x + 2, 2, draw_width - 4, draw_height - 4);
-      }
+      if (media_alpha < 1.0)
+        snapshot.pop ();
 
     } else {
       var sc = this.get_style_context ();
@@ -238,11 +236,8 @@ private class MediaButton : Gtk.Widget {
       layout.get_size (out layout_w, out layout_h);
       layout_x = (widget_width / 2.0) - (layout_w / Pango.SCALE / 2.0);
       layout_y = (widget_height / 2.0) - (layout_h / Pango.SCALE / 2.0);
-      sc.render_layout (ct, layout_x, layout_y, layout);
+      snapshot.render_layout (sc, layout_x, layout_y, layout);
     }
-
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
   private void copy_url_activated (GLib.SimpleAction a, GLib.Variant? v) {
