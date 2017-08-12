@@ -199,8 +199,18 @@
   background-color: transparent;
   background-image: none;
 }
-replyindicator {
+
+replyindicator>button {
   background-color: #4a90d9;
+  background-image: none;
+  border-radius: 0px;
+  box-shadow: none;
+  border: none;
+  text-shadow: none;
+  color: white;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  min-height: 0px;
 }
 
 .profile-button {

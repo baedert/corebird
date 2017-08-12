@@ -15,80 +15,29 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class ReplyIndicator : Gtk.Widget {
+public class ReplyIndicator : Gtk.Revealer {
   private const int FINAL_HEIGHT = 5;
   private bool replies = false;
   public bool replies_available {
     set {
       this.replies = value;
-      this.on_replies_available ();
+      this.reveal_child = value;
     }
     get { return replies; }
   }
-  private int64 start_time;
-  private double show_factor = 0.0;
+  private Gtk.Button button;
+
+  public signal void clicked ();
 
   construct {
-    set_has_window (false);
+    this.reveal_child = false;
+    this.button = new Gtk.Button.with_label (_("Show replies"));
+    button.show_all ();
+    button.clicked.connect (() => { this.clicked (); });
+    this.add (button);
   }
 
   static construct {
     set_css_name ("replyindicator");
-  }
-
-  public override Gtk.SizeRequestMode get_request_mode () {
-    return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
-  }
-
-  public override void get_preferred_height_for_width (int     width,
-                                                       out int min_height,
-                                                       out int nat_height) {
-    min_height = (int)(FINAL_HEIGHT * show_factor);
-    nat_height = (int)(FINAL_HEIGHT * show_factor);
-  }
-
-  private void on_replies_available () {
-    if (!replies) {
-      show_factor = 0.0;
-      queue_resize ();
-      return;
-    }
-    start_time = this.get_frame_clock ().get_frame_time ();
-    this.add_tick_callback (tick_callback);
-  }
-
-  private bool tick_callback (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
-    if (!this.get_mapped ()) {
-      this.queue_resize ();
-      return GLib.Source.REMOVE;
-    }
-
-    int64 now = frame_clock.get_frame_time ();
-    int64 end_time = this.start_time + TRANSITION_DURATION;
-    double t = 1.0;
-    if (now < end_time)
-      t = (now - start_time) / (double)(end_time - start_time);
-
-    t = ease_out_cubic (t);
-    this.show_factor = t;
-    this.queue_resize ();
-
-    if (t >= 1.0) {
-      return GLib.Source.REMOVE;
-    }
-
-    return GLib.Source.CONTINUE;
-  }
-
-  public override bool draw (Cairo.Context ct) {
-    if (!replies) {
-      return Gdk.EVENT_PROPAGATE;
-    }
-
-    var style_context = this.get_style_context ();
-
-    style_context.render_background (ct, 0, 0, get_allocated_width(), get_allocated_height ());
-
-    return Gdk.EVENT_PROPAGATE;
   }
 }

@@ -34,6 +34,43 @@ class MaxSizeContainer : Gtk.Bin {
       widget.set_parent_window (this.event_window);
   }
 
+  private int64 start_time;
+  public void expand_full () {
+    start_time = this.get_frame_clock ().get_frame_time ();
+    this.add_tick_callback (expand_tick_cb);
+  }
+
+  private int get_max_child_size () {
+    int m, n;
+    get_child ().get_preferred_height_for_width (this.get_allocated_width (), out m, out n);
+
+    return m;
+  }
+
+  private bool expand_tick_cb (Gtk.Widget widget, Gdk.FrameClock frame_clock) {
+    if (!this.get_mapped ()) {
+      max_size = get_max_child_size ();
+      queue_resize ();
+      return GLib.Source.REMOVE;
+    }
+
+    int64 now = frame_clock.get_frame_time ();
+    int64 end_time = this.start_time + TRANSITION_DURATION;
+    double t = 1.0;
+    if (now < end_time) {
+      t = (now - start_time) / (double)(end_time - start_time);
+    }
+
+    t = ease_out_cubic (t);
+    this.max_size = (int)(get_max_child_size () * t);
+    this.queue_resize ();
+
+    if (t >= 1.0)
+      return GLib.Source.REMOVE;
+
+    return GLib.Source.CONTINUE;
+  }
+
   public override Gtk.SizeRequestMode get_request_mode () {
     return Gtk.SizeRequestMode.HEIGHT_FOR_WIDTH;
   }

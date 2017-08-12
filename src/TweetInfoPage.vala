@@ -124,6 +124,11 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
 
+    reply_indicator.clicked.connect (() => {
+      max_size_container.expand_full ();
+      reply_indicator.reveal_child = false;
+    });
+
     this.actions = new GLib.SimpleActionGroup ();
     this.actions.add_action_entries (action_entries, this);
     this.insert_action_group ("tweet", this.actions);
