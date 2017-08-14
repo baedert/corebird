@@ -63,7 +63,6 @@ struct _RestProxy {
  * RestProxyClass:
  * @bind_valist: Virtual function called to bind parameters.
  * @new_call: Virtual function called to construct a new #RestProxyCall.
- * @simple_run_valist: Virtual function called when making a "simple" call.
  *
  * Class structure for #RestProxy for subclasses to implement specialised
  * behaviour.
@@ -77,9 +76,6 @@ struct _RestProxyClass {
   /*< public >*/
   gboolean (*bind_valist)(RestProxy *proxy, va_list params);
   RestProxyCall *(*new_call)(RestProxy *proxy);
-  gboolean (*simple_run_valist)(RestProxy *proxy, gchar **payload,
-      goffset *len, GError **error, va_list params);
-
   /*< private >*/
   /* padding for future expansion */
   gpointer _padding_dummy[7];
@@ -194,17 +190,6 @@ void rest_proxy_add_soup_feature (RestProxy *proxy,
 
 RestProxyCall *rest_proxy_new_call (RestProxy *proxy);
 
-G_GNUC_NULL_TERMINATED
-gboolean rest_proxy_simple_run (RestProxy *proxy,
-                                gchar    **payload,
-                                goffset   *len,
-                                GError   **error,
-                                ...);
-gboolean rest_proxy_simple_run_valist (RestProxy *proxy,
-                                       gchar    **payload,
-                                       goffset   *len,
-                                       GError   **error,
-                                       va_list    params);
 G_END_DECLS
 
 #endif /* _REST_PROXY */

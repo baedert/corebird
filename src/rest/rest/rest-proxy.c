@@ -56,12 +56,6 @@ enum
   PROP_SSL_CA_FILE
 };
 
-static gboolean _rest_proxy_simple_run_valist (RestProxy *proxy, 
-                                               char     **payload, 
-                                               goffset   *len,
-                                               GError   **error,
-                                               va_list    params);
-
 static RestProxyCall *_rest_proxy_new_call (RestProxy *proxy);
 
 static gboolean _rest_proxy_bind_valist (RestProxy *proxy,
@@ -205,7 +199,6 @@ rest_proxy_class_init (RestProxyClass *klass)
   object_class->constructed = rest_proxy_constructed;
   object_class->finalize = rest_proxy_finalize;
 
-  proxy_class->simple_run_valist = _rest_proxy_simple_run_valist;
   proxy_class->new_call = _rest_proxy_new_call;
   proxy_class->bind_valist = _rest_proxy_bind_valist;
 
@@ -431,72 +424,6 @@ _rest_proxy_get_bound_url (RestProxy *proxy)
   }
 
   return priv->url;
-}
-
-static gboolean
-_rest_proxy_simple_run_valist (RestProxy *proxy, 
-                               gchar     **payload, 
-                               goffset   *len,
-                               GError   **error,
-                               va_list    params)
-{
-  RestProxyCall *call;
-  gboolean ret;
-
-  g_return_val_if_fail (REST_IS_PROXY (proxy), FALSE);
-  g_return_val_if_fail (payload, FALSE);
-
-  call = rest_proxy_new_call (proxy);
-
-  rest_proxy_call_add_params_from_valist (call, params);
-
-  ret = rest_proxy_call_sync (call, error);
-  if (ret) {
-    *payload = g_strdup (rest_proxy_call_get_payload (call));
-    if (len) *len = rest_proxy_call_get_payload_length (call);
-  } else {
-    *payload = NULL;
-    if (len) *len = 0;
-  }
- 
-  g_object_unref (call);
-
-  return ret;
-}
-
-gboolean
-rest_proxy_simple_run_valist (RestProxy *proxy, 
-                              char     **payload, 
-                              goffset   *len,
-                              GError   **error,
-                              va_list    params)
-{
-  RestProxyClass *proxy_class = REST_PROXY_GET_CLASS (proxy);
-  return proxy_class->simple_run_valist (proxy, payload, len, error, params);
-}
-
-gboolean
-rest_proxy_simple_run (RestProxy *proxy, 
-                       gchar    **payload,
-                       goffset   *len,
-                       GError   **error,
-                       ...)
-{
-  va_list params;
-  gboolean ret;
-
-  g_return_val_if_fail (REST_IS_PROXY (proxy), FALSE);
-  g_return_val_if_fail (payload, FALSE);
-
-  va_start (params, error);
-  ret = rest_proxy_simple_run_valist (proxy,
-                                      payload,
-                                      len,
-                                      error,
-                                      params);
-  va_end (params);
-
-  return ret;
 }
 
 void
