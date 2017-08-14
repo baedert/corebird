@@ -1,19 +1,19 @@
 
 tests = [
-  'tweetmodel',
-  'tweetlength',
-  'utils',
-  'bundlehistory',
-  'usercounter',
-  'inlinemediadownloader',
-  'tweetparsing',
-  'filters',
-  'texttransform',
-  'avatardownload',
   'avatarcache',
+  'avatardownload',
+  'bundlehistory',
+  'filters',
   'friends',
   'highlighting',
-  'twitteritem'
+  'inlinemediadownloader',
+  'texttransform',
+  'tweetlength',
+  'tweetmodel',
+  'tweetparsing',
+  'twitteritem',
+  'usercounter',
+  'utils',
 ]
 
 foreach test_name : tests
