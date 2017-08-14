@@ -65,7 +65,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* Create widgets */
     this.set_show_menubar (false);
     this.set_icon_name ("corebird");
-    this.set_title ("Corebird");
     this.delete_event.connect (window_delete_cb);
 
     this.headerbar = new Gtk.HeaderBar ();
@@ -234,6 +233,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       });
 
       account.info_changed.connect (account_info_changed);
+      this.set_title ("Corebird - @%s".printf (account.screen_name));
 
       cb.account_window_changed (old_user_id, account.id);
 
@@ -263,6 +263,7 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.account = acc_;
 
       this.title_label.label = "Corebird";
+      this.set_title ("Corebird");
 
       Account.add_account (acc_);
       var create_widget = new AccountCreateWidget (acc_, cb, this);
@@ -470,6 +471,7 @@ public class MainWindow : Gtk.ApplicationWindow {
                                      Cairo.Surface small_avatar,
                                      Cairo.Surface avatar) {
     this.set_window_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
+    this.set_title ("Corebird - @%s".printf (screen_name));
   }
 
   /**
