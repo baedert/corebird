@@ -394,15 +394,20 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   /* entities->media and extended_entities contain exactly the same media objects,
      but extended_entities is not always present, and entities->media doesn't
      contain all the attached media, so parse both the same way... */
-
-  i = 0;
-  if (json_object_has_member (entities, "media")) n_media_arrays ++;
-  if (json_object_has_member (status, "extended_entities")) n_media_arrays ++;
   if (json_object_has_member (entities, "media"))
-    media_arrays[i++] = json_object_get_array_member (entities, "media");
+    {
+      media_arrays[n_media_arrays] = json_object_get_array_member (entities, "media");
+      n_media_arrays ++;
+    }
+
   if (json_object_has_member (status, "extended_entities"))
-    media_arrays[i] = json_object_get_array_member (json_object_get_object_member (status, "extended_entities"),
-                                                    "media");
+    {
+      media_arrays[n_media_arrays] = json_object_get_array_member (json_object_get_object_member (status,
+                                                                                                  "extended_entities"),
+                                                                   "media");
+
+      n_media_arrays ++;
+    }
 
   for (i = 0; i < n_media_arrays; i ++)
     {
