@@ -52,9 +52,6 @@ struct _RestProxyClass {
   /*< public >*/
   gboolean (*bind_valist)(RestProxy *proxy, va_list params);
   RestProxyCall *(*new_call)(RestProxy *proxy);
-  /*< private >*/
-  /* padding for future expansion */
-  gpointer _padding_dummy[7];
 };
 
 #define REST_PROXY_ERROR rest_proxy_error_quark ()

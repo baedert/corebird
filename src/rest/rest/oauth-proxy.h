@@ -55,9 +55,6 @@ typedef struct {
 
 typedef struct {
   RestProxyClass parent_class;
-  /*< private >*/
-  /* padding for future expansion */
-  gpointer _padding_dummy[8];
 } OAuthProxyClass;
 
 GType oauth_signature_method_get_type (void) G_GNUC_CONST;

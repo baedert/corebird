@@ -52,10 +52,6 @@ struct _RestProxyCallClass {
                                 gchar **content,
                                 gsize *content_len,
                                 GError **error);
-
-  /*< private >*/
-  /* padding for future expansion */
-  gpointer _padding_dummy[7];
 };
 
 #define REST_PROXY_CALL_ERROR rest_proxy_call_error_quark ()
