@@ -58,9 +58,6 @@ enum
 
 static RestProxyCall *_rest_proxy_new_call (RestProxy *proxy);
 
-static gboolean _rest_proxy_bind_valist (RestProxy *proxy,
-                                         va_list    params);
-
 GQuark
 rest_proxy_error_quark (void)
 {
@@ -200,7 +197,6 @@ rest_proxy_class_init (RestProxyClass *klass)
   object_class->finalize = rest_proxy_finalize;
 
   proxy_class->new_call = _rest_proxy_new_call;
-  proxy_class->bind_valist = _rest_proxy_bind_valist;
 
   pspec = g_param_spec_string ("url-format", 
                                "url-format",
@@ -291,48 +287,6 @@ rest_proxy_new (const gchar *url_format,
                        "url-format", url_format,
                        "binding-required", binding_required,
                        NULL);
-}
-
-static gboolean
-_rest_proxy_bind_valist (RestProxy *proxy,
-                         va_list    params)
-{
-  RestProxyPrivate *priv = GET_PRIVATE (proxy);
-
-  g_return_val_if_fail (proxy != NULL, FALSE);
-  g_return_val_if_fail (priv->url_format != NULL, FALSE);
-  g_return_val_if_fail (priv->binding_required == TRUE, FALSE);
-
-  g_free (priv->url);
-
-  priv->url = g_strdup_vprintf (priv->url_format, params);
-
-  return TRUE;
-}
-
-
-gboolean
-rest_proxy_bind_valist (RestProxy *proxy,
-                        va_list    params)
-{
-  RestProxyClass *proxy_class = REST_PROXY_GET_CLASS (proxy);
-
-  return proxy_class->bind_valist (proxy, params);
-}
-
-gboolean
-rest_proxy_bind (RestProxy *proxy, ...)
-{
-  gboolean res;
-  va_list params;
-
-  g_return_val_if_fail (REST_IS_PROXY (proxy), FALSE);
-
-  va_start (params, proxy);
-  res = rest_proxy_bind_valist (proxy, params);
-  va_end (params);
-
-  return res;
 }
 
 /**

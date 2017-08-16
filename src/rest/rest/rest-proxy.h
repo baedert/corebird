@@ -152,12 +152,6 @@ GType rest_proxy_get_type (void);
 RestProxy *rest_proxy_new (const gchar *url_format,
                            gboolean     binding_required);
 
-gboolean rest_proxy_bind (RestProxy *proxy,
-                          ...);
-
-gboolean rest_proxy_bind_valist (RestProxy *proxy,
-                                 va_list    params);
-
 void rest_proxy_add_soup_feature (RestProxy *proxy,
                                   SoupSessionFeature *feature);
 
