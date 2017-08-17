@@ -29,7 +29,7 @@ cb_user_identity_free (CbUserIdentity *id)
 }
 
 void
-cb_user_identity_copy (CbUserIdentity *id, CbUserIdentity *id2)
+cb_user_identity_copy (const CbUserIdentity *id, CbUserIdentity *id2)
 {
   g_free (id2->screen_name);
   id2->screen_name = g_strdup (id->screen_name);
@@ -56,7 +56,7 @@ cb_text_entity_free (CbTextEntity *e)
 }
 
 void
-cb_text_entity_copy (CbTextEntity *e1, CbTextEntity *e2)
+cb_text_entity_copy (const CbTextEntity *e1, CbTextEntity *e2)
 {
   e2->from = e1->from;
   e2->to   = e1->to;
@@ -94,7 +94,7 @@ cb_mini_tweet_free (CbMiniTweet *t)
 }
 
 void
-cb_mini_tweet_copy (CbMiniTweet *t1, CbMiniTweet *t2)
+cb_mini_tweet_copy (const CbMiniTweet *t1, CbMiniTweet *t2)
 {
   guint i;
 

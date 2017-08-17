@@ -62,7 +62,7 @@ struct _CbUserIdentity
 };
 typedef struct _CbUserIdentity CbUserIdentity;
 void cb_user_identity_free (CbUserIdentity *id);
-void cb_user_identity_copy (CbUserIdentity *id, CbUserIdentity *id2);
+void cb_user_identity_copy (const CbUserIdentity *id, CbUserIdentity *id2);
 
 void cb_user_identity_parse (CbUserIdentity *id, JsonObject *user_obj);
 
@@ -77,7 +77,7 @@ struct _CbTextEntity
 };
 typedef struct _CbTextEntity CbTextEntity;
 void cb_text_entity_free (CbTextEntity *e);
-void cb_text_entity_copy (CbTextEntity *e1, CbTextEntity *e2);
+void cb_text_entity_copy (const CbTextEntity *e1, CbTextEntity *e2);
 
 struct _CbMiniTweet
 {
@@ -99,7 +99,7 @@ struct _CbMiniTweet
 };
 typedef struct _CbMiniTweet CbMiniTweet;
 void cb_mini_tweet_free (CbMiniTweet *tweet);
-void cb_mini_tweet_copy (CbMiniTweet *t1, CbMiniTweet *t2);
+void cb_mini_tweet_copy (const CbMiniTweet *t1, CbMiniTweet *t2);
 void cb_mini_tweet_init (CbMiniTweet *t);
 void cb_mini_tweet_parse (CbMiniTweet *t, JsonObject *obj);
 void cb_mini_tweet_parse_entities (CbMiniTweet *t, JsonObject *obj);
