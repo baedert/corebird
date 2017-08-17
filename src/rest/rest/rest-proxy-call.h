@@ -157,6 +157,7 @@ typedef void (*RestProxyCallUploadCallback) (RestProxyCall *call,
 gboolean rest_proxy_call_upload (RestProxyCall                *call,
                                  RestProxyCallUploadCallback   callback,
                                  GObject                      *weak_object,
+                                 GCancellable                 *cancellable,
                                  gpointer                      userdata,
                                  GError                      **error);
 

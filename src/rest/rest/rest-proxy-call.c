@@ -1116,6 +1116,7 @@ gboolean
 rest_proxy_call_upload (RestProxyCall                *call,
                         RestProxyCallUploadCallback   callback,
                         GObject                      *weak_object,
+                        GCancellable                 *cancellable,
                         gpointer                      userdata,
                         GError                      **error)
 {
@@ -1153,6 +1154,10 @@ rest_proxy_call_upload (RestProxyCall                *call,
         (GWeakNotify)_call_async_weak_notify_cb,
         closure);
   }
+
+  priv->cancel_sig = g_signal_connect (cancellable, "cancelled",
+                                       G_CALLBACK (_call_message_call_cancelled_cb), call);
+  priv->cancellable = g_object_ref (cancellable);
 
   g_signal_connect (message,
                     "wrote-body-data",
