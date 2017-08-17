@@ -81,7 +81,6 @@ corebird_lib_sources = files([
   'src/Twitter.vala',
   'src/UserEventReceiver.vala',
   'src/async/Collect.vala',
-  'src/async/ComposeJob.vala',
   'src/list/AddListEntry.vala',
   'src/list/DMListEntry.vala',
   'src/list/DMThreadEntry.vala',
@@ -160,6 +159,7 @@ corebird_lib_sources = files([
   'src/CbMediaVideoWidget.c',
   'src/CbUserStream.c',
   'src/CbMessageReceiver.c',
+  'src/CbComposeJob.c',
 
 
   # Rest sources

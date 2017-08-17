@@ -381,4 +381,18 @@ namespace Cb {
     public signal void interrupted ();
     public signal void resumed ();
   }
+
+  [CCode (cprefix = "CbComposeJob_", lower_case_cprefix = "cb_compose_job_", cheader_filename =
+          "CbComposeJob.h")]
+  public class ComposeJob : GLib.Object {
+    public signal void image_upload_progress (string a, double d);
+    public signal void image_upload_finished (string a, string? b);
+    public ComposeJob (Rest.Proxy proxy, Rest.Proxy proxy2);
+    public void set_reply_id (int64 id);
+    public void set_quoted_tweet (Cb.Tweet t);
+    public void set_text (string s);
+    public void upload_image_async (string p);
+    public void abort_image_upload (string s);
+    public async bool send_async (GLib.Cancellable c);
+  }
 }

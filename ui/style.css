@@ -77,17 +77,6 @@
   border-bottom: 2px solid grey;
 }
 
-.image-progress {
-  box-shadow: none;
-  background-image: none;
-  border-radius: 0px;
-  border: none;
-  background-color: transparent;
-
-  color: white;
-  -gtk-icon-source: -gtk-icontheme("content-loading-symbolic");
-}
-
 .image-success {
   box-shadow: none;
   background-image: none;

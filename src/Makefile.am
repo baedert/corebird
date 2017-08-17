@@ -109,7 +109,6 @@ libcorebird_la_VALASOURCES = \
 	sql/UpdateStatement.vala \
 	sql/SelectStatement.vala \
 	async/Collect.vala \
-	async/ComposeJob.vala \
 	model/DMThreadsModel.vala
 
 nodist_libcorebird_la_SOURCES = \
@@ -161,6 +160,8 @@ libcorebird_la_SOURCES = \
 	CbMessageReceiver.c \
 	CbUserStream.h \
 	CbUserStream.c \
+	CbComposeJob.h \
+	CbComposeJob.c \
 	CbGtkCompat.h \
 	rest/rest/rest-param.c \
 	rest/rest/rest-params.c \

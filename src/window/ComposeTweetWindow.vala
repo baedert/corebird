@@ -60,6 +60,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Mode mode;
   private GLib.Cancellable? cancellable;
   private Gtk.ListBox? reply_list = null;
+  private Cb.ComposeJob compose_job;
 
 
   public ComposeTweetWindow (MainWindow? parent,
@@ -72,6 +73,27 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.mode = mode;
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
+
+    var upload_proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
+                                            Settings.get_consumer_secret (),
+                                            "https://upload.twitter.com/",
+                                            false);
+    upload_proxy.token = account.proxy.token;
+    upload_proxy.token_secret = account.proxy.token_secret;
+    this.compose_job = new Cb.ComposeJob (account.proxy, upload_proxy);
+
+    this.compose_job.image_upload_progress.connect ((path, progress) => {
+      this.compose_image_manager.set_image_progress (path, progress);
+    });
+    this.compose_job.image_upload_finished.connect ((path, error_msg) => {
+      message ("%s Finished!", path);
+      this.compose_image_manager.end_progress (path, error_msg);
+    });
+
+    if (this.mode == Mode.REPLY)
+      this.compose_job.set_reply_id (this.reply_to.id);
+    else if (this.mode == Mode.QUOTE)
+      this.compose_job.set_quoted_tweet (this.reply_to);
 
     avatar_image.surface = acc.avatar;
     acc.notify["avatar"].connect (() => {
@@ -117,8 +139,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
         () => {start_send_tweet (); return true;});
 
-    this.compose_image_manager.image_removed.connect (() => {
+    this.compose_image_manager.image_removed.connect ((path) => {
+      this.compose_job.abort_image_upload (path);
+
       if (!this.compose_image_manager.full) {
+        this.add_image_button.sensitive = true;
+        this.fav_image_button.sensitive = true;
+      }
+
+      if (path.down ().has_suffix (".gif")) {
+        fav_image_view.set_gifs_enabled (true);
         this.add_image_button.sensitive = true;
         this.fav_image_button.sensitive = true;
       }
@@ -167,13 +197,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (!send_button.sensitive)
       return;
 
-    var job = new ComposeJob (this.account);
     this.cancellable = new GLib.Cancellable ();
 
-    if (this.mode == Mode.REPLY)
-      job.reply_id = this.reply_to.id;
-    else if (this.mode == Mode.QUOTE)
-      job.quoted_tweet = this.reply_to;
 
     title_stack.visible_child = title_spinner;
     title_spinner.start ();
@@ -187,27 +212,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
     tweet_text.buffer.get_end_iter (out end);
-    job.text = tweet_text.buffer.get_text (start, end, true);
+    this.compose_job.set_text (tweet_text.buffer.get_text (start, end, true));
 
-    foreach (var path in this.compose_image_manager.get_image_paths ()) {
-      job.add_image (path);
-    }
+    //this.compose_job.send_async.begin (cancellable);
 
-    job.image_upload_started.connect ((path) => {
-      this.compose_image_manager.start_progress (path);
-    });
-
-    job.image_progress.connect ((path, progress) => {
-      this.compose_image_manager.set_image_progress (path, progress);
-    });
-
-    job.image_upload_finished.connect ((path, error_msg) => {
-      this.compose_image_manager.end_progress (path, error_msg);
-    });
-
-    this.compose_image_manager.upload_started = true;
-    job.start.begin (cancellable, (obj, res) => {
-      bool success = job.start.end (res);
+    this.compose_job.send_async.begin (cancellable, (obj, res) => {
+      bool success = this.compose_job.send_async.end (res);
       debug ("Tweet sent.");
       if (success) {
         /* Reset last_tweet */
@@ -312,6 +322,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       } else {
         this.compose_image_manager.show ();
         this.compose_image_manager.load_image (filename, null);
+        this.compose_job.upload_image_async (filename);
         if (this.compose_image_manager.n_images > 0) {
           fav_image_view.set_gifs_enabled (false);
         }
@@ -335,6 +346,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     cancel_clicked ();
     this.compose_image_manager.show ();
     this.compose_image_manager.load_image (path, null);
+    this.compose_job.upload_image_async (path);
     if (this.compose_image_manager.full) {
       this.add_image_button.sensitive = false;
       this.fav_image_button.sensitive = false;
