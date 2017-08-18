@@ -387,7 +387,7 @@ namespace Cb {
   public class ComposeJob : GLib.Object {
     public signal void image_upload_progress (string a, double d);
     public signal void image_upload_finished (string a, string? b);
-    public ComposeJob (Rest.Proxy proxy, Rest.Proxy proxy2);
+    public ComposeJob (Rest.Proxy proxy, Rest.Proxy proxy2, GLib.Cancellable cancellable);
     public void set_reply_id (int64 id);
     public void set_quoted_tweet (Cb.Tweet t);
     public void set_text (string s);

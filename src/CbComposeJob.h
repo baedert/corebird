@@ -44,15 +44,16 @@ struct _CbComposeJob
   gint64 reply_id;
   CbTweet *quoted_tweet;
   char *text;
+  GCancellable *cancellable;
 
   RestProxyCall *send_call;
   GTask *send_task;
-  GCancellable *send_cancellable;
 };
 
 
 CbComposeJob *cb_compose_job_new                (RestProxy            *account_proxy,
-                                                 RestProxy            *upload_proxy);
+                                                 RestProxy            *upload_proxy,
+                                                 GCancellable         *cancellable);
 void          cb_compose_job_upload_image_async (CbComposeJob         *self,
                                                  const char           *image_path);
 void          cb_compose_job_abort_image_upload (CbComposeJob         *self,

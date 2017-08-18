@@ -661,6 +661,7 @@ _call_async_weak_notify_cb (gpointer *data,
 
   /* Will end up freeing the closure */
   rest_proxy_call_cancel (closure->call);
+  closure->weak_object = NULL;
 }
 
 static void

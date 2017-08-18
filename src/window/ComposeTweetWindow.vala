@@ -74,13 +74,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.tweet_text.set_account (acc);
     this.application = (Gtk.Application)GLib.Application.get_default ();
 
+    this.cancellable = new GLib.Cancellable ();
     var upload_proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
                                             Settings.get_consumer_secret (),
                                             "https://upload.twitter.com/",
                                             false);
     upload_proxy.token = account.proxy.token;
     upload_proxy.token_secret = account.proxy.token_secret;
-    this.compose_job = new Cb.ComposeJob (account.proxy, upload_proxy);
+    this.compose_job = new Cb.ComposeJob (account.proxy,
+                                          upload_proxy,
+                                          this.cancellable);
 
     this.compose_job.image_upload_progress.connect ((path, progress) => {
       this.compose_image_manager.set_image_progress (path, progress);
@@ -197,7 +200,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (!send_button.sensitive)
       return;
 
-    this.cancellable = new GLib.Cancellable ();
 
 
     title_stack.visible_child = title_spinner;
@@ -214,9 +216,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.buffer.get_end_iter (out end);
     this.compose_job.set_text (tweet_text.buffer.get_text (start, end, true));
 
-    //this.compose_job.send_async.begin (cancellable);
-
-    this.compose_job.send_async.begin (cancellable, (obj, res) => {
+    this.compose_job.send_async.begin (this.cancellable, (obj, res) => {
       bool success = this.compose_job.send_async.end (res);
       debug ("Tweet sent.");
       if (success) {
@@ -239,9 +239,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   [GtkCallback]
   private void cancel_clicked () {
-    if (this.cancellable != null)
-      this.cancellable.cancel ();
-
     if (stack.visible_child == image_error_grid ||
         stack.visible_child_name == "fav-images") {
       stack.visible_child = content_grid;
@@ -250,6 +247,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
          sending tweets with 0 length */
       this.recalc_tweet_length ();
     } else {
+      if (this.cancellable != null) {
+        this.cancellable.cancel ();
+      }
       this.save_last_tweet ();
       destroy ();
     }

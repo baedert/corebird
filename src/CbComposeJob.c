@@ -83,6 +83,26 @@ build_image_id_string (CbComposeJob *self)
   return g_string_free (str, FALSE);
 }
 
+static void
+cancelled_cb (GCancellable *cancellable,
+              gpointer      user_data)
+{
+  CbComposeJob *self = user_data;
+  guint i;
+
+  /* Abort mission */
+  for (i = 0; i < MAX_UPLOADS; i ++)
+    {
+      const ImageUpload *upload = &self->image_uploads[i];
+
+      if (upload->filename != NULL &&
+          upload->id == 0)
+        {
+          g_cancellable_cancel (upload->cancellable);
+        }
+    }
+}
+
 static guint
 cb_compose_job_get_n_unfinished_uploads (CbComposeJob *self)
 {
@@ -119,6 +139,9 @@ cb_compose_job_finalize (GObject *object)
 
   g_clear_object (&self->account_proxy);
   g_clear_object (&self->upload_proxy);
+  g_clear_object (&self->cancellable);
+  g_clear_object (&self->send_call);
+  g_clear_object (&self->send_task);
 
   g_free (self->text);
 
@@ -155,13 +178,17 @@ cb_compose_job_init (CbComposeJob *self)
 }
 
 CbComposeJob *
-cb_compose_job_new (RestProxy *account_proxy,
-                    RestProxy *upload_proxy)
+cb_compose_job_new (RestProxy    *account_proxy,
+                    RestProxy    *upload_proxy,
+                    GCancellable *cancellable)
 {
   CbComposeJob *self = CB_COMPOSE_JOB (g_object_new (CB_TYPE_COMPOSE_JOB, NULL));
 
   g_set_object (&self->account_proxy, account_proxy);
   g_set_object (&self->upload_proxy, upload_proxy);
+  g_set_object (&self->cancellable, cancellable);
+
+  g_signal_connect (cancellable, "cancelled", G_CALLBACK (cancelled_cb), self);
 
   return self;
 }
@@ -182,7 +209,8 @@ image_upload_cb (RestProxyCall *call,
   if (error != NULL)
     {
       /* We also get here when aborting, in which case @upload is already garbage */
-      if (upload->filename != NULL)
+      if (error->code != REST_PROXY_ERROR_CANCELLED &&
+          upload->filename != NULL)
         g_signal_emit (self, compose_job_signals[IMAGE_UPLOAD_FINISHED],
                        0,
                        upload->filename, error->message);
@@ -227,7 +255,6 @@ image_upload_cb (RestProxyCall *call,
       if (self->send_task != NULL)
         {
           g_assert (self->send_call != NULL);
-          g_assert (self->send_cancellable != NULL);
 
           if (cb_compose_job_get_n_unfinished_uploads (self) == 0)
             {
@@ -363,7 +390,6 @@ do_send (CbComposeJob *self)
 
   g_assert (cb_compose_job_get_n_unfinished_uploads (self) == 0);
   g_assert (self->send_call != NULL);
-  g_assert (self->send_cancellable != NULL);
   g_assert (self->send_task != NULL);
 
   if (media_ids)
@@ -373,7 +399,7 @@ do_send (CbComposeJob *self)
     }
 
   rest_proxy_call_invoke_async (self->send_call,
-                                self->send_cancellable,
+                                self->cancellable,
                                 send_tweet_call_completed_cb,
                                 self->send_task);
 }
@@ -388,6 +414,7 @@ cb_compose_job_send_async (CbComposeJob        *self,
   RestProxyCall *call;
 
   task = g_task_new (self, cancellable, callback, user_data);
+
 
   call = rest_proxy_new_call (self->account_proxy);
   rest_proxy_call_set_function (call, "1.1/statuses/update.json");
@@ -421,7 +448,6 @@ cb_compose_job_send_async (CbComposeJob        *self,
 
   self->send_call = call;
   self->send_task = task;
-  self->send_cancellable = cancellable;
   if (cb_compose_job_get_n_unfinished_uploads (self) > 0)
     {
       /* In this case, we need to wait until ALL uploads are complete and successful. */
