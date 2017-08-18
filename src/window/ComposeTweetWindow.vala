@@ -217,7 +217,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.compose_job.set_text (tweet_text.buffer.get_text (start, end, true));
 
     this.compose_job.send_async.begin (this.cancellable, (obj, res) => {
-      bool success = this.compose_job.send_async.end (res);
+      bool success = false;
+      try {
+        this.compose_job.send_async.end (res);
+      } catch (GLib.Error e) {
+        warning (e.message);
+      }
       debug ("Tweet sent.");
       if (success) {
         /* Reset last_tweet */

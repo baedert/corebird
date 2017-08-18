@@ -68,7 +68,7 @@ void          cb_compose_job_send_async         (CbComposeJob         *self,
                                                  GCancellable         *cancellable,
                                                  GAsyncReadyCallback   callback,
                                                  gpointer              user_data);
-gboolean      cb_compose_job_finish             (CbComposeJob          *self,
+gboolean      cb_compose_job_send_finish        (CbComposeJob          *self,
                                                  GAsyncResult          *result,
                                                  GError               **error);
 
