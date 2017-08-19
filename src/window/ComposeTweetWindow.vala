@@ -219,7 +219,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.compose_job.send_async.begin (this.cancellable, (obj, res) => {
       bool success = false;
       try {
-        this.compose_job.send_async.end (res);
+       success = this.compose_job.send_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
       }
