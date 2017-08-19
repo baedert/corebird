@@ -19,12 +19,12 @@ public class Account : GLib.Object {
   public const string DUMMY = "screen_name";
   public int64 id;
   public Sql.Database db;
-  public string screen_name       {public get; public  set;}
-  public string name              {public get; public  set;}
-  public string avatar_url        {public get; public  set;}
-  public string? banner_url       {public get; private set;}
-  public string? website          {public get; public  set;}
-  public string? description      {public get; public  set;}
+  public string screen_name;
+  public string name;
+  public string avatar_url;
+  public string? banner_url;
+  public string? website;
+  public string? description;
   public Cairo.Surface avatar_small {public get; public set;}
   public Cairo.Surface avatar       {public get; public set;}
   public Rest.OAuthProxy proxy;
