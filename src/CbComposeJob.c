@@ -412,8 +412,9 @@ cb_compose_job_send_async (CbComposeJob        *self,
   GTask *task;
   RestProxyCall *call;
 
-  task = g_task_new (self, cancellable, callback, user_data);
+  g_assert (self->send_task == NULL);
 
+  task = g_task_new (self, cancellable, callback, user_data);
 
   call = rest_proxy_new_call (self->account_proxy);
   rest_proxy_call_set_function (call, "1.1/statuses/update.json");
