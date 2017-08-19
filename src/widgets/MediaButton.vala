@@ -95,7 +95,6 @@ private class MediaButton : Gtk.Widget {
     this.media = media;
     this.restrict_height = restrict_height;
     this.get_style_context ().add_class ("inline-media");
-    this.get_style_context ().add_class ("dim-label");
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("media", actions);
