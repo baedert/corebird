@@ -141,7 +141,6 @@ cb_compose_job_finalize (GObject *object)
   g_clear_object (&self->upload_proxy);
   g_clear_object (&self->cancellable);
   g_clear_object (&self->send_call);
-  g_clear_object (&self->send_task);
 
   g_free (self->text);
 
