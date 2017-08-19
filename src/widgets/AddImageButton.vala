@@ -75,8 +75,8 @@ class AddImageButton : Gtk.Widget {
       ct.restore ();
 
       style_context.render_check (ct,
-                                  (widget_width / 2.0) - (ICON_SIZE / 2.0),
-                                  (widget_height / 2.0) - (ICON_SIZE / 2.0),
+                                  (draw_width / 2.0) - (ICON_SIZE / 2.0),
+                                  (draw_height / 2.0) - (ICON_SIZE / 2.0),
                                   ICON_SIZE,
                                   ICON_SIZE);
     }
