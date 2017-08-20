@@ -153,10 +153,16 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     max_size_container.max_size = 0;
     main_stack.visible_child = main_box;
 
+    /* If we have a tweet instance here already, we set the avatar now instead of in
+     * set_tweet_data, since the rearrange_tweets() or list.model.clear() calls
+     * might cause the avatar to get removed from the cache. */
 
     if (existing) {
       // Only possible BY_INSTANCE
       var tweet = (Cb.Tweet) args.get_object (KEY_TWEET);
+      if (Twitter.get ().has_avatar (tweet.get_user_id ()))
+        avatar_image.surface = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
+
       rearrange_tweets (tweet.id);
     } else {
       bottom_list_box.model.clear ();
@@ -167,6 +173,9 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
     if (mode == BY_INSTANCE) {
       Cb.Tweet tweet = (Cb.Tweet)args.get_object (KEY_TWEET);
+
+      if (Twitter.get ().has_avatar (tweet.get_user_id ()))
+        avatar_image.surface = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
 
       if (tweet.retweeted_tweet != null)
         this.tweet_id = tweet.retweeted_tweet.id;
@@ -489,11 +498,7 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     text_label.label = tweet.get_formatted_text ();
     name_button.set_markup (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
-    /* If we have an avatar in the cache already, use that and load the
-       larger one anyway. */
-    if (Twitter.get ().has_avatar (tweet.get_user_id ())) {
-      avatar_image.surface = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
-    }
+
     load_user_avatar (tweet.avatar_url);
     update_rt_fav_labels ();
     time_label.label = time_format;
