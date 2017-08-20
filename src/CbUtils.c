@@ -225,7 +225,7 @@ cb_utils_escape_ampersands (const char *in)
 GDateTime *
 cb_utils_parse_date (const char *_in)
 {
-  char *in = g_strdup (_in);
+  char in[31];
   const char *month_str;
   int year, month, hour, minute, day;
   GDateTime *result;
@@ -233,14 +233,16 @@ cb_utils_parse_date (const char *_in)
   GTimeZone *time_zone;
   GTimeZone *local_time_zone;
   double seconds;
+  guint i;
 
   /* The input string is ASCII, in the form  'Wed Jun 20 19:01:28 +0000 2012' */
 
   if (!_in)
-    {
-      g_free (in);
-      return g_date_time_new_now_local ();
-    }
+    return g_date_time_new_now_local ();
+
+  for (i = 0; i < 30; i ++)
+    in[i] = _in[i];
+
 
   g_assert (strlen (_in) == 30);
 
@@ -251,6 +253,7 @@ cb_utils_parse_date (const char *_in)
   in[16] = '\0';
   in[19] = '\0';
   in[25] = '\0';
+  in[30] = '\0';
 
   year    = atoi (in + 26);
   day     = atoi (in + 8);
@@ -321,7 +324,7 @@ cb_utils_parse_date (const char *_in)
   g_time_zone_unref (local_time_zone);
   g_time_zone_unref (time_zone);
   g_date_time_unref (result);
-  g_free (in);
+
   return result_local;
 }
 
