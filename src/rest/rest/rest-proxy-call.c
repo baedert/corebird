@@ -415,6 +415,20 @@ rest_proxy_call_add_param (RestProxyCall *call,
 }
 
 void
+rest_proxy_call_take_param (RestProxyCall *call,
+                            const char    *name,
+                            char          *value)
+{
+  RestProxyCallPrivate *priv = GET_PRIVATE (call);
+  RestParam *param;
+
+  g_return_if_fail (REST_IS_PROXY_CALL (call));
+
+  param = rest_param_new_string (name, REST_MEMORY_TAKE, value);
+  rest_params_add (priv->params, param);
+}
+
+void
 rest_proxy_call_add_param_full (RestProxyCall *call, RestParam *param)
 {
   g_return_if_fail (REST_IS_PROXY_CALL (call));

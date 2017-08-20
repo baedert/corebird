@@ -392,10 +392,7 @@ do_send (CbComposeJob *self)
   g_assert (self->send_task != NULL);
 
   if (media_ids)
-    {
-      rest_proxy_call_add_param (self->send_call, "media_ids", media_ids);
-      g_free (media_ids);
-    }
+    rest_proxy_call_take_param (self->send_call, "media_ids", media_ids);
 
   rest_proxy_call_invoke_async (self->send_call,
                                 self->cancellable,
@@ -427,8 +424,7 @@ cb_compose_job_send_async (CbComposeJob        *self,
 
       g_assert (self->quoted_tweet == NULL);
 
-      rest_proxy_call_add_param (call, "in_reply_to_status_id", id_str);
-      g_free (id_str);
+      rest_proxy_call_take_param (call, "in_reply_to_status_id", id_str);
     }
   else if (self->quoted_tweet != NULL)
     {
@@ -440,11 +436,10 @@ cb_compose_job_send_async (CbComposeJob        *self,
 
       g_assert (self->reply_id == 0);
 
-      rest_proxy_call_add_param (call, "attachment_url", quoted_url);
-      g_free (quoted_url);
+      rest_proxy_call_take_param (call, "attachment_url", quoted_url);
     }
 
-  rest_proxy_call_add_param (call, "status", self->text);
+  rest_proxy_call_take_param (call, "status", g_steal_pointer (&self->text));
 
   self->send_call = call;
   self->send_task = task;

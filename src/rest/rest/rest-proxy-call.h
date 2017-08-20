@@ -102,6 +102,10 @@ void rest_proxy_call_add_param (RestProxyCall *call,
                                 const gchar   *name,
                                 const gchar   *value);
 
+void rest_proxy_call_take_param (RestProxyCall *call,
+                                 const gchar   *name,
+                                 gchar         *value);
+
 void rest_proxy_call_add_param_full (RestProxyCall            *call,
                                      RestParam                *param);
 
