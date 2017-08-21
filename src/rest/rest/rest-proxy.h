@@ -25,7 +25,6 @@
 
 #include <glib-object.h>
 #include <libsoup/soup-session-feature.h>
-#include "rest-proxy-auth.h"
 #include "rest-proxy-call.h"
 
 G_BEGIN_DECLS

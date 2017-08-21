@@ -166,8 +166,6 @@ libcorebird_la_SOURCES = \
 	rest/rest/rest-param.c \
 	rest/rest/rest-params.c \
 	rest/rest/rest-proxy.c \
-	rest/rest/rest-proxy-auth.c \
-	rest/rest/rest-proxy-auth-private.h \
 	rest/rest/rest-proxy-call.c \
 	rest/rest/rest-proxy-call-private.h \
 	rest/rest/rest-main.c \
@@ -180,7 +178,6 @@ libcorebird_la_SOURCES = \
 	rest/rest/rest-param.h \
 	rest/rest/rest-params.h \
 	rest/rest/rest-proxy.h \
-	rest/rest/rest-proxy-auth.h \
 	rest/rest/rest-proxy-call.h \
 	rest/rest/oauth-proxy.h \
 	rest/rest/oauth-proxy-call.h
