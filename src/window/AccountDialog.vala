@@ -17,6 +17,7 @@
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-dialog.ui")]
 public class AccountDialog : Gtk.Window {
+  private const int MAX_DESCRIPTION_LENGTH = 160;
   private const string PAGE_NORMAL = "normal";
   private const string PAGE_DELETE = "delete";
   [GtkChild]
@@ -41,6 +42,8 @@ public class AccountDialog : Gtk.Window {
   private Gtk.Label error_label;
   [GtkChild]
   private Gtk.Button save_button;
+  [GtkChild]
+  private Gtk.Label description_length_label;
 
   private unowned Account account;
   private string old_user_name;
@@ -91,7 +94,21 @@ public class AccountDialog : Gtk.Window {
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
 
+    description_text_view.buffer.notify["text"].connect (update_description_length);
+
     this.add_accel_group (ag);
+    this.update_description_length ();
+  }
+
+  private void update_description_length () {
+    int length = description_text_view.buffer.text.length;
+    description_length_label.label = "%d/160".printf (length);
+
+    if (length > MAX_DESCRIPTION_LENGTH) {
+      save_button.sensitive = false;
+    } else {
+      save_button.sensitive = true;
+    }
   }
 
   public override void destroy () {
