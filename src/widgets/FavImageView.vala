@@ -84,8 +84,10 @@ class FavImageView : Gtk.Box {
           var file = dir.get_child (info.get_name ());
           var row = new FavImageRow (file.get_path ());
 
-          if (content_type == "image/gif" && !gifs_enabled)
-            row.set_sensitive (false);
+          if (content_type == "image/gif") {
+            row.is_gif = true;
+            row.set_sensitive (gifs_enabled);
+          }
 
           row.show_all ();
           fav_image_list.add (row);
@@ -127,8 +129,9 @@ class FavImageView : Gtk.Box {
           var file_info = file.query_info ("standard::content-type", GLib.FileQueryInfoFlags.NONE);
           var row = new FavImageRow (GLib.File.new_for_uri (text).get_path ());
 
-          if (file_info.get_content_type () == "image/gif" && !gifs_enabled) {
-            row.set_sensitive (false);
+          if (file_info.get_content_type () == "image/gif") {
+            row.is_gif = true;
+            row.set_sensitive (gifs_enabled);
           }
 
           row.show_all ();
@@ -176,8 +179,9 @@ class FavImageView : Gtk.Box {
         file.copy (dest_file, GLib.FileCopyFlags.NONE);
 
         var row = new FavImageRow (dest_file.get_path ());
-        if (file_info.get_content_type () == "image/gif" && !gifs_enabled) {
-          row.set_sensitive (false);
+        if (file_info.get_content_type () == "image/gif") {
+          row.is_gif = true;
+          row.set_sensitive (gifs_enabled);
         }
 
         row.show_all ();

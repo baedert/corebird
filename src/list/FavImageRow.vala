@@ -19,10 +19,23 @@ class FavImageRow : Gtk.FlowBoxChild {
   private const int THUMB_WIDTH  = 80;
   private const int THUMB_HEIGHT = 50;
 
+  private static Cairo.ImageSurface play_icon;
+
   private Gtk.EventBox event_box;
   private Gtk.Image image;
   private string file_path;
   private Gtk.GestureMultiPress gesture;
+
+  public bool is_gif = false;
+
+  static construct {
+    try {
+      play_icon = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play.png"), 1, null);
+    } catch (GLib.Error e) {
+      critical (e.message);
+    }
+  }
 
   public FavImageRow (string path) {
     this.file_path = path;
@@ -112,6 +125,25 @@ class FavImageRow : Gtk.FlowBoxChild {
 
     this.get_style_context ().add_class ("fav-image-item");
     load_image.begin ();
+  }
+
+  public override bool draw (Cairo.Context ct) {
+    base.draw (ct);
+
+    if (this.is_gif) {
+      double scale = 0.6;
+      int width = this.get_allocated_width ();
+      int height = this.get_allocated_height ();
+
+      double x = (width / 2.0) / scale - (play_icon.get_width () / 2.0);
+      double y = (height / 2.0) / scale - (play_icon.get_height () / 2.0);
+
+      ct.scale (scale, scale);
+      ct.set_source_surface (play_icon, x, y);
+      ct.paint ();
+    }
+
+    return false;
   }
 
   public unowned string get_image_path () {
