@@ -279,52 +279,6 @@ oauth_proxy_new_with_token (const char *consumer_key,
                        NULL);
 }
 
-/**
- * oauth_proxy_request_token:
- * @proxy: an #OAuthProxy
- * @function: the function name to invoke
- * @callback_uri: the callback URI
- * @error: a #GError, or %NULL
- *
- * Perform the Request Token phase of OAuth, invoking @function (defaulting to
- * "request_token" if @function is NULL).
- *
- * The value of @callback depends on whether you wish to use OAuth 1.0 or 1.0a.
- * If you wish to use 1.0 then callback must be NULL.  To use 1.0a then
- * @callback should either be your callback URI, or "oob" (out-of-band).
- *
- * Returns: %TRUE on success, or %FALSE on failure. On failure @error is set.
- */
-gboolean
-oauth_proxy_request_token (OAuthProxy *proxy,
-                           const char *function,
-                           /* NULL: 1.0 only, "oob", or URL */
-                           const char *callback_uri,
-                           GError    **error)
-{
-  RestProxyCall *call;
-
-  call = rest_proxy_new_call (REST_PROXY (proxy));
-  rest_proxy_call_set_function (call, function ? function : "request_token");
-  rest_proxy_call_set_method (call, "POST");
-
-  if (callback_uri)
-    rest_proxy_call_add_param (call, "oauth_callback", callback_uri);
-
-  if (!rest_proxy_call_sync (call, error))
-    {
-      g_object_unref (call);
-      return FALSE;
-    }
-
-  /* TODO: sanity check response */
-  oauth_proxy_call_parse_token_response (OAUTH_PROXY_CALL (call));
-
-  g_object_unref (call);
-
-  return TRUE;
-}
-
 static void
 request_token_cb (GObject      *source_object,
                   GAsyncResult *result,
@@ -410,52 +364,6 @@ oauth_proxy_request_token_finish (OAuthProxy *proxy,
   g_return_val_if_fail (g_task_is_valid (result, proxy), FALSE);
 
   return g_task_propagate_boolean (G_TASK (result), error);
-}
-
-/**
- * oauth_proxy_access_token:
- * @proxy: an #OAuthProxy
- * @function: the function name to invoke
- * @verifier: the verifier
- * @error: a #GError, or %NULL
- *
- * Perform the Access Token phase of OAuth, invoking @function (defaulting to
- * "access_token" if @function is NULL).
- *
- * @verifier is only used if you are using OAuth 1.0a.  This is either the
- * "oauth_verifier" parameter that was passed to your callback URI, or a string
- * that the user enters in some other manner (for example in a popup dialog) if
- * "oob" was passed to oauth_proxy_request_token().  For OAuth 1.0, pass %NULL.
- *
- * Returns: %TRUE on success, or %FALSE on failure. On failure @error is set.
- */
-gboolean
-oauth_proxy_access_token (OAuthProxy *proxy,
-                          const char *function,
-                          const char *verifier,
-                          GError    **error)
-{
-  RestProxyCall *call;
-
-  call = rest_proxy_new_call (REST_PROXY (proxy));
-  rest_proxy_call_set_function (call, function ? function : "access_token");
-  rest_proxy_call_set_method (call, "POST");
-
-  if (verifier)
-    rest_proxy_call_add_param (call, "oauth_verifier", verifier);
-
-  if (!rest_proxy_call_sync (call, error))
-    {
-      g_object_unref (call);
-      return FALSE;
-    }
-
-  /* TODO: sanity check response */
-  oauth_proxy_call_parse_token_response (OAUTH_PROXY_CALL (call));
-
-  g_object_unref (call);
-
-  return TRUE;
 }
 
 static void

@@ -167,8 +167,6 @@ gboolean rest_proxy_call_upload (RestProxyCall                *call,
 
 gboolean rest_proxy_call_cancel (RestProxyCall *call);
 
-gboolean rest_proxy_call_sync (RestProxyCall *call, GError **error_out);
-
 /* Functions for dealing with responses */
 
 const gchar *rest_proxy_call_lookup_response_header (RestProxyCall *call,

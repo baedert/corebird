@@ -28,7 +28,6 @@ namespace Rest {
 	public class OAuthProxy : Rest.Proxy {
 		[CCode (has_construct_function = false, type = "RestProxy*")]
 		public OAuthProxy (string consumer_key, string consumer_secret, string url_format, bool binding_required);
-		public bool access_token (string function, string verifier) throws GLib.Error;
 		public async bool access_token_async (string function, string verifier, GLib.Cancellable? cancellable) throws GLib.Error;
 		public bool auth_step (string function) throws GLib.Error;
 		public bool auth_step_async (string function, [CCode (delegate_target_pos = 3.1, scope = "async")] Rest.OAuthProxyAuthCallback callback, GLib.Object weak_object) throws GLib.Error;
@@ -37,7 +36,6 @@ namespace Rest {
 		public unowned string get_token_secret ();
 		public bool is_oauth10a ();
 		public Rest.Proxy new_echo_proxy (string service_url, string url_format, bool binding_required);
-		public bool request_token (string function, string callback_uri) throws GLib.Error;
 		public async void request_token_async (string function, string callback_uri, GLib.Cancellable? cancellable) throws GLib.Error;
 		public void set_signature_host (string signature_host);
 		public void set_token (string token);
@@ -160,7 +158,6 @@ namespace Rest {
 		public virtual bool serialize_params (out string content_type, out string content, out size_t content_len) throws GLib.Error;
 		public void set_function (string function);
 		public void set_method (string method);
-		public bool sync () throws GLib.Error;
 		public bool upload ([CCode (delegate_target_pos = 2.1)] Rest.ProxyCallUploadCallback callback, GLib.Object weak_object) throws GLib.Error;
 		[NoAccessorMethod]
 		public Rest.Proxy proxy { owned get; construct; }

@@ -1223,43 +1223,6 @@ rest_proxy_call_cancel (RestProxyCall *call)
 }
 
 /**
- * rest_proxy_call_sync:
- * @call: a #RestProxycall
- * @error_out: a #GError or %NULL
- *
- * Synchronously invokes @call. After this function has returned,
- * rest_proxy_call_get_payload() will return the result of this call.
- *
- * Note that this will block an undefined amount of time, so
- * rest_proxy_call_invoke_async() is generally recommended.
- *
- * Returns: %TRUE on success, %FALSE if a failure occurred,
- *   in which case @error_out will be set.
- */
-gboolean
-rest_proxy_call_sync (RestProxyCall *call,
-                      GError       **error_out)
-{
-  RestProxyCallPrivate *priv = GET_PRIVATE (call);
-  SoupMessage *message;
-  gboolean ret;
-
-  g_return_val_if_fail (REST_IS_PROXY_CALL (call), FALSE);
-
-  message = prepare_message (call, error_out);
-  if (!message)
-    return FALSE;
-
-  _rest_proxy_send_message (priv->proxy, message);
-
-  ret = finish_call (call, message, error_out);
-
-  g_object_unref (message);
-
-  return ret;
-}
-
-/**
  * rest_proxy_call_lookup_response_header:
  * @call: The #RestProxyCall
  * @header: The name of the header to lookup.

@@ -88,11 +88,6 @@ RestProxy* oauth_proxy_new_with_token (const char *consumer_key,
                                        const gchar *url_format,
                                        gboolean binding_required);
 
-gboolean oauth_proxy_request_token (OAuthProxy *proxy,
-                                    const char *function,
-                                    const char *callback_uri,
-                                    GError    **error);
-
 void oauth_proxy_request_token_async (OAuthProxy          *proxy,
                                       const char          *function,
                                       const char          *callback_uri,
@@ -104,11 +99,6 @@ gboolean oauth_proxy_request_token_finish (OAuthProxy *proxy,
                                            GError **error);
 
 gboolean oauth_proxy_is_oauth10a (OAuthProxy *proxy);
-
-gboolean oauth_proxy_access_token (OAuthProxy *proxy,
-                                   const char *function,
-                                   const char *verifier,
-                                   GError    **error);
 
 void oauth_proxy_access_token_async (OAuthProxy          *proxy,
                                      const char          *function,

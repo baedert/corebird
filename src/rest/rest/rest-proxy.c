@@ -409,15 +409,3 @@ _rest_proxy_cancel_message (RestProxy   *proxy,
                                message,
                                SOUP_STATUS_CANCELLED);
 }
-
-guint
-_rest_proxy_send_message (RestProxy   *proxy,
-                          SoupMessage *message)
-{
-  RestProxyPrivate *priv = GET_PRIVATE (proxy);
-
-  g_return_val_if_fail (REST_IS_PROXY (proxy), 0);
-  g_return_val_if_fail (SOUP_IS_MESSAGE (message), 0);
-
-  return soup_session_send_message (priv->session, message);
-}

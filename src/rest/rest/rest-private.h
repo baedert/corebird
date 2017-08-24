@@ -55,8 +55,6 @@ void _rest_proxy_queue_message (RestProxy   *proxy,
                                 gpointer user_data);
 void _rest_proxy_cancel_message (RestProxy   *proxy,
                                  SoupMessage *message);
-guint _rest_proxy_send_message (RestProxy   *proxy,
-                                SoupMessage *message);
 
 G_END_DECLS
 #endif /* _REST_PRIVATE */
