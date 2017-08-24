@@ -131,28 +131,6 @@ inline double ease_out_cubic (double t) {
   return p * p * p +1;
 }
 
-string rest_call_to_string (Rest.ProxyCall call)
-{
-  StringBuilder builder = new StringBuilder ();
-  builder.append (call.get_method ());
-  builder.append (" ");
-  builder.append (call.get_function ());
-
-  GLib.HashTable<string, string> params = call.get_params ().as_string_hash_table ();
-
-  if (params.size () > 0) {
-    builder.append ("?");
-
-    foreach (unowned string key in params.get_keys ()) {
-      // This doesn't work for the last param but whatever.
-      builder.append (key).append ("=").append (params.get (key)).append ("&");
-    }
-  }
-
-  return builder.str;
-}
-
-
 namespace Utils {
   /**
    * Calculates an easily human-readable version of the time difference between

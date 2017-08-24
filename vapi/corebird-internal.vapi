@@ -307,6 +307,7 @@ namespace Cb {
     public void write_reply_text (ref Cb.MiniTweet t, GLib.StringBuilder str);
     public GLib.DateTime parse_date (string _in);
     public string get_file_type (string url);
+    public string rest_proxy_call_to_string (Rest.ProxyCall c);
     public async Json.Node? load_threaded_async (Rest.ProxyCall call, GLib.Cancellable? cancellable) throws GLib.Error;
   }
 

@@ -359,8 +359,8 @@ cb_utils_get_file_type (const char *url)
   return type;
 }
 
-static char *
-rest_proxy_call_to_string (RestProxyCall *call)
+char *
+cb_utils_rest_proxy_call_to_string (RestProxyCall *call)
 {
   GString *str = g_string_new (NULL);
   RestParams *params = rest_proxy_call_get_params (call);
@@ -469,7 +469,7 @@ cb_utils_load_threaded_async  (RestProxyCall       *call,
 
 #ifdef DEBUG
   {
-    char *s = rest_proxy_call_to_string (call);
+    char *s = cb_utils_rest_proxy_call_to_string (call);
     g_debug ("REST: %s", s);
     g_free (s);
   }
