@@ -29,7 +29,7 @@ namespace Rest {
 		[CCode (has_construct_function = false, type = "RestProxy*")]
 		public OAuthProxy (string consumer_key, string consumer_secret, string url_format, bool binding_required);
 		public bool access_token (string function, string verifier) throws GLib.Error;
-		public bool access_token_async (string function, string verifier, [CCode (delegate_target_pos = 4.1, scope = "async")] Rest.OAuthProxyAuthCallback callback, GLib.Object weak_object) throws GLib.Error;
+		public async bool access_token_async (string function, string verifier, GLib.Cancellable? cancellable) throws GLib.Error;
 		public bool auth_step (string function) throws GLib.Error;
 		public bool auth_step_async (string function, [CCode (delegate_target_pos = 3.1, scope = "async")] Rest.OAuthProxyAuthCallback callback, GLib.Object weak_object) throws GLib.Error;
 		public unowned string get_signature_host ();
