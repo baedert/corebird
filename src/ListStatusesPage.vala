@@ -174,7 +174,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, null);
+      root = yield Cb.Utils.load_threaded_async (call, null);
     } catch (GLib.Error e) {
       if (e.message.down () == "not found") {
         tweet_list.set_empty ();
@@ -213,7 +213,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, null);
+      root = yield Cb.Utils.load_threaded_async (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
@@ -339,7 +339,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, null);
+      root = yield Cb.Utils.load_threaded_async (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return;

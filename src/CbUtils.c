@@ -358,3 +358,132 @@ cb_utils_get_file_type (const char *url)
 
   return type;
 }
+
+static char *
+rest_proxy_call_to_string (RestProxyCall *call)
+{
+  GString *str = g_string_new (NULL);
+  RestParams *params = rest_proxy_call_get_params (call);
+  GHashTable *params_table = rest_params_as_string_hash_table (params);
+
+  g_string_append (str, rest_proxy_call_get_method (call));
+  g_string_append_c (str, ' ');
+  g_string_append (str, rest_proxy_call_get_function (call));
+
+  if (g_hash_table_size (params_table) > 0)
+    {
+      GList *keys;
+      GList *l;
+
+      g_string_append_c (str, '?');
+
+      keys = g_hash_table_get_keys (params_table);
+
+      for (l = keys; l; l = l->next)
+        {
+          const char *value = g_hash_table_lookup (params_table, l->data);
+
+          g_assert (value);
+          g_string_append (str, (const char *)l->data);
+          g_string_append_c (str, '=');
+          g_string_append (str, value);
+
+          if (l->next != NULL)
+            g_string_append_c (str, '&');
+        }
+
+      g_list_free (keys);
+
+    }
+
+  g_hash_table_unref (params_table);
+
+  return g_string_free (str, FALSE);
+}
+
+static void
+parse_json_async (GTask        *task,
+                  gpointer      source_object,
+                  gpointer      task_data,
+                  GCancellable *cancellable)
+{
+  const char *payload = task_data;
+  JsonParser *parser;
+  JsonNode *root_node;
+  GError *error = NULL;
+
+  parser = json_parser_new ();
+  json_parser_load_from_data (parser, payload, -1, &error);
+  if (error)
+    {
+      g_task_return_error (task, error);
+      return;
+    }
+
+  if (g_cancellable_is_cancelled (cancellable))
+    {
+      g_task_return_pointer (task, NULL, NULL);
+      return;
+    }
+
+  root_node = json_parser_get_root (parser);
+
+  g_assert (root_node);
+
+  g_task_return_pointer (task, json_node_ref (root_node), (GDestroyNotify)json_node_unref);
+  g_object_unref (parser);
+}
+
+static void
+call_done_cb (GObject      *source_object,
+              GAsyncResult *result,
+              gpointer      user_data)
+{
+  RestProxyCall *call = REST_PROXY_CALL (source_object);
+  GTask *task = user_data;
+  GError *error = NULL;
+  char *payload;
+
+  /* Get the json data, run another GTask that actually parses the json and returns the root node */
+  rest_proxy_call_invoke_finish (call, result, &error);
+  if (error != NULL)
+    {
+      g_warning ("%s(%s): %s", __FILE__, __FUNCTION__, error->message);
+      g_task_return_error (task, error);
+      return;
+    }
+
+  payload = rest_proxy_call_take_payload (call);
+
+  g_task_set_task_data (task, payload, g_free);
+  g_task_run_in_thread (task, parse_json_async);
+}
+
+void
+cb_utils_load_threaded_async  (RestProxyCall       *call,
+                               GCancellable        *cancellable,
+                               GAsyncReadyCallback  callback,
+                               gpointer             user_data)
+{
+  GTask *task = g_task_new (call, cancellable, callback, user_data);
+
+#ifdef DEBUG
+  {
+    char *s = rest_proxy_call_to_string (call);
+    g_debug ("REST: %s", s);
+    g_free (s);
+  }
+#endif
+
+  rest_proxy_call_invoke_async (call, cancellable, call_done_cb, task);
+}
+
+JsonNode *
+cb_utils_load_threaded_finish (GAsyncResult   *result,
+                               GError        **error)
+{
+  JsonNode *node = g_task_propagate_pointer (G_TASK (result), error);
+  g_object_unref (result);
+
+  return node;
+}

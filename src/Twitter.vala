@@ -114,7 +114,7 @@ public class Twitter : GLib.Object {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, null);
+      root = yield Cb.Utils.load_threaded_async (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return null;

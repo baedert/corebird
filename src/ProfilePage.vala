@@ -207,7 +207,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     Json.Node? root_node = null;
     try {
-      root_node = yield TweetUtils.load_threaded (call, data_cancellable);
+      root_node = yield Cb.Utils.load_threaded_async (call, data_cancellable);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
@@ -380,7 +380,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, data_cancellable);
+      root = yield Cb.Utils.load_threaded_async (call, data_cancellable);
     } catch (GLib.Error e) {
       warning (e.message);
       tweet_list.set_empty ();
@@ -421,7 +421,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, data_cancellable);
+      root = yield Cb.Utils.load_threaded_async (call, data_cancellable);
     } catch (GLib.Error e) {
       warning (e.message);
       return;

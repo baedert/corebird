@@ -161,7 +161,7 @@ public class Account : GLib.Object {
 
     Json.Node? root_node = null;
     try {
-      root_node = yield TweetUtils.load_threaded (call, null);
+      root_node = yield Cb.Utils.load_threaded_async (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       return;
@@ -270,7 +270,7 @@ public class Account : GLib.Object {
 
     Json.Node? root = null;
     try {
-      root = yield TweetUtils.load_threaded (call, null);
+      root = yield Cb.Utils.load_threaded_async (call, null);
     } catch (GLib.Error e) {
       warning (e.message);
       collect_obj.emit ();

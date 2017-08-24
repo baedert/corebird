@@ -101,9 +101,9 @@ class DMManager : GLib.Object {
     call.add_param ("since_id", max_received_id.to_string ());
     call.add_param ("count", "200");
     call.add_param ("full_text", "true");
-    TweetUtils.load_threaded.begin (call, null, (obj, res) => {
+    Cb.Utils.load_threaded_async.begin (call, null, (obj, res) => {
       try {
-        Json.Node? root = TweetUtils.load_threaded.end (res);
+        Json.Node? root = Cb.Utils.load_threaded_async.end (res);
         on_dm_result (root, true);
       } catch (GLib.Error e) {
         warning (e.message);
@@ -118,9 +118,9 @@ class DMManager : GLib.Object {
     sent_call.add_param ("count", "200");
     sent_call.add_param ("full_text", "true");
     sent_call.set_method ("GET");
-    TweetUtils.load_threaded.begin (sent_call, null, (obj, res) => {
+    Cb.Utils.load_threaded_async.begin (sent_call, null, (obj, res) => {
       try {
-        Json.Node? root = TweetUtils.load_threaded.end (res);
+        Json.Node? root = Cb.Utils.load_threaded_async.end (res);
         on_dm_result (root, false);
       } catch (GLib.Error e) {
         warning (e.message);

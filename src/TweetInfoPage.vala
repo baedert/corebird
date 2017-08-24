@@ -331,11 +331,11 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     call.add_param ("id", tweet_id.to_string ());
     call.add_param ("include_my_retweet", "true");
     call.add_param ("tweet_mode", "extended");
-    TweetUtils.load_threaded.begin (call, cancellable, (__, res) => {
+    Cb.Utils.load_threaded_async.begin (call, cancellable, (__, res) => {
       Json.Node? root = null;
 
       try {
-        root = TweetUtils.load_threaded.end (res);
+        root = Cb.Utils.load_threaded_async.end (res);
       } catch (GLib.Error e) {
         error_label.label = "%s: %s".printf (_("Could not show tweet"), e.message);
         main_stack.visible_child = error_label;
@@ -379,11 +379,11 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     reply_call.add_param ("since_id", tweet_id.to_string ());
     reply_call.add_param ("count", "200");
     reply_call.add_param ("tweet_mode", "extended");
-    TweetUtils.load_threaded.begin (reply_call, cancellable, (_, res) => {
+    Cb.Utils.load_threaded_async.begin (reply_call, cancellable, (_, res) => {
       Json.Node? root = null;
 
       try {
-        root = TweetUtils.load_threaded.end (res);
+        root = Cb.Utils.load_threaded_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
         return;

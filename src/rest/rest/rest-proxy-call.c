@@ -1339,6 +1339,12 @@ rest_proxy_call_get_payload (RestProxyCall *call)
   return GET_PRIVATE (call)->payload;
 }
 
+char *
+rest_proxy_call_take_payload (RestProxyCall *call)
+{
+  return g_steal_pointer (&GET_PRIVATE (call)->payload);
+}
+
 /**
  * rest_proxy_call_get_status_code:
  * @call: The #RestProxyCall

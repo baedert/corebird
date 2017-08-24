@@ -93,10 +93,10 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
     call.set_method ("GET");
     call.add_param ("include_entities", "false");
     call.add_param ("skip_status", "true");
-    TweetUtils.load_threaded.begin (call, null, (_, res) => {
+    Cb.Utils.load_threaded_async.begin (call, null, (_, res) => {
       Json.Node? root = null;
       try  {
-        root = TweetUtils.load_threaded.end (res);
+        root = Cb.Utils.load_threaded_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
         return;
@@ -121,10 +121,10 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
     call2.set_method ("GET");
     call2.add_param ("include_entities", "false");
     call2.add_param ("skip_status", "true");
-    TweetUtils.load_threaded.begin (call2, null, (_, res) => {
+    Cb.Utils.load_threaded_async.begin (call2, null, (_, res) => {
       Json.Node? root = null;
       try  {
-        root = TweetUtils.load_threaded.end (res);
+        root = Cb.Utils.load_threaded_async.end (res);
       } catch (GLib.Error e) {
         warning (e.message);
         return;
