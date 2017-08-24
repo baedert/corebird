@@ -195,8 +195,13 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   }
 
   private void load_user_avatar (string url) {
-    string avatar_url = url.replace ("_normal", "_bigger");
+    string avatar_url;
     int scale = this.get_scale_factor ();
+
+    if (scale == 1)
+      avatar_url = url.replace ("_normal", "_bigger");
+    else
+      avatar_url = url.replace ("_normal", "_200x200");
 
     TweetUtils.download_avatar.begin (avatar_url, 73 * scale, cancellable, (obj, res) => {
       Cairo.Surface surface;
