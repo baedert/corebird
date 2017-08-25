@@ -10,14 +10,14 @@
 # Ivlev Denis <ivlevdenis.ru@gmail.com>, 2015
 # Max Koloskov <mirrherow@gmail.com>, 2015
 # Mikhail Ivanov <mivanov@mirantis.com>, 2016
-# NetFoHack <vanek316@gmail.com>, 2015
+# netforhack, 2015
 # Yevgeny Kvitchenko <kvit4.ko@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-04-30 09:37+0000\n"
+"PO-Revision-Date: 2017-08-03 13:49+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: Russian (http://www.transifex.com/corebird/corebird/language/ru/)\n"
 "MIME-Version: 1.0\n"

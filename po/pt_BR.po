@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-04-30 09:37+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2017-08-03 13:49+0000\n"
+"Last-Translator: Ricardo Borges Jr. <ricardoborges.jr@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/corebird/corebird/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +60,7 @@ msgstr "Configuração de conta pode ser configurada"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -81,14 +81,14 @@ msgstr "corebird"
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
 msgid "Replying to"
-msgstr ""
+msgstr "Respondendo a"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:98 src/TweetInfoPage.vala:491
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
@@ -227,7 +227,7 @@ msgstr "Excluir"
 #: src/list/TweetListEntry.vala:453
 #, c-format
 msgid "Block %s"
-msgstr ""
+msgstr "Bloquear%s"
 
 #: src/list/TweetListEntry.vala:609
 msgid "This tweet contains images marked as inappropriate"
@@ -253,7 +253,7 @@ msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "Ainda não tem uma conta do Twitter?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -263,7 +263,7 @@ msgstr "Criar uma"
 msgid ""
 "Unauthorized. Most of the time, this means that there’s something wrong with"
 " the Twitter servers and you should try again later"
-msgstr ""
+msgstr "Não autorizado. Na maioria das vezes, isso significa que há algo errado com os servidores do Twitter e você deve tentar novamente mais tarde"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -296,15 +296,15 @@ msgstr "Copiar URL"
 
 #: src/widgets/MediaButton.vala:106
 msgid "Save as…"
-msgstr ""
+msgstr "Salvar como..."
 
 #: src/widgets/MediaButton.vala:269
 msgid "Save Video"
-msgstr ""
+msgstr "Salvar Vídeo"
 
 #: src/widgets/MediaButton.vala:271
 msgid "Save Image"
-msgstr ""
+msgstr "Salvar imagem"
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -326,7 +326,7 @@ msgstr "Salvar"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "Carregando..."
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -390,7 +390,7 @@ msgstr "Voltar"
 
 #: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "Somente um arquivo GIF por tweet é permitido."
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -458,11 +458,11 @@ msgstr "Pedido de PIN"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Digite o PIN do twitter.com abaixo:"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"

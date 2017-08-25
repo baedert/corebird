@@ -4,15 +4,15 @@
 #
 # Translators:
 # Krisan Alfa Timur <krisan47@gmail.com>, 2015
-# Mahyuddin Idram Ahmad <dotovr@di.blankon.in>, 2015-2016
+# Mahyuddin <dotovr@di.blankon.in>, 2015-2016-2016
 # Reza Faiz A. Rahman <rezafaizarahman@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-04-30 09:37+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2017-08-05 10:12+0000\n"
+"Last-Translator: Mahyuddin <dotovr@di.blankon.in>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/corebird/corebird/language/id_ID/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,7 +56,7 @@ msgstr "Setelan akun dapat dikonfigurasi"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -77,21 +77,21 @@ msgstr "corebird"
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
 msgid "Replying to"
-msgstr ""
+msgstr "Membalas ke"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:98 src/TweetInfoPage.vala:491
 msgid "and"
-msgstr ""
+msgstr "dan"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
 #: src/CbUtils.c:107
 #, c-format
 msgid "and %d others"
-msgstr ""
+msgstr "dan 1%d lainnya"
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -242,11 +242,11 @@ msgstr "%dm"
 #: src/util/Utils.vala:174
 #, c-format
 msgid "%dh"
-msgstr "%dh"
+msgstr "%dj"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "Belum mempunyai akun Twitter?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -256,7 +256,7 @@ msgstr "Buat satu"
 msgid ""
 "Unauthorized. Most of the time, this means that there’s something wrong with"
 " the Twitter servers and you should try again later"
-msgstr ""
+msgstr "Tidak sah, ini berarti ada yang tidak beres dengan server Twitter dan Anda harus mencoba lagi nanti"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -289,15 +289,15 @@ msgstr "Salin URL"
 
 #: src/widgets/MediaButton.vala:106
 msgid "Save as…"
-msgstr ""
+msgstr "Simpan sebagai..."
 
 #: src/widgets/MediaButton.vala:269
 msgid "Save Video"
-msgstr ""
+msgstr "SImpan Vidio"
 
 #: src/widgets/MediaButton.vala:271
 msgid "Save Image"
-msgstr ""
+msgstr "SImpan Gambar"
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -319,7 +319,7 @@ msgstr "Simpan"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "Sedang memuatkan..."
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -331,7 +331,7 @@ msgstr "Coba lagi"
 
 #: src/window/AccountDialog.vala:311
 msgid "Select Banner Image"
-msgstr ""
+msgstr "Pilih Gambar Spanduk"
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -340,23 +340,23 @@ msgstr "Buka"
 
 #: src/window/AccountDialog.vala:348
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "Gambar tidak memenuhi persyaratan ukuran minimum:"
 
 #: src/window/AccountDialog.vala:349
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
-msgstr[0] ""
+msgstr[0] "Lebar minimum: %d piksel"
 
 #: src/window/AccountDialog.vala:351
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
-msgstr[0] ""
+msgstr[0] "Tinggi minimum: %d piksel"
 
 #: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
 msgid "Pick"
-msgstr ""
+msgstr "Memilih"
 
 #: src/window/ComposeTweetWindow.vala:107
 msgid "Quote tweet"
@@ -381,7 +381,7 @@ msgstr "Kembali"
 
 #: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "Hanya satu file GIF per tweet yang diizinkan."
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -393,7 +393,7 @@ msgstr "Cocok"
 
 #: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn’t match"
-msgstr ""
+msgstr "Tidak cocok"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
@@ -401,11 +401,11 @@ msgstr "Ubah Cuplikan"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
-msgstr ""
+msgstr "Cuplikan tidak boleh kosong"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can’t be empty"
-msgstr ""
+msgstr "Penggantian tidak boleh kosong"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -441,7 +441,7 @@ msgstr "Akun Baru"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "Untuk mengotentikasi Corebird, Anda memerlukan PIN dari twitter.com dengan akun yang ingin Anda tambahkan"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -449,11 +449,11 @@ msgstr "Permintaan PIN:"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Masukkan PIN dari twitter.com dibawah ini:"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -493,7 +493,7 @@ msgstr "Tambah Gambar"
 
 #: ui/compose-window.ui:159
 msgid "Show favorite images"
-msgstr ""
+msgstr "Tampilkan gambar favorit"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"

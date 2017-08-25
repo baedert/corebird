@@ -4,7 +4,7 @@
 #
 # Translators:
 # baedert <mail@baedert.org>, 2014-2015
-# brainscript <niklas.higi@web.de>, 2016
+# brainscript <inactive+brainscript@transifex.com>, 2016
 # encbladexp <service+transifex@stefan-betz.net>, 2014
 # fgreinus <florian.greinus@googlemail.com>, 2015
 # Heiko Adams <HeikoAdams@users.noreply.github.com>, 2016
@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-04-30 09:41+0000\n"
+"PO-Revision-Date: 2017-08-03 13:49+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
 "Language-Team: German (http://www.transifex.com/corebird/corebird/language/de/)\n"
 "MIME-Version: 1.0\n"

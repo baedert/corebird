@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# enolp <enolp@softastur.org>, 2014-2016
+# enolp <enolp@softastur.org>, 2014-2017
 # Xuacu Saturio <xuacusk8@gmail.com>, 2015
 # Ḷḷumex03 <tornes@opmbx.org>, 2014
 msgid ""
@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-04-30 09:37+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2017-08-22 06:11+0000\n"
+"Last-Translator: enolp <enolp@softastur.org>\n"
 "Language-Team: Asturian (http://www.transifex.com/corebird/corebird/language/ast/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +44,7 @@ msgstr "Carauterístiques adicionales qu'inclúin visión llocal de videos, imá
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Vista xenérica de llinia temporal al usar Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
@@ -56,11 +56,11 @@ msgstr "Puen configurase los axustes de cuentes"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "Usa Twitter dende una aplicación d'escritoriu normal"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or
 #. localize the semicolons! The list MUST also end with a semicolon!
@@ -77,21 +77,21 @@ msgstr "corebird"
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:87 src/TweetInfoPage.vala:479
 msgid "Replying to"
-msgstr ""
+msgstr "Respondiendo a"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:98 src/TweetInfoPage.vala:491
 msgid "and"
-msgstr ""
+msgstr "y"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
 #: src/CbUtils.c:107
 #, c-format
 msgid "and %d others"
-msgstr ""
+msgstr "y %d más"
 
 #: src/DMPage.vala:346
 msgid "Direct Conversation"
@@ -249,7 +249,7 @@ msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "¿Entá nun tienes una cuenta de Twitter?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -292,15 +292,15 @@ msgstr "Copiar URL"
 
 #: src/widgets/MediaButton.vala:106
 msgid "Save as…"
-msgstr ""
+msgstr "Guardar como..."
 
 #: src/widgets/MediaButton.vala:269
 msgid "Save Video"
-msgstr ""
+msgstr "Guardar videu"
 
 #: src/widgets/MediaButton.vala:271
 msgid "Save Image"
-msgstr ""
+msgstr "Guardar imaxe"
 
 #: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
 #: src/window/ComposeTweetWindow.vala:241
@@ -322,7 +322,7 @@ msgstr "Guardar"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "Cargando..."
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -386,7 +386,7 @@ msgstr "Atrás"
 
 #: src/window/ComposeTweetWindow.vala:304
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "Sólo se permite un ficheru GIF por tweet"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -458,7 +458,7 @@ msgstr ""
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -812,7 +812,7 @@ msgstr "Responder"
 #: ui/shortcuts-window.ui:100
 msgctxt "shortcuts window"
 msgid "Quote"
-msgstr ""
+msgstr "Citar"
 
 #: ui/shortcuts-window.ui:107
 msgctxt "shortcuts window"
@@ -878,7 +878,7 @@ msgstr "Abrir nuna ventana nueva"
 
 #: ui/user-list-entry.ui:116
 msgid "Go to profile"
-msgstr "Dir al pergil"
+msgstr "Dir al perfil"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"

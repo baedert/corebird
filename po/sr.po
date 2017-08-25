@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-04-29 18:29+0200\n"
-"PO-Revision-Date: 2017-04-30 09:37+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2017-08-03 13:49+0000\n"
+"Last-Translator: Марко М. Костић (Marko M. Kostić) <marko.m.kostic@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/corebird/corebird/language/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +54,7 @@ msgstr "Подешавања налога се могу мењати"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -250,7 +250,7 @@ msgstr "%dч"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "Још немате Твитер налог?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -260,7 +260,7 @@ msgstr "Направи налог"
 msgid ""
 "Unauthorized. Most of the time, this means that there’s something wrong with"
 " the Twitter servers and you should try again later"
-msgstr ""
+msgstr "Неовлашћено. У већини случајева ово значи да нешто није у реду са Твитеровим серверима и да требате покушати касније"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -323,7 +323,7 @@ msgstr "Сачувај"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "Учитавам…"
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -335,7 +335,7 @@ msgstr "Поново покушај"
 
 #: src/window/AccountDialog.vala:311
 msgid "Select Banner Image"
-msgstr ""
+msgstr "Изаберите слику барјака"
 
 #: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
 #: src/window/ComposeTweetWindow.vala:382
@@ -344,27 +344,27 @@ msgstr "Отвори"
 
 #: src/window/AccountDialog.vala:348
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "Слика не испуњава минималне захтеве о величини:"
 
 #: src/window/AccountDialog.vala:349
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Минимална ширина: %d пиксел"
+msgstr[1] "Минимална ширина: %d пиксела"
+msgstr[2] "Минимална ширина: %d пиксела"
 
 #: src/window/AccountDialog.vala:351
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Минимална висина: %d пиксел"
+msgstr[1] "Минимална висина: %d пиксела"
+msgstr[2] "Минимална висина: %d пиксела"
 
 #: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
 msgid "Pick"
-msgstr ""
+msgstr "Изабери"
 
 #: src/window/ComposeTweetWindow.vala:107
 msgid "Quote tweet"
@@ -401,7 +401,7 @@ msgstr "подудара се"
 
 #: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn’t match"
-msgstr ""
+msgstr "Не поклапа се"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
@@ -409,11 +409,11 @@ msgstr "Измени исечак"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
-msgstr ""
+msgstr "Исечак не може бити празан"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can’t be empty"
-msgstr ""
+msgstr "Замена не може бити празна"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -449,7 +449,7 @@ msgstr "Нови нало"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "Да бисте овластили Корберд, морате унети ПИН са twitter.com преко налога којег желите додати"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -457,11 +457,11 @@ msgstr "Затражи ПИН"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Унесите ПИН са twitter.com испод:"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
-msgstr ""
+msgstr "ПИН"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
