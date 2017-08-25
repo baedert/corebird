@@ -130,7 +130,7 @@ cb_avatar_cache_get_surface_for_id (CbAvatarCache *cache,
                                     gint64         user_id,
                                     gboolean      *out_found)
 {
-  CacheEntry *entry = NULL;
+  const CacheEntry *entry = NULL;
 
   g_return_val_if_fail (CB_IS_AVATAR_CACHE (cache), NULL);
   g_return_val_if_fail (user_id > 0, NULL);
@@ -233,7 +233,7 @@ const char *
 cb_avatar_cache_get_url_for_id (CbAvatarCache *cache,
                                 gint64         user_id)
 {
-  CacheEntry *entry;
+  const CacheEntry *entry;
 
   g_return_val_if_fail (CB_IS_AVATAR_CACHE (cache), NULL);
   g_return_val_if_fail (user_id > 0, NULL);
