@@ -172,7 +172,7 @@ query_sqlite_cb (void  *user_data,
   /* Check for duplicates first */
   for (i = 0; i < query_data->infos->len; i ++)
     {
-      CbUserInfo *_ui = &g_array_index (query_data->infos, CbUserInfo, i);
+      const CbUserInfo *_ui = &g_array_index (query_data->infos, CbUserInfo, i);
       if (_ui->user_id == user_id)
         return 0;
     }
@@ -218,7 +218,7 @@ cb_user_counter_query_by_prefix (CbUserCounter *counter,
 
   for (i = 0; i < counter->user_infos->len; i ++)
     {
-      CbUserInfo *ui = &g_array_index (counter->user_infos, CbUserInfo, i);
+      const CbUserInfo *ui = &g_array_index (counter->user_infos, CbUserInfo, i);
       char *user_name;
       char *screen_name;
       gboolean full = query_data.infos->len >= max_results;
