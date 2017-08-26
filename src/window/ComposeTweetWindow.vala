@@ -200,8 +200,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (!send_button.sensitive)
       return;
 
-
-
     title_stack.visible_child = title_spinner;
     title_spinner.start ();
     send_button.sensitive = false;
@@ -209,7 +207,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     fav_image_button.sensitive = false;
     add_image_button.sensitive = false;
     compose_image_manager.insensitivize_buttons ();
-
 
     Gtk.TextIter start, end;
     tweet_text.buffer.get_start_iter (out start);
