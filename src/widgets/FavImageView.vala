@@ -30,6 +30,7 @@ class FavImageView : Gtk.Box {
 
     this.scrolled_window = new Gtk.ScrolledWindow (null, null);
     this.fav_image_list = new Gtk.FlowBox ();
+    fav_image_list.homogeneous = true;
     scrolled_window.set_vexpand (true);
     scrolled_window.add (this.fav_image_list);
     this.add (scrolled_window);
