@@ -22,11 +22,20 @@ class CompletionTextView : Gtk.TextView {
     "hashtag",
     "snippet"
   };
-  private Gtk.ListBox completion_list;
   private Gtk.Window completion_window;
   private int current_match = 0;
   private string? current_word = null;
 
+  private bool _default_listbox = true;
+  public bool default_listbox  {
+    set {
+      _default_listbox = value;
+    }
+  }
+  public Gtk.ListBox completion_list;
+  public signal void show_completion ();
+  public signal void hide_completion ();
+  public signal void update_completion (string query);
 
   private unowned Account account;
 
@@ -87,7 +96,7 @@ class CompletionTextView : Gtk.TextView {
     /* gspell marker */
     this.buffer.create_tag (TweetUtils.NO_SPELL_CHECK, null);
 
-    this.buffer.notify["cursor-position"].connect (update_completion);
+    this.buffer.notify["cursor-position"].connect (update_completion_listbox);
     this.buffer.changed.connect (buffer_changed_cb);
     this.key_press_event.connect (key_press_event_cb);
 
@@ -159,7 +168,7 @@ class CompletionTextView : Gtk.TextView {
     }
 
     /* If we are not in 'completion mode' atm, just back out. */
-    if (!completion_window.visible)
+    if (!completion_list.get_mapped ())
       return Gdk.EVENT_PROPAGATE;
 
 
@@ -171,7 +180,9 @@ class CompletionTextView : Gtk.TextView {
 
       this.current_match = (current_match + 1) % n_results;
       var row = completion_list.get_row_at_index (current_match);
-      row.grab_focus ();
+      if (_default_listbox) {
+        row.grab_focus ();
+      }
       completion_list.select_row (row);
 
       return Gdk.EVENT_STOP;
@@ -225,6 +236,13 @@ class CompletionTextView : Gtk.TextView {
     if (!this.get_mapped ())
       return;
 
+    completion_list.foreach ((w) => { completion_list.remove (w);});
+
+    if (!_default_listbox) {
+      this.show_completion ();
+      return;
+    }
+
     debug ("show_completion_window");
     int x, y;
     Gtk.Allocation alloc;
@@ -238,22 +256,30 @@ class CompletionTextView : Gtk.TextView {
     completion_window.set_transient_for ((Gtk.Window) this.get_toplevel ());
     completion_window.move (x - 1, y);
     completion_window.resize (alloc.width + 2, 50);
-    completion_list.foreach ((w) => { completion_list.remove (w);});
     completion_window.show_all ();
   }
 
   private void hide_completion_window () {
-    completion_window.hide ();
     this.current_word = null;
+
+    if (!_default_listbox) {
+      hide_completion ();
+      return;
+    }
+
+    completion_window.hide ();
   }
 
   private bool completion_window_focus_out_cb () {
-    hide_completion_window ();
+    if (_default_listbox) {
+      hide_completion_window ();
+    }
+
     return false;
   }
 
 
-  private void update_completion () {
+  private void update_completion_listbox () {
     string cur_word = get_cursor_word (null, null);
     int n_chars = cur_word.char_count ();
 

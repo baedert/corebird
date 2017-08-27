@@ -55,6 +55,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private FavImageView fav_image_view;
   [GtkChild]
   private Gtk.Button fav_image_button;
+  [GtkChild]
+  private Gtk.Revealer completion_revealer;
+  [GtkChild]
+  private Gtk.ListBox completion_list;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
@@ -136,6 +140,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     /* Let the text view immediately grab the keyboard focus */
     tweet_text.grab_focus ();
+    tweet_text.completion_list = this.completion_list;
+    tweet_text.show_completion.connect (() => {
+      completion_revealer.reveal_child = true;
+    });
+    tweet_text.hide_completion.connect (() => {
+      completion_revealer.reveal_child = false;
+    });
 
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);

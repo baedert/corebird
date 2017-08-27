@@ -103,6 +103,7 @@
                     <property name="wrap-mode">word-char</property>
                     <property name="accepts-tab">False</property>
                     <property name="height-request">60</property>
+                    <property name="default-listbox">0</property>
                     <accessibility>
                       <relation type="labelled-by" target="length_label"/>
                     </accessibility>
@@ -132,9 +133,6 @@
                 <property name="top-attach">2</property>
               </packing>
             </child>
-
-
-
 
             <child>
               <object class="GtkBox">
@@ -173,6 +171,32 @@
                 <property name="top-attach">2</property>
               </packing>
             </child>
+
+            <child>
+              <object class="GtkRevealer" id="completion_revealer">
+                <property name="visible">1</property>
+                <property name="reveal-child">0</property>
+
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="visible">1</property>
+                    <property name="min-content-height">80</property>
+                    <child>
+                      <object class="GtkListBox" id="completion_list">
+                        <property name="visible">1</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">3</property>
+                <property name="width">2</property>
+              </packing>
+            </child>
+
             <child>
               <object class="ComposeImageManager" id="compose_image_manager">
                 <property name="visible">false</property>
@@ -183,7 +207,7 @@
               </object>
               <packing>
                 <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
+                <property name="top-attach">4</property>
                 <property name="width">2</property>
               </packing>
             </child>
