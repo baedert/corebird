@@ -518,6 +518,12 @@ users_received_cb (GObject      *source_object,
       goto out;
     }
 
+  if (g_cancellable_is_cancelled (g_task_get_cancellable (task)))
+    {
+      g_task_return_pointer (task, NULL, NULL);
+      goto out;
+    }
+
   g_assert (root_node != NULL);
   root_arr = json_node_get_array (root_node);
   len = json_array_get_length (root_arr);
