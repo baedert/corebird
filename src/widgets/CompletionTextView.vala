@@ -307,8 +307,10 @@ class CompletionTextView : Gtk.TextView {
 
     if (cur_word != this.current_word) {
 
-      if (this.completion_cancellable != null)
+      if (this.completion_cancellable != null) {
+        debug ("Cancelling earlier completion call...");
         this.completion_cancellable.cancel ();
+      }
 
       this.completion_cancellable = new GLib.Cancellable ();
       Cb.Utils.query_users_async.begin (account.proxy, cur_word, completion_cancellable, (obj, res) => {
@@ -332,6 +334,7 @@ class CompletionTextView : Gtk.TextView {
           completion_list.select_row (completion_list.get_row_at_index (0));
           current_match = 0;
         }
+        this.completion_cancellable = null;
       });
 
       show_completion_window ();
