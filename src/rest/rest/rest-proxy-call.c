@@ -552,7 +552,7 @@ _populate_headers_hash_table (const gchar *name,
 
 /* I apologise for this macro, but it saves typing ;-) */
 #define error_helper(x) g_set_error_literal(error, REST_PROXY_ERROR, x, message->reason_phrase)
-static gboolean
+static void
 _handle_error_from_message (SoupMessage *message, GError **error)
 {
   if (message->status_code < 100)
@@ -582,23 +582,23 @@ _handle_error_from_message (SoupMessage *message, GError **error)
         error_helper (REST_PROXY_ERROR_FAILED);
         break;
     }
-    return FALSE;
   }
-
-  if (message->status_code >= 200 && message->status_code < 300)
+  else if (message->status_code >= 200 && message->status_code < 300)
   {
-    return TRUE;
+    /* Good */
+    return;
   }
-
-  /* If we are here we must be in some kind of HTTP error, lets try */
-  g_set_error_literal (error,
-                       REST_PROXY_ERROR,
-                       message->status_code,
-                       message->reason_phrase);
-  return FALSE;
+  else
+  {
+    /* If we are here we must be in some kind of HTTP error, lets try */
+    g_set_error_literal (error,
+                         REST_PROXY_ERROR,
+                         message->status_code,
+                         message->reason_phrase);
+  }
 }
 
-static gboolean
+static void
 finish_call (RestProxyCall *call, SoupMessage *message, GError **error)
 {
   RestProxyCallPrivate *priv = GET_PRIVATE (call);
@@ -620,7 +620,7 @@ finish_call (RestProxyCall *call, SoupMessage *message, GError **error)
   priv->status_code = message->status_code;
   priv->status_message = g_strdup (message->reason_phrase);
 
-  return _handle_error_from_message (message, error);
+  _handle_error_from_message (message, error);
 }
 
 static void
