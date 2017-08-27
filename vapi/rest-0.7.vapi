@@ -142,8 +142,6 @@ namespace Rest {
 		public unowned string get_payload ();
 		public int64 get_payload_length ();
 		public GLib.HashTable<weak string,weak string> get_response_headers ();
-		public uint get_status_code ();
-		public unowned string get_status_message ();
 		public async bool invoke_async (GLib.Cancellable? cancellable) throws GLib.Error;
 		public unowned string lookup_header (string header);
 		public Rest.Param lookup_param (string name);

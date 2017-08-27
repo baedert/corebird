@@ -72,8 +72,6 @@ struct _RestProxyCallPrivate {
   GHashTable *response_headers;
   goffset length;
   gchar *payload;
-  guint status_code;
-  gchar *status_message;
 
   GCancellable *cancellable;
   gulong cancel_sig;
@@ -161,7 +159,6 @@ rest_proxy_call_finalize (GObject *object)
   g_free (priv->function);
 
   g_free (priv->payload);
-  g_free (priv->status_message);
 
   g_free (priv->url);
 
@@ -617,9 +614,6 @@ finish_call (RestProxyCall *call, SoupMessage *message, GError **error)
                             message->response_body->length + 1);
   priv->length = message->response_body->length;
 
-  priv->status_code = message->status_code;
-  priv->status_message = g_strdup (message->reason_phrase);
-
   _handle_error_from_message (message, error);
 }
 
@@ -636,9 +630,6 @@ _continuous_call_message_completed_cb (SoupSession *session,
   closure = (RestProxyCallContinuousClosure *)userdata;
   call = closure->call;
   priv = GET_PRIVATE (call);
-
-  priv->status_code = message->status_code;
-  priv->status_message = g_strdup (message->reason_phrase);
 
   _handle_error_from_message (message, &error);
 
@@ -1306,37 +1297,6 @@ char *
 rest_proxy_call_take_payload (RestProxyCall *call)
 {
   return g_steal_pointer (&GET_PRIVATE (call)->payload);
-}
-
-/**
- * rest_proxy_call_get_status_code:
- * @call: The #RestProxyCall
- *
- * Get the HTTP status code for the call.
- */
-guint
-rest_proxy_call_get_status_code (RestProxyCall *call)
-{
-  g_return_val_if_fail (REST_IS_PROXY_CALL (call), 0);
-
-  return GET_PRIVATE (call)->status_code;
-}
-
-/**
- * rest_proxy_call_get_status_message:
- * @call: The #RestProxyCall
- *
- * Get the human-readable HTTP status message for the call.
- *
- * Returns: The status message. This string is owned by #RestProxyCall and
- * should not be freed.
- */
-const gchar *
-rest_proxy_call_get_status_message (RestProxyCall *call)
-{
-  g_return_val_if_fail (REST_IS_PROXY_CALL (call), NULL);
-
-  return GET_PRIVATE (call)->status_message;
 }
 
 /**
