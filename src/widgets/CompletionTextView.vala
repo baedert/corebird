@@ -322,10 +322,11 @@ class CompletionTextView : Gtk.TextView {
           return;
         }
 
+        completion_list.foreach ((w) => { completion_list.remove (w);});
+
         foreach (unowned Cb.UserIdentity id in users) {
           message ("%s %s", id.user_name, id.screen_name);
-          var l = new Gtk.Label ("@" + id.screen_name);
-          l.halign = Gtk.Align.START;
+          var l = new UserCompletionRow (id.id, id.user_name, "@"+id.screen_name, false);
           completion_list.add (l);
           l.show_all ();
         }
@@ -412,5 +413,25 @@ class CompletionTextView : Gtk.TextView {
 
     this.buffer.insert_text (ref start_word_iter, "@" + compl + " ", compl.length + 2);
     this.buffer.thaw_notify ();
+  }
+}
+
+class UserCompletionRow : Gtk.ListBoxRow {
+  private Gtk.Label user_name_label;
+  private Gtk.Label screen_name_label;
+
+  public UserCompletionRow (int64 id, string user_name, string screen_name, bool verified) {
+    user_name_label = new Gtk.Label (user_name);
+    screen_name_label = new Gtk.Label (screen_name);
+
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
+    user_name_label.set_valign (Gtk.Align.BASELINE);
+    box.add (user_name_label);
+    screen_name_label.set_valign (Gtk.Align.BASELINE);
+    screen_name_label.get_style_context ().add_class ("dim-label");
+    box.add (screen_name_label);
+
+    box.margin = 2;
+    this.add (box);
   }
 }
