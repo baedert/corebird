@@ -448,7 +448,11 @@ call_done_cb (GObject      *source_object,
   rest_proxy_call_invoke_finish (call, result, &error);
   if (error != NULL)
     {
-      g_warning ("%s(%s): %s", __FILE__, __FUNCTION__, error->message);
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        {
+          g_warning ("%s(%s): %p, %s", __FILE__, __FUNCTION__, call, error->message);
+        }
+
       g_task_return_error (task, error);
       return;
     }
@@ -509,8 +513,8 @@ users_received_cb (GObject      *source_object,
 
   if (error != NULL)
     {
-      g_warning ("%s(%s): %s", __FILE__, __FUNCTION__, error->message);
       g_task_return_error (task, error);
+
       goto out;
     }
 
@@ -573,6 +577,15 @@ cb_utils_query_users_finish (GAsyncResult  *result,
     int length;
   } *data = g_task_propagate_pointer (G_TASK (result), error);
   CbUserIdentity *ids;
+
+  /* We want to handle cancelled states here by just returning NULL */
+  if (*error != NULL && g_error_matches (*error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+    {
+      *error = NULL; /* Reset */
+      g_object_unref (result);
+      *out_length = 0;
+      return NULL;
+    }
 
   if (data == NULL)
     {
