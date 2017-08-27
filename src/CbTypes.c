@@ -36,6 +36,7 @@ cb_user_identity_copy (const CbUserIdentity *id, CbUserIdentity *id2)
   g_free (id2->user_name);
   id2->user_name = g_strdup (id->user_name);
   id2->id = id->id;
+  id2->verified = id->verified;
 }
 
 void cb_user_identity_parse (CbUserIdentity *id,
@@ -44,6 +45,7 @@ void cb_user_identity_parse (CbUserIdentity *id,
   id->id = json_object_get_int_member (user_obj, "id");
   id->screen_name = g_strdup (json_object_get_string_member (user_obj, "screen_name"));
   id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "name"));
+  id->verified = json_object_get_boolean_member (user_obj, "verified");
 }
 
 

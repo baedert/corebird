@@ -538,6 +538,7 @@ users_received_cb (GObject      *source_object,
       data->ids[i].id = json_object_get_int_member (obj, "id");
       data->ids[i].user_name = g_strdup (json_object_get_string_member (obj, "name"));
       data->ids[i].screen_name = g_strdup (json_object_get_string_member (obj, "screen_name"));
+      data->ids[i].verified = json_object_get_boolean_member (obj, "verified");
     }
 
   json_node_unref (root_node);
