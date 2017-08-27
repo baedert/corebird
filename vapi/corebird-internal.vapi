@@ -309,6 +309,7 @@ namespace Cb {
     public string get_file_type (string url);
     public string rest_proxy_call_to_string (Rest.ProxyCall c);
     public async Json.Node? load_threaded_async (Rest.ProxyCall call, GLib.Cancellable? cancellable) throws GLib.Error;
+    public async UserIdentity[] query_users_async (Rest.Proxy p, string q, GLib.Cancellable? cancellable) throws GLib.Error;
   }
 
   [CCode (cprefix = "CbBundle_", lower_case_cprefix = "cb_bundle_", cheader_filename =

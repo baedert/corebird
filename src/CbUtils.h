@@ -22,6 +22,7 @@
 #include <glib-object.h>
 #include "CbTypes.h"
 #include "rest/rest-proxy-call.h"
+#include "rest/rest-proxy.h"
 
 void cb_utils_bind_model (GtkWidget                  *listbox,
                           GListModel                 *model,
@@ -49,6 +50,16 @@ void     cb_utils_load_threaded_async  (RestProxyCall       *call,
 
 JsonNode *cb_utils_load_threaded_finish (GAsyncResult   *result,
                                          GError        **error);
+
+void              cb_utils_query_users_async (RestProxy           *proxy,
+                                              const char          *query,
+                                              GCancellable        *cancellable,
+                                              GAsyncReadyCallback  callback,
+                                              gpointer             user_data);
+CbUserIdentity * cb_utils_query_users_finish (GAsyncResult  *result,
+                                              int           *out_length,
+                                              GError       **error);
+
 
 static inline void
 cb_clear_source (guint *id)

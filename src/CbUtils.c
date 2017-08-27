@@ -487,3 +487,106 @@ cb_utils_load_threaded_finish (GAsyncResult   *result,
 
   return node;
 }
+
+static void
+users_received_cb (GObject      *source_object,
+                   GAsyncResult *result,
+                   gpointer      user_data)
+{
+  RestProxyCall *call = REST_PROXY_CALL (source_object);
+  GTask *task = user_data;
+  GError *error = NULL;
+  JsonNode *root_node;
+  JsonArray *root_arr;
+  guint i, len;
+  struct {
+    CbUserIdentity *ids;
+    int length;
+  } *data;
+
+  /* We are in the main thread again here. */
+  root_node = cb_utils_load_threaded_finish (result, &error);
+
+  if (error != NULL)
+    {
+      g_warning ("%s(%s): %s", __FILE__, __FUNCTION__, error->message);
+      g_task_return_error (task, error);
+      goto out;
+    }
+
+  g_assert (root_node != NULL);
+  root_arr = json_node_get_array (root_node);
+  len = json_array_get_length (root_arr);
+
+  data = g_malloc (sizeof (*data));
+  data->ids = g_new (CbUserIdentity, len);
+  data->length = len;
+  for (i = 0; i < len; i ++)
+    {
+      JsonObject *obj = json_array_get_object_element (root_arr, i);
+
+      data->ids[i].id = json_object_get_int_member (obj, "id");
+      data->ids[i].user_name = g_strdup (json_object_get_string_member (obj, "name"));
+      data->ids[i].screen_name = g_strdup (json_object_get_string_member (obj, "screen_name"));
+    }
+
+  json_node_unref (root_node);
+
+  g_task_return_pointer (task, data, NULL);
+
+out:
+  g_object_unref (G_OBJECT (call));
+}
+
+void
+cb_utils_query_users_async (RestProxy           *proxy,
+                            const char          *query,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            gpointer             user_data)
+{
+  GTask *task;
+  RestProxyCall *call;
+
+  g_return_if_fail (REST_IS_PROXY (proxy));
+  g_return_if_fail (query != NULL);
+
+  call = rest_proxy_new_call (proxy);
+  task = g_task_new (call, cancellable, callback, user_data);
+
+  rest_proxy_call_set_function (call, "1.1/users/search.json");
+  rest_proxy_call_set_method (call, "GET");
+  rest_proxy_call_add_param (call, "q", query);
+  rest_proxy_call_add_param (call, "count", "20");
+  rest_proxy_call_add_param (call, "include_entities", "false");
+
+  cb_utils_load_threaded_async (call, cancellable, users_received_cb, task);
+}
+
+CbUserIdentity *
+cb_utils_query_users_finish (GAsyncResult  *result,
+                             int           *out_length,
+                             GError       **error)
+{
+  struct {
+    CbUserIdentity *ids;
+    int length;
+  } *data = g_task_propagate_pointer (G_TASK (result), error);
+  CbUserIdentity *ids;
+
+  if (data == NULL)
+    {
+      g_object_unref (result);
+      *out_length = 0;
+      return NULL;
+    }
+
+  *out_length = data->length;
+
+  g_object_unref (result);
+  ids = data->ids;
+
+  g_free (data);
+
+  return ids;
+}
