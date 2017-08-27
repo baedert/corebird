@@ -201,7 +201,8 @@ class CompletionTextView : Gtk.TextView {
       if (current_match == -1)
         current_match = 0;
       var row = completion_list.get_row_at_index (current_match);
-      string compl = ((Gtk.Label)(((Gtk.ListBoxRow)row).get_child ())).label;
+      assert (row is UserCompletionRow);
+      string compl = ((UserCompletionRow)row).get_screen_name ();
       insert_completion (compl.substring (1));
       current_match = -1;
       hide_completion_window ();
@@ -433,5 +434,9 @@ class UserCompletionRow : Gtk.ListBoxRow {
 
     box.margin = 2;
     this.add (box);
+  }
+
+  public string get_screen_name () {
+    return screen_name_label.get_label ();
   }
 }
