@@ -25,6 +25,7 @@ class CompletionTextView : Gtk.TextView {
   private Gtk.Window completion_window;
   private int current_match = 0;
   private string? current_word = null;
+  private GLib.Cancellable? completion_cancellable = null;
 
   private bool _default_listbox = true;
   public bool default_listbox  {
@@ -296,29 +297,60 @@ class CompletionTextView : Gtk.TextView {
       return;
     }
 
-
-
     // Strip off the @
     cur_word = cur_word.substring (1);
 
+    if (cur_word == null || cur_word.length == 0) {
+      hide_completion_window ();
+      return;
+    }
+
     if (cur_word != this.current_word) {
+
+      if (this.completion_cancellable != null)
+        this.completion_cancellable.cancel ();
+
+      this.completion_cancellable = new GLib.Cancellable ();
+      Cb.Utils.query_users_async.begin (account.proxy, cur_word, completion_cancellable, (obj, res) => {
+        Cb.UserIdentity[] users;
+        try {
+          users = Cb.Utils.query_users_async.end (res);
+        } catch (GLib.Error e) {
+          warning ("Oh no :(");
+          return;
+        }
+
+        foreach (unowned Cb.UserIdentity id in users) {
+          message ("%s %s", id.user_name, id.screen_name);
+          var l = new Gtk.Label ("@" + id.screen_name);
+          l.halign = Gtk.Align.START;
+          completion_list.add (l);
+          l.show_all ();
+        }
+
+        if (users.length > 0) {
+          completion_list.select_row (completion_list.get_row_at_index (0));
+          current_match = 0;
+        }
+      });
+
       show_completion_window ();
       this.current_word = cur_word;
 
-      Cb.UserInfo[] corpus;
-      account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
-                                            cur_word, 10,
-                                            out corpus);
+      //Cb.UserInfo[] corpus;
+      //account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
+                                            //cur_word, 10,
+                                            //out corpus);
 
-      for (int i = 0; i < corpus.length; i++) {
-        var l = new Gtk.Label ("@" + corpus[i].screen_name);
-        l.halign = Gtk.Align.START;
-        completion_list.add (l);
-      }
-      if (corpus.length > 0) {
-        completion_list.select_row (completion_list.get_row_at_index (0));
-        current_match = 0;
-      }
+      //for (int i = 0; i < corpus.length; i++) {
+        //var l = new Gtk.Label ("@" + corpus[i].screen_name);
+        //l.halign = Gtk.Align.START;
+        //completion_list.add (l);
+      //}
+      //if (corpus.length > 0) {
+        //completion_list.select_row (completion_list.get_row_at_index (0));
+        //current_match = 0;
+      //}
       completion_list.show_all ();
     }
   }
