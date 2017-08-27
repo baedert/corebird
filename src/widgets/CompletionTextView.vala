@@ -326,7 +326,6 @@ class CompletionTextView : Gtk.TextView {
         completion_list.foreach ((w) => { completion_list.remove (w);});
 
         foreach (unowned Cb.UserIdentity id in users) {
-          message ("%s %s", id.user_name, id.screen_name);
           var l = new UserCompletionRow (id.id, id.user_name, "@"+id.screen_name, false);
           completion_list.add (l);
           l.show_all ();
