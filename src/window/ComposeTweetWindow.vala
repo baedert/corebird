@@ -93,7 +93,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.compose_image_manager.set_image_progress (path, progress);
     });
     this.compose_job.image_upload_finished.connect ((path, error_msg) => {
-      message ("%s Finished!", path);
+      debug ("%s Finished!", path);
       this.compose_image_manager.end_progress (path, error_msg);
     });
 
