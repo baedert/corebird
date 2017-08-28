@@ -175,45 +175,49 @@ class CompletionTextView : Gtk.TextView {
 
     int n_results = (int)completion_list.get_children ().length ();
 
-    if (evt.keyval == Gdk.Key.Down) {
-      if (n_results == 0)
-        return Gdk.EVENT_PROPAGATE;
+    switch (evt.keyval) {
+      case Gdk.Key.Down:
+        if (n_results == 0)
+          return Gdk.EVENT_PROPAGATE;
 
-      this.current_match = (current_match + 1) % n_results;
-      var row = completion_list.get_row_at_index (current_match);
-      if (_default_listbox) {
+        this.current_match = (current_match + 1) % n_results;
+        var row = completion_list.get_row_at_index (current_match);
+        if (_default_listbox) {
+          row.grab_focus ();
+        }
+        completion_list.select_row (row);
+
+        return Gdk.EVENT_STOP;
+
+      case Gdk.Key.Up:
+        current_match --;
+        if (current_match < 0) current_match = n_results - 1;
+        var row = completion_list.get_row_at_index (current_match);
         row.grab_focus ();
-      }
-      completion_list.select_row (row);
+        completion_list.select_row (row);
 
-      return Gdk.EVENT_STOP;
-    } else if (evt.keyval == Gdk.Key.Up) {
-      current_match --;
-      if (current_match < 0) current_match = n_results - 1;
-      var row = completion_list.get_row_at_index (current_match);
-      row.grab_focus ();
-      completion_list.select_row (row);
+        return Gdk.EVENT_STOP;
 
-      return Gdk.EVENT_STOP;
-    } else if (evt.keyval == Gdk.Key.Return) {
-      if (n_results == 0)
-        return false;
-      if (current_match == -1)
-        current_match = 0;
-      var row = completion_list.get_row_at_index (current_match);
-      assert (row is UserCompletionRow);
-      string compl = ((UserCompletionRow)row).get_screen_name ();
-      insert_completion (compl.substring (1));
-      current_match = -1;
-      hide_completion_window ();
-      return Gdk.EVENT_STOP;
-    } else if (evt.keyval == Gdk.Key.Escape) {
-      hide_completion_window ();
-      return Gdk.EVENT_STOP;
+      case Gdk.Key.Return:
+        if (n_results == 0)
+          return Gdk.EVENT_PROPAGATE;
+        if (current_match == -1)
+          current_match = 0;
+        var row = completion_list.get_row_at_index (current_match);
+        assert (row is UserCompletionRow);
+        string compl = ((UserCompletionRow)row).get_screen_name ();
+        insert_completion (compl.substring (1));
+        current_match = -1;
+        hide_completion_window ();
+        return Gdk.EVENT_STOP;
+
+      case Gdk.Key.Escape:
+        hide_completion_window ();
+        return Gdk.EVENT_STOP;
+
+      default:
+        return Gdk.EVENT_PROPAGATE;
     }
-
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
   private void buffer_changed_cb () {
