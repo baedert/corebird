@@ -52,7 +52,8 @@ tests_VALASOURCES = \
 	avatardownload.vala \
 	friends.vala \
 	highlighting.vala \
-	avatarcache.vala
+	avatarcache.vala \
+	usercompletionmodel.vala
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
@@ -111,6 +112,8 @@ avatardownload_LDADD = $(top_builddir)/src/libcorebird.la
 nodist_avatarcache_SOURCES = avatarcache.c
 avatarcache_LDADD = $(top_builddir)/src/libcorebird.la
 
+nodist_usercompletionmodel_SOURCES = usercompletionmodel.c
+usercompletionmodel_LDADD = $(top_builddir)/src/libcorebird.la
 
 CLEANFILES = \
 	tests_vala.stamp \

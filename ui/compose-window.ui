@@ -103,7 +103,6 @@
                     <property name="wrap-mode">word-char</property>
                     <property name="accepts-tab">False</property>
                     <property name="height-request">60</property>
-                    <property name="default-listbox">0</property>
                     <accessibility>
                       <relation type="labelled-by" target="length_label"/>
                     </accessibility>

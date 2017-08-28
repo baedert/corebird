@@ -24,10 +24,21 @@
 #include "rest/rest-proxy-call.h"
 #include "rest/rest-proxy.h"
 
+typedef GtkWidget * (*CbUtilsCreateWidgetFunc) (gpointer *data, gpointer *user_data);
+
+
 void cb_utils_bind_model (GtkWidget                  *listbox,
                           GListModel                 *model,
                           GtkListBoxCreateWidgetFunc  func,
                           void                       *data);
+
+void cb_utils_bind_non_gobject_model (GtkWidget               *listbox,
+                                      GListModel              *model,
+                                      CbUtilsCreateWidgetFunc  func,
+                                      gpointer                *user_data);
+
+void cb_utils_unbind_non_gobject_model (GtkWidget  *listbox,
+                                        GListModel *model);
 
 void cb_utils_linkify_user (const CbUserIdentity *user,
                             GString              *str);

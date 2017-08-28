@@ -39,6 +39,96 @@ cb_utils_bind_model (GtkWidget                  *listbox,
                            NULL);
 }
 
+typedef struct {
+  GtkWidget *listbox;
+  CbUtilsCreateWidgetFunc create_widget_func;
+  gpointer create_widget_func_data;
+} ModelData;
+
+static void
+non_gobject_model_changed (GListModel *model,
+                           guint       position,
+                           guint       removed,
+                           guint       added,
+                           gpointer    user_data)
+{
+  ModelData *data = user_data;
+  GtkListBox *box = GTK_LIST_BOX (data->listbox);
+  guint i;
+
+  while (removed--)
+    {
+      GtkListBoxRow *row;
+
+      row = gtk_list_box_get_row_at_index (box, position);
+      gtk_container_remove (GTK_CONTAINER (box), GTK_WIDGET (row));
+    }
+
+  for (i = 0; i < added; i++)
+    {
+      gpointer item;
+      GtkWidget *widget;
+
+      item = g_list_model_get_item (model, position + i);
+      widget = data->create_widget_func (item, data->create_widget_func_data);
+
+      /* We allow the create_widget_func to either return a full
+       * reference or a floating reference.  If we got the floating
+       * reference, then turn it into a full reference now.  That means
+       * that gtk_list_box_insert() will take another full reference.
+       * Finally, we'll release this full reference below, leaving only
+       * the one held by the box.
+       */
+      if (g_object_is_floating (widget))
+        g_object_ref_sink (widget);
+
+      gtk_widget_show (widget);
+      gtk_list_box_insert (box, widget, position + i);
+
+      g_object_unref (widget);
+    }
+}
+
+void
+cb_utils_bind_non_gobject_model (GtkWidget               *listbox,
+                                 GListModel              *model,
+                                 CbUtilsCreateWidgetFunc  func,
+                                 gpointer                *user_data)
+{
+  ModelData *data;
+
+  g_return_if_fail (GTK_IS_LIST_BOX (listbox));
+  g_return_if_fail (G_IS_LIST_MODEL (model));
+  g_return_if_fail (g_list_model_get_item_type (model) == G_TYPE_POINTER);
+  g_return_if_fail (g_object_get_data (G_OBJECT (listbox), "model-hack") == NULL);
+
+  data = g_malloc (sizeof (*data));
+  data->listbox = listbox;
+  data->create_widget_func = func;
+  data->create_widget_func_data = user_data;
+
+  g_signal_connect (model, "items-changed", G_CALLBACK (non_gobject_model_changed), data);
+
+  g_object_set_data (G_OBJECT (listbox), "model-hack", data);
+}
+
+void
+cb_utils_unbind_non_gobject_model (GtkWidget  *listbox,
+                                   GListModel *model)
+{
+  ModelData *data;
+
+  g_return_if_fail (GTK_IS_LIST_BOX (listbox));
+  g_return_if_fail (G_IS_LIST_MODEL (model));
+  g_return_if_fail (g_object_get_data (G_OBJECT (listbox), "model-hack") != NULL);
+
+  data = g_object_get_data (G_OBJECT (listbox), "model-hack");
+  g_signal_handlers_disconnect_by_func (model, non_gobject_model_changed, data);
+
+  g_assert (data != NULL);
+  g_free (data);
+}
+
 void
 cb_utils_linkify_user (const CbUserIdentity *user,
                        GString              *str)
