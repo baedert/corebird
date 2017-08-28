@@ -585,15 +585,6 @@ cb_utils_query_users_finish (GAsyncResult  *result,
   } *data = g_task_propagate_pointer (G_TASK (result), error);
   CbUserIdentity *ids;
 
-  /* We want to handle cancelled states here by just returning NULL */
-  if (*error != NULL && g_error_matches (*error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-    {
-      *error = NULL; /* Reset */
-      g_object_unref (result);
-      *out_length = 0;
-      return NULL;
-    }
-
   if (data == NULL)
     {
       g_object_unref (result);

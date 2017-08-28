@@ -323,7 +323,9 @@ class CompletionTextView : Gtk.TextView {
         try {
           users = Cb.Utils.query_users_async.end (res);
         } catch (GLib.Error e) {
-          warning ("Oh no :(");
+          if (e is GLib.IOError.CANCELLED)
+            warning ("Oh no :(");
+
           return;
         }
 
@@ -339,7 +341,6 @@ class CompletionTextView : Gtk.TextView {
           completion_list.select_row (completion_list.get_row_at_index (0));
           current_match = 0;
         }
-        this.completion_cancellable = null;
       });
 
       show_completion_window ();
