@@ -12,6 +12,7 @@ tests = [
   'tweetmodel',
   'tweetparsing',
   'twitteritem',
+  'usercompletionmodel',
   'usercounter',
   'utils',
 ]

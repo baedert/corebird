@@ -160,7 +160,7 @@ corebird_lib_sources = files([
   'src/CbUserStream.c',
   'src/CbMessageReceiver.c',
   'src/CbComposeJob.c',
-
+  'src/CbUserCompletionModel.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',

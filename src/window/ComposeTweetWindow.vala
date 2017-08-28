@@ -140,7 +140,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     /* Let the text view immediately grab the keyboard focus */
     tweet_text.grab_focus ();
-    tweet_text.completion_list = this.completion_list;
+    tweet_text.completion_listbox = this.completion_list;
     tweet_text.show_completion.connect (() => {
       completion_revealer.reveal_child = true;
     });

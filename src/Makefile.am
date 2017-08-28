@@ -163,6 +163,8 @@ libcorebird_la_SOURCES = \
 	CbComposeJob.h \
 	CbComposeJob.c \
 	CbGtkCompat.h \
+	CbUserCompletionModel.c \
+	CbUserCompletionModel.h \
 	rest/rest/rest-param.c \
 	rest/rest/rest-params.c \
 	rest/rest/rest-proxy.c \

@@ -302,7 +302,10 @@ namespace Cb {
   [CCode (cprefix = "CbUtils_", lower_case_cprefix = "cb_utils_", cheader_filename =
           "CbUtils.h")]
   namespace Utils {
+    public delegate Gtk.Widget CreateWidgetFunc (void *item);
     public void bind_model (Gtk.Widget listbox, GLib.ListModel model, Gtk.ListBoxCreateWidgetFunc func);
+    public void bind_non_gobject_model (Gtk.Widget listbox, GLib.ListModel model, Cb.Utils.CreateWidgetFunc func);
+    public void unbind_non_gobject_model (Gtk.Widget *listbox, GLib.ListModel model);
     public void linkify_user (ref Cb.UserIdentity id, GLib.StringBuilder str);
     public void write_reply_text (ref Cb.MiniTweet t, GLib.StringBuilder str);
     public GLib.DateTime parse_date (string _in);
@@ -397,5 +400,14 @@ namespace Cb {
     public void upload_image_async (string p);
     public void abort_image_upload (string s);
     public async bool send_async (GLib.Cancellable c) throws GLib.Error;
+  }
+
+  [CCode (cprefix = "CbUserCompletionModel_", lower_case_cprefix = "cb_user_completion_model_", cheader_filename =
+          "CbUserCompletionModel.h")]
+  public class UserCompletionModel : GLib.Object, GLib.ListModel {
+    public UserCompletionModel ();
+    public void insert_infos (Cb.UserInfo[] infos);
+    public void insert_items (Cb.UserIdentity[] ids);
+    public void clear ();
   }
 }

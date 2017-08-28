@@ -28,12 +28,18 @@ class CompletionTextView : Gtk.TextView {
   private GLib.Cancellable? completion_cancellable = null;
 
   private bool _default_listbox = true;
-  public bool default_listbox  {
+  public Gtk.ListBox completion_listbox {
     set {
-      _default_listbox = value;
+      _default_listbox = false;
+      Cb.Utils.unbind_non_gobject_model (completion_list, completion_model);
+      this.completion_list = value;
+      Cb.Utils.bind_non_gobject_model (completion_list, completion_model, create_completion_row);
     }
   }
-  public Gtk.ListBox completion_list;
+
+  private Gtk.ListBox completion_list;
+  private Cb.UserCompletionModel completion_model;
+
   public signal void show_completion ();
   public signal void hide_completion ();
   public signal void update_completion (string query);
@@ -47,6 +53,8 @@ class CompletionTextView : Gtk.TextView {
     completion_window.set_screen (this.get_screen ());
 
     completion_list = new Gtk.ListBox ();
+    completion_model = new Cb.UserCompletionModel ();
+    Cb.Utils.bind_non_gobject_model (completion_list, completion_model, create_completion_row);
     var placeholder_label = new Gtk.Label (_("No users found"));
     placeholder_label.get_style_context ().add_class ("dim-label");
     placeholder_label.show ();
@@ -173,7 +181,7 @@ class CompletionTextView : Gtk.TextView {
       return Gdk.EVENT_PROPAGATE;
 
 
-    int n_results = (int)completion_list.get_children ().length ();
+    int n_results = (int)completion_model.get_n_items ();
 
     switch (evt.keyval) {
       case Gdk.Key.Down:
@@ -242,7 +250,7 @@ class CompletionTextView : Gtk.TextView {
     if (!this.get_mapped ())
       return;
 
-    completion_list.foreach ((w) => { completion_list.remove (w);});
+    completion_model.clear ();
 
     if (!_default_listbox) {
       this.show_completion ();
@@ -323,19 +331,14 @@ class CompletionTextView : Gtk.TextView {
         try {
           users = Cb.Utils.query_users_async.end (res);
         } catch (GLib.Error e) {
-          if (e is GLib.IOError.CANCELLED)
-            warning ("Oh no :(");
+          if (!(e is GLib.IOError.CANCELLED))
+            warning ("User completion call error: %s", e.message);
 
           return;
         }
 
-        completion_list.foreach ((w) => { completion_list.remove (w);});
-
-        foreach (unowned Cb.UserIdentity id in users) {
-          var l = new UserCompletionRow (id.id, id.user_name, "@"+id.screen_name, false);
-          completion_list.add (l);
-          l.show_all ();
-        }
+        completion_model.clear ();
+        completion_model.insert_items (users);
 
         if (users.length > 0) {
           completion_list.select_row (completion_list.get_row_at_index (0));
@@ -419,6 +422,19 @@ class CompletionTextView : Gtk.TextView {
     this.buffer.insert_text (ref start_word_iter, "@" + compl + " ", compl.length + 2);
     this.buffer.thaw_notify ();
   }
+
+  private Gtk.Widget create_completion_row (void *id_ptr) {
+    // *shrug*
+    Cb.UserIdentity *id = (Cb.UserIdentity*) id_ptr;
+    var row = new UserCompletionRow (id->id, id->user_name, id->screen_name, false);
+
+    row.show ();
+    return row;
+  }
+
+  ~CompletionTextView () {
+    Cb.Utils.unbind_non_gobject_model (completion_list, completion_model);
+  }
 }
 
 class UserCompletionRow : Gtk.ListBoxRow {
@@ -438,6 +454,7 @@ class UserCompletionRow : Gtk.ListBoxRow {
 
     box.margin = 2;
     this.add (box);
+    this.show_all ();
   }
 
   public string get_screen_name () {
