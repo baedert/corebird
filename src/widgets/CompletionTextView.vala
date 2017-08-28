@@ -201,7 +201,9 @@ class CompletionTextView : Gtk.TextView {
         current_match --;
         if (current_match < 0) current_match = n_results - 1;
         var row = completion_list.get_row_at_index (current_match);
-        row.grab_focus ();
+        if (_default_listbox) {
+          row.grab_focus ();
+        }
         completion_list.select_row (row);
 
         return Gdk.EVENT_STOP;
@@ -325,6 +327,25 @@ class CompletionTextView : Gtk.TextView {
         this.completion_cancellable.cancel ();
       }
 
+      /* Clears the model */
+      show_completion_window ();
+
+      /* Query users from local cache */
+      Cb.UserInfo[] corpus;
+      account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
+                                            cur_word, 10,
+                                            out corpus);
+      completion_model.insert_infos (corpus);
+
+      bool corpus_was_empty = (corpus.length == 0);
+      if (corpus.length > 0) {
+        completion_list.select_row (completion_list.get_row_at_index (0));
+        current_match = 0;
+      }
+      corpus = null; /* Make sure we won't use it again */
+
+      /* Now also query users from the Twitter server, in case our local cache doesn't have anything
+         worthwhile */
       this.completion_cancellable = new GLib.Cancellable ();
       Cb.Utils.query_users_async.begin (account.proxy, cur_word, completion_cancellable, (obj, res) => {
         Cb.UserIdentity[] users;
@@ -337,32 +358,15 @@ class CompletionTextView : Gtk.TextView {
           return;
         }
 
-        completion_model.clear ();
         completion_model.insert_items (users);
-
-        if (users.length > 0) {
+        if (users.length > 0 && corpus_was_empty) {
           completion_list.select_row (completion_list.get_row_at_index (0));
           current_match = 0;
         }
       });
 
-      show_completion_window ();
       this.current_word = cur_word;
 
-      //Cb.UserInfo[] corpus;
-      //account.user_counter.query_by_prefix (account.db.get_sqlite_db (),
-                                            //cur_word, 10,
-                                            //out corpus);
-
-      //for (int i = 0; i < corpus.length; i++) {
-        //var l = new Gtk.Label ("@" + corpus[i].screen_name);
-        //l.halign = Gtk.Align.START;
-        //completion_list.add (l);
-      //}
-      //if (corpus.length > 0) {
-        //completion_list.select_row (completion_list.get_row_at_index (0));
-        //current_match = 0;
-      //}
       completion_list.show_all ();
     }
   }
@@ -443,10 +447,11 @@ class UserCompletionRow : Gtk.ListBoxRow {
 
   public UserCompletionRow (int64 id, string user_name, string screen_name, bool verified) {
     user_name_label = new Gtk.Label (user_name);
-    screen_name_label = new Gtk.Label (screen_name);
+    screen_name_label = new Gtk.Label ("@" + screen_name);
 
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     user_name_label.set_valign (Gtk.Align.BASELINE);
+    user_name_label.set_use_markup (true);
     box.add (user_name_label);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
