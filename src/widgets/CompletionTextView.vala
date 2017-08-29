@@ -299,8 +299,10 @@ class CompletionTextView : Gtk.TextView {
     string cur_word = get_cursor_word (null, null);
     int n_chars = cur_word.char_count ();
 
-    if (n_chars == 0)
+    if (n_chars == 0) {
+      hide_completion_window ();
       return;
+    }
 
     /* Check if the word ends with a 'special' character like ?!_ */
     char end_char = cur_word.get (n_chars - 1);
