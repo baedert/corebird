@@ -71,6 +71,7 @@ namespace Cb {
     public int64 id;
     public string screen_name;
     public string user_name;
+    public bool verified;
     public void parse (Json.Object object);
   }
 

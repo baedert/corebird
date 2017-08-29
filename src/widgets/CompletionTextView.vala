@@ -434,7 +434,7 @@ class CompletionTextView : Gtk.TextView {
   private Gtk.Widget create_completion_row (void *id_ptr) {
     // *shrug*
     Cb.UserIdentity *id = (Cb.UserIdentity*) id_ptr;
-    var row = new UserCompletionRow (id->id, id->user_name, id->screen_name, false);
+    var row = new UserCompletionRow (id->id, id->user_name, id->screen_name, id->verified);
 
     row.show ();
     return row;
@@ -456,10 +456,16 @@ class UserCompletionRow : Gtk.ListBoxRow {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
     user_name_label.set_valign (Gtk.Align.BASELINE);
     user_name_label.set_use_markup (true);
+    user_name_label.set_ellipsize (Pango.EllipsizeMode.END);
     box.add (user_name_label);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
     box.add (screen_name_label);
+
+    if (verified) {
+      var verified_image = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU);
+      box.add (verified_image);
+    }
 
     box.margin = 2;
     this.add (box);
