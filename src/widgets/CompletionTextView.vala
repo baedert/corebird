@@ -308,8 +308,10 @@ class CompletionTextView : Gtk.TextView {
     char end_char = cur_word.get (n_chars - 1);
     bool word_has_alpha_end = (end_char.isalpha () || end_char.isdigit ()) &&
                               end_char.isgraph () || end_char == '@';
-    if (!cur_word.has_prefix ("@") || !word_has_alpha_end
-        || this.buffer.has_selection) {
+
+    if (!cur_word.has_prefix ("@") ||
+        !word_has_alpha_end ||
+        this.buffer.has_selection) {
       hide_completion_window ();
       return;
     }
