@@ -245,7 +245,7 @@ class CompletionTextView : Gtk.TextView {
     TweetUtils.annotate_text (this.buffer);
 
     if (buffer.text.length == 0)
-      completion_window.hide ();
+      hide_completion_window ();
   }
 
   private void show_completion_window () {
