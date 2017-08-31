@@ -170,6 +170,31 @@ class CompletionTextView : Gtk.TextView {
     return Corebird.snippet_manager.n_snippets () > 0;
   }
 
+  private void select_completion_row (Gtk.ListBoxRow? row) {
+    if (row == null)
+      return;
+
+    assert (row.get_parent () == completion_list);
+
+    Gtk.Allocation alloc;
+    row.get_allocation (out alloc);
+
+    completion_list.select_row (row);
+
+    Gtk.Viewport viewport = completion_list.get_parent () as Gtk.Viewport;
+
+    if (viewport == null)
+      return;
+
+    Gtk.ScrolledWindow scroller = viewport.get_parent () as Gtk.ScrolledWindow;
+
+    if (scroller != null) {
+      Gtk.Adjustment adjustment = scroller.get_vadjustment ();
+
+      adjustment.clamp_page (alloc.y, alloc.y + alloc.height);
+    }
+  }
+
   private bool key_press_event_cb (Gdk.EventKey evt) {
 
     if (evt.keyval == Gdk.Key.Tab && snippets_configured ()) {
@@ -193,7 +218,7 @@ class CompletionTextView : Gtk.TextView {
         if (_default_listbox) {
           row.grab_focus ();
         }
-        completion_list.select_row (row);
+        select_completion_row (row);
 
         return Gdk.EVENT_STOP;
 
@@ -204,7 +229,7 @@ class CompletionTextView : Gtk.TextView {
         if (_default_listbox) {
           row.grab_focus ();
         }
-        completion_list.select_row (row);
+        select_completion_row (row);
 
         return Gdk.EVENT_STOP;
 
@@ -343,7 +368,7 @@ class CompletionTextView : Gtk.TextView {
 
       bool corpus_was_empty = (corpus.length == 0);
       if (corpus.length > 0) {
-        completion_list.select_row (completion_list.get_row_at_index (0));
+        select_completion_row (completion_list.get_row_at_index (0));
         current_match = 0;
       }
       corpus = null; /* Make sure we won't use it again */
@@ -364,7 +389,7 @@ class CompletionTextView : Gtk.TextView {
 
         completion_model.insert_items (users);
         if (users.length > 0 && corpus_was_empty) {
-          completion_list.select_row (completion_list.get_row_at_index (0));
+          select_completion_row (completion_list.get_row_at_index (0));
           current_match = 0;
         }
       });
