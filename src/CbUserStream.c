@@ -538,5 +538,5 @@ void
 cb_user_stream_push_data (CbUserStream *self,
                           const char   *data)
 {
-
+  continuous_cb (self->proxy_call, data, strlen (data), NULL, NULL, self);
 }
