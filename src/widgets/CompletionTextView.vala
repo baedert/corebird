@@ -446,8 +446,19 @@ class CompletionTextView : Gtk.TextView {
 }
 
 class UserCompletionRow : Gtk.ListBoxRow {
+  private static Cairo.Surface verified_surface;
   private Gtk.Label user_name_label;
   private Gtk.Label screen_name_label;
+
+  static construct {
+    try {
+      verified_surface = Gdk.cairo_surface_create_from_pixbuf (
+          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small.png"),
+          1, null);
+    } catch (GLib.Error e) {
+      error (e.message);
+    }
+  }
 
   public UserCompletionRow (int64 id, string user_name, string screen_name, bool verified) {
     user_name_label = new Gtk.Label (user_name);
@@ -463,7 +474,7 @@ class UserCompletionRow : Gtk.ListBoxRow {
     box.add (screen_name_label);
 
     if (verified) {
-      var verified_image = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.MENU);
+      var verified_image= new Gtk.Image.from_surface (verified_surface);
       box.add (verified_image);
     }
 
