@@ -658,7 +658,7 @@ cb_utils_query_users_async (RestProxy           *proxy,
   rest_proxy_call_set_function (call, "1.1/users/search.json");
   rest_proxy_call_set_method (call, "GET");
   rest_proxy_call_add_param (call, "q", query);
-  rest_proxy_call_add_param (call, "count", "20");
+  rest_proxy_call_add_param (call, "count", "10");
   rest_proxy_call_add_param (call, "include_entities", "false");
 
   cb_utils_load_threaded_async (call, cancellable, users_received_cb, task);
