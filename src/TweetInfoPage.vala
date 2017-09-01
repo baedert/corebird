@@ -390,7 +390,9 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       try {
         root = Cb.Utils.load_threaded_async.end (res);
       } catch (GLib.Error e) {
-        warning (e.message);
+        if (!(e is GLib.IOError.CANCELLED))
+          warning (e.message);
+
         return;
       }
 
@@ -459,7 +461,8 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         call.invoke_async.end (res);
       } catch (GLib.Error e) {
         if (e.message.strip () != "Forbidden" &&
-            e.message.strip ().down () != "not found") {
+            e.message.strip ().down () != "not found" &&
+            !(e is GLib.IOError.CANCELLED)) {
           critical (e.message);
           Utils.show_error_object (call.get_payload (), e.message,
                                    GLib.Log.LINE, GLib.Log.FILE, this.main_window);
