@@ -333,7 +333,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
 
   if (media->url == NULL)
     {
-      g_warning ("Media is invalid.");
+      g_warning ("Media is invalid. (url %s)", url);
       mark_invalid (media);
       return;
     }
