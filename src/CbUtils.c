@@ -604,7 +604,6 @@ users_received_cb (GObject      *source_object,
   if (error != NULL)
     {
       g_task_return_error (task, error);
-
       goto out;
     }
 
