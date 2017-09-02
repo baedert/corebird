@@ -141,7 +141,7 @@ class DMManager : GLib.Object {
         if (dm_obj.get_int_member ("sender_id") == account.id) {
           if (received) {
             update_thread (dm_obj, true);
-          } else {
+          } else if (dm_obj.get_int_member ("recipient_id") != account.id) {
             save_message (dm_obj, true);
           }
         } else {
