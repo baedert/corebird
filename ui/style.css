@@ -265,13 +265,6 @@ progressbar.horizontal.embedded-progress>trough>progress {
   background-color: alpha(black, 0.3);
 }
 
-.nobg {
-  /* Hide background for really fucked up themes */
-  background: none;
-  box-shadow: none;
-  border: none;
-}
-
 .invisible-links link:link {
   color:inherit;
 }
