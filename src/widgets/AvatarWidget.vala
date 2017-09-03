@@ -121,10 +121,9 @@ public class AvatarWidget : Gtk.Widget {
 
     container_widget.size_allocate (child_alloc, -1, out child_clip);
 
-    /* XXX I want to do this, but valac won't let me. */
-    /* out_clip.union (child_clip, out out_clip); */
-
-    out_clip = alloc;
+    Gdk.Rectangle _out_clip = alloc;
+    _out_clip.union (child_clip, out _out_clip);
+    out_clip = (Gtk.Allocation)_out_clip;
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
