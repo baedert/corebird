@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/lists-page.ui")]
 class ListsPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public const int KEY_MODE = 0;
   public const int KEY_LIST_ID = 1;
@@ -36,14 +35,18 @@ class ListsPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public int id                             { get; set; }
   private bool inited = false;
   private int64 user_id;
-  [GtkChild]
   private UserListsWidget user_lists_widget;
 
 
   public ListsPage (int id, Account account) {
     this.id = id;
     this.account = account;
+
+    this.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+
+    this.user_lists_widget = new UserListsWidget ();
     this.user_lists_widget.account = account;
+    this.add (user_lists_widget);
   }
 
   public void on_join (int page_id, Cb.Bundle? args) {
