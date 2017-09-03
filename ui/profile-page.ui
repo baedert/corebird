@@ -46,6 +46,18 @@
                 <property name="visible">1</property>
 
                 <child>
+                  <object class="AspectImage" id="banner_image">
+                    <property name="visible">1</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">5</property>
+                  </packing>
+                </child>
+
+                <child>
                   <object class="AvatarWidget" id="avatar_image">
                     <property name="visible">1</property>
                     <property name="size">100</property>
@@ -60,21 +72,6 @@
                   <packing>
                     <property name="left-attach">0</property>
                     <property name="top-attach">1</property>
-                  </packing>
-                </child>
-
-                <!-- This banner is above the avatar in the final UI, but GtkGrid
-                     lists its children in reverse order for some reason so we have to
-                     keep it here so the banner is drawn before the avatar. -->
-                <child>
-                  <object class="AspectImage" id="banner_image">
-                    <property name="visible">1</property>
-                    <property name="can-focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                    <property name="width">5</property>
                   </packing>
                 </child>
 
