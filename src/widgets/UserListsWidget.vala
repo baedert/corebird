@@ -87,6 +87,10 @@ class UserListsWidget : Gtk.Box {
 
     var collect_obj = new Collect (2);
 
+    collect_obj.finished.connect (() => {
+      load_lists.callback ();
+    });
+
     var call = account.proxy.new_call ();
     call.set_function ("1.1/lists/subscriptions.json");
     call.set_method ("GET");
@@ -141,10 +145,6 @@ class UserListsWidget : Gtk.Box {
         user_lists_revealer.reveal_child = n_user_list > 0;
       }
       collect_obj.emit ();
-    });
-
-    collect_obj.finished.connect (() => {
-      load_lists.callback ();
     });
 
     yield;
