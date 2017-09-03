@@ -115,6 +115,7 @@ public class ListListEntry : Gtk.ListBoxRow {
       } catch (GLib.Error e) {
         Utils.show_error_object (call.get_payload (), e.message,
                                  GLib.Log.LINE, GLib.Log.FILE);
+        this.sensitive = true;
         return;
       }
 
