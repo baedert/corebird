@@ -2,7 +2,7 @@
 
 .avatar-round {
   border: 1px solid grey;
-  border-radius: 48px;
+  border-radius: 50%;
 }
 
 .account-button {
