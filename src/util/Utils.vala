@@ -223,9 +223,15 @@ namespace Utils {
       return;
     }
 
-    if (root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
+    if (root.has_member ("errors") &&
+        root.get_member ("errors").get_node_type () == Json.NodeType.VALUE) {
       message (json_data);
       show_error_dialog (root.get_member ("errors").get_string (), transient_for);
+      return;
+    }
+
+    if (!root.has_member ("errors")) {
+      show_error_dialog (error_message, transient_for);
       return;
     }
 
@@ -235,7 +241,7 @@ namespace Utils {
       sb.append (err.get_int_member ("code").to_string ()).append (": ")
         .append (err.get_string_member ("message"))
         .append ("(").append (file).append (":").append (line.to_string ()).append (")");
-    } else {
+    } else if (errors.get_length () > 1) {
       sb.append ("<ul>");
       errors.foreach_element ((arr, index, node) => {
         var obj = node.get_object ();
@@ -245,6 +251,7 @@ namespace Utils {
       });
       sb.append ("</ul>");
     }
+
     error_message = sb.str;
 
     critical (json_data);
