@@ -117,7 +117,7 @@ cb_media_image_widget_new (CbMedia *media)
 
   /* TODO: Replace the GdkScreen usage here */
 
-  if (img_width <= 800)
+  if (img_width <= gdk_screen_get_width (gdk_screen_get_default ()) * 0.9)
     {
       win_width = img_width;
       g_object_set (self,
@@ -125,7 +125,7 @@ cb_media_image_widget_new (CbMedia *media)
                     NULL);
     }
 
-  if (img_height <= 600)
+  if (img_height <= gdk_screen_get_height (gdk_screen_get_default ()) * 0.9)
     {
       win_height = img_height;
       g_object_set (self,
