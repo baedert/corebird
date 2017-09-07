@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class DMThread : GLib.Object {
+public class DMThread : GLib.Object {
   public Cb.UserIdentity user; /* id, name, screen_name */
   public int64  last_message_id;
   public string last_message;
@@ -44,7 +44,7 @@ class DMThread : GLib.Object {
 }
 
 /* Let's hope there aren't a lof of threads */
-class DMThreadsModel : GLib.ListModel, GLib.Object {
+public class DMThreadsModel : GLib.ListModel, GLib.Object {
   private GLib.GenericArray<DMThread> threads = new GLib.GenericArray<DMThread> ();
 
   public GLib.Object? get_item (uint index) {

@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class DMManager : GLib.Object {
+public class DMManager : GLib.Object {
   private unowned Account account;
   private DMThreadsModel threads_model;
   public bool empty {
