@@ -35,7 +35,8 @@ TESTS = \
 	avatardownload \
 	friends \
 	highlighting \
-	avatarcache
+	avatarcache \
+	dmmanager
 
 check_PROGRAMS = $(TESTS)
 
@@ -53,7 +54,8 @@ tests_VALASOURCES = \
 	friends.vala \
 	highlighting.vala \
 	avatarcache.vala \
-	usercompletionmodel.vala
+	usercompletionmodel.vala \
+	dmmanager.vala
 
 $(tests_VALASOURCES:.vala=.c): tests_vala.stamp
 
@@ -114,6 +116,10 @@ avatarcache_LDADD = $(top_builddir)/src/libcorebird.la
 
 nodist_usercompletionmodel_SOURCES = usercompletionmodel.c
 usercompletionmodel_LDADD = $(top_builddir)/src/libcorebird.la
+
+nodist_dmmanager_SOURCES = dmmanager.c corebird-resources.c
+dmmanager_LDADD = $(top_builddir)/src/libcorebird.la
+
 
 CLEANFILES = \
 	tests_vala.stamp \

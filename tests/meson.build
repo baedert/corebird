@@ -3,6 +3,7 @@ tests = [
   'avatarcache',
   'avatardownload',
   'bundlehistory',
+  'dmmanager',
   'filters',
   'friends',
   'highlighting',
