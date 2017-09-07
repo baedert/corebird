@@ -183,36 +183,42 @@ class DMManager : GLib.Object {
                                          url_list,
                                          Cb.TransformFlags.EXPAND_LINKS,
                                          0, 0);
-    string sender_screen_name = dm_obj.get_string_member ("sender_screen_name");
-    string sender_name = dm_obj.get_object_member ("sender").get_string_member ("name")
-                                                            .strip ().replace ("&", "&amp;");
-
     int64 thread_user_id = 0;
+    string? thread_screen_name = null;
+    string? thread_user_name = null;
 
-    /* Here we get both messages sent by the user themselves, to other people including themselves
-       *and* messages sent TO the user. */
-    if (sender_id == account.id)
+    /* User  -> Other
+       Other -> User
+       User  -> User */
+    if (sender_id == account.id) {
       thread_user_id = recipient_id;
-    else
+      thread_screen_name = dm_obj.get_string_member ("recipient_screen_name");
+      thread_user_name = dm_obj.get_object_member ("recipient").get_string_member ("name")
+                                                               .strip ().replace ("&", "&amp;");
+    } else {
       thread_user_id = sender_id;
+      thread_screen_name = dm_obj.get_string_member ("sender_screen_name");
+      thread_user_name = dm_obj.get_object_member ("sender").get_string_member ("name")
+                                                               .strip ().replace ("&", "&amp;");
+    }
 
     if (!threads_model.has_thread (thread_user_id)) {
       DMThread thread = new DMThread ();
-      thread.user.id = sender_id;
-      thread.user.screen_name = sender_screen_name;
-      thread.user.user_name = sender_name;
+      thread.user.id = thread_user_id;
+      thread.user.screen_name = thread_screen_name;
+      thread.user.user_name = thread_user_name;
       thread.last_message = text;
       thread.last_message_id = message_id;
       this.threads_model.add (thread);
 
       account.db.insert ("dm_threads")
-             .vali64 ("user_id", sender_id)
-             .val ("screen_name", sender_screen_name)
-             .val ("name", sender_name)
+             .vali64 ("user_id", thread_user_id)
+             .val ("screen_name", thread_screen_name)
+             .val ("name", thread_user_name)
              .val ("last_message", text)
              .vali64 ("last_message_id", message_id)
              .run ();
-    } else if (sender_id != account.id || (recipient_id == account.id)) {
+    } else if (sender_id != account.id || recipient_id == account.id) {
       DMThread thread = threads_model.get_thread (sender_id);
       if (message_id > thread.last_message_id) {
         this.threads_model.update_last_message (sender_id, message_id, text);
@@ -224,7 +230,7 @@ class DMManager : GLib.Object {
       }
     }
 
-    account.user_counter.user_seen (sender_id, sender_screen_name, sender_name);
+    account.user_counter.user_seen (thread_user_id, thread_screen_name, thread_user_name);
 
     /* This will exctract the json data again, etc. but it's still easier than
      * replacing entities here... */
