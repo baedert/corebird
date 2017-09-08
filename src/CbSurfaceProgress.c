@@ -110,6 +110,17 @@ cb_surface_progress_get_preferred_height (GtkWidget *widget,
 }
 
 static void
+cb_surface_progress_finalize (GObject *object)
+{
+  CbSurfaceProgress *self = CB_SURFACE_PROGRESS (object);
+
+  if (self->surface)
+    cairo_surface_destroy (self->surface);
+
+  G_OBJECT_CLASS (cb_surface_progress_parent_class)->finalize (object);
+}
+
+static void
 cb_surface_progress_init (CbSurfaceProgress *self)
 {
   gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
@@ -118,7 +129,10 @@ cb_surface_progress_init (CbSurfaceProgress *self)
 static void
 cb_surface_progress_class_init (CbSurfaceProgressClass *klass)
 {
+  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  object_class->finalize = cb_surface_progress_finalize;
 
   widget_class->draw = cb_surface_progress_draw;
   widget_class->get_preferred_width = cb_surface_progress_get_preferred_width;
