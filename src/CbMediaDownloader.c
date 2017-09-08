@@ -178,6 +178,8 @@ cb_media_downloader_get_instagram_url (CbMediaDownloader *downloader,
   g_regex_match (url_regex, (const char*)msg->response_body->data, 0, &match_info);
 
   media->thumb_url = g_match_info_fetch (match_info, 1);
+  g_free (media->target_url);
+  media->target_url = g_strdup (media->thumb_url);
 
   g_regex_unref (url_regex);
   g_regex_unref (medium_regex);
