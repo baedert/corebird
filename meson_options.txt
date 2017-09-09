@@ -1,3 +1,2 @@
-option('debug',      type: 'boolean', value: 'false')
 option('video',      type: 'boolean', value: 'true')
 option('spellcheck', type: 'boolean', value: 'true')
