@@ -23,5 +23,16 @@ int main (string[] args) {
   //no initialisation of static fields :(
   Settings.init ();
   var corebird = new Corebird ();
-  return corebird.run (args);
+  int ret = corebird.run (args);
+
+#if DEBUG
+  var list = Gtk.Window.list_toplevels ();
+  debug ("Toplevels Left: %u", list.length ());
+  foreach (var w in list) {
+    debug ("Toplevel: %s", __class_name (w));
+    w.destroy ();
+  }
+#endif
+
+  return ret;
 }
