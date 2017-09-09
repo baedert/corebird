@@ -219,8 +219,8 @@ executable(
   'corebird',
   'src/main.vala',
   cb_resources,
-  dependencies: [cb_deps, cb_dep],
-  include_directories: [srcdir, restdir],
+  dependencies: cb_dep,
+  include_directories: srcdir,
   vala_args: [
     meson.source_root() + '/vapi/corebird-internal.vapi',
     meson.source_root() + '/vapi/rest-0.7.vapi',
