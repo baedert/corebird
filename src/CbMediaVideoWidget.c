@@ -332,6 +332,11 @@ CbMediaVideoWidget *
 cb_media_video_widget_new (CbMedia *media)
 {
   int h;
+  int width;
+  int height;
+  int monitor_width;
+  int monitor_height;
+  double scale, scale_x = 1.0, scale_y = 1.0;
 
   CbMediaVideoWidget *self = CB_MEDIA_VIDEO_WIDGET (g_object_new (CB_TYPE_MEDIA_VIDEO_WIDGET, NULL));
 
@@ -345,9 +350,25 @@ cb_media_video_widget_new (CbMedia *media)
   gtk_widget_measure (self->video_progress, GTK_ORIENTATION_VERTICAL, -1,
                       &h, NULL, NULL, NULL);
 
+  /* TODO: Replace GdkScreen usage */
+
+  width = cairo_image_surface_get_width (media->surface);
+  height = cairo_image_surface_get_height (media->surface) + h;
+
+  monitor_width = gdk_screen_get_width (gdk_screen_get_default ());
+  monitor_height = gdk_screen_get_height (gdk_screen_get_default ());
+
+  if (width > monitor_width * 0.9)
+    scale_x = (monitor_width * 0.9) / width;
+
+  if (height > monitor_height * 0.9)
+    scale_y = (monitor_height * 0.9) / height;
+
+  scale = MIN (scale_x, scale_y);
+
   gtk_widget_set_size_request (GTK_WIDGET (self),
-                               cairo_image_surface_get_width (media->surface),
-                               cairo_image_surface_get_height (media->surface) + h);
+                               (int)(width * scale),
+                               (int)(height * scale));
 
   switch (media->type)
     {
