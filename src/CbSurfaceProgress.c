@@ -27,12 +27,16 @@ cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
   cairo_surface_t *tmp_surface;
   cairo_t *ctx;
   double arc_size, cx, cy, radius;
+  double scale;
 
   if (self->surface == NULL)
     return GDK_EVENT_PROPAGATE;
 
   width = gtk_widget_get_allocated_width (widget);
   height = gtk_widget_get_allocated_height (widget);
+
+  scale = MIN ((double)width  / (double)cairo_image_surface_get_width (self->surface),
+               (double)height / (double)cairo_image_surface_get_height (self->surface));
 
   tmp_surface = cairo_surface_create_similar (self->surface,
                                               CAIRO_CONTENT_COLOR_ALPHA,
@@ -41,16 +45,22 @@ cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
   ctx = cairo_create (tmp_surface);
 
   /* Draw the surface slightly translucent on the widget's surface */
+  cairo_save (ct);
   cairo_rectangle (ct, 0, 0, width, height);
+  cairo_scale (ct, scale, scale);
   cairo_set_source_surface (ct, self->surface, 0, 0);
   cairo_paint_with_alpha (ct, 0.5);
+  cairo_restore (ct);
 
   /* Draw self->surface on tmp surface */
+  cairo_save (ctx);
   cairo_rectangle (ctx, 0, 0, width, height);
+  cairo_scale (ctx, scale, scale);
   cairo_set_source_surface (ctx, self->surface, 0, 0);
   cairo_fill (ctx);
+  cairo_restore (ctx);
 
-  arc_size = (width > height ? width : height) * 2.0;
+  arc_size = MIN (width, height) * 2.0;
   cx = width / 2.0;
   cy = height / 2.0;
   radius = (arc_size / 2.0) - 0.5;
@@ -80,16 +90,7 @@ cb_surface_progress_get_preferred_width (GtkWidget *widget,
                                          int       *minimum,
                                          int       *natural)
 {
-  CbSurfaceProgress *self = CB_SURFACE_PROGRESS (widget);
-
-  if (self->surface == NULL)
-    {
-      *minimum = 0;
-      *natural = 0;
-      return;
-    }
-
-  *minimum = *natural = cairo_image_surface_get_width (self->surface);
+  *minimum = *natural = 1;
 }
 
 static void
@@ -97,16 +98,7 @@ cb_surface_progress_get_preferred_height (GtkWidget *widget,
                                           int       *minimum,
                                           int       *natural)
 {
-  CbSurfaceProgress *self = CB_SURFACE_PROGRESS (widget);
-
-  if (self->surface == NULL)
-    {
-      *minimum = 0;
-      *natural = 0;
-      return;
-    }
-
-  *minimum = *natural = cairo_image_surface_get_height (self->surface);
+  *minimum = *natural = 1;
 }
 
 static void
