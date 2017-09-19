@@ -24,7 +24,7 @@ public class Corebird : Gtk.Application {
   public signal void account_removed (Account acc);
   public signal void account_window_changed (int64? old_id, int64 new_id);
 
-  private SettingsDialog? settings_dialog = null;
+  private Cb.SettingsDialog? settings_dialog = null;
   private GLib.GenericArray<Account> active_accounts;
   private bool started_as_service = false;
 
@@ -168,7 +168,7 @@ public class Corebird : Gtk.Application {
     if (this.settings_dialog != null)
       return;
 
-    var dialog = new SettingsDialog (this);
+    var dialog = new Cb.SettingsDialog (this);
     var action = (GLib.SimpleAction)this.lookup_action ("show-settings");
     action.set_enabled (false);
     dialog.delete_event.connect (() => {
@@ -176,7 +176,7 @@ public class Corebird : Gtk.Application {
       this.settings_dialog = null;
       return Gdk.EVENT_PROPAGATE;
     });
-    dialog.show ();
+    dialog.show_all ();
   }
 
   private void about_activated () {

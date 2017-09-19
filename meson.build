@@ -161,6 +161,8 @@ corebird_lib_sources = files([
   'src/CbMessageReceiver.c',
   'src/CbComposeJob.c',
   'src/CbUserCompletionModel.c',
+  'src/CbSettingsDialog2.c',
+  'src/CbSettingsAccountRow.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',
@@ -204,7 +206,9 @@ cb_lib = library(
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
   ],
   c_args: [
-    '-Werror=implicit-function-declaration'
+    '-Werror=implicit-function-declaration',
+    '-Werror=return-type',
+    '-Werror=int-conversion',
   ]
 )
 cb_dep = declare_dependency(

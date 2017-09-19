@@ -411,4 +411,11 @@ namespace Cb {
     public void insert_items (Cb.UserIdentity[] ids);
     public void clear ();
   }
+
+  [CCode (cprefix = "CbSettingsDialog_", lower_case_cprefix = "cb_settings_dialog_", cheader_filename =
+          "CbSettingsDialog2.h")]
+  public class SettingsDialog : Gtk.ApplicationWindow {
+    public SettingsDialog (Gtk.Application app);
+  }
+
 }
