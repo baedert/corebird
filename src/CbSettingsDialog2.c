@@ -55,6 +55,16 @@ populate_accounts_list (CbSettingsDialog *self)
 }
 
 static void
+accounts_list_row_activated_cb (GtkListBox    *listbox,
+                                GtkListBoxRow *row,
+                                gpointer       user_data)
+{
+  g_assert (CB_IS_SETTINGS_ACCOUNT_ROW (row));
+
+  cb_settings_account_row_show_details (CB_SETTINGS_ACCOUNT_ROW (row));
+}
+
+static void
 cb_settings_dialog_load_geometry (CbSettingsDialog *self)
 {
   GVariant *geom = g_settings_get_value (settings_get (), "settings-geometry");
@@ -101,8 +111,37 @@ cb_settings_dialog_delete_cb (GtkWidget *widget,
 }
 
 static void
+query_snippets_cb (gpointer a,
+                   gpointer b,
+                   gpointer user_data)
+{
+  CbSettingsDialog *self = user_data;
+  const char *key = a;
+  const char *value = b;
+  GtkWidget *row;
+
+  row = (GtkWidget *)snippet_list_entry_new (key, value);
+  gtk_widget_show_all (row);
+  gtk_container_add (GTK_CONTAINER (self->snippets_listbox), row);
+}
+
+static void
+cb_settings_dialog_finalize (GObject *object)
+{
+  CbSettingsDialog *self = CB_SETTINGS_DIALOG (object);
+
+  g_cancellable_cancel (self->account_data_cancellable);
+  g_clear_object (&self->account_data_cancellable);
+
+  G_OBJECT_CLASS (cb_settings_dialog_parent_class)->finalize (object);
+}
+
+static void
 cb_settings_dialog_class_init (CbSettingsDialogClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = cb_settings_dialog_finalize;
 }
 
 static void
@@ -143,6 +182,7 @@ cb_settings_dialog_init (CbSettingsDialog *self)
   self->accounts_create_button = gtk_button_new_with_label (_("Add new Account"));
   self->accounts_listbox = gtk_list_box_new ();
 
+  g_signal_connect (self->accounts_listbox, "row-activated", G_CALLBACK (accounts_list_row_activated_cb), self);
   populate_accounts_list (self);
 
   gtk_widget_set_size_request (self->accounts_listbox, -1, 100);
@@ -289,6 +329,7 @@ cb_settings_dialog_init (CbSettingsDialog *self)
 
   box = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (box), self->snippets_listbox);
+  cb_snippet_manager_query_snippets (corebird_snippet_manager, query_snippets_cb, self);
 
   gtk_widget_set_vexpand (box, TRUE);
   gtk_container_add (GTK_CONTAINER (self->snippets_page), box);

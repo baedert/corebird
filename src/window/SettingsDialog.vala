@@ -82,7 +82,7 @@ class SettingsDialog : Gtk.Window {
       screen_name = "corebirdclient",
       user_name = "Corebird"
     };
-    string sample_text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
+    string sample_text = _("Hey, chnck out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
     Cairo.Surface? avatar_surface = null;
     try {
       var a = Gtk.IconTheme.get_default ().load_icon ("corebird",

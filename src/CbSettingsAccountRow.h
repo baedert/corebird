@@ -32,6 +32,9 @@ struct _CbSettingsAccountRow
   GtkWidget *name_label;
   GtkWidget *screen_name_label;
   GtkWidget *description_label;
+  GtkWidget *revealer;
+  GtkWidget *details_box;
+  GtkWidget *edit_button;
 
   cairo_surface_t *banner;
 };
@@ -41,8 +44,10 @@ typedef struct _CbSettingsAccountRow CbSettingsAccountRow;
 G_DECLARE_FINAL_TYPE (CbSettingsAccountRow, cb_settings_account_row, CB, SETTINGS_ACCOUNT_ROW, GtkListBoxRow);
 
 
-GtkWidget * cb_settings_account_row_new (Account *account);
-void        cb_settings_account_row_set_banner (CbSettingsAccountRow *self,
-                                                cairo_surface_t      *banner);
+GtkWidget * cb_settings_account_row_new          (Account *account);
+void        cb_settings_account_row_set_banner   (CbSettingsAccountRow *self,
+                                                  cairo_surface_t      *banner);
+void        cb_settings_account_row_show_details (CbSettingsAccountRow *self);
+void        cb_settings_account_row_hide_details (CbSettingsAccountRow *self);
 
 #endif

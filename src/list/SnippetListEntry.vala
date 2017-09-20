@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SnippetListEntry : Gtk.ListBoxRow {
+public class SnippetListEntry : Gtk.ListBoxRow {
   private Gtk.Label key_label;
   private Gtk.Label value_label;
   private Gtk.Revealer revealer;

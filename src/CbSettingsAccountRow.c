@@ -16,7 +16,7 @@
  */
 
 #include "CbSettingsAccountRow.h"
-
+#include <glib/gi18n.h>
 
 G_DEFINE_TYPE (CbSettingsAccountRow, cb_settings_account_row, GTK_TYPE_LIST_BOX_ROW);
 
@@ -27,13 +27,14 @@ cb_settings_account_row_draw (GtkWidget *widget,
   CbSettingsAccountRow *self = CB_SETTINGS_ACCOUNT_ROW (widget);
   const int surface_width = 200;
 
-  if (self->banner != NULL)
+  if (self->banner != NULL && FALSE)
     {
       int width = gtk_widget_get_allocated_width (widget);
       int height = gtk_widget_get_allocated_height (widget);
 
-      cairo_rectangle (ct, width - surface_width, 0, surface_width, height);
-      cairo_set_source_surface (ct, self->banner, width - surface_width, 0);
+      cairo_rectangle (ct, 0, 0, width, 54);
+      /*cairo_rectangle (ct, width - surface_width - 0, 0, surface_width, height);*/
+      cairo_set_source_surface (ct, self->banner, 0, 0);
       cairo_fill (ct);
     }
 
@@ -77,6 +78,9 @@ create_ui (CbSettingsAccountRow *self)
   self->name_label = gtk_label_new (self->account->name);
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
   self->description_label = gtk_label_new ("DESCRIPTION!");
+  self->revealer = gtk_revealer_new ();
+  self->details_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  self->edit_button = gtk_button_new_with_label (_("Edit Details"));
   char *screen_name;
 
   screen_name = g_strdup_printf ("@%s", self->account->screen_name);
@@ -90,15 +94,29 @@ create_ui (CbSettingsAccountRow *self)
   gtk_grid_attach (GTK_GRID (self->grid), self->name_label, 1, 0, 1, 1);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->screen_name_label), "dim-label");
   gtk_widget_set_margin_start (self->screen_name_label, 6);
+  gtk_widget_set_halign (self->screen_name_label, GTK_ALIGN_START);
+  gtk_widget_set_hexpand (self->screen_name_label, TRUE);
   gtk_grid_attach (GTK_GRID (self->grid), self->screen_name_label, 2, 0, 1, 1);
 
   gtk_style_context_add_class (gtk_widget_get_style_context (self->description_label), "dim-label");
   gtk_label_set_ellipsize (GTK_LABEL (self->description_label), PANGO_ELLIPSIZE_END);
   gtk_label_set_xalign (GTK_LABEL (self->description_label), 0.0);
+  gtk_widget_set_hexpand (self->description_label, TRUE);
   gtk_grid_attach (GTK_GRID (self->grid), self->description_label, 1, 1, 2, 1);
+
+  gtk_grid_attach (GTK_GRID (self->grid), self->revealer, 0, 2, 3, 1);
+
+  gtk_widget_set_hexpand (self->edit_button, TRUE);
+  gtk_widget_set_halign (self->edit_button, GTK_ALIGN_START);
+  gtk_container_add (GTK_CONTAINER (self->details_box), self->edit_button);
+  gtk_widget_set_margin_top (self->details_box, 6);
+  gtk_container_add (GTK_CONTAINER (self->revealer), self->details_box);
 
   g_object_set (G_OBJECT (self->grid), "margin", 6, NULL);
   gtk_container_add (GTK_CONTAINER (self), self->grid);
+
+  gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)),
+                               "tweet");
 }
 
 GtkWidget *
@@ -122,4 +140,16 @@ cb_settings_account_row_set_banner (CbSettingsAccountRow *self,
   self->banner = banner;
   gtk_widget_queue_draw (GTK_WIDGET (self));
   // TODO: Start fade-in transition;
+}
+
+void
+cb_settings_account_row_show_details (CbSettingsAccountRow *self)
+{
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->revealer), TRUE);
+}
+
+void
+cb_settings_account_row_hide_details (CbSettingsAccountRow *self)
+{
+  gtk_revealer_set_reveal_child (GTK_REVEALER (self->revealer), FALSE);
 }
