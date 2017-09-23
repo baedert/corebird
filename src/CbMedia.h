@@ -60,15 +60,12 @@ typedef struct _CbMedia CbMedia;
 #define CB_TYPE_MEDIA cb_media_get_type ()
 G_DECLARE_FINAL_TYPE (CbMedia, cb_media, CB, MEDIA, GObject);
 
-
-GType       cb_media_get_type (void) G_GNUC_CONST;
-CbMedia    *cb_media_new (void);
-
-gboolean    cb_media_is_video (CbMedia *media);
+CbMedia *   cb_media_new              (void);
+gboolean    cb_media_is_video         (CbMedia *media);
 void        cb_media_loading_finished (CbMedia *media);
-void        cb_media_update_progress (CbMedia *media, double progress);
-
-CbMediaType cb_media_type_from_url (const char *url);
+void        cb_media_update_progress  (CbMedia *media,
+                                       double   progress);
+CbMediaType cb_media_type_from_url    (const char *url);
 
 G_END_DECLS
 
