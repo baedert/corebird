@@ -39,14 +39,14 @@ cache_entry_destroy (CacheEntry *entry)
 }
 
 static inline CacheEntry *
-get_entry_for_user_id (CbAvatarCache *cache,
+get_entry_for_user_id (CbAvatarCache *self,
                        gint64         user_id)
 {
   guint i;
 
-  for (i = 0; i < cache->entries->len; i ++)
+  for (i = 0; i < self->entries->len; i ++)
     {
-      CacheEntry *e = &g_array_index (cache->entries, CacheEntry, i);
+      CacheEntry *e = &g_array_index (self->entries, CacheEntry, i);
 
       if (e->user_id == user_id)
         return e;
@@ -62,22 +62,22 @@ cb_avatar_cache_new (void)
 }
 
 void
-cb_avatar_cache_add (CbAvatarCache   *cache,
+cb_avatar_cache_add (CbAvatarCache   *self,
                      gint64           user_id,
                      cairo_surface_t *surface,
                      const char      *url)
 {
   CacheEntry *entry = NULL;
 
-  g_return_if_fail (CB_IS_AVATAR_CACHE (cache));
+  g_return_if_fail (CB_IS_AVATAR_CACHE (self));
 
-  entry = get_entry_for_user_id (cache, user_id);
+  entry = get_entry_for_user_id (self, user_id);
 
   if (entry == NULL)
     {
       /* Actually a new entry */
-      g_array_set_size (cache->entries, cache->entries->len + 1);
-      entry = &g_array_index (cache->entries, CacheEntry, cache->entries->len - 1);
+      g_array_set_size (self->entries, self->entries->len + 1);
+      entry = &g_array_index (self->entries, CacheEntry, self->entries->len - 1);
       entry->user_id = user_id;
       if (surface)
         entry->surface = cairo_surface_reference (surface);
@@ -101,17 +101,17 @@ cb_avatar_cache_add (CbAvatarCache   *cache,
 }
 
 void
-cb_avatar_cache_set_avatar (CbAvatarCache   *cache,
+cb_avatar_cache_set_avatar (CbAvatarCache   *self,
                             gint64           user_id,
                             cairo_surface_t *surface,
                             const char      *url)
 {
   CacheEntry *entry = NULL;
 
-  g_return_if_fail (CB_IS_AVATAR_CACHE (cache));
+  g_return_if_fail (CB_IS_AVATAR_CACHE (self));
   g_return_if_fail (surface != NULL);
 
-  entry = get_entry_for_user_id (cache, user_id);
+  entry = get_entry_for_user_id (self, user_id);
 
   g_assert (entry != NULL);
 
@@ -126,17 +126,17 @@ cb_avatar_cache_set_avatar (CbAvatarCache   *cache,
 }
 
 cairo_surface_t *
-cb_avatar_cache_get_surface_for_id (CbAvatarCache *cache,
+cb_avatar_cache_get_surface_for_id (CbAvatarCache *self,
                                     gint64         user_id,
                                     gboolean      *out_found)
 {
   const CacheEntry *entry = NULL;
 
-  g_return_val_if_fail (CB_IS_AVATAR_CACHE (cache), NULL);
+  g_return_val_if_fail (CB_IS_AVATAR_CACHE (self), NULL);
   g_return_val_if_fail (user_id > 0, NULL);
   g_return_val_if_fail (out_found != NULL, NULL);
 
-  entry = get_entry_for_user_id (cache, user_id);
+  entry = get_entry_for_user_id (self, user_id);
 
   if (entry != NULL)
     {
@@ -152,15 +152,15 @@ cb_avatar_cache_get_surface_for_id (CbAvatarCache *cache,
 }
 
 void
-cb_avatar_cache_set_url (CbAvatarCache *cache,
+cb_avatar_cache_set_url (CbAvatarCache *self,
                          gint64         user_id,
                          const char    *url)
 {
   CacheEntry *entry = NULL;
 
-  g_return_if_fail (CB_IS_AVATAR_CACHE (cache));
+  g_return_if_fail (CB_IS_AVATAR_CACHE (self));
 
-  entry = get_entry_for_user_id (cache, user_id);
+  entry = get_entry_for_user_id (self, user_id);
 
   g_assert (entry != NULL);
 
@@ -171,19 +171,19 @@ cb_avatar_cache_set_url (CbAvatarCache *cache,
 }
 
 void
-cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *cache,
+cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *self,
                                                cairo_surface_t *surface)
 {
   guint i;
   guint index = (guint) -1;
   CacheEntry *entry = NULL;
 
-  g_return_if_fail (CB_IS_AVATAR_CACHE (cache));
+  g_return_if_fail (CB_IS_AVATAR_CACHE (self));
   g_return_if_fail (surface != NULL);
 
-  for (i = 0; i < cache->entries->len; i ++)
+  for (i = 0; i < self->entries->len; i ++)
     {
-      CacheEntry *e = &g_array_index (cache->entries, CacheEntry, i);
+      CacheEntry *e = &g_array_index (self->entries, CacheEntry, i);
 
       if (e->surface == surface)
         {
@@ -204,22 +204,22 @@ cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *cache,
   if (entry->refcount <= 0)
     {
       g_debug ("Removing avatar with id %ld from cache", entry->user_id);
-      g_array_remove_index_fast (cache->entries, index);
+      g_array_remove_index_fast (self->entries, index);
     }
 }
 
 void
-cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *cache,
+cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *self,
                                                cairo_surface_t *surface)
 {
   guint i;
 
-  g_return_if_fail (CB_IS_AVATAR_CACHE (cache));
+  g_return_if_fail (CB_IS_AVATAR_CACHE (self));
   g_return_if_fail (surface != NULL);
 
-  for (i = 0; i < cache->entries->len; i ++)
+  for (i = 0; i < self->entries->len; i ++)
     {
-      CacheEntry *e = &g_array_index (cache->entries, CacheEntry, i);
+      CacheEntry *e = &g_array_index (self->entries, CacheEntry, i);
 
       if (e->surface == surface)
         {
@@ -230,15 +230,15 @@ cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *cache,
 }
 
 const char *
-cb_avatar_cache_get_url_for_id (CbAvatarCache *cache,
+cb_avatar_cache_get_url_for_id (CbAvatarCache *self,
                                 gint64         user_id)
 {
   const CacheEntry *entry;
 
-  g_return_val_if_fail (CB_IS_AVATAR_CACHE (cache), NULL);
+  g_return_val_if_fail (CB_IS_AVATAR_CACHE (self), NULL);
   g_return_val_if_fail (user_id > 0, NULL);
 
-  entry = get_entry_for_user_id (cache, user_id);
+  entry = get_entry_for_user_id (self, user_id);
 
   if (entry == NULL)
     return NULL;
@@ -247,28 +247,28 @@ cb_avatar_cache_get_url_for_id (CbAvatarCache *cache,
 }
 
 guint
-cb_avatar_cache_get_n_entries (CbAvatarCache *cache)
+cb_avatar_cache_get_n_entries (CbAvatarCache *self)
 {
-  g_return_val_if_fail (CB_IS_AVATAR_CACHE (cache), 0);
+  g_return_val_if_fail (CB_IS_AVATAR_CACHE (self), 0);
 
-  return cache->entries->len;
+  return self->entries->len;
 }
 
 static void
 cb_avatar_cache_finalize (GObject *obj)
 {
-  CbAvatarCache *cache = CB_AVATAR_CACHE (obj);
+  CbAvatarCache *self = CB_AVATAR_CACHE (obj);
 
-  g_array_free (cache->entries, TRUE);
+  g_array_free (self->entries, TRUE);
 
   G_OBJECT_CLASS (cb_avatar_cache_parent_class)->finalize (obj);
 }
 
 static void
-cb_avatar_cache_init (CbAvatarCache *cache)
+cb_avatar_cache_init (CbAvatarCache *self)
 {
-  cache->entries = g_array_new (FALSE, TRUE, sizeof (CacheEntry));
-  g_array_set_clear_func (cache->entries, (GDestroyNotify) cache_entry_destroy);
+  self->entries = g_array_new (FALSE, TRUE, sizeof (CacheEntry));
+  g_array_set_clear_func (self->entries, (GDestroyNotify) cache_entry_destroy);
 }
 
 static void
