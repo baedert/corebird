@@ -38,23 +38,16 @@ typedef struct _CbBundleHistory CbBundleHistory;
 G_DECLARE_FINAL_TYPE (CbBundleHistory, cb_bundle_history, CB, BUNDLE_HISTORY, GObject);
 
 
-GType       cb_bundle_history_get_type (void) G_GNUC_CONST;
-
-CbBundleHistory *cb_bundle_history_new (void);
-
-void        cb_bundle_history_push (CbBundleHistory *self,
-                                    int              v,
-                                    CbBundle        *bundle);
-
-int         cb_bundle_history_back (CbBundleHistory *self);
-int         cb_bundle_history_forward (CbBundleHistory *self);
-
-gboolean    cb_bundle_history_at_start (CbBundleHistory *self);
-gboolean    cb_bundle_history_at_end (CbBundleHistory *self);
-
-void        cb_bundle_history_remove_current (CbBundleHistory *self);
-
-int         cb_bundle_history_get_current (CbBundleHistory *self);
-CbBundle *  cb_bundle_history_get_current_bundle (CbBundleHistory *self);
+CbBundleHistory * cb_bundle_history_new                (void);
+void              cb_bundle_history_push               (CbBundleHistory *self,
+                                                        int              v,
+                                                        CbBundle        *bundle);
+int               cb_bundle_history_back               (CbBundleHistory *self);
+int               cb_bundle_history_forward            (CbBundleHistory *self);
+gboolean          cb_bundle_history_at_start           (CbBundleHistory *self);
+gboolean          cb_bundle_history_at_end             (CbBundleHistory *self);
+void              cb_bundle_history_remove_current     (CbBundleHistory *self);
+int               cb_bundle_history_get_current        (CbBundleHistory *self);
+CbBundle *        cb_bundle_history_get_current_bundle (CbBundleHistory *self);
 
 #endif
