@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INLINE_MEDIA_DOWNLOADER_H
-#define INLINE_MEDIA_DOWNLOADER_H
+#ifndef _CB_INLINE_MEDIA_DOWNLOADER_H_
+#define _CB_INLINE_MEDIA_DOWNLOADER_H_
 
 #include <glib-object.h>
 #include <libsoup/soup.h>
@@ -38,28 +38,19 @@ typedef struct _CbMediaDownloader CbMediaDownloader;
 #define CB_TYPE_MEDIA_DOWNLOADER (cb_media_downloader_get_type ())
 G_DECLARE_FINAL_TYPE (CbMediaDownloader, cb_media_downloader, CB, MEDIA_DOWNLOADER, GObject);
 
-
-
-GType cb_media_downloader_get_type (void) G_GNUC_CONST;
 CbMediaDownloader * cb_media_downloader_get_default (void);
-
-void cb_media_downloader_load_all   (CbMediaDownloader  *downloader,
-                                     CbMiniTweet        *t);
-
-void cb_media_downloader_load_async (CbMediaDownloader   *downloader,
-                                     CbMedia             *media,
-                                     GAsyncReadyCallback  callback,
-                                     gpointer             user_data);
-
-gboolean cb_media_downloader_load_finish (CbMediaDownloader  *downloader,
-                                          GAsyncResult       *result,
-                                          GError            **error);
-
-void cb_media_downloader_disable (CbMediaDownloader *downloader);
-void cb_media_downloader_shutdown (CbMediaDownloader *downloader);
-
-gboolean is_media_candidate (const char *url);
-
+void                cb_media_downloader_load_all    (CbMediaDownloader  *downloader,
+                                                    CbMiniTweet        *t);
+void                cb_media_downloader_load_async  (CbMediaDownloader   *downloader,
+                                                     CbMedia             *media,
+                                                     GAsyncReadyCallback  callback,
+                                                     gpointer             user_data);
+gboolean            cb_media_downloader_load_finish (CbMediaDownloader  *downloader,
+                                                     GAsyncResult       *result,
+                                                     GError            **error);
+void                cb_media_downloader_disable     (CbMediaDownloader *downloader);
+void                cb_media_downloader_shutdown    (CbMediaDownloader *downloader);
+gboolean            is_media_candidate              (const char *url);
 
 G_END_DECLS
 
