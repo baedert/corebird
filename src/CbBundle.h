@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUNDLE_H
-#define BUNDLE_H
+#ifndef _CB_BUNDLE_H_
+#define _CB_BUNDLE_H_
 
 #include <glib-object.h>
 
@@ -41,28 +41,17 @@ typedef struct _CbBundle CbBundle;
 #define CB_TYPE_BUNDLE cb_bundle_get_type ()
 G_DECLARE_FINAL_TYPE (CbBundle, cb_bundle, CB, BUNDLE, GObject);
 
-
-
-GType cb_bundle_get_type (void) G_GNUC_CONST;
-
-CbBundle *cb_bundle_new (void);
-
-gboolean cb_bundle_equals (CbBundle *self, CbBundle *other);
-
-void        cb_bundle_put_string (CbBundle *self, int key, const char *val);
-const char *cb_bundle_get_string (CbBundle *self, int key);
-
-void cb_bundle_put_int (CbBundle *self, int key, int val);
-int  cb_bundle_get_int (CbBundle *self, int key);
-
-void   cb_bundle_put_int64 (CbBundle *self, int key, gint64 val);
-gint64 cb_bundle_get_int64 (CbBundle *self, int key);
-
-void     cb_bundle_put_bool (CbBundle *self, int key, gboolean val);
-gboolean cb_bundle_get_bool (CbBundle *self, int key);
-
-void     cb_bundle_put_object (CbBundle *self, int key, GObject *object);
-GObject *cb_bundle_get_object (CbBundle *self, int key);
-
+CbBundle *   cb_bundle_new        (void);
+gboolean     cb_bundle_equals     (CbBundle *self, CbBundle *other);
+void         cb_bundle_put_string (CbBundle *self, int key, const char *val);
+const char * cb_bundle_get_string (CbBundle *self, int key);
+void         cb_bundle_put_int    (CbBundle *self, int key, int val);
+int          cb_bundle_get_int    (CbBundle *self, int key);
+void         cb_bundle_put_int64  (CbBundle *self, int key, gint64 val);
+gint64       cb_bundle_get_int64  (CbBundle *self, int key);
+void         cb_bundle_put_bool   (CbBundle *self, int key, gboolean val);
+gboolean     cb_bundle_get_bool   (CbBundle *self, int key);
+void         cb_bundle_put_object (CbBundle *self, int key, GObject *object);
+GObject *    cb_bundle_get_object (CbBundle *self, int key);
 
 #endif
