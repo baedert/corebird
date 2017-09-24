@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TWEET_H
-#define __TWEET_H
+#ifndef _CB_TWEET_H_
+#define _CB_TWEET_H_
 
 #include <glib-object.h>
 #include <json-glib/json-glib.h>

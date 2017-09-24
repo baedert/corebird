@@ -15,22 +15,14 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CB_MEDIA_IMAGE_WIDGET_H
-#define CB_MEDIA_IMAGE_WIDGET_H
+#ifndef _CB_MEDIA_IMAGE_WIDGET_H_
+#define _CB_MEDIA_IMAGE_WIDGET_H_
 
 #include <gtk/gtk.h>
-
 #include "CbMedia.h"
 
-typedef struct _CbMediaImageWidget      CbMediaImageWidget;
-typedef struct _CbMediaImageWidgetClass CbMediaImageWidgetClass;
-
-#define CB_TYPE_MEDIA_IMAGE_WIDGET           (cb_media_image_widget_get_type ())
-#define CB_MEDIA_IMAGE_WIDGET(obj)           (G_TYPE_CHECK_INSTANCE_CAST(obj, CB_TYPE_MEDIA_IMAGE_WIDGET, CbMediaImageWidget))
-#define CB_MEDIA_IMAGE_WIDGET_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST(cls, CB_TYPE_MEDIA_IMAGE_WIDGET, CbMediaImageWidgetClass))
-#define CB_IS_MEDIA_IMAGE_WIDGET(obj)        (G_TYPE_CHECK_INSTANCE_TYPE(obj, CB_TYPE_MEDIA_IMAGE_WIDGET))
-#define CB_IS_MEDIA_IMAGE_WIDGET_CLASS(cls)   (G_TYPE_CHECK_CLASS_TYPE(cls, CB_TYPE_MEDIA_IMAGE_WIDGET))
-#define CB_MEDIA_IMAGE_WIDGET_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS(obj, CB_TYPE_MEDIA_IMAGE_WIDGET, CbMediaImageWidgetClass))
+#define CB_TYPE_MEDIA_IMAGE_WIDGET cb_media_image_widget_get_type ()
+G_DECLARE_FINAL_TYPE (CbMediaImageWidget, cb_media_image_widget, CB, MEDIA_IMAGE_WIDGET, GtkScrolledWindow);
 
 struct _CbMediaImageWidget
 {
@@ -48,18 +40,11 @@ struct _CbMediaImageWidget
   gulong hadj_changed_id;
   gulong vadj_changed_id;
 };
+typedef struct _CbMediaImageWidget CbMediaImageWidget;
 
-struct _CbMediaImageWidgetClass
-{
-  GtkScrolledWindowClass parent_class;
-};
-
-GType cb_media_image_widget_get_type (void) G_GNUC_CONST;
-
-GtkWidget *cb_media_image_widget_new (CbMedia *media);
-
-void       cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
-                                            double              px,
-                                            double              py);
+GtkWidget * cb_media_image_widget_new       (CbMedia *media);
+void        cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
+                                             double              px,
+                                             double              py);
 
 #endif

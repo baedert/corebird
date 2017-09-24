@@ -23,7 +23,6 @@
 #include "rest/rest-proxy.h"
 
 G_BEGIN_DECLS
-typedef struct _CbComposeJob CbComposeJob;
 
 #define CB_TYPE_COMPOSE_JOB (cb_compose_job_get_type ())
 G_DECLARE_FINAL_TYPE (CbComposeJob, cb_compose_job, CB, COMPOSE_JOB, GObject);
@@ -49,6 +48,7 @@ struct _CbComposeJob
   RestProxyCall *send_call;
   GTask *send_task;
 };
+typedef struct _CbComposeJob CbComposeJob;
 
 
 CbComposeJob *cb_compose_job_new                (RestProxy            *account_proxy,

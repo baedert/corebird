@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __UTILS_H
-#define __UTILS_H
+#ifndef _CB_UTILS_H_
+#define _CB_UTILS_H_
 
 #include <gtk/gtk.h>
 #include <glib-object.h>

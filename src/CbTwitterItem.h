@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TWITTER_ITEM_H
-#define TWITTER_ITEM_H
+#ifndef _CB_TWITTER_ITEM_H_
+#define _CB_TWITTER_ITEM_H_
 
 #include <glib-object.h>
 
@@ -41,16 +41,14 @@ struct _CbTwitterItemInterface
   GTimeSpan (*get_last_set_timediff) (CbTwitterItem *self);
 };
 
-gint64 cb_twitter_item_get_sort_factor (CbTwitterItem *self);
-
+gint64 cb_twitter_item_get_sort_factor   (CbTwitterItem *self);
 int    cb_twitter_item_update_time_delta (CbTwitterItem *self,
                                           GDateTime     *now);
-
-gint64 cb_twitter_item_get_timestamp (CbTwitterItem *self);
+gint64 cb_twitter_item_get_timestamp     (CbTwitterItem *self);
 
 /* Basically just for CbDeltaUpdater */
-void   cb_twitter_item_set_last_set_timediff (CbTwitterItem *self,
-                                              GTimeSpan      span);
+void      cb_twitter_item_set_last_set_timediff (CbTwitterItem *self,
+                                                 GTimeSpan      span);
 GTimeSpan cb_twitter_item_get_last_set_timediff (CbTwitterItem *self);
 
 

@@ -24,7 +24,6 @@
 #include "CbTypes.h"
 
 G_BEGIN_DECLS
-typedef struct _CbUserStream      CbUserStream;
 
 #define CB_TYPE_USER_STREAM (cb_user_stream_get_type ())
 G_DECLARE_FINAL_TYPE (CbUserStream, cb_user_stream, CB, USER_STREAM, GObject);
@@ -52,33 +51,21 @@ struct _CbUserStream
 
   guint stresstest : 1;
 };
+typedef struct _CbUserStream      CbUserStream;
 
-struct _CbUserStreamClass
-{
-  GObjectClass parent_class;
-};
-
-GType cb_user_stream_get_type (void) G_GNUC_CONST;
-
-CbUserStream *cb_user_stream_new (const char *account_name,
-                                  gboolean    stresstest);
-void          cb_user_stream_set_proxy_data (CbUserStream *self,
-                                             const char   *token,
-                                             const char   *token_secret);
-
-void          cb_user_stream_register (CbUserStream      *self,
-                                       CbMessageReceiver *receiver);
-
-void          cb_user_stream_unregister (CbUserStream      *self,
-                                         CbMessageReceiver *receiver);
-
-void          cb_user_stream_start (CbUserStream *self);
-
-void          cb_user_stream_stop  (CbUserStream *self);
-
-void          cb_user_stream_push_data (CbUserStream *self,
-                                        const char   *data);
-
+CbUserStream * cb_user_stream_new            (const char *account_name,
+                                              gboolean    stresstest);
+void           cb_user_stream_set_proxy_data (CbUserStream *self,
+                                              const char   *token,
+                                              const char   *token_secret);
+void           cb_user_stream_register       (CbUserStream      *self,
+                                              CbMessageReceiver *receiver);
+void           cb_user_stream_unregister     (CbUserStream      *self,
+                                              CbMessageReceiver *receiver);
+void           cb_user_stream_start          (CbUserStream *self);
+void           cb_user_stream_stop           (CbUserStream *self);
+void           cb_user_stream_push_data      (CbUserStream *self,
+                                              const char   *data);
 
 G_END_DECLS;
 
