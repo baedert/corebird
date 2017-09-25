@@ -172,9 +172,13 @@ corebird_lib_sources = files([
   'src/rest/rest/oauth-proxy-call.c',
   'src/rest/rest/sha1.c',
 
+  # libtweetlength sources (TODO: Should be a meson subproject)
+  'src/libtl/libtweetlength.c',
+
   # Vapi files
   'vapi/corebird-internal.vapi',
-  'vapi/rest-0.7.vapi'
+  'vapi/rest-0.7.vapi',
+  'vapi/libtl.vapi'
 ])
 
 # glib resources
@@ -224,6 +228,7 @@ executable(
   vala_args: [
     meson.source_root() + '/vapi/corebird-internal.vapi',
     meson.source_root() + '/vapi/rest-0.7.vapi',
+    meson.source_root() + '/vapi/libtl.vapi',
   ],
   install: true
 )
