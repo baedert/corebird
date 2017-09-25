@@ -82,6 +82,8 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   private Gtk.Stack loading_stack;
   [GtkChild]
   private Gtk.RadioButton tweets_button;
+  [GtkChild]
+  private Gtk.Label loading_error_label;
   private int64 user_id;
   private new string name;
   private string screen_name;
@@ -209,7 +211,12 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     try {
       root_node = yield Cb.Utils.load_threaded_async (call, data_cancellable);
     } catch (GLib.Error e) {
-      warning (e.message);
+      if (e.message == "Forbidden") {
+        loading_error_label.label = _("Suspended Account");
+        loading_stack.visible_child = loading_error_label;
+      } else {
+        warning (e.message);
+      }
       return;
     }
 

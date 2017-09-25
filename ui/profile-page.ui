@@ -423,6 +423,13 @@
                 <property name="name">progress</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkLabel" id="loading_error_label">
+                <property name="visible">1</property>
+                <property name="margin">24</property>
+                <property name="wrap">1</property>
+              </object>
+            </child>
           </object>
         </child>
         <child>
