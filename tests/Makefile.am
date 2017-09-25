@@ -33,7 +33,6 @@ TESTS = \
 	texttransform \
 	avatardownload \
 	friends \
-	highlighting \
 	avatarcache \
 	usercompletionmodel \
 	dmmanager
