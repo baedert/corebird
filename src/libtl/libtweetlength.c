@@ -3,14 +3,18 @@
 
 #define LINK_LENGTH 23
 
-static const char *TLDS[] = {
-  "ly", "io",
-  "com",  "net",  "org",    "xxx",  "sexy", "pro",
-  "biz",  "name", "info",   "arpa", "gov",  "aero",
-  "asia", "cat",  "coop",   "edu",  "int",  "jobs",
-  "mil",  "mobi", "museum", "post", "tel",  "travel"
+// Keep this sorted by length!
+static struct {
+  size_t length;
+  const char *str;
+} TLDS[] = {
+  {2, "ly"}, {2, "io"},
+  {3, "com"}, {3, "org"}, {3, "net"}, {3, "xxx"}, {3, "pro"}, {3, "edu"}, {3, "mil"}, {3, "biz"}, {3, "cat"},
+  {3, "int"}, {3, "tel"}, {3, "gov"},
+  {4, "sexy"}, {4, "name"}, {4, "info"}, {4, "jobs"}, {4, "post"}, {4, "aero"}, {4, "mobi"}, {4, "arpa"},
+  {4, "coop"}, {4, "asia"},
+  {6, "museum"}, {6, "trabel"}
 };
-#define MAX_TLD_LENGTH 6 // Keep this up to date when changing TLDS!
 
 
 typedef struct {
@@ -124,12 +128,13 @@ token_is_tld (const Token *t)
 {
   guint i;
 
-  if (t->length_in_bytes > MAX_TLD_LENGTH) {
+  if (t->length_in_bytes > TLDS[G_N_ELEMENTS(TLDS) - 1].length) {
     return FALSE;
   }
 
   for (i = 0; i < G_N_ELEMENTS (TLDS); i ++) {
-    if (strncasecmp (t->start, TLDS[i], t->length_in_bytes) == 0) {
+    if (t->length_in_characters == TLDS[i].length &&
+        strncasecmp (t->start, TLDS[i].str, t->length_in_bytes) == 0) {
       return TRUE;
     }
   }
@@ -319,7 +324,7 @@ parse_link (GArray      *entities,
   }
 
   if (token_is_protocol (t)) {
-    // These are all optional!
+    // need "://" now.
     t = &tokens[i + 1];
     if (t->type != TOK_COLON) {
       return FALSE;
@@ -334,6 +339,10 @@ parse_link (GArray      *entities,
 
     t = &tokens[i + 1];
     if (t->type != TOK_SLASH) {
+      return FALSE;
+    }
+    // If we are at the end now, this is not a link, just the protocol.
+    if (i + 1 == n_tokens - 1) {
       return FALSE;
     }
     i += 2; // Skip to token after second slash
@@ -362,7 +371,6 @@ parse_link (GArray      *entities,
     }
     dot_index ++;
   }
-
   if (dot_index == n_tokens - 1) {
     return FALSE;
   }
@@ -640,11 +648,11 @@ tl_count_characters_n (const char *input,
   // From here on, input/length_in_bytes are trusted to be OK
 
   tokens = tokenize (input, length_in_bytes);
+
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
 
   entities = parse (token_array, n_tokens, NULL);
-
   length = count_entities_in_characters (entities);
   g_array_free (entities, TRUE);
   g_free ((char *)token_array);
