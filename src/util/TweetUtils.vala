@@ -16,14 +16,6 @@
  */
 
 namespace TweetUtils {
-  private const string[] DOMAINS = {
-     ".com",  ".net",  ".org",    ".xxx",  ".sexy", ".pro",
-     ".biz",  ".name", ".info",   ".arpa", ".gov",  ".aero",
-     ".asia", ".cat",  ".coop",   ".edu",  ".int",  ".jobs",
-     ".mil",  ".mobi", ".museum", ".post", ".tel",  ".travel"
-  };
-  public const string NO_SPELL_CHECK = "gtksourceview:context-classes:no-spell-check";
-
   /**
    * Deletes the given tweet.
    *
@@ -158,67 +150,6 @@ namespace TweetUtils {
       throw err;
     }
     return avatar;
-  }
-
-  /**
-   * Calculates the length of a tweet.
-   *
-   * @param text The text to calculate the length for
-   *
-   * @return The length of the tweet, taking Twitter's rules for
-   *         tweet length into account.
-   */
-  public int calc_tweet_length (string text, int media_count = 0) {
-    int length = 0;
-    unichar c;
-    int last_word_start = 0;
-    int n_chars = text.char_count ();
-    int cur = 0; /* Byte Index */
-
-    for (int next = 0, c_n = 0; text.get_next_char (ref next, out c); c_n ++) {
-      bool splits = (c == ' ' || c == '\n' || c == '(' || c == ')' || c == '[' ||
-                     c == ']' || c == '{' || c == '}');
-
-      if (splits || c_n == n_chars - 1) {
-
-        /* Include the current character only if it's not whitespace since we are
-           later accounting for whitespace characters anyway */
-        if (!splits && c_n == n_chars - 1)
-          cur = next;
-
-        string word = text.substring (last_word_start,
-                                      cur - last_word_start);
-
-        if (word.length > 0)
-          length += get_word_length (word);
-
-        if (splits)
-          length += 1;
-
-        // Just adding one here is save since we made sure c is either ' ' or \n
-        last_word_start = cur + 1;
-      }
-      cur = next;
-    }
-
-    return length;
-  }
-
-  private int get_word_length (string s) {
-    if (s.has_prefix ("www.")    ||
-        s.has_prefix ("http://") ||
-        s.has_prefix ("https://"))
-      return Twitter.short_url_length;
-
-    string[] parts = s.split ("/");
-    if (parts.length > 0) {
-      foreach (unowned string tld in DOMAINS) {
-        if (parts[0].has_suffix (tld))
-          return Twitter.short_url_length; // Default to HTTP
-      }
-    }
-
-    return s.char_count();
   }
 
   bool activate_link (string uri, MainWindow window) {

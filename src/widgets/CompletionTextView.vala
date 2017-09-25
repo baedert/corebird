@@ -104,7 +104,7 @@ class CompletionTextView : Gtk.TextView {
                             "foreground_rgba",
                             snippet_color, null);
     /* gspell marker */
-    this.buffer.create_tag (TweetUtils.NO_SPELL_CHECK, null);
+    this.buffer.create_tag (NO_SPELL_CHECK, null);
 
     this.buffer.notify["cursor-position"].connect (update_completion_listbox);
     this.buffer.changed.connect (buffer_changed_cb);
