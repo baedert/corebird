@@ -20,6 +20,7 @@ AM_VALAFLAGS = \
 	$(top_srcdir)/vapi/config.vapi \
 	$(top_srcdir)/vapi/corebird-internal.vapi \
 	$(top_srcdir)/vapi/rest-0.7.vapi \
+	$(top_srcdir)/vapi/libtl.vapi \
 	-C \
 	$(NULL)
 
@@ -182,7 +183,9 @@ libcorebird_la_SOURCES = \
 	rest/rest/rest-proxy.h \
 	rest/rest/rest-proxy-call.h \
 	rest/rest/oauth-proxy.h \
-	rest/rest/oauth-proxy-call.h
+	rest/rest/oauth-proxy-call.h \
+	libtl/libtweetlength.h \
+	libtl/libtweetlength.c
 
 
 

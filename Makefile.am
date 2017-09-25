@@ -5,6 +5,7 @@ SUBDIRS = src data po tests
 EXTRA_DIST = \
 	vapi/config.vapi \
 	vapi/rest-0.7.vapi \
+	vapi/libtl.vapi \
 	vapi/corebird-internal.vapi \
 	corebird.gresource.xml
 

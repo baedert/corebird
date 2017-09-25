@@ -173,6 +173,7 @@ corebird_lib_sources = files([
   'src/rest/rest/sha1.c',
 
   # libtweetlength sources (TODO: Should be a meson subproject)
+  # https://github.com/baedert/libtweetlength
   'src/libtl/libtweetlength.c',
 
   # Vapi files
