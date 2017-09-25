@@ -16,6 +16,7 @@
  */
 
 class CompletionTextView : Gtk.TextView {
+  private const string NO_SPELL_CHECK = "gtksourceview:context-classes:no-spell-check";
   private const string[] TEXT_TAGS = {
     "link",
     "mention",
@@ -267,7 +268,34 @@ class CompletionTextView : Gtk.TextView {
     for (int i = 0; i < TEXT_TAGS.length; i ++)
       this.buffer.remove_tag (tag_table.lookup (TEXT_TAGS[i]), start_iter, end_iter);
 
-    TweetUtils.annotate_text (this.buffer);
+    string text = this.buffer.get_text (start_iter, end_iter, true);
+    //TweetUtils.annotate_text (this.buffer);
+    size_t text_length;
+    var entities = Tl.extract_entities (text, out text_length);
+    foreach  (unowned Tl.Entity e in entities) {
+      Gtk.TextIter? e_start_iter;
+      Gtk.TextIter? e_end_iter;
+
+      this.buffer.get_iter_at_offset (out e_start_iter, (int)e.start_character_index);
+      this.buffer.get_iter_at_offset (out e_end_iter, (int)(e.start_character_index + e.length_in_characters));
+
+      buffer.apply_tag_by_name (NO_SPELL_CHECK, e_start_iter, e_end_iter);
+
+      switch (e.type) {
+        case Tl.EntityType.HASHTAG:
+          buffer.apply_tag_by_name ("hashtag", e_start_iter, e_end_iter);
+          break;
+        case Tl.EntityType.MENTION:
+          buffer.apply_tag_by_name ("mention", e_start_iter, e_end_iter);
+          break;
+        case Tl.EntityType.LINK:
+          buffer.apply_tag_by_name ("link", e_start_iter, e_end_iter);
+          break;
+
+        default:
+          break;
+      }
+    }
 
     if (buffer.text.length == 0)
       hide_completion_window ();

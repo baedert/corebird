@@ -247,9 +247,6 @@ parse_link_tail (GArray      *entities,
   guint i = *current_position;
   const Token *t;
 
-  g_debug ("--------");
-  g_debug ("n_tokens; %u", (guint) n_tokens);
-
   gsize paren_level = 0;
   int first_paren_index = -1;
   for (;;) {
@@ -259,13 +256,10 @@ parse_link_tail (GArray      *entities,
       break;
     }
 
-    g_debug ("Token %u: Type: %d, Length: %u, Text:%.*s", i, t->type, (guint)t->length_in_bytes,
-         (int)t->length_in_bytes, t->start);
     if (tokens[i].type == TOK_OPEN_PAREN) {
 
       if (first_paren_index == -1) {
         first_paren_index = i;
-        g_debug ("First paren index: %d", (int)first_paren_index);
       }
       paren_level ++;
       if (paren_level == 3) {
@@ -274,9 +268,7 @@ parse_link_tail (GArray      *entities,
     } else if (tokens[i].type == TOK_CLOSE_PAREN) {
       if (first_paren_index == -1) {
         first_paren_index = i;
-        g_debug ("First paren index: %d", (int)first_paren_index);
       }
-      g_debug ("Close paren");
       paren_level --;
     }
 
@@ -287,11 +279,8 @@ parse_link_tail (GArray      *entities,
       break;
     }
 
-    g_debug ("i now: %u", i);
   }
 
-  g_debug ("After i: %u", i);
-  g_debug ("paren level: %d", (int)paren_level);
   if (paren_level != 0) {
     g_assert (first_paren_index != -1);
     i = first_paren_index - 1; // Before that paren
@@ -373,7 +362,6 @@ parse_link (GArray      *entities,
     }
     dot_index ++;
   }
-  g_debug ("dot index: %u", dot_index);
 
   if (dot_index == n_tokens - 1) {
     return FALSE;
@@ -412,7 +400,6 @@ parse_link (GArray      *entities,
     }
   }
 
-  g_debug ("end_token = i = %u", i);
   end_token = i;
   g_assert (end_token < n_tokens);
 
@@ -652,23 +639,11 @@ tl_count_characters_n (const char *input,
 
   // From here on, input/length_in_bytes are trusted to be OK
 
-  g_debug ("------- INPUT: %s %p (Bytes: %u)-------", input, input, (guint) length_in_bytes); // XXX Expected to be NUL-terminated
   tokens = tokenize (input, length_in_bytes);
-  for (guint i = 0; i < tokens->len; i ++) {
-    const Token *t = &g_array_index (tokens, Token, i);
-    g_debug ("Token %u: Type: %d, Length: %u, Text:%.*s", i, t->type, (guint)t->length_in_bytes,
-               (int)t->length_in_bytes, t->start);
-  }
-
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
 
   entities = parse (token_array, n_tokens, NULL);
-  for (guint i = 0; i < entities->len; i ++) {
-    const TlEntity *e = &g_array_index (entities, TlEntity, i);
-    g_debug ("TlEntity %u: Text: '%.*s', Type: %u, Bytes: %u, Length: %u", i, (int)e->length_in_bytes, e->start,
-               e->type, (guint)e->length_in_bytes, (guint)entity_length_in_characters (e));
-  }
 
   length = count_entities_in_characters (entities);
   g_array_free (entities, TRUE);
@@ -731,32 +706,18 @@ tl_extract_entities_n (const char *input,
   if (input == NULL || input[0] == '\0') {
     return 0;
   }
-  g_debug ("------- INPUT: %s %p (Bytes: %u)-------", input, input, (guint) length_in_bytes); // XXX Expected to be NUL-terminated
 
   if (out_text_length == NULL) {
     out_text_length = &dummy;
   }
 
   tokens = tokenize (input, length_in_bytes);
-
-  for (guint i = 0; i < tokens->len; i ++) {
-    const Token *t = &g_array_index (tokens, Token, i);
-    g_debug ("Token %u: Type: %d, Length: %u, Text:%.*s, start char: %u, chars: %u", i, t->type, (guint)t->length_in_bytes,
-               (int)t->length_in_bytes, t->start, (guint)t->start_character_index, (guint)t->length_in_characters);
-  }
-
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
   entities = parse (token_array, n_tokens, &n_relevant_entities);
 
   *out_text_length = count_entities_in_characters (entities);
   g_free ((char *)token_array);
-
-  for (guint i = 0; i < entities->len; i ++) {
-    const TlEntity *e = &g_array_index (entities, TlEntity, i);
-    g_debug ("TlEntity %u: Text: '%.*s', Type: %u, Bytes: %u, Length: %u, start character: %u", i, (int)e->length_in_bytes, e->start,
-               e->type, (guint)e->length_in_bytes, (guint)entity_length_in_characters (e), (guint)e->start_character_index);
-  }
 
   // Only pass mentions, hashtags and links out
   result_entities = g_malloc (sizeof (TlEntity) * n_relevant_entities);
