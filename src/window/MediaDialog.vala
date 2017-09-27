@@ -115,9 +115,12 @@ class MediaDialog : Gtk.Window {
 
   [GtkCallback]
   private bool key_press_event_cb (Gdk.EventKey evt) {
-    if (evt.keyval == Gdk.Key.Left)
+    uint keyval;
+    evt.get_keyval (out keyval);
+
+    if (keyval == Gdk.Key.Left)
       previous_media ();
-    else if (evt.keyval == Gdk.Key.Right)
+    else if (keyval == Gdk.Key.Right)
       next_media ();
     else
       this.destroy ();
@@ -136,8 +139,12 @@ class MediaDialog : Gtk.Window {
   }
 
   public override bool enter_notify_event (Gdk.EventCrossing event) {
-    if (event.window == this.get_window () &&
-        event.detail != Gdk.NotifyType.INFERIOR) {
+    uint detail;
+
+    event.get_crossing_detail (out detail);
+
+    if (event.get_window () == this.get_window () &&
+        detail != Gdk.NotifyType.INFERIOR) {
       next_revealer.reveal_child = true;
       previous_revealer.reveal_child = true;
     }
@@ -146,8 +153,12 @@ class MediaDialog : Gtk.Window {
   }
 
   public override bool leave_notify_event (Gdk.EventCrossing event) {
-    if (event.window == this.get_window () &&
-        event.detail != Gdk.NotifyType.INFERIOR) {
+    uint detail;
+
+    event.get_crossing_detail (out detail);
+
+    if (event.get_window () == this.get_window () &&
+        detail != Gdk.NotifyType.INFERIOR) {
       next_revealer.reveal_child = false;
       previous_revealer.reveal_child = false;
     }

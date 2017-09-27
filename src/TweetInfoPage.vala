@@ -98,8 +98,12 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
     this.scroll_event.connect ((evt) => {
-      if (evt.delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
-        int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
+      double delta_x, delta_y;
+
+      evt.get_scroll_deltas (out delta_x, out delta_y);
+
+      if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
+        int inc = (int)(vadjustment.step_increment * (- delta_y));
         max_size_container.max_size += inc;
         return true;
       }
