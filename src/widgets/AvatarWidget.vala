@@ -173,23 +173,12 @@ public class AvatarContainer : Gtk.Widget {
     set {
       if (value == _round)
         return;
-<<<<<<< HEAD
 
       if (value) {
         this.get_style_context ().add_class ("avatar-round");
       } else {
         this.get_style_context ().remove_class ("avatar-round");
       }
-
-=======
-
-      if (value) {
-        this.get_style_context ().add_class ("avatar-round");
-      } else {
-        this.get_style_context ().remove_class ("avatar-round");
-      }
-
->>>>>>> Simple gtk4 port
       this._round = value;
       this.queue_draw ();
     }
