@@ -80,8 +80,8 @@ class FavImageRow : Gtk.FlowBoxChild {
         menu.popup (null,
                     null,
                     null,
-                    event.button,
-                    event.time);
+                    gesture.get_current_button (),
+                    event.get_time ());
       } else {
         this.set_state_flags (this.get_state_flags () | Gtk.StateFlags.ACTIVE, true);
       }
@@ -90,12 +90,9 @@ class FavImageRow : Gtk.FlowBoxChild {
     });
 
     gesture.released.connect (() => {
-      Gdk.EventSequence sequence = this.gesture.get_current_sequence ();
-      Gdk.EventButton? event = (Gdk.EventButton?)this.gesture.get_last_event (sequence);
-
       this.unset_state_flags (Gtk.StateFlags.ACTIVE);
 
-      if (event != null && event.button == Gdk.BUTTON_PRIMARY) {
+      if (gesture.get_current_button () == Gdk.BUTTON_PRIMARY) {
         /* This gesture blocks the flowbox gesture so implement activating manually. */
         if (this.get_parent () is Gtk.FlowBox) {
           ((Gtk.FlowBox)this.get_parent ()).child_activated (this);

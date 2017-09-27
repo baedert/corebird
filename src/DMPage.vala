@@ -324,8 +324,14 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
 
   [GtkCallback]
   private bool text_view_key_press_cb (Gdk.EventKey evt) {
-    if (evt.keyval == Gdk.Key.Return &&
-        (evt.state & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK) {
+    uint keyval;
+    Gdk.ModifierType state;
+
+    evt.get_keyval (out keyval);
+    evt.get_state (out state);
+
+    if (keyval == Gdk.Key.Return &&
+        (state & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK) {
       send_button_clicked_cb ();
       return Gdk.EVENT_STOP;
     }

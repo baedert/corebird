@@ -182,7 +182,11 @@ public class MainWindow : Gtk.ApplicationWindow {
 
 
     headerbar.key_press_event.connect ((evt) => {
-      if (evt.keyval == Gdk.Key.Down && main_widget != null) {
+      uint keyval;
+
+      evt.get_keyval (out keyval);
+
+      if (keyval == Gdk.Key.Down && main_widget != null) {
         main_widget.get_page (main_widget.cur_page_id).focus (Gtk.DirectionType.RIGHT);
         return true;
       }

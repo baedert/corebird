@@ -93,23 +93,25 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
   private bool name_entry_key_pressed (Gdk.EventKey evt) {
     uint num_results = completion_list.get_children ().length ();
+    uint keyval;
 
     if (num_results == 0)
       return Gdk.EVENT_PROPAGATE;
 
+    evt.get_keyval (out keyval);
 
-    if (evt.keyval == Gdk.Key.Down) {
+    if (keyval == Gdk.Key.Down) {
       current_match = (current_match + 1) % (int)num_results;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
       return Gdk.EVENT_STOP;
-    } else if (evt.keyval == Gdk.Key.Up) {
+    } else if (keyval == Gdk.Key.Up) {
       current_match --;
       if (current_match < 0) current_match = (int)num_results - 1;
       var row = completion_list.get_row_at_index (current_match);
       completion_list.select_row (row);
       return Gdk.EVENT_STOP;
-    } else if (evt.keyval == Gdk.Key.Return) {
+    } else if (keyval == Gdk.Key.Return) {
 
     }
     return Gdk.EVENT_PROPAGATE;

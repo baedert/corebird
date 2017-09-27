@@ -64,10 +64,13 @@ class CropWidget : Gtk.DrawingArea {
   }
 
   private bool mouse_motion_cb (Gdk.EventMotion event) {
+    double x, y;
     /* Just check whether the cursor is over the drag or resize area (or not)
        and change the cursor accordingly */
 
-    if (over_resize_area (event.x, event.y)) {
+    event.get_coords (out x, out y);
+
+    if (over_resize_area (x, y)) {
       set_cursor (resize_cursor);
       resize_area_hovered = true;
       queue_draw ();
@@ -79,7 +82,7 @@ class CropWidget : Gtk.DrawingArea {
     }
 
 
-    if (cursor_in_selection (event.x, event.y)) {
+    if (cursor_in_selection (x, y)) {
       set_cursor (drag_cursor);
     } else {
       set_cursor (default_cursor);
