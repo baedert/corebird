@@ -196,8 +196,11 @@ class CompletionTextView : Gtk.TextView {
   }
 
   private bool key_press_event_cb (Gdk.EventKey evt) {
+    uint keyval;
 
-    if (evt.keyval == Gdk.Key.Tab && snippets_configured ()) {
+    evt.get_keyval (out keyval);
+
+    if (keyval == Gdk.Key.Tab && snippets_configured ()) {
       return insert_snippet ();
     }
 
@@ -208,7 +211,7 @@ class CompletionTextView : Gtk.TextView {
 
     int n_results = (int)completion_model.get_n_items ();
 
-    switch (evt.keyval) {
+    switch (keyval) {
       case Gdk.Key.Down:
         if (n_results == 0)
           return Gdk.EVENT_PROPAGATE;

@@ -95,8 +95,12 @@ class ListStatusesPage : ScrollWidget, IPage {
   }
 
   private bool scroll_event_cb (Gdk.EventScroll evt) {
-    if (evt.delta_y < 0 && this.vadjustment.value == 0) {
-      int inc = (int)(vadjustment.step_increment * (-evt.delta_y));
+    double delta_x, delta_y;
+
+    evt.get_scroll_deltas (out delta_x, out delta_y);
+
+    if (delta_y < 0 && this.vadjustment.value == 0) {
+      int inc = (int)(vadjustment.step_increment * (- delta_y));
       max_size_container.max_size += inc;
       return Gdk.EVENT_STOP;
     }
