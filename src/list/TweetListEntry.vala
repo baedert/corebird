@@ -318,7 +318,11 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   [GtkCallback]
   private bool key_released_cb (Gdk.EventKey evt) {
 #if DEBUG
-    switch(evt.keyval) {
+    uint keyval;
+
+    evt.get_keyval (out keyval);
+
+    switch(keyval) {
       case Gdk.Key.k:
         stdout.printf (tweet.json_data+"\n");
         message ("Seen      : %s", tweet.get_seen ().to_string ());
