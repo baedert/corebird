@@ -355,8 +355,8 @@ cb_media_video_widget_new (CbMedia *media)
   width = cairo_image_surface_get_width (media->surface);
   height = cairo_image_surface_get_height (media->surface) + h;
 
-  monitor_width = gdk_screen_get_width (gdk_screen_get_default ());
-  monitor_height = gdk_screen_get_height (gdk_screen_get_default ());
+  monitor_width = 800;
+  monitor_height = 600;
 
   if (width > monitor_width * 0.9)
     scale_x = (monitor_width * 0.9) / width;
