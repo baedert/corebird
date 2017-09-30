@@ -107,12 +107,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       avatar_image.surface = account.avatar;
     });
 
-    /* Just use recalc_tweet_length here so we have a central place where we update the
-       send_button sensitivity */
-    GLib.NetworkMonitor.get_default ().notify["network-available"].connect (recalc_tweet_length);
+    GLib.NetworkMonitor.get_default ().notify["network-available"].connect (update_send_button_sensitivity);
 
     length_label.label = Cb.Tweet.MAX_LENGTH.to_string ();
-    tweet_text.buffer.changed.connect (recalc_tweet_length);
+    tweet_text.buffer.changed.connect (update_send_button_sensitivity);
 
     if (parent != null) {
       this.set_transient_for (parent);
@@ -171,6 +169,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         this.compose_image_manager.hide ();
         fav_image_view.set_gifs_enabled (true);
       }
+
+      update_send_button_sensitivity ();
     });
 
     this.add_accel_group (ag);
@@ -188,17 +188,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
 
-
-
-  private void recalc_tweet_length () {
+  private void update_send_button_sensitivity () {
     Gtk.TextIter start, end;
     tweet_text.buffer.get_bounds (out start, out end);
     string text = tweet_text.buffer.get_text (start, end, true);
 
     int length = (int)Tl.count_characters (text);
-
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
-    if (length > 0 && length <= Cb.Tweet.MAX_LENGTH) {
+
+    if (length > 0 && length <= Cb.Tweet.MAX_LENGTH ||
+        (length == 0 && compose_image_manager.n_images > 0)) {
       bool network_reachable = GLib.NetworkMonitor.get_default ().network_available;
       send_button.sensitive = network_reachable;
     } else {
@@ -258,7 +257,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       cancel_button.label = _("Cancel");
       /* Use this instead of just setting send_button.sensitive to true to avoid
          sending tweets with 0 length */
-      this.recalc_tweet_length ();
+      this.update_send_button_sensitivity ();
     } else {
       if (this.cancellable != null) {
         this.cancellable.cancel ();
@@ -345,6 +344,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
         }
       }
     }
+
+    update_send_button_sensitivity ();
   }
 
   [GtkCallback]
@@ -367,5 +368,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (this.compose_image_manager.n_images > 0)
       fav_image_view.set_gifs_enabled (false);
+
+    update_send_button_sensitivity ();
   }
 }
