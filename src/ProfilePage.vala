@@ -458,8 +458,11 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
                                                             this.user_id,
                                                             this.followers_cursor);
 
-    if (this.followers_cursor == null)
+    if (this.followers_cursor == null) {
+      this.followers_list.set_placeholder_text (_("Protected Profile"));
+      this.followers_list.set_empty ();
       return;
+    }
 
     var users_array = this.followers_cursor.json_object.get_array ();
 
@@ -498,8 +501,12 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
                                                             this.user_id,
                                                             this.following_cursor);
 
-    if (this.following_cursor == null)
+    if (this.following_cursor == null) {
+      message ("null cursor");
+      this.following_list.set_placeholder_text (_("Protected Profile"));
+      this.following_list.set_empty ();
       return;
+    }
 
     var users_array = this.following_cursor.json_object.get_array ();
 
