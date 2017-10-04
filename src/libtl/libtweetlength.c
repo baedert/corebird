@@ -258,6 +258,8 @@ parse_link_tail (GArray      *entities,
     t = &tokens[i];
 
     if (t->type == TOK_WHITESPACE) {
+      // Whitespace isn't part of the URL, so backtrack
+      i --;
       break;
     }
 
@@ -323,7 +325,11 @@ parse_link (GArray      *entities,
     return FALSE;
   }
 
+  gboolean needs_tld = TRUE;
+
   if (token_is_protocol (t)) {
+    needs_tld = FALSE;
+
     // need "://" now.
     t = &tokens[i + 1];
     if (t->type != TOK_COLON) {
@@ -355,7 +361,7 @@ parse_link (GArray      *entities,
     }
   }
 
-  // Now read until .TLD
+  // Now read until the end of the domain
   guint dot_index = i;
   while (dot_index < n_tokens - 1) { // -1 so we can do +1 in the loop body!
     if (tokens[dot_index].type != TOK_TEXT &&
@@ -363,10 +369,20 @@ parse_link (GArray      *entities,
       return FALSE;
     }
 
-    // The dot we look for is followed by a tld identifier such as "com"
+    
+    // Stop when either:
+    //   1) have a protocol and know it is a link and so we look for a dot
+    //      followed by text followed by the end of the text or by something
+    //      that isn't a dot (e.g. colon or slash in a URL, or whitespace
+    //      and other characters outside the URL); or
+    //   2) we're trying to guess at a plain-text URL and we find a TLD
     if (tokens[dot_index].type == TOK_DOT &&
         tokens[dot_index + 1].type == TOK_TEXT &&
-        token_is_tld (&tokens[dot_index + 1])) {
+        (
+          (needs_tld && token_is_tld (&tokens[dot_index + 1])) ||
+          (!needs_tld && (dot_index + 2 >= n_tokens || tokens[dot_index + 2].type != TOK_DOT))
+        )
+      ) {
       break;
     }
     dot_index ++;
