@@ -258,6 +258,8 @@ parse_link_tail (GArray      *entities,
     t = &tokens[i];
 
     if (t->type == TOK_WHITESPACE) {
+      // Whitespace isn't part of the URL, so backtrack
+      i --;
       break;
     }
 
