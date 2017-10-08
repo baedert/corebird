@@ -89,33 +89,39 @@ typedef struct _CbTweet CbTweet;
 #define CB_TYPE_TWEET cb_tweet_get_type ()
 G_DECLARE_FINAL_TYPE (CbTweet, cb_tweet, CB, TWEET, GObject);
 
-CbTweet *   cb_tweet_new (void);
+CbTweet *        cb_tweet_new (void);
 
-gboolean    cb_tweet_is_hidden (CbTweet *tweet);
+gboolean         cb_tweet_is_hidden       (CbTweet *tweet);
+CbUserIdentity * cb_tweet_get_reply_users (CbTweet *tweet,
+                                           guint   *n_reply_users);
 
-CbMedia **  cb_tweet_get_medias (CbTweet *tweet, int *n_medias);
-char **     cb_tweet_get_mentions (CbTweet *tweet, int *n_mentions);
-gboolean    cb_tweet_has_inline_media (CbTweet *tweet);
-gint64      cb_tweet_get_user_id (CbTweet *tweet);
-const char *cb_tweet_get_screen_name (CbTweet *tweet);
-const char *cb_tweet_get_user_name (CbTweet *tweet);
-void        cb_tweet_load_from_json (CbTweet *tweet, JsonNode *status_node, gint64 account_id, GDateTime *now);
+CbMedia **       cb_tweet_get_medias       (CbTweet   *tweet,
+                                            int       *n_medias);
+char **          cb_tweet_get_mentions     (CbTweet   *tweet,
+                                            int       *n_mentions);
+gboolean         cb_tweet_has_inline_media (CbTweet   *tweet);
+gint64           cb_tweet_get_user_id      (CbTweet   *tweet);
+const char *     cb_tweet_get_screen_name  (CbTweet   *tweet);
+const char *     cb_tweet_get_user_name    (CbTweet   *tweet);
+void             cb_tweet_load_from_json   (CbTweet   *tweet,
+                                            JsonNode  *status_node,
+                                            gint64     account_id,
+                                            GDateTime *now);
 
 /* Flag stuff */
-gboolean    cb_tweet_is_flag_set (CbTweet *tweet, guint flag);
-void        cb_tweet_set_flag (CbTweet *tweet, guint flag);
-void        cb_tweet_unset_flag (CbTweet *tweet, guint flag);
+gboolean         cb_tweet_is_flag_set (CbTweet *tweet, guint flag);
+void             cb_tweet_set_flag    (CbTweet *tweet, guint flag);
+void             cb_tweet_unset_flag  (CbTweet *tweet, guint flag);
 
-char *      cb_tweet_get_formatted_text (CbTweet *tweet);
-char *      cb_tweet_get_trimmed_text (CbTweet *tweet, guint transform_flags);
-char *      cb_tweet_get_real_text (CbTweet *tweet);
-char *      cb_tweet_get_filter_text (CbTweet *tweet);
+char *           cb_tweet_get_formatted_text (CbTweet *tweet);
+char *           cb_tweet_get_trimmed_text   (CbTweet *tweet,
+                                              guint    transform_flags);
+char *           cb_tweet_get_real_text      (CbTweet *tweet);
+char *           cb_tweet_get_filter_text    (CbTweet *tweet);
 
-gboolean    cb_tweet_get_seen (CbTweet *tweet);
-void        cb_tweet_set_seen (CbTweet *tweet, gboolean value);
-
-CbUserIdentity *cb_tweet_get_reply_users (CbTweet *tweet,
-                                          guint   *n_reply_users);
+gboolean         cb_tweet_get_seen (CbTweet  *tweet);
+void             cb_tweet_set_seen (CbTweet  *tweet,
+                                    gboolean value);
 
 #endif
 
