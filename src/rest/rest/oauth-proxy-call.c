@@ -298,12 +298,11 @@ _prepare (RestProxyCall *call, GError **error)
 
   s = make_authorized_header (oauth_params);
   if (priv->oauth_echo) {
-    rest_proxy_call_add_header (call, "X-Verify-Credentials-Authorization", s);
+    rest_proxy_call_take_header (call, "X-Verify-Credentials-Authorization", g_steal_pointer (&s));
     rest_proxy_call_add_header (call, "X-Auth-Service-Provider", priv->service_url);
   } else {
-    rest_proxy_call_add_header (call, "Authorization", s);
+    rest_proxy_call_take_header (call, "Authorization", g_steal_pointer (&s));
   }
-  g_free (s);
   g_hash_table_destroy (oauth_params);
 
   g_object_unref (proxy);

@@ -85,6 +85,11 @@ void rest_proxy_call_add_header (RestProxyCall *call,
                                  const gchar   *header,
                                  const gchar   *value);
 
+void rest_proxy_call_take_header (RestProxyCall *call,
+                                  const gchar   *header,
+                                  gchar         *value);
+
+
 const gchar *rest_proxy_call_lookup_header (RestProxyCall *call,
                                             const gchar   *header);
 

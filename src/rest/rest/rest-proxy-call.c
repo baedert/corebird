@@ -307,6 +307,20 @@ rest_proxy_call_add_header (RestProxyCall *call,
 
 }
 
+void
+rest_proxy_call_take_header (RestProxyCall *call,
+                             const gchar   *header,
+                             gchar         *value)
+{
+  RestProxyCallPrivate *priv = GET_PRIVATE (call);
+
+  g_return_if_fail (REST_IS_PROXY_CALL (call));
+
+  g_hash_table_insert (priv->headers,
+                       g_strdup (header),
+                       value);
+}
+
 /**
  * rest_proxy_call_lookup_header:
  * @call: The #RestProxyCall
