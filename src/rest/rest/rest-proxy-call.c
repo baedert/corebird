@@ -404,51 +404,6 @@ rest_proxy_call_add_param_full (RestProxyCall *call, RestParam *param)
 }
 
 /**
- * rest_proxy_call_add_params:
- * @call: The #RestProxyCall
- * @...: Parameter name and value pairs, followed by %NULL.
- *
- * Add the specified parameter name and value pairs to the call.  If a parameter
- * already exists, the new value will replace the old.
- */
-void
-rest_proxy_call_add_params (RestProxyCall *call,
-                            ...)
-{
-  va_list params;
-
-  g_return_if_fail (REST_IS_PROXY_CALL (call));
-
-  va_start (params, call);
-  rest_proxy_call_add_params_from_valist (call, params);
-  va_end (params);
-}
-
-/**
- * rest_proxy_call_add_params_from_valist:
- * @call: The #RestProxyCall
- * @params: Parameter name and value pairs, followed by %NULL.
- *
- * Add the specified parameter name and value pairs to the call.  If a parameter
- * already exists, the new value will replace the old.
- */
-void
-rest_proxy_call_add_params_from_valist (RestProxyCall *call,
-                                        va_list        params)
-{
-  const gchar *param = NULL;
-  const gchar *value = NULL;
-
-  g_return_if_fail (REST_IS_PROXY_CALL (call));
-
-  while ((param = va_arg (params, const gchar *)) != NULL)
-  {
-    value = va_arg (params, const gchar *);
-    rest_proxy_call_add_param (call, param, value);
-  }
-}
-
-/**
  * rest_proxy_call_lookup_param:
  * @call: The #RestProxyCall
  * @name: The paramter name

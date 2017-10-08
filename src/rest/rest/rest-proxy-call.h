@@ -107,13 +107,6 @@ void rest_proxy_call_take_param (RestProxyCall *call,
 void rest_proxy_call_add_param_full (RestProxyCall            *call,
                                      RestParam                *param);
 
-G_GNUC_NULL_TERMINATED
-void rest_proxy_call_add_params (RestProxyCall *call,
-                                 ...);
-
-void rest_proxy_call_add_params_from_valist (RestProxyCall *call,
-                                             va_list        params);
-
 RestParam *rest_proxy_call_lookup_param (RestProxyCall *call,
                                            const gchar *name);
 
