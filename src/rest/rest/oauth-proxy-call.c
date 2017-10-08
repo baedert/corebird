@@ -350,39 +350,3 @@ oauth_proxy_call_parse_token_response (OAuthProxyCall *call)
 
   g_hash_table_destroy (form);
 }
-
-#if BUILD_TESTS
-/* Test cases from http://wiki.oauth.net/TestCases */
-void
-test_param_encoding (void)
-{
-  GHashTable *hash;
-  char *s;
-
-#define TEST(expected) \
-  s = encode_params (hash);                      \
-  g_assert_cmpstr (s, ==, expected);             \
-  g_free (s);                                    \
-  g_hash_table_remove_all (hash);
-
-  hash = g_hash_table_new (g_str_hash, g_str_equal);
-
-  g_hash_table_insert (hash, "name", NULL);
-  TEST("name=");
-
-  g_hash_table_insert (hash, "a", "b");
-  TEST("a=b");
-
-  g_hash_table_insert (hash, "a", "b");
-  g_hash_table_insert (hash, "c", "d");
-  TEST("a=b&c=d");
-
-  /* Because we don't (yet) support multiple parameters with the same key we've
-     changed this case slightly */
-  g_hash_table_insert (hash, "b", "x!y");
-  g_hash_table_insert (hash, "a", "x y");
-  TEST("a=x%20y&b=x%21y");
-
-#undef TEST
-}
-#endif
