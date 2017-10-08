@@ -450,6 +450,7 @@ cb_tweet_get_reply_users (CbTweet *tweet,
       return tweet->source_tweet.reply_users;
     }
 
+  *n_reply_users = 0;
   return NULL; /* shrug */
 }
 
