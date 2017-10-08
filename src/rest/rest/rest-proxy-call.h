@@ -85,13 +85,6 @@ void rest_proxy_call_add_header (RestProxyCall *call,
                                  const gchar   *header,
                                  const gchar   *value);
 
-G_GNUC_NULL_TERMINATED
-void rest_proxy_call_add_headers (RestProxyCall *call,
-                                  ...);
-
-void rest_proxy_call_add_headers_from_valist (RestProxyCall *call,
-                                              va_list        headers);
-
 const gchar *rest_proxy_call_lookup_header (RestProxyCall *call,
                                             const gchar   *header);
 

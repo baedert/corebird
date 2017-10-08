@@ -308,51 +308,6 @@ rest_proxy_call_add_header (RestProxyCall *call,
 }
 
 /**
- * rest_proxy_call_add_headers:
- * @call: The #RestProxyCall
- * @...: Header name and value pairs, followed by %NULL.
- *
- * Add the specified header name and value pairs to the call.  If a header
- * already exists, the new value will replace the old.
- */
-void
-rest_proxy_call_add_headers (RestProxyCall *call,
-                             ...)
-{
-  va_list headers;
-
-  g_return_if_fail (REST_IS_PROXY_CALL (call));
-
-  va_start (headers, call);
-  rest_proxy_call_add_headers_from_valist (call, headers);
-  va_end (headers);
-}
-
-/**
- * rest_proxy_call_add_headers_from_valist:
- * @call: The #RestProxyCall
- * @headers: Header name and value pairs, followed by %NULL.
- *
- * Add the specified header name and value pairs to the call.  If a header
- * already exists, the new value will replace the old.
- */
-void
-rest_proxy_call_add_headers_from_valist (RestProxyCall *call,
-                                         va_list        headers)
-{
-  const gchar *header = NULL;
-  const gchar *value = NULL;
-
-  g_return_if_fail (REST_IS_PROXY_CALL (call));
-
-  while ((header = va_arg (headers, const gchar *)) != NULL)
-  {
-    value = va_arg (headers, const gchar *);
-    rest_proxy_call_add_header (call, header, value);
-  }
-}
-
-/**
  * rest_proxy_call_lookup_header:
  * @call: The #RestProxyCall
  * @header: The header name
