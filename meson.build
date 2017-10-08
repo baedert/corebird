@@ -197,7 +197,7 @@ configure_file(
 )
 
 # library (for unit tests)
-cb_lib = library(
+cb_lib = static_library(
   'corebird',
   corebird_lib_sources,
   dependencies: cb_deps,
