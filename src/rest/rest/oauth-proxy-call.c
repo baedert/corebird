@@ -299,7 +299,7 @@ _prepare (RestProxyCall *call, GError **error)
   s = make_authorized_header (oauth_params);
   if (priv->oauth_echo) {
     rest_proxy_call_add_header (call, "X-Verify-Credentials-Authorization", s);
-    rest_proxy_call_add_param (call, "X-Auth-Service-Provider", priv->service_url);
+    rest_proxy_call_add_header (call, "X-Auth-Service-Provider", priv->service_url);
   } else {
     rest_proxy_call_add_header (call, "Authorization", s);
   }
