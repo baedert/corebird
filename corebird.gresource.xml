@@ -16,7 +16,6 @@
     <file preprocess="xml-stripblanks">ui/load-more-entry.ui</file>
     <file preprocess="xml-stripblanks">ui/start-conversation-entry.ui</file>
     <file preprocess="xml-stripblanks">ui/dm-list-entry.ui</file>
-    <file preprocess="xml-stripblanks">ui/dm-placeholder-box.ui</file>
     <file preprocess="xml-stripblanks">ui/list-statuses-page.ui</file>
     <file preprocess="xml-stripblanks">ui/list-list-entry.ui</file>
     <file preprocess="xml-stripblanks">ui/new-list-entry.ui</file>

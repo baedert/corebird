@@ -15,13 +15,9 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/dm-placeholder-box.ui")]
 class DMPlaceholderBox : Gtk.Box {
-  [GtkChild]
   private AvatarWidget avatar_image;
-  [GtkChild]
   private Gtk.Label name_label;
-  [GtkChild]
   private Gtk.Label screen_name_label;
 
   public int64 user_id;
@@ -44,4 +40,26 @@ class DMPlaceholderBox : Gtk.Box {
     Twitter.get ().get_avatar.begin (user_id, avatar_url, avatar_image);
   }
 
+  construct {
+    this.set_opacity (0.8);
+    this.set_margin_top (60);
+    this.set_orientation (Gtk.Orientation.VERTICAL);
+    this.set_spacing (4);
+    this.avatar_image = new AvatarWidget ();
+    avatar_image.size = 48;
+    avatar_image.set_halign (Gtk.Align.CENTER);
+    this.add (avatar_image);
+
+    this.name_label = new Gtk.Label ("");
+    var attrs = new Pango.AttrList ();
+    attrs.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
+    name_label.set_attributes (attrs);
+    this.add (name_label);
+
+    this.screen_name_label = new Gtk.Label ("");
+    screen_name_label.get_style_context ().add_class ("dim-label");
+    this.add (screen_name_label);
+
+    this.show_all ();
+  }
 }
