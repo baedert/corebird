@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/dm-threads-page.ui")]
 class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
   private bool initialized = false;
   private int _unread_count = 0;
@@ -39,9 +38,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
   public int id                             { get; set; }
   private BadgeRadioButton radio_button;
   private StartConversationEntry start_conversation_entry;
-  [GtkChild]
   private Gtk.ListBox thread_list;
-  [GtkChild]
   private Gtk.ListBox top_list;
   private Gtk.ListBoxRow? progress_row = null;
 
@@ -54,7 +51,33 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     this.manager = new DMManager.for_account (account);
     this.manager.message_received.connect (dm_received_cb);
     this.manager.thread_changed.connect (thread_changed_cb);
+
+    /* Create UI */
+    this.hscrollbar_policy = Gtk.PolicyType.NEVER;
+    var frame = new Gtk.Frame (null);
+    frame.margin = 25;
+    frame.set_valign (Gtk.Align.START);
+    frame.set_shadow_type (Gtk.ShadowType.IN);
+    frame.show ();
+    var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+    frame.add (box);
+    box.show ();
+    this.top_list = new Gtk.ListBox ();
+    top_list.show ();
+    top_list.set_selection_mode (Gtk.SelectionMode.NONE);
+    top_list.keynav_failed.connect (top_list_keynav_failed_cb);
+    box.add (top_list);
+    var sep = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+    sep.show ();
+    box.add (sep);
+    thread_list = new Gtk.ListBox ();
+    thread_list.set_valign (Gtk.Align.START);
+    thread_list.set_selection_mode (Gtk.SelectionMode.NONE);
+    thread_list.keynav_failed.connect (thread_list_keynav_failed_cb);
     thread_list.set_header_func (default_header_func);
+    box.add (thread_list);
+    this.add (frame);
+
 
     top_list.row_activated.connect ((row) => {
       if (row is StartConversationEntry) {
@@ -251,8 +274,6 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     return id;
   }
 
-
-  [GtkCallback]
   private bool top_list_keynav_failed_cb (Gtk.DirectionType direction) {
     if (direction == Gtk.DirectionType.DOWN) {
       if (thread_list.visible) {
@@ -263,7 +284,6 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     return false;
   }
 
-  [GtkCallback]
   private bool thread_list_keynav_failed_cb (Gtk.DirectionType direction) {
     if (direction == Gtk.DirectionType.UP) {
       top_list.child_focus (direction);
@@ -271,7 +291,4 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     }
     return false;
   }
-
-
-
 }
