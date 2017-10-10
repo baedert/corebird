@@ -1,0 +1,106 @@
+{
+  "app-id": "org.baedert.corebird",
+  "branch": "next",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "master",
+  "sdk" : "org.gnome.Sdk",
+  "command" : "corebird",
+  "rename-icon" : "corebird",
+  "copy-icon" : true,
+  "desktop-file-name-prefix": "(Next)",
+  "finish-args" : [
+    "--share=ipc",
+    "--share=network",
+    "--socket=wayland",
+    "--socket=pulseaudio",
+    "--filesystem=host",
+    "--talk-name=ca.desrt.dconf",
+    "--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+  ],
+  "build-options" : {
+    "cflags" : "-O0 -g"
+  },
+  "cleanup" : [
+    "/include", "/share/gir-1.0",
+    "/lib/pkgconfig", "/lib/girepository-1.0",
+    "/share/vala-0.36", "/share/vala/"
+  ],
+  "modules" : [
+    {
+        "name": "meson",
+        "buildsystem": "simple",
+        "build-commands": [
+            "python3 setup.py install --prefix=/app"
+        ],
+        "cleanup": ["*"],
+        "sources": [
+            {
+                "type": "archive",
+                "url": "https://pypi.python.org/packages/8f/2d/b82ad8015f68a6a261b458acc07b0252fbb0170d508844bce7fc95793a25/meson-0.43.0.tar.gz",
+                "sha256": "c1e05a84e7ba34922562b638dbf85ceec817830ec78c776c8d7954b5bf87c562"
+            },
+            {
+                "type": "patch",
+                "path": "meson-no-lib64.patch"
+            }
+        ]
+    },
+    {
+      "name"   : "graphene",
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "https://github.com/ebassi/graphene",
+          "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "wayland-protocols",
+      "sources" : [
+        {
+          "type" : "git",
+          "url" : "git://anongit.freedesktop.org/wayland/wayland-protocols",
+          "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "gtk+",
+      "buildsystem" : "meson",
+      "builddir" : true,
+      "config-opts" : ["-Dintrospection=false", "-Ddemos=false", "-Dbuild-tests=false", "--libdir=lib"],
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "file:///home/baedert/Source/gnome/gtk+/",
+          "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "vala",
+      "config-opts" : [],
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "git://git.gnome.org/vala",
+          "branch" : "master"
+        }
+      ]
+    },
+    {
+      "name" : "corebird",
+      "buildsystem" : "meson",
+      "builddir" : true,
+      "config-opts" : ["-Ddebug=true", "-Dvideo=false", "-Dspellcheck=false"],
+      "sources" : [
+        {
+          "type"   : "git",
+          "url"    : "https://github.com/baedert/corebird",
+          "branch" : "next2"
+        }
+      ]
+    }
+  ]
+}
