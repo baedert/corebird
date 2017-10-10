@@ -385,19 +385,29 @@ class SearchPage : IPage, Gtk.Box {
   }
 }
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/load-more-entry.ui")]
 class LoadMoreEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   private GLib.TimeSpan last_timediff;
   public bool seen {
     get { return true; }
     set {}
   }
-  [GtkChild]
   private Gtk.Button load_more_button;
 
   public LoadMoreEntry () {
     this.activatable = false;
+
+    var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+    box.show ();
+    this.load_more_button = new Gtk.Button.with_label (_("Load More"));
+    load_more_button.get_style_context ().add_class ("dim-label");
+    load_more_button.set_halign (Gtk.Align.CENTER);
+    load_more_button.set_hexpand (true);
+    load_more_button.set_relief (Gtk.ReliefStyle.NONE);
+    load_more_button.show ();
+    box.add (load_more_button);
+    this.add (box);
   }
+
   public Gtk.Button get_button () {
     return load_more_button;
   }
