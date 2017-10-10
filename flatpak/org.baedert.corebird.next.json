@@ -81,6 +81,7 @@
     {
       "name" : "vala",
       "config-opts" : [],
+      "cleanup" : ["*"],
       "sources" : [
         {
           "type"   : "git",
