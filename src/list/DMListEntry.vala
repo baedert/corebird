@@ -15,17 +15,11 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/dm-list-entry.ui")]
 class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
-  [GtkChild]
   private AvatarWidget avatar_image;
-  [GtkChild]
   private Gtk.Label text_label;
-  [GtkChild]
   private Gtk.Label screen_name_label;
-  [GtkChild]
   private TextButton name_button;
-  [GtkChild]
   private Gtk.Label time_delta_label;
 
   public string text {
@@ -54,12 +48,64 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public unowned MainWindow main_window;
 
   public DMListEntry () {
+    this.set_activatable (false);
+    this.get_style_context ().add_class ("tweet");
+
+    var grid = new Gtk.Grid ();
+    grid.margin = 6;
+    grid.show ();
+    this.add (grid);
+
+    this.avatar_image = new AvatarWidget ();
+    avatar_image.size = 48;
+    avatar_image.set_valign (Gtk.Align.START);
+    avatar_image.margin = 4;
+    avatar_image.margin_end = 12;
+    avatar_image.show ();
+    grid.attach (avatar_image, 0, 0, 1, 2);
+
+    this.name_button = new TextButton ();
+    name_button.set_valign (Gtk.Align.BASELINE);
+    name_button.show ();
+    grid.attach (name_button, 1, 0, 1, 1);
+
+    this.screen_name_label = new Gtk.Label (null);
+    screen_name_label.set_margin_start (6);
+    screen_name_label.set_valign (Gtk.Align.BASELINE);
+    screen_name_label.get_style_context ().add_class ("dim-label");
+    screen_name_label.show ();
+    grid.attach (screen_name_label, 2, 0, 1, 1);
+
+    this.time_delta_label = new Gtk.Label (null);
+    time_delta_label.set_halign (Gtk.Align.END);
+    time_delta_label.set_valign (Gtk.Align.BASELINE);
+    time_delta_label.set_hexpand (true);
+    time_delta_label.show ();
+    grid.attach (time_delta_label, 3, 0, 1, 1);
+
+    this.text_label = new Gtk.Label (null);
+    text_label.set_margin_top (6);
+    text_label.set_margin_end (6);
+    text_label.set_margin_bottom (6);
+    text_label.set_hexpand (true);
+    text_label.set_vexpand (true);
+    text_label.set_xalign (0.0f);
+    text_label.set_line_wrap (true);
+    text_label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    text_label.set_use_markup (true);
+    text_label.set_use_markup (true);
+    text_label.set_selectable (true);
+    text_label.show ();
+    grid.attach (text_label, 1, 1, 3, 1);
+
     name_button.clicked.connect (() => {
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (ProfilePage.KEY_USER_ID, user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, screen_name_label.label.substring (1));
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
+
+    this.show ();
   }
 
   public void load_avatar (string avatar_url) {
