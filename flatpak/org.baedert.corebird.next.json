@@ -27,23 +27,23 @@
   ],
   "modules" : [
     {
-        "name": "meson",
-        "buildsystem": "simple",
-        "build-commands": [
-            "python3 setup.py install --prefix=/app"
-        ],
-        "cleanup": ["*"],
-        "sources": [
-            {
-                "type": "archive",
-                "url": "https://pypi.python.org/packages/8f/2d/b82ad8015f68a6a261b458acc07b0252fbb0170d508844bce7fc95793a25/meson-0.43.0.tar.gz",
-                "sha256": "c1e05a84e7ba34922562b638dbf85ceec817830ec78c776c8d7954b5bf87c562"
-            },
-            {
-                "type": "patch",
-                "path": "meson-no-lib64.patch"
-            }
-        ]
+      "name": "meson",
+      "buildsystem": "simple",
+      "build-commands": [
+        "python3 setup.py install --prefix=/app"
+       ],
+       "cleanup": ["*"],
+       "sources": [
+         {
+           "type": "archive",
+           "url": "https://pypi.python.org/packages/8f/2d/b82ad8015f68a6a261b458acc07b0252fbb0170d508844bce7fc95793a25/meson-0.43.0.tar.gz",
+           "sha256": "c1e05a84e7ba34922562b638dbf85ceec817830ec78c776c8d7954b5bf87c562"
+         },
+         {
+           "type": "patch",
+           "path": "meson-no-lib64.patch"
+         }
+       ]
     },
     {
       "name"   : "graphene",
@@ -86,6 +86,10 @@
           "type"   : "git",
           "url"    : "git://git.gnome.org/vala",
           "branch" : "master"
+        },
+        {
+            "type": "patch",
+            "path": "vala-no-valadoc.patch"
         }
       ]
     },

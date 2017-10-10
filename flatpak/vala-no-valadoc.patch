@@ -1,0 +1,54 @@
+diff --git a/Makefile.am b/Makefile.am
+index e5dc0cc97..c84c33be7 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -2,6 +2,14 @@ ACLOCAL_AMFLAGS = --install -I m4 ${ACLOCAL_FLAGS}
+ 
+ NULL =
+ 
++if HAVE_CGRAPH
++MAYBE_VALADOC = libvaladoc valadoc
++endif
++
++if ENABLE_DOC
++MAYBE_DOC = doc
++endif
++
+ SUBDIRS = \
+ 	gee \
+ 	vala \
+@@ -10,11 +18,10 @@ SUBDIRS = \
+ 	compiler \
+ 	vapi \
+ 	tests \
+-	doc \
+ 	gobject-introspection \
+ 	vapigen \
+-	libvaladoc \
+-	valadoc \
++	$(MAYBE_DOC) \
++	$(MAYBE_VALADOC) \
+ 	$(NULL)
+ 
+ if ENABLE_UNVERSIONED
+diff --git a/configure.ac b/configure.ac
+index c73d5d6b1..ad62c59a2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -98,7 +98,15 @@ PKG_CHECK_MODULES(GMODULE, gmodule-2.0 >= $GLIB_REQUIRED)
+ AC_SUBST(GMODULE_CFLAGS)
+ AC_SUBST(GMODULE_LIBS)
+ 
+-PKG_CHECK_MODULES(LIBGVC, libgvc >= $LIBGVC_REQUIRED)
++AC_ARG_WITH([valadoc], AS_HELP_STRING([--with-valadoc], [Build libvaladoc]))
++
++AC_ARG_ENABLE(doc, AS_HELP_STRING([--enable-doc], [Build documentation]), enable_doc=$enableval, enable_doc=no)
++AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
++
++if test "x$with_valadoc" = "xyes"; then
++	PKG_CHECK_MODULES(LIBGVC, libgvc >= $LIBGVC_REQUIRED)
++fi
++
+ AC_MSG_CHECKING([for CGRAPH])
+ cgraph_tmp_LIBADD="$LIBADD"
+ cgraph_tmp_CFLAGS="$CFLAGS"
