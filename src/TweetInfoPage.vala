@@ -467,7 +467,16 @@ class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
           Utils.show_error_object (call.get_payload (), e.message,
                                    GLib.Log.LINE, GLib.Log.FILE, this._main_window);
         }
-        bottom_list_box.visible = (bottom_list_box.get_children ().length () > 0);
+
+        /* We may not count the listbox placeholder here */
+        int n_children = 0;
+        foreach (Gtk.Widget w in bottom_list_box.get_children ()) {
+          if (w is Gtk.ListBoxRow) {
+            n_children ++;
+          }
+        }
+
+        bottom_list_box.visible = n_children > 0;
         return;
       }
 
