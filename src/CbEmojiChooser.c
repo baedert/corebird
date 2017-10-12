@@ -198,7 +198,6 @@ add_emoji (GtkWidget    *box,
     g_object_set_data (G_OBJECT (child), "modifier", GUINT_TO_POINTER (modifier));
 
   gtk_container_add (GTK_CONTAINER (child), label);
-  gtk_widget_show_all (child);
   gtk_flow_box_insert (GTK_FLOW_BOX (box), child, prepend ? 0 : -1);
 }
 
@@ -481,8 +480,6 @@ cb_emoji_chooser_init (CbEmojiChooser *self)
 
   /* We scroll to the top on show, so check the right button for the 1st time */
   gtk_widget_set_state_flags (self->recent.button, GTK_STATE_FLAG_CHECKED, FALSE);
-
-  gtk_widget_show_all (GTK_WIDGET (self));
 }
 
 static void
