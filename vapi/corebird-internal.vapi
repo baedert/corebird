@@ -423,4 +423,10 @@ namespace Cb {
     public bool try_init ();
     public signal void emoji_picked (string emoji);
   }
+
+  [CCode (cprefix = "CbTweetRow_", lower_case_cprefix = "cb_tweet_row_", cheader_filename =
+          "CbTweetRow.h")]
+  public class TweetRow : Gtk.ListBoxRow {
+    public TweetRow (Tweet tweet);
+  }
 }

@@ -417,7 +417,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.tweet_text.insert_at_cursor (text);
       cancel_clicked ();
     });
-    emoji_chooser.show_all ();
     stack.add (emoji_chooser);
 
     this.emoji_button = new Gtk.Button.with_label ("🐧");
@@ -427,7 +426,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       cancel_button.label = _("Back");
     });
 
-    emoji_button.show_all ();
     add_button_box.add (emoji_button);
   }
 }
