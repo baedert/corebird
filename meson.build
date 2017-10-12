@@ -25,6 +25,12 @@ cb_deps = [
   soup_dep
 ]
 
+# Options
+enable_debug = get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
+enable_video = get_option('video')
+enable_spellcheck = get_option('spellcheck')
+enable_examples = get_option('examples')
+
 # Project arguments
 
 add_project_arguments('-DGETTEXT_PACKAGE="corebird"', language: 'c')
@@ -33,7 +39,6 @@ add_project_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
 add_project_arguments('--enable-deprecated', language: 'vala')
 add_project_arguments('-D', 'GTK322', language: 'vala')
 
-enable_debug = get_option('buildtype') == 'debug' or get_option('buildtype') == 'debugoptimized'
 if (enable_debug)
   add_project_arguments('-g', language: 'c')
   add_project_arguments('-g', language: 'vala')
@@ -42,14 +47,12 @@ if (enable_debug)
   add_project_arguments('-D', 'DEBUG', language: 'vala')
 endif
 
-enable_video = get_option('video')
 if (enable_video)
   add_project_arguments('-DVIDEO', language: 'c')
   add_project_arguments('-D', 'VIDEO', language: 'vala')
   cb_deps += [dependency('gstreamer-video-1.0', version: '>= 1.6')]
 endif
 
-enable_spellcheck = get_option('spellcheck')
 if (enable_spellcheck)
   add_project_arguments('-DSPELLCHECK', language: 'c')
   add_project_arguments('-D', 'SPELLCHECK', language: 'vala')
@@ -237,3 +240,6 @@ executable(
 subdir('data')
 subdir('po')
 subdir('tests')
+if enable_examples
+  subdir('examples')
+endif
