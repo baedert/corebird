@@ -59,7 +59,9 @@ public class TweetListBox : Gtk.ListBox {
   private Gtk.Widget widget_create_func (GLib.Object obj) {
     assert (obj is Cb.Tweet);
 
-    var row = new Cb.TweetRow ((Cb.Tweet) obj);
+    var row = new Cb.TweetRow ((Cb.Tweet) obj);//,
+                               //(MainWindow) get_toplevel (),
+                               //this.account);
     //var row = new TweetListEntry ((Cb.Tweet) obj,
                                   //(MainWindow) get_toplevel (),
                                   //this.account);
