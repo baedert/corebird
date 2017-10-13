@@ -716,3 +716,38 @@ cb_utils_surface_to_texture (cairo_surface_t *surface,
 
   return tex;
 }
+
+char * 
+cb_utils_get_time_delta (GDateTime *time,
+                         GDateTime *now)
+{
+  GTimeSpan diff;
+  int minutes;
+
+  /* In microseconds */
+  diff = g_date_time_difference (now, time);
+  minutes = (int)(diff / 1000.0 / 1000.0 / 60.0);
+
+  if (minutes == 0)
+    return g_strdup (_("Now"));
+  else if (minutes < 60)
+    return g_strdup_printf ("%dm", minutes);
+
+  int hours = minutes / 60;
+  if (hours < 24)
+    return g_strdup_printf ("%dh", hours);
+
+  char *month = g_date_time_format (time, "%b");
+  char *result;
+  if (g_date_time_get_year (time) == g_date_time_get_year (now))
+    result = g_strdup_printf ("%d %s", g_date_time_get_day_of_month (time), month);
+  else
+    result = g_strdup_printf ("%d %s %d",
+                              g_date_time_get_day_of_month (time),
+                              month,
+                              g_date_time_get_year (time));
+
+  g_free (month);
+
+  return result;
+}
