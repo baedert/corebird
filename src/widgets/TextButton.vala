@@ -19,6 +19,10 @@ public class TextButton : Gtk.Button {
   public TextButton () {
   }
 
+  static construct {
+    set_css_name ("textbutton");
+  }
+
   construct {
     this.get_style_context ().add_class ("text-only-button");
   }
