@@ -19,7 +19,6 @@
 #include "CbUtils.h"
 #include "corebird.h"
 
-
 G_DEFINE_TYPE (CbTweetRow, cb_tweet_row, GTK_TYPE_LIST_BOX_ROW);
 
 
@@ -36,6 +35,7 @@ cb_tweet_row_measure (GtkWidget      *widget,
 
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
+      /* Whatever, really. */
 
     }
   else /* VERTICAL */
@@ -46,7 +46,7 @@ cb_tweet_row_measure (GtkWidget      *widget,
         self->top_row_box,
         self->reply_label,
         self->text_label,
-        self->rt_label,
+        self->rt_image,
         self->mm_widget,
       };
       int avatar_width, left_height;
@@ -55,14 +55,6 @@ cb_tweet_row_measure (GtkWidget      *widget,
                           &avatar_width, NULL, NULL, NULL);
       gtk_widget_measure (self->avatar_widget, GTK_ORIENTATION_VERTICAL, -1,
                           &left_height, NULL, NULL, NULL);
-
-      if (self->rt_image)
-        {
-          int rt_image_height;
-          gtk_widget_measure (self->rt_image, GTK_ORIENTATION_VERTICAL, -1,
-                              &rt_image_height, NULL, NULL, NULL);
-          left_height += rt_image_height;
-        }
 
       for (i = 0; i < G_N_ELEMENTS (right_group); i ++)
         {
@@ -94,7 +86,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
   GtkAllocation child_alloc;
   int min_width, nat_width;
   int min_height, nat_height;
-  int avatar_width, avatar_height;
+  int avatar_width;
   int top_row_height;
   GtkAllocation child_clip;
 
@@ -106,7 +98,6 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
   child_alloc.height = min_height;
   gtk_widget_size_allocate (self->avatar_widget, &child_alloc, -1, &child_clip);
   avatar_width = min_width;
-  avatar_height = min_height;
 
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width, NULL, NULL);
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height, NULL, NULL);
@@ -145,8 +136,8 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
                           NULL, NULL);
       gtk_widget_measure (self->rt_image, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height,
                           NULL, NULL);
-      child_alloc.x = avatar_width - min_width;
-      child_alloc.y = MAX (child_alloc.y + child_alloc.height, avatar_height);
+      child_alloc.x = avatar_width;
+      child_alloc.y = child_alloc.y + child_alloc.height;
       child_alloc.width = min_width;
       child_alloc.height = min_height;
       gtk_widget_size_allocate (self->rt_image, &child_alloc, -1, &child_clip);
@@ -163,12 +154,12 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
 
   if (self->mm_widget != NULL)
     {
-      child_alloc.width = MAX (allocation->width - avatar_width, min_width);
       gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
+      child_alloc.width = MAX (allocation->width - avatar_width, min_width);
       gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_VERTICAL, child_alloc.width,
                           &min_height, &nat_height, NULL, NULL);
-      child_alloc.x = avatar_width;// - min_width;
+      child_alloc.x = avatar_width;
       child_alloc.y = child_alloc.y + child_alloc.height;
       child_alloc.height = min_height;
       gtk_widget_size_allocate (self->mm_widget, &child_alloc, -1, &child_clip);
@@ -197,6 +188,7 @@ create_ui (CbTweetRow *self)
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
   gtk_widget_set_parent (self->avatar_widget, (GtkWidget *)self);
   self->top_row_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");
   gtk_widget_set_parent (self->top_row_box, (GtkWidget *)self);
 
   twitter_get_avatar (twitter_get (), cb_tweet_get_user_id (self->tweet), self->tweet->avatar_url,
@@ -260,9 +252,17 @@ create_ui (CbTweetRow *self)
     {
       self->rt_image = gtk_image_new_from_icon_name ("corebird-retweet-symbolic",
                                                      GTK_ICON_SIZE_MENU);
+      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
+                                   "rt-icon");
+      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
+                                   "dim-label");
       gtk_widget_set_parent (self->rt_image, (GtkWidget *)self);
 
       self->rt_label = gtk_label_new (self->tweet->source_tweet.author.user_name);
+      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
+                                   "rt-label");
+      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
+                                   "dim-label");
       gtk_widget_set_halign (self->rt_label, GTK_ALIGN_START);
       gtk_widget_set_parent (self->rt_label, (GtkWidget *)self);
     }
@@ -281,10 +281,14 @@ create_ui (CbTweetRow *self)
     }
 
   gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self), "tweet");
+
+  cb_tweet_row_update_time_delta (self, NULL);
 }
 
 GtkWidget *
-cb_tweet_row_new (CbTweet *tweet)
+cb_tweet_row_new (CbTweet    *tweet)
+                  /*MainWindow *main_window,*/
+                  /*Account    *account)*/
 {
   CbTweetRow *self  = (CbTweetRow *)g_object_new (CB_TYPE_TWEET_ROW, NULL);
 
@@ -292,4 +296,24 @@ cb_tweet_row_new (CbTweet *tweet)
   create_ui (self);
 
   return (GtkWidget *)self;
+}
+
+void
+cb_tweet_row_update_time_delta (CbTweetRow *self,
+                                GDateTime  *now)
+{
+  GDateTime *cur_time = now != NULL ? g_date_time_ref (now) :
+                                      g_date_time_new_now_local ();
+  GDateTime *then;
+  char *delta_str;
+
+  then = g_date_time_new_from_unix_local (self->tweet->retweeted_tweet != NULL ?
+                                          self->tweet->retweeted_tweet->created_at :
+                                          self->tweet->source_tweet.created_at);
+
+  delta_str = cb_utils_get_time_delta (then, cur_time);
+  gtk_label_set_label (GTK_LABEL (self->time_delta_label), delta_str);
+  /* XXX Incomplete: Quotes */
+
+  g_free (delta_str);
 }
