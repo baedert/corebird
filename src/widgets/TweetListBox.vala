@@ -41,6 +41,7 @@ public class TweetListBox : Gtk.ListBox {
 
 
   construct {
+    this.get_style_context ().add_class ("tweets");
     add_placeholder ();
     this.set_selection_mode (Gtk.SelectionMode.NONE);
     this.press_gesture = new Gtk.GestureMultiPress (this);
