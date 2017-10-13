@@ -731,11 +731,11 @@ cb_utils_get_time_delta (GDateTime *time,
   if (minutes == 0)
     return g_strdup (_("Now"));
   else if (minutes < 60)
-    return g_strdup_printf ("%dm", minutes);
+    return g_strdup_printf (_("%dm"), minutes);
 
   int hours = minutes / 60;
   if (hours < 24)
-    return g_strdup_printf ("%dh", hours);
+    return g_strdup_printf (_("%dh"), hours);
 
   char *month = g_date_time_format (time, "%b");
   char *result;
