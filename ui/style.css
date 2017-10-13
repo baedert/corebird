@@ -123,10 +123,6 @@
   background-color: transparent;
 }
 
-.tweet {
-  border-bottom: solid 1px alpha (grey, 0.3);
-}
-
 .text-only-button{
   font-weight: bold;
   background-image: none;
@@ -265,4 +261,24 @@ progressbar.horizontal.embedded-progress>trough>progress {
 
 .tweet-info-grid {
   padding: 12px;
+}
+
+row.tweet {
+  background-color: #fff;
+  border-bottom: solid 1px alpha (grey, 0.3);
+  padding: 12px;
+  margin: 0 12px 12px 12px;
+  box-shadow: 0px 1px 2px #555;
+}
+
+row.tweet avatar {
+  margin-right: 12px;
+}
+
+row.tweet textbutton {
+  margin-right: 6px;
+}
+
+list.tweets {
+  background-color: #ddd;
 }

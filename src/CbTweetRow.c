@@ -32,6 +32,7 @@ cb_tweet_row_measure (GtkWidget      *widget,
                       int            *minimum_baseline,
                       int            *natural_baseline)
 {
+  CbTweetRow *self = (CbTweetRow *)widget;
 
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
@@ -39,8 +40,47 @@ cb_tweet_row_measure (GtkWidget      *widget,
     }
   else /* VERTICAL */
     {
-      *minimum = 100;
-      *natural = 100;
+      int min = 0, nat = 0;
+      guint i;
+      GtkWidget* right_group[] = {
+        self->top_row_box,
+        self->reply_label,
+        self->text_label,
+        self->rt_label,
+        self->mm_widget,
+      };
+      int avatar_width, left_height;
+
+      gtk_widget_measure (self->avatar_widget, GTK_ORIENTATION_HORIZONTAL, -1,
+                          &avatar_width, NULL, NULL, NULL);
+      gtk_widget_measure (self->avatar_widget, GTK_ORIENTATION_VERTICAL, -1,
+                          &left_height, NULL, NULL, NULL);
+
+      if (self->rt_image)
+        {
+          int rt_image_height;
+          gtk_widget_measure (self->rt_image, GTK_ORIENTATION_VERTICAL, -1,
+                              &rt_image_height, NULL, NULL, NULL);
+          left_height += rt_image_height;
+        }
+
+      for (i = 0; i < G_N_ELEMENTS (right_group); i ++)
+        {
+          int m, n;
+
+          if (right_group[i])
+            {
+
+              gtk_widget_measure (right_group[i], GTK_ORIENTATION_VERTICAL,
+                                  MAX (-1, for_size - avatar_width), &m, &n, NULL, NULL);
+
+              min += m;
+              nat += n;
+            }
+        }
+
+      *minimum = MAX (left_height, min);
+      *natural = MAX (left_height, nat);
     }
 }
 
@@ -54,7 +94,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
   GtkAllocation child_alloc;
   int min_width, nat_width;
   int min_height, nat_height;
-  int avatar_width;
+  int avatar_width, avatar_height;
   int top_row_height;
   GtkAllocation child_clip;
 
@@ -66,6 +106,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
   child_alloc.height = min_height;
   gtk_widget_size_allocate (self->avatar_widget, &child_alloc, -1, &child_clip);
   avatar_width = min_width;
+  avatar_height = min_height;
 
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width, NULL, NULL);
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height, NULL, NULL);
@@ -105,7 +146,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
       gtk_widget_measure (self->rt_image, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height,
                           NULL, NULL);
       child_alloc.x = avatar_width - min_width;
-      child_alloc.y = child_alloc.y + child_alloc.height;
+      child_alloc.y = MAX (child_alloc.y + child_alloc.height, avatar_height);
       child_alloc.width = min_width;
       child_alloc.height = min_height;
       gtk_widget_size_allocate (self->rt_image, &child_alloc, -1, &child_clip);
@@ -127,7 +168,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
                           NULL, NULL);
       gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_VERTICAL, child_alloc.width,
                           &min_height, &nat_height, NULL, NULL);
-      child_alloc.x = avatar_width - min_width;
+      child_alloc.x = avatar_width;// - min_width;
       child_alloc.y = child_alloc.y + child_alloc.height;
       child_alloc.height = min_height;
       gtk_widget_size_allocate (self->mm_widget, &child_alloc, -1, &child_clip);
@@ -163,6 +204,7 @@ create_ui (CbTweetRow *self)
 
   self->name_button = (GtkWidget *)text_button_new ();
   text_button_set_markup ((TextButton*)self->name_button, cb_tweet_get_user_name (self->tweet));
+  gtk_widget_set_valign (self->name_button, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
 
   self->screen_name_label = gtk_label_new (g_strdup_printf ("@%s", cb_tweet_get_screen_name (self->tweet)));
@@ -170,9 +212,13 @@ create_ui (CbTweetRow *self)
                                "dim-label");
   gtk_widget_set_hexpand (self->screen_name_label, TRUE);
   gtk_widget_set_halign (self->screen_name_label, GTK_ALIGN_START);
+  gtk_widget_set_valign (self->screen_name_label, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->screen_name_label);
 
   self->time_delta_label = gtk_label_new ("Foo");
+  gtk_widget_set_valign (self->time_delta_label, GTK_ALIGN_BASELINE);
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "dim-label");
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "time-delta");
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->time_delta_label);
 
   /* Reply label */
