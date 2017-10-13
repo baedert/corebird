@@ -26,6 +26,10 @@ public class MultiMediaWidget : Gtk.Box {
   private bool media_invalid_fired = false;
   public signal void media_invalid ();
 
+  static construct {
+    set_css_name ("multimedia");
+  }
+
   construct {
     this.orientation = Gtk.Orientation.HORIZONTAL;
     this.homogeneous = true;
