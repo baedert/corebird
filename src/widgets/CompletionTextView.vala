@@ -269,9 +269,8 @@ class CompletionTextView : Gtk.TextView {
       this.buffer.remove_tag (tag_table.lookup (TEXT_TAGS[i]), start_iter, end_iter);
 
     string text = this.buffer.get_text (start_iter, end_iter, true);
-    //TweetUtils.annotate_text (this.buffer);
     size_t text_length;
-    var entities = Tl.extract_entities (text, out text_length);
+    var entities = Tl.extract_entities_and_text (text, out text_length);
     foreach  (unowned Tl.Entity e in entities) {
       Gtk.TextIter? e_start_iter;
       Gtk.TextIter? e_end_iter;
@@ -290,6 +289,13 @@ class CompletionTextView : Gtk.TextView {
           break;
         case Tl.EntityType.LINK:
           buffer.apply_tag_by_name ("link", e_start_iter, e_end_iter);
+          break;
+
+        case Tl.EntityType.TEXT:
+          if (Corebird.snippet_manager.has_snippet_n (e.start, e.length_in_bytes)) {
+            message ("Has snippet: %.*s", e.length_in_bytes, e.start);
+            buffer.apply_tag_by_name ("snippet", e_start_iter, e_end_iter);
+          }
           break;
 
         default:
