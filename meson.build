@@ -218,7 +218,7 @@ cb_lib = static_library(
 cb_dep = declare_dependency(
   link_with: cb_lib,
   dependencies: cb_deps,
-  include_directories: [srcdir, restdir, include_directories('.')],
+  include_directories: [srcdir, restdir],
 )
 
 
