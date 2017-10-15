@@ -1,21 +1,25 @@
+/*  This file is part of libtweetlength, a Gtk+ linux Twitter client.
+ *  Copyright (C) 2017 Timm Bäder
+ *
+ *  libtweetlength is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  libtweetlength is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with libtweetlength.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "libtweetlength.h"
+#include "data.h"
 #include <string.h>
 
 #define LINK_LENGTH 23
-
-// Keep this sorted by length!
-static struct {
-  size_t length;
-  const char *str;
-} TLDS[] = {
-  {2, "ly"}, {2, "io"},
-  {3, "com"}, {3, "org"}, {3, "net"}, {3, "xxx"}, {3, "pro"}, {3, "edu"}, {3, "mil"}, {3, "biz"}, {3, "cat"},
-  {3, "int"}, {3, "tel"}, {3, "gov"},
-  {4, "sexy"}, {4, "name"}, {4, "info"}, {4, "jobs"}, {4, "post"}, {4, "aero"}, {4, "mobi"}, {4, "arpa"},
-  {4, "coop"}, {4, "asia"},
-  {6, "museum"}, {6, "trabel"}
-};
-
 
 typedef struct {
   guint type;
@@ -38,6 +42,10 @@ enum {
   TOK_HASH,
   TOK_AT,
   TOK_EQUALS,
+  TOK_DASH,
+  TOK_UNDERSCORE,
+  TOK_APOSTROPHE,
+  TOK_DOLLAR
 };
 
 static inline guint
@@ -62,6 +70,14 @@ token_type_from_char (gunichar c)
       return TOK_QUESTIONMARK;
     case '=':
       return TOK_EQUALS;
+    case '-':
+      return TOK_DASH;
+    case '_':
+      return TOK_UNDERSCORE;
+    case '\'':
+      return TOK_APOSTROPHE;
+    case '$':
+      return TOK_DOLLAR;
     case '0':
     case '1':
     case '2':
@@ -81,8 +97,29 @@ token_type_from_char (gunichar c)
     default:
     return TOK_TEXT;
   }
-
 }
+
+static inline gboolean
+token_in (const Token *t,
+          const char  *haystack)
+{
+  const int haystack_len = strlen (haystack);
+  int i;
+
+  if (t->length_in_bytes > 1) {
+    return FALSE;
+  }
+
+
+  for (i = 0; i < haystack_len; i ++) {
+    if (haystack[i] == t->start[0]) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 
 static inline void
 emplace_token (GArray     *array,
@@ -124,18 +161,35 @@ emplace_entity (GArray     *array,
 }
 
 static inline gboolean
-token_is_tld (const Token *t)
+token_is_tld (const Token *t,
+              gboolean     has_protocol)
 {
   guint i;
 
-  if (t->length_in_bytes > TLDS[G_N_ELEMENTS(TLDS) - 1].length) {
+  if (t->length_in_characters > GTLDS[G_N_ELEMENTS (GTLDS) - 1].length) {
     return FALSE;
   }
 
-  for (i = 0; i < G_N_ELEMENTS (TLDS); i ++) {
-    if (t->length_in_characters == TLDS[i].length &&
-        strncasecmp (t->start, TLDS[i].str, t->length_in_bytes) == 0) {
+  for (i = 0; i < G_N_ELEMENTS (GTLDS); i ++) {
+    if (t->length_in_characters == GTLDS[i].length &&
+        strncasecmp (t->start, GTLDS[i].str, t->length_in_bytes) == 0) {
       return TRUE;
+    }
+  }
+
+  for (i = 0; i < G_N_ELEMENTS (SPECIAL_CCTLDS); i ++) {
+    if (t->length_in_characters == SPECIAL_CCTLDS[i].length &&
+        strncasecmp (t->start, SPECIAL_CCTLDS[i].str, t->length_in_bytes) == 0) {
+      return TRUE;
+    }
+  }
+
+  if (has_protocol) {
+    for (i = 0; i < G_N_ELEMENTS (CCTLDS); i ++) {
+      if (t->length_in_characters == CCTLDS[i].length &&
+          strncasecmp (t->start, CCTLDS[i].str, t->length_in_bytes) == 0) {
+        return TRUE;
+      }
     }
   }
 
@@ -160,7 +214,7 @@ token_is_protocol (const Token *t)
 }
 
 static inline gboolean
-char_splits (guchar c)
+char_splits (gunichar c)
 {
   switch (c) {
     case ',':
@@ -175,10 +229,13 @@ char_splits (guchar c)
     case '@':
     case '#':
     case '-':
+    case '_':
     case '\n':
     case '\t':
     case '\0':
     case ' ':
+    case '\'':
+    case '$':
       return TRUE;
     default:
       return FALSE;
@@ -217,6 +274,7 @@ tokenize (const char *input,
     gunichar cur_char = g_utf8_get_char (p);
     gsize cur_length = 0;
     gsize length_in_chars = 0;
+    guint last_token_type = 0;
 
     /* If this char already splits, it's a one-char token */
     if (char_splits (cur_char)) {
@@ -227,12 +285,17 @@ tokenize (const char *input,
       continue;
     }
 
+    last_token_type = token_type_from_char (cur_char);
     do {
       const char *old_p = p;
       p = g_utf8_next_char (p);
       cur_char = g_utf8_get_char (p);
       cur_length += p - old_p;
       length_in_chars ++;
+
+      if (token_type_from_char (cur_char) != last_token_type)
+        break;
+
     } while (!char_splits (cur_char) && p - input < length_in_bytes);
 
     emplace_token (tokens, cur_start, cur_length, cur_character_index, length_in_chars);
@@ -257,7 +320,8 @@ parse_link_tail (GArray      *entities,
   for (;;) {
     t = &tokens[i];
 
-    if (t->type == TOK_WHITESPACE) {
+    if (t->type == TOK_WHITESPACE || t->type == TOK_APOSTROPHE) {
+      i --;
       break;
     }
 
@@ -316,10 +380,12 @@ parse_link (GArray      *entities,
   const Token *t;
   guint start_token = *current_position;
   guint end_token;
+  gboolean has_protocol = FALSE;
 
   t = &tokens[i];
 
-  if (t->type != TOK_TEXT) {
+  // Some may not even appear before a protocol
+  if (i > 0 && token_in (&tokens[i - 1], INVALID_BEFORE_URL_CHARS)) {
     return FALSE;
   }
 
@@ -346,36 +412,58 @@ parse_link (GArray      *entities,
       return FALSE;
     }
     i += 2; // Skip to token after second slash
+    has_protocol = TRUE;
   } else {
     // Lookbehind: Token before may not be an @, they are not supported.
-    if (i > 0 &&
-        (tokens[i - 1].type == TOK_AT ||
-         tokens[i - 1].type == TOK_DOT)) {
+    if (i > 0 && token_in (&tokens[i - 1], INVALID_BEFORE_NON_PROTOCOL_URL_CHARS)) {
       return FALSE;
     }
   }
 
-  // Now read until .TLD
-  guint dot_index = i;
-  while (dot_index < n_tokens - 1) { // -1 so we can do +1 in the loop body!
-    if (tokens[dot_index].type != TOK_TEXT &&
-        tokens[dot_index].type != TOK_DOT) {
-      return FALSE;
-    }
-
-    // The dot we look for is followed by a tld identifier such as "com"
-    if (tokens[dot_index].type == TOK_DOT &&
-        tokens[dot_index + 1].type == TOK_TEXT &&
-        token_is_tld (&tokens[dot_index + 1])) {
-      break;
-    }
-    dot_index ++;
-  }
-  if (dot_index == n_tokens - 1) {
+  if (token_in (&tokens[i], INVALID_URL_CHARS)) {
     return FALSE;
   }
 
-  i = dot_index + 1;
+  // Now read until .tld. There can be multiple (e.g. in http://foobar.com.com.com"),
+  // so we need to do this in a greedy way.
+  guint tld_index = i;
+  guint tld_iter = i;
+  gboolean tld_found = FALSE;
+  while (tld_iter < n_tokens - 1) {
+    const Token *t = &tokens[tld_iter];
+
+    if (t->type == TOK_WHITESPACE) {
+      if (!tld_found) {
+        return FALSE;
+      }
+    }
+
+    if (!(t->type == TOK_NUMBER ||
+          t->type == TOK_TEXT ||
+          t->type == TOK_DOT)) {
+      if (!tld_found) {
+        return FALSE;
+      } else {
+        break;
+      }
+    }
+
+    if (t->type == TOK_DOT &&
+        token_is_tld (&tokens[tld_iter + 1], has_protocol)) {
+      tld_index = tld_iter;
+      tld_found = TRUE;
+    }
+
+    tld_iter ++;
+  }
+
+  if (tld_index >= n_tokens - 1 ||
+      !tld_found) {
+    return FALSE;
+  }
+
+  // tld_index is the TOK_DOT
+  i = tld_index + 1;
 
   // If the next token is a colon, we are reading a port
   if (i < n_tokens - 1 && tokens[i + 1].type == TOK_COLON) {
@@ -405,6 +493,10 @@ parse_link (GArray      *entities,
         // Trailing questionmark is not part of the link
         i --;
       }
+    }
+    // An @ means that we've confused the start of an email with a URL without a protocol
+    else if (tokens[i + 1].type == TOK_AT) {
+      return FALSE;
     }
   }
 
@@ -453,11 +545,14 @@ parse_mention (GArray      *entities,
     return FALSE;
   }
 
-  //skip @
-  i ++;
-  t = &tokens[i];
-  if (t->type != TOK_TEXT &&
-      t->type != TOK_NUMBER) {
+  while (i < n_tokens - 1 &&
+        (tokens[i + 1].type == TOK_TEXT ||
+         tokens[i + 1].type == TOK_NUMBER ||
+         tokens[i + 1].type == TOK_UNDERSCORE)) {
+    i ++;
+  }
+
+  if (i == start_token) {
     return FALSE;
   }
 
@@ -497,24 +592,31 @@ parse_hashtag (GArray      *entities,
                gsize        n_tokens,
                guint       *current_position)
 {
-  const Token *t;
   gsize i = *current_position;
   guint start_token;
   guint end_token;
+  gboolean text_found = FALSE;
 
-  t = &tokens[i];
-  g_assert (t->type == TOK_HASH);
+  g_assert (tokens[i].type == TOK_HASH);
   start_token = i;
-
 
   //skip #
   i ++;
-  t = &tokens[i];
-  if (t->type != TOK_TEXT) {
+
+  for (;i < n_tokens; i ++) {
+    if (tokens[i].type != TOK_TEXT &&
+        tokens[i].type != TOK_NUMBER) {
+      break;
+    }
+
+    text_found |= tokens[i].type == TOK_TEXT;
+  }
+
+  if (!text_found) {
     return FALSE;
   }
 
-  end_token = i;
+  end_token = i - 1;
   g_assert (end_token < n_tokens);
 
   // Simply add up all the lengths
@@ -546,6 +648,7 @@ parse_hashtag (GArray      *entities,
 static GArray *
 parse (const Token *tokens,
        gsize        n_tokens,
+       gboolean     extract_text_entities,
        guint       *n_relevant_entities)
 {
   GArray *entities = g_array_new (FALSE, TRUE, sizeof (TlEntity));
@@ -575,6 +678,10 @@ parse (const Token *tokens,
           continue;
         }
       break;
+    }
+
+    if (extract_text_entities) {
+      relevant_entities ++;
     }
 
     emplace_entity (entities,
@@ -648,11 +755,11 @@ tl_count_characters_n (const char *input,
   // From here on, input/length_in_bytes are trusted to be OK
 
   tokens = tokenize (input, length_in_bytes);
-
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
 
-  entities = parse (token_array, n_tokens, NULL);
+  entities = parse (token_array, n_tokens, FALSE, NULL);
+
   length = count_entities_in_characters (entities);
   g_array_free (entities, TRUE);
   g_free ((char *)token_array);
@@ -663,8 +770,14 @@ tl_count_characters_n (const char *input,
 /**
  * tl_extract_entities:
  * @input: The input text to extract entities from
- * @out_n_entities: (out):
- * @out_text_length: (out) (optional):
+ * @out_n_entities: (out): Location to store the amount of entities in the returned
+ *   array. If 0, the return value is %NULL.
+ * @out_text_length: (out) (optional): Return location for the complete
+ *   length of @input, in characters. This is the same value one would
+ *   get from calling tl_count_characters() or tl_count_characters_n()
+ *   on @input.
+ *
+ * Returns: An array of #TlEntity. If no entities are found, %NULL is returned.
  */
 TlEntity *
 tl_extract_entities (const char *input,
@@ -675,54 +788,40 @@ tl_extract_entities (const char *input,
 
   g_return_val_if_fail (out_n_entities != NULL, NULL);
 
-  if (input == NULL || input[0] == '\0') {
-    *out_n_entities = 0;
-    return NULL;
-  }
-
   if (out_text_length == NULL) {
     out_text_length = &dummy;
+  }
+
+  if (input == NULL || input[0] == '\0') {
+    *out_n_entities = 0;
+    *out_text_length = 0;
+    return NULL;
   }
 
   return tl_extract_entities_n (input, strlen (input), out_n_entities, out_text_length);
 }
 
-/**
- * tl_extract_entities:
- * @input: The input text to extract entities from
- * @length_in_bytes: length of @input
- * @out_n_entities: (out):
- * @out_text_length: (out) (optional):
- */
-TlEntity *
-tl_extract_entities_n (const char *input,
-                       gsize       length_in_bytes,
-                       gsize      *out_n_entities,
-                       gsize      *out_text_length)
+
+static TlEntity *
+tl_extract_entities_internal (const char *input,
+                              gsize       length_in_bytes,
+                              gsize      *out_n_entities,
+                              gsize      *out_text_length,
+                              gboolean    extract_text_entities)
 {
   GArray *tokens;
   const Token *token_array;
   gsize n_tokens;
   GArray *entities;
-  gsize dummy;
   guint n_relevant_entities;
   TlEntity *result_entities;
   guint result_index = 0;
 
-  g_return_val_if_fail (out_n_entities != NULL, NULL);
-
-  if (input == NULL || input[0] == '\0') {
-    return 0;
-  }
-
-  if (out_text_length == NULL) {
-    out_text_length = &dummy;
-  }
-
   tokens = tokenize (input, length_in_bytes);
+
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
-  entities = parse (token_array, n_tokens, &n_relevant_entities);
+  entities = parse (token_array, n_tokens, extract_text_entities, &n_relevant_entities);
 
   *out_text_length = count_entities_in_characters (entities);
   g_free ((char *)token_array);
@@ -739,6 +838,13 @@ tl_extract_entities_n (const char *input,
         result_index ++;
       break;
 
+      case TL_ENT_TEXT:
+        if (extract_text_entities) {
+          memcpy (&result_entities[result_index], e, sizeof (TlEntity));
+          result_index ++;
+        }
+        break;
+
       default: {}
     }
   }
@@ -747,4 +853,130 @@ tl_extract_entities_n (const char *input,
   g_array_free (entities, TRUE);
 
   return result_entities;
+}
+
+/**
+ * tl_extract_entities_n:
+ * @input: The input text to extract entities from
+ * @length_in_bytes: The length of @input, in bytes
+ * @out_n_entities: (out): Location to store the amount of entities in the returned
+ *   array. If 0, the return value is %NULL.
+ * @out_text_length: (out) (optional): Return location for the complete
+ *   length of @input, in characters. This is the same value one would
+ *   get from calling tl_count_characters() or tl_count_characters_n()
+ *   on @input.
+ *
+ * Returns: An array of #TlEntity. If no entities are found, %NULL is returned.
+ */
+TlEntity *
+tl_extract_entities_n (const char *input,
+                       gsize       length_in_bytes,
+                       gsize      *out_n_entities,
+                       gsize      *out_text_length)
+{
+  gsize dummy;
+
+  g_return_val_if_fail (out_n_entities != NULL, NULL);
+
+  if (out_text_length == NULL) {
+    out_text_length = &dummy;
+  }
+
+  if (input == NULL || input[0] == '\0') {
+    *out_n_entities = 0;
+    *out_text_length = 0;
+    return NULL;
+  }
+
+  return tl_extract_entities_internal (input,
+                                       length_in_bytes,
+                                       out_n_entities,
+                                       out_text_length,
+                                       FALSE);
+}
+
+/**
+ * tl_extract_entities_and_text:
+ * @input: The input text to extract entities from
+ * @out_n_entities: (out): Location to store the amount of entities in the returned
+ *   array. If 0, the return value is %NULL.
+ * @out_text_length: (out) (optional): Return location for the complete
+ *   length of @input, in characters. This is the same value one would
+ *   get from calling tl_count_characters() or tl_count_characters_n()
+ *   on @input.
+ *
+ * This is different from tl_extract_entities() in that it returns all entities
+ * and not just hashtags, links and mentions. This allows for further post-processing
+ * from the caller.
+ *
+ * Returns: An array of #TlEntity. If no entities are found, %NULL is returned.
+ */
+TlEntity *
+tl_extract_entities_and_text (const char *input,
+                              gsize      *out_n_entities,
+                              gsize      *out_text_length)
+{
+  gsize dummy;
+
+  g_return_val_if_fail (out_n_entities != NULL, NULL);
+
+  if (out_text_length == NULL) {
+    out_text_length = &dummy;
+  }
+
+  if (input == NULL || input[0] == '\0') {
+    *out_n_entities = 0;
+    *out_text_length = 0;
+    return NULL;
+  }
+
+  return tl_extract_entities_internal (input,
+                                       strlen (input),
+                                       out_n_entities,
+                                       out_text_length,
+                                       TRUE);
+}
+
+/**
+ * tl_extract_entities_and_text_n:
+ * @input: The input text to extract entities from
+ * @length_in_bytes: The length of @input, in bytes
+ * @out_n_entities: (out): Location to store the amount of entities in the returned
+ *   array. If 0, the return value is %NULL.
+ * @out_text_length: (out) (optional): Return location for the complete
+ *   length of @input, in characters. This is the same value one would
+ *   get from calling tl_count_characters() or tl_count_characters_n()
+ *   on @input.
+ *
+ * This is different from tl_extract_entities_n() in that it returns all entities
+ * and not just hashtags, links and mentions. This allows for further post-processing
+ * from the caller.
+ *
+ * Returns: An array of #TlEntity. If no entities are found, %NULL is returned.
+ */
+TlEntity *
+tl_extract_entities_and_text_n (const char *input,
+                                gsize       length_in_bytes,
+                                gsize      *out_n_entities,
+                                gsize      *out_text_length)
+{
+  gsize dummy;
+
+  g_return_val_if_fail (out_n_entities != NULL, NULL);
+
+  if (out_text_length == NULL) {
+    out_text_length = &dummy;
+  }
+
+  if (input == NULL || input[0] == '\0') {
+    *out_n_entities = 0;
+    *out_text_length = 0;
+    return NULL;
+  }
+
+  return tl_extract_entities_internal (input,
+                                       length_in_bytes,
+                                       out_n_entities,
+                                       out_text_length,
+                                       TRUE);
 }
