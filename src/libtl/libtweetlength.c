@@ -199,8 +199,6 @@ token_is_tld (const Token *t,
 static inline gboolean
 token_is_protocol (const Token *t)
 {
-  // TODO: We probably support more than just http and https?
-
   if (t->type != TOK_TEXT) {
     return FALSE;
   }
