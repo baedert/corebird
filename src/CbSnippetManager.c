@@ -16,6 +16,7 @@
  */
 
 #include "CbSnippetManager.h"
+#include <string.h>
 
 
 G_DEFINE_TYPE (CbSnippetManager, cb_snippet_manager, G_TYPE_OBJECT);
@@ -141,6 +142,39 @@ cb_snippet_manager_insert_snippet (CbSnippetManager *self,
     g_warning ("Couldn't insert snippet %s", key);
 
   sqlite3_finalize (stmt);
+}
+
+static gboolean
+has_snippet_n_predicate (gpointer key,
+                         gpointer value,
+                         gpointer user_data)
+{
+  const struct {
+    const char *k;
+    gsize k_len;
+  } *data = user_data;
+
+  return strlen (key) == data->k_len &&
+         strncmp (data->k, key, data->k_len) == 0;
+}
+
+gboolean
+cb_snippet_manager_has_snippet_n (CbSnippetManager *self,
+                                  const char       *key,
+                                  gsize             key_length_in_bytes)
+{
+  static struct {
+    const char *k;
+    gsize k_len;
+  } data;
+
+  data.k = key;
+  data.k_len = key_length_in_bytes;
+
+  if (!self->inited)
+    cb_snippet_manager_load_snippets (self);
+
+  return g_hash_table_find (self->snippets, has_snippet_n_predicate, &data) != NULL;
 }
 
 const char *

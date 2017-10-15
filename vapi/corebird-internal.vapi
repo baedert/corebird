@@ -361,6 +361,7 @@ namespace Cb {
   public class SnippetManager : GLib.Object {
     public SnippetManager (Sqlite.Database db);
     public unowned string get_snippet (string key);
+    public bool has_snippet_n (string key, size_t key_len);
     public uint n_snippets ();
     public void query_snippets (GLib.HFunc func);
     public void set_snippet (string old_key, string key, string value);

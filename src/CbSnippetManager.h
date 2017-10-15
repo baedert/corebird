@@ -48,6 +48,9 @@ void               cb_snippet_manager_remove_snippet (CbSnippetManager *self,
 void               cb_snippet_manager_insert_snippet (CbSnippetManager *self,
                                                       const char       *key,
                                                       const char       *value);
+gboolean           cb_snippet_manager_has_snippet_n   (CbSnippetManager *self,
+                                                       const char       *key,
+                                                       gsize             key_length_in_bytes);
 const char *       cb_snippet_manager_get_snippet    (CbSnippetManager *self,
                                                       const char       *key);
 void               cb_snippet_manager_query_snippets (CbSnippetManager *self,
