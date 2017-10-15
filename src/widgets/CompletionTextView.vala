@@ -293,7 +293,6 @@ class CompletionTextView : Gtk.TextView {
 
         case Tl.EntityType.TEXT:
           if (Corebird.snippet_manager.has_snippet_n (e.start, e.length_in_bytes)) {
-            message ("Has snippet: %.*s", e.length_in_bytes, e.start);
             buffer.apply_tag_by_name ("snippet", e_start_iter, e_end_iter);
           }
           break;
