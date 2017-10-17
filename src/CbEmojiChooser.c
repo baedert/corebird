@@ -444,7 +444,9 @@ cb_emoji_chooser_finalize (GObject *object)
 {
   CbEmojiChooser *self = CB_EMOJI_CHOOSER (object);
 
-  g_variant_unref (self->data);
+  if (self->data != NULL)
+    g_variant_unref (self->data);
+
   g_object_unref (self->settings);
 
   G_OBJECT_CLASS (cb_emoji_chooser_parent_class)->finalize (object);
