@@ -371,4 +371,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     update_send_button_sensitivity ();
   }
+
+  [GtkCallback]
+  public void show_emoji_chooser_button_clicked_cb () {
+    stack.visible_child_name = "emoji-chooser";
+  }
+
+  [GtkCallback]
+  public void emoji_picked_cb (string emoji) {
+    this.tweet_text.insert_at_cursor (emoji);
+    this.stack.visible_child = content_grid;
+  }
 }

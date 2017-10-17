@@ -25,6 +25,7 @@
     <file preprocess="xml-stripblanks">ui/media-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/modify-snippet-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts-window.ui</file>
+    <file preprocess="xml-stripblanks">ui/cb-emoji-chooser.ui</file>
     <file>data/16x16/apps/corebird-compose-symbolic.symbolic.png</file>
     <file>data/16x16/apps/corebird-conversation-symbolic.symbolic.png</file>
     <file>data/16x16/apps/corebird-dms-symbolic.symbolic.png</file>

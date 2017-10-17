@@ -166,6 +166,8 @@ libcorebird_la_SOURCES = \
 	CbGtkCompat.h \
 	CbUserCompletionModel.c \
 	CbUserCompletionModel.h \
+	CbEmojiChooser.c \
+	CbEmojiChooser.h \
 	rest/rest/rest-param.c \
 	rest/rest/rest-params.c \
 	rest/rest/rest-proxy.c \

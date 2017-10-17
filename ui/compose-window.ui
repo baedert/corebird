@@ -179,6 +179,13 @@
                   </object>
                 </child>
                 <child>
+                  <object class="GtkButton" id="show_emoji_chooser_button">
+                    <property name="visible">1</property>
+                    <property name="label">🐧</property>
+                    <signal name="clicked" handler="show_emoji_chooser_button_clicked_cb" />
+                  </object>
+                </child>
+                <child>
                   <object class="GtkButton" id="fav_image_button">
                     <property name="visible">1</property>
                     <property name="tooltip-text" translatable="yes">Show favorite images</property>
@@ -246,6 +253,19 @@
             <property name="name">fav-images</property>
           </packing>
         </child>
+
+
+        <child>
+          <object class="CbEmojiChooser">
+            <property name="visible">1</property>
+            <property name="hexpand">1</property>
+            <signal name="emoji-picked" handler="emoji_picked_cb" />
+          </object>
+          <packing>
+            <property name="name">emoji-chooser</property>
+          </packing>
+        </child>
+
       </object>
     </child>
   </template>

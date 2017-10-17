@@ -412,4 +412,11 @@ namespace Cb {
     public void insert_items (Cb.UserIdentity[] ids);
     public void clear ();
   }
+
+  [CCode (cprefix = "CbEmojiChooser_", lower_case_cprefix = "cb_emoji_chooser_", cheader_filename =
+          "CbEmojiChooser.h")]
+  public class EmojiChooser : Gtk.Box {
+    public EmojiChooser ();
+    public signal void emoji_picked (string emoji);
+  }
 }

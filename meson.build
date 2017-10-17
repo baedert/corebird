@@ -43,7 +43,7 @@ if (enable_debug)
   add_project_arguments('-g', language: 'c')
   add_project_arguments('-g', language: 'vala')
   add_project_arguments('-DDEBUG', language: 'c')
-  add_project_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
+  #add_project_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
   add_project_arguments('-D', 'DEBUG', language: 'vala')
 endif
 
@@ -164,6 +164,7 @@ corebird_lib_sources = files([
   'src/CbMessageReceiver.c',
   'src/CbComposeJob.c',
   'src/CbUserCompletionModel.c',
+  'src/CbEmojiChooser.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',

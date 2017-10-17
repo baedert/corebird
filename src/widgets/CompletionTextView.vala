@@ -544,4 +544,5 @@ class UserCompletionRow : Gtk.ListBoxRow {
   public string get_screen_name () {
     return screen_name_label.get_label ();
   }
+
 }

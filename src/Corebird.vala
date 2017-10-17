@@ -199,6 +199,7 @@ public class Corebird : Gtk.Application {
 
     typeof (LazyMenuButton).ensure ();
     typeof (FavImageView).ensure ();
+    typeof (Cb.EmojiChooser).ensure ();
 
 #if DEBUG
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "corebird", true);
