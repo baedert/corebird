@@ -265,6 +265,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   private void cancel_clicked () {
     if (stack.visible_child == image_error_grid ||
+        stack.visible_child == emoji_chooser ||
         stack.visible_child_name == "fav-images") {
       stack.visible_child = content_grid;
       cancel_button.label = _("Cancel");
@@ -281,13 +282,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private bool escape_pressed_cb () {
-
-    if (stack.visible_child_name == "fav-images") {
-      stack.visible_child = content_grid;
-    } else {
-      this.save_last_tweet ();
-      this.destroy ();
-    }
+    this.cancel_clicked ();
     return Gdk.EVENT_STOP;
   }
 
@@ -402,5 +397,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     emoji_button.show_all ();
     add_button_box.add (emoji_button);
+    cancel_button.label = _("Back");
   }
 }
