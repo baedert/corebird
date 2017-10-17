@@ -33,6 +33,8 @@ struct _CbEmojiChooser
 {
   GtkBox parent_instance;
 
+  guint populated : 1;
+
   GtkWidget *search_entry;
   GtkWidget *stack;
   GtkWidget *scrolled_window;
@@ -61,8 +63,7 @@ typedef struct _CbEmojiChooser CbEmojiChooser;
 #define CB_TYPE_EMOJI_CHOOSER cb_emoji_chooser_get_type ()
 G_DECLARE_FINAL_TYPE (CbEmojiChooser, cb_emoji_chooser, CB, EMOJI_CHOOSER, GtkBox);
 
-GtkWidget * cb_emoji_chooser_new (void);
-
-/* SHRUG! */
+GtkWidget * cb_emoji_chooser_new      (void);
+void        cb_emoji_chooser_populate (CbEmojiChooser *self);
 
 #endif

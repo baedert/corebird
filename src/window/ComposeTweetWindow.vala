@@ -59,6 +59,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.Revealer completion_revealer;
   [GtkChild]
   private Gtk.ListBox completion_list;
+  [GtkChild]
+  private Gtk.Box add_button_box;
+  private Cb.EmojiChooser? emoji_chooser;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
@@ -184,6 +187,16 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     var image_target_list = new Gtk.TargetList (null);
     image_target_list.add_text_targets (0);
+
+    /* The GTK+ version might not have this emoji data variant */
+    try {
+      if (GLib.resources_get_info ("/org/gtk/libgtk/emoji/emoji.data",
+                                   GLib.ResourceLookupFlags.NONE, null, null)) {
+        setup_emoji_chooser ();
+      }
+    } catch (GLib.Error e) {
+      // Ignore, just don't show the emoji chooser
+    }
 
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
@@ -372,14 +385,22 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     update_send_button_sensitivity ();
   }
 
-  [GtkCallback]
-  public void show_emoji_chooser_button_clicked_cb () {
-    stack.visible_child_name = "emoji-chooser";
-  }
+  private void setup_emoji_chooser () {
+    this.emoji_chooser = new Cb.EmojiChooser ();
+    emoji_chooser.emoji_picked.connect ((text) => {
+      this.tweet_text.insert_at_cursor (text);
+      this.stack.visible_child = content_grid;
+    });
+    emoji_chooser.show_all ();
+    stack.add (emoji_chooser);
 
-  [GtkCallback]
-  public void emoji_picked_cb (string emoji) {
-    this.tweet_text.insert_at_cursor (emoji);
-    this.stack.visible_child = content_grid;
+    var emoji_button = new Gtk.Button.with_label ("🐧");
+    emoji_button.clicked.connect (() => {
+      this.emoji_chooser.populate ();
+      this.stack.visible_child = this.emoji_chooser;
+    });
+
+    emoji_button.show_all ();
+    add_button_box.add (emoji_button);
   }
 }

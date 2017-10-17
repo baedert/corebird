@@ -199,48 +199,77 @@ add_emoji (GtkWidget    *box,
   gtk_flow_box_insert (GTK_FLOW_BOX (box), child, prepend ? 0 : -1);
 }
 
-static void
-populate_emoji_chooser (CbEmojiChooser *chooser)
-{
-  GBytes *bytes = NULL;
+typedef struct {
+  CbEmojiChooser *chooser;
+  GBytes *bytes;
   GVariantIter iter;
+  GtkWidget *box; /* We need to keep this around so subsequent
+                     emojis get added to the rigth section */
+} PopulateData;
+
+static gboolean
+populate_one_emoji (gpointer user_data)
+{
+  const int N = 4; /* Kinda-sorta sweetspot on my system... */
+  PopulateData *data = user_data;
   GVariant *item;
-  GtkWidget *box;
+  const char *name;
+  guint i = 0;
 
-  bytes = g_resources_lookup_data ("/org/gtk/libgtk/emoji/emoji.data", 0, NULL);
-  chooser->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"), bytes, TRUE));
 
-  g_variant_iter_init (&iter, chooser->data);
-  box = chooser->people.box;
-  while ((item = g_variant_iter_next_value (&iter)))
+  while (i < N)
     {
-      const char *name;
+      item = g_variant_iter_next_value (&data->iter);
+
+      if (item == NULL)
+        {
+          g_bytes_unref (data->bytes);
+          g_free (data);
+          return G_SOURCE_REMOVE;
+        }
 
       g_variant_get_child (item, 1, "&s", &name);
 
-      if (strcmp (name, chooser->body.first) == 0)
-        box = chooser->body.box;
-      else if (strcmp (name, chooser->nature.first) == 0)
-        box = chooser->nature.box;
-      else if (strcmp (name, chooser->food.first) == 0)
-        box = chooser->food.box;
-      else if (strcmp (name, chooser->travel.first) == 0)
-        box = chooser->travel.box;
-      else if (strcmp (name, chooser->activities.first) == 0)
-        box = chooser->activities.box;
-      else if (strcmp (name, chooser->objects.first) == 0)
-        box = chooser->objects.box;
-      else if (strcmp (name, chooser->symbols.first) == 0)
-        box = chooser->symbols.box;
-      else if (strcmp (name, chooser->flags.first) == 0)
-        box = chooser->flags.box;
+      if (strcmp (name, data->chooser->body.first) == 0)
+        data->box = data->chooser->body.box;
+      else if (strcmp (name, data->chooser->nature.first) == 0)
+        data->box = data->chooser->nature.box;
+      else if (strcmp (name, data->chooser->food.first) == 0)
+        data->box = data->chooser->food.box;
+      else if (strcmp (name, data->chooser->travel.first) == 0)
+        data->box = data->chooser->travel.box;
+      else if (strcmp (name, data->chooser->activities.first) == 0)
+        data->box = data->chooser->activities.box;
+      else if (strcmp (name, data->chooser->objects.first) == 0)
+        data->box = data->chooser->objects.box;
+      else if (strcmp (name, data->chooser->symbols.first) == 0)
+        data->box = data->chooser->symbols.box;
+      else if (strcmp (name, data->chooser->flags.first) == 0)
+        data->box = data->chooser->flags.box;
 
-      add_emoji (box, FALSE, item, 0);
-
+      add_emoji (data->box, FALSE, item, 0);
       g_variant_unref (item);
+
+      i ++;
     }
 
-  g_bytes_unref (bytes);
+  return G_SOURCE_CONTINUE;
+}
+
+static void
+populate_emoji_chooser (CbEmojiChooser *chooser)
+{
+  PopulateData *data = g_malloc0 (sizeof (PopulateData));
+
+  data->bytes = g_resources_lookup_data ("/org/gtk/libgtk/emoji/emoji.data", 0, NULL);
+  data->chooser = chooser;
+
+  chooser->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
+                                                                data->bytes, TRUE));
+  g_variant_iter_init (&data->iter, chooser->data);
+  data->box = chooser->people.box;
+
+  g_idle_add (populate_one_emoji, data);
 }
 
 static void
@@ -410,9 +439,6 @@ setup_section (CbEmojiChooser *chooser,
   g_signal_connect (section->button, "clicked", G_CALLBACK (scroll_to_section), section);
 }
 
-
-
-
 static void
 cb_emoji_chooser_finalize (GObject *object)
 {
@@ -424,13 +450,20 @@ cb_emoji_chooser_finalize (GObject *object)
   G_OBJECT_CLASS (cb_emoji_chooser_parent_class)->finalize (object);
 }
 
-#include <valgrind/callgrind.h>
+
+void
+cb_emoji_chooser_populate (CbEmojiChooser *self)
+{
+  if (self->populated)
+    return;
+
+  self->populated = TRUE;
+  populate_emoji_chooser (self);
+}
 
 static void
 cb_emoji_chooser_init (CbEmojiChooser *self)
 {
-  CALLGRIND_START_INSTRUMENTATION;
-
   GtkAdjustment *adj;
 
   self->settings = g_settings_new ("org.gtk.Settings.EmojiChooser");
@@ -451,15 +484,13 @@ cb_emoji_chooser_init (CbEmojiChooser *self)
   setup_section (self, &self->symbols, "ATM sign", 0x2764);
   setup_section (self, &self->flags, "chequered flag", 0x1f3f4);
 
-  populate_emoji_chooser (self);
   populate_recent_section (self);
+  /*populate_emoji_chooser (self);*/
 
   /* We scroll to the top on show, so check the right button for the 1st time */
   gtk_widget_set_state_flags (self->recent.button, GTK_STATE_FLAG_CHECKED, FALSE);
 
   gtk_widget_show_all (GTK_WIDGET (self));
-
-  CALLGRIND_STOP_INSTRUMENTATION;
 }
 
 static void

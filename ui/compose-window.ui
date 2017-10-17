@@ -162,7 +162,7 @@
             </child>
 
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="add_button_box">
                 <property name="visible">true</property>
                 <property name="margin-end">10</property>
                 <property name="margin-bottom">10</property>
@@ -176,13 +176,6 @@
                     <property name="label" translatable="yes">Add Image</property>
                     <property name="valign">baseline</property>
                     <signal name="clicked" handler="add_image_clicked_cb"/>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="show_emoji_chooser_button">
-                    <property name="visible">1</property>
-                    <property name="label">🐧</property>
-                    <signal name="clicked" handler="show_emoji_chooser_button_clicked_cb" />
                   </object>
                 </child>
                 <child>
@@ -253,19 +246,6 @@
             <property name="name">fav-images</property>
           </packing>
         </child>
-
-
-        <child>
-          <object class="CbEmojiChooser">
-            <property name="visible">1</property>
-            <property name="hexpand">1</property>
-            <signal name="emoji-picked" handler="emoji_picked_cb" />
-          </object>
-          <packing>
-            <property name="name">emoji-chooser</property>
-          </packing>
-        </child>
-
       </object>
     </child>
   </template>
