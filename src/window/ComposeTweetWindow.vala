@@ -61,7 +61,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Gtk.ListBox completion_list;
   [GtkChild]
   private Gtk.Box add_button_box;
-  private Cb.EmojiChooser? emoji_chooser;
+  private Cb.EmojiChooser? emoji_chooser = null;
+  private Gtk.Button? emoji_button = null;
   private unowned Account account;
   private unowned Cb.Tweet reply_to;
   private Mode mode;
@@ -153,6 +154,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
         () => {start_send_tweet (); return true;});
+    ag.connect (Gdk.Key.E, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
+        () => {show_emoji_chooser (); return true;});
+
 
     this.compose_image_manager.image_removed.connect ((path) => {
       this.compose_job.abort_image_upload (path);
@@ -380,6 +384,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     update_send_button_sensitivity ();
   }
 
+  private void show_emoji_chooser () {
+    if (this.emoji_chooser == null)
+      return;
+
+    this.emoji_button.clicked ();
+  }
+
   private void setup_emoji_chooser () {
     this.emoji_chooser = new Cb.EmojiChooser ();
     emoji_chooser.emoji_picked.connect ((text) => {
@@ -389,7 +400,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     emoji_chooser.show_all ();
     stack.add (emoji_chooser);
 
-    var emoji_button = new Gtk.Button.with_label ("🐧");
+    this.emoji_button = new Gtk.Button.with_label ("🐧");
     emoji_button.clicked.connect (() => {
       this.emoji_chooser.populate ();
       this.stack.visible_child = this.emoji_chooser;
