@@ -50,10 +50,6 @@ struct _CbEmojiChooser
   EmojiSection symbols;
   EmojiSection flags;
 
-  GtkGesture *recent_press;
-  GtkGesture *people_press;
-  GtkGesture *body_press;
-
   GVariant *data;
 
   GSettings *settings;
