@@ -600,7 +600,7 @@ cb_emoji_chooser_try_init (CbEmojiChooser *self)
     }
 
   self->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
-                                                             bytes, FALSE));
+                                                             bytes, TRUE));
   g_bytes_unref (bytes);
 
   populate_recent_section (self);
