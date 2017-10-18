@@ -23,9 +23,9 @@ namespace Tl {
 
   [CCode (cprefix = "tl_", lower_case_cprefix = "tl_", cheader_filename = "libtl/libtweetlength.h",
           array_length_pos = 1)]
-  Entity[] extract_entities (string input, out size_t text_length);
+  Entity[]? extract_entities (string input, out size_t text_length);
 
   [CCode (cprefix = "tl_", lower_case_cprefix = "tl_", cheader_filename = "libtl/libtweetlength.h",
           array_length_pos = 1)]
-  Entity[] extract_entities_and_text (string input, out size_t text_length);
+  Entity[]? extract_entities_and_text (string input, out size_t text_length);
 }
