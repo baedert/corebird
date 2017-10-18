@@ -130,25 +130,26 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
 
   if (self->rt_image != NULL)
     {
+      int min_image_height, min_label_height;
       g_assert (self->rt_label != NULL);
+
+      gtk_widget_measure (self->rt_image, GTK_ORIENTATION_VERTICAL, -1, &min_image_height, NULL,
+                          NULL, NULL);
+      gtk_widget_measure (self->rt_label, GTK_ORIENTATION_VERTICAL, -1, &min_label_height, NULL,
+                          NULL, NULL);
 
       gtk_widget_measure (self->rt_image, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
-      gtk_widget_measure (self->rt_image, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height,
-                          NULL, NULL);
       child_alloc.x = avatar_width;
       child_alloc.y = child_alloc.y + child_alloc.height;
+      child_alloc.height = MAX (min_image_height, min_label_height);
       child_alloc.width = min_width;
-      child_alloc.height = min_height;
       gtk_widget_size_allocate (self->rt_image, &child_alloc, -1, &child_clip);
 
       gtk_widget_measure (self->rt_label, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
-      gtk_widget_measure (self->rt_label, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height,
-                          NULL, NULL);
       child_alloc.x += child_alloc.width;
       child_alloc.width = MAX (allocation->width - avatar_width, min_width);
-      child_alloc.height = min_height; // TODO: Should be centered (or "baseline" aligned) wrt the rt_image
       gtk_widget_size_allocate (self->rt_label, &child_alloc, -1, &child_clip);
     }
 
@@ -207,7 +208,7 @@ create_ui (CbTweetRow *self)
   gtk_widget_set_valign (self->screen_name_label, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->screen_name_label);
 
-  self->time_delta_label = gtk_label_new ("Foo");
+  self->time_delta_label = gtk_label_new ("");
   gtk_widget_set_valign (self->time_delta_label, GTK_ALIGN_BASELINE);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "dim-label");
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "time-delta");
