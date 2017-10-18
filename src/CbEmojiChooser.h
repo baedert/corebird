@@ -34,6 +34,7 @@ struct _CbEmojiChooser
   GtkBox parent_instance;
 
   guint populated : 1;
+  guint populate_idle_id;
 
   GtkWidget *search_entry;
   GtkWidget *stack;

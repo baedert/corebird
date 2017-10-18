@@ -223,6 +223,7 @@ populate_one_emoji (gpointer user_data)
 
       if (item == NULL)
         {
+          data->chooser->populate_idle_id = 0;
           g_bytes_unref (data->bytes);
           g_free (data);
           return G_SOURCE_REMOVE;
@@ -257,19 +258,19 @@ populate_one_emoji (gpointer user_data)
 }
 
 static void
-populate_emoji_chooser (CbEmojiChooser *chooser)
+populate_emoji_chooser (CbEmojiChooser *self)
 {
   PopulateData *data = g_malloc0 (sizeof (PopulateData));
 
   data->bytes = g_resources_lookup_data ("/org/gtk/libgtk/emoji/emoji.data", 0, NULL);
-  data->chooser = chooser;
+  data->chooser = self;
 
-  chooser->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
+  self->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
                                                                 data->bytes, TRUE));
-  g_variant_iter_init (&data->iter, chooser->data);
-  data->box = chooser->people.box;
+  g_variant_iter_init (&data->iter, self->data);
+  data->box = self->people.box;
 
-  g_idle_add (populate_one_emoji, data);
+  self->populate_idle_id = g_idle_add (populate_one_emoji, data);
 }
 
 static void
@@ -448,6 +449,9 @@ cb_emoji_chooser_finalize (GObject *object)
     g_variant_unref (self->data);
 
   g_object_unref (self->settings);
+
+  if (self->populate_idle_id != 0)
+    g_source_remove (self->populate_idle_id);
 
   G_OBJECT_CLASS (cb_emoji_chooser_parent_class)->finalize (object);
 }
