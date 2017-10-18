@@ -270,7 +270,10 @@ populate_emoji_chooser (CbEmojiChooser *self)
   g_variant_iter_init (&data->iter, self->data);
   data->box = self->people.box;
 
-  self->populate_idle_id = g_idle_add (populate_one_emoji, data);
+  self->populate_idle_id = g_idle_add_full (G_PRIORITY_DEFAULT_IDLE,
+                                            populate_one_emoji,
+                                            data,
+                                            g_free);
 }
 
 static void
