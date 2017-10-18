@@ -226,7 +226,6 @@ populate_one_emoji (gpointer user_data)
       if (item == NULL)
         {
           data->chooser->populate_idle_id = 0;
-          g_free (data);
           return G_SOURCE_REMOVE;
         }
 
