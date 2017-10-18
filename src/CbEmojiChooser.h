@@ -61,6 +61,7 @@ typedef struct _CbEmojiChooser CbEmojiChooser;
 G_DECLARE_FINAL_TYPE (CbEmojiChooser, cb_emoji_chooser, CB, EMOJI_CHOOSER, GtkBox);
 
 GtkWidget * cb_emoji_chooser_new      (void);
+gboolean    cb_emoji_chooser_try_init (CbEmojiChooser *self);
 void        cb_emoji_chooser_populate (CbEmojiChooser *self);
 
 #endif

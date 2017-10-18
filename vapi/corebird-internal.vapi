@@ -418,6 +418,7 @@ namespace Cb {
   public class EmojiChooser : Gtk.Box {
     public EmojiChooser ();
     public void populate ();
+    public bool try_init ();
     public signal void emoji_picked (string emoji);
   }
 }

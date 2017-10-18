@@ -393,6 +393,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   private void setup_emoji_chooser () {
     this.emoji_chooser = new Cb.EmojiChooser ();
+
+    if (!emoji_chooser.try_init ()) {
+      this.emoji_chooser = null;
+      return;
+    }
+
     emoji_chooser.emoji_picked.connect ((text) => {
       this.tweet_text.insert_at_cursor (text);
       cancel_clicked ();

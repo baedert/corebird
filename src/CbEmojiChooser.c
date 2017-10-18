@@ -24,6 +24,9 @@
 
 #define EMOJI_PER_ROW 7
 
+/* From 2017-10-18 */
+#define EMOJI_DATA_CHECKSUM "2ad33472d280d83737884a0e60a9236793653111"
+
 enum {
   EMOJI_PICKED,
   LAST_SIGNAL
@@ -201,7 +204,6 @@ add_emoji (GtkWidget    *box,
 
 typedef struct {
   CbEmojiChooser *chooser;
-  GBytes *bytes;
   GVariantIter iter;
   GtkWidget *box; /* We need to keep this around so subsequent
                      emojis get added to the rigth section */
@@ -224,7 +226,6 @@ populate_one_emoji (gpointer user_data)
       if (item == NULL)
         {
           data->chooser->populate_idle_id = 0;
-          g_bytes_unref (data->bytes);
           g_free (data);
           return G_SOURCE_REMOVE;
         }
@@ -262,11 +263,8 @@ populate_emoji_chooser (CbEmojiChooser *self)
 {
   PopulateData *data = g_malloc0 (sizeof (PopulateData));
 
-  data->bytes = g_resources_lookup_data ("/org/gtk/libgtk/emoji/emoji.data", 0, NULL);
   data->chooser = self;
 
-  self->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
-                                                                data->bytes, TRUE));
   g_variant_iter_init (&data->iter, self->data);
   data->box = self->people.box;
 
@@ -459,23 +457,11 @@ cb_emoji_chooser_finalize (GObject *object)
   G_OBJECT_CLASS (cb_emoji_chooser_parent_class)->finalize (object);
 }
 
-
-void
-cb_emoji_chooser_populate (CbEmojiChooser *self)
-{
-  if (self->populated)
-    return;
-
-  self->populated = TRUE;
-  populate_emoji_chooser (self);
-}
-
 static void
 cb_emoji_chooser_init (CbEmojiChooser *self)
 {
   GtkAdjustment *adj;
 
-  self->settings = g_settings_new ("org.gtk.Settings.EmojiChooser");
 
   gtk_widget_init_template (GTK_WIDGET (self));
 
@@ -493,8 +479,6 @@ cb_emoji_chooser_init (CbEmojiChooser *self)
   setup_section (self, &self->symbols, "ATM sign", 0x2764);
   setup_section (self, &self->flags, "chequered flag", 0x1f3f4);
 
-  populate_recent_section (self);
-  /*populate_emoji_chooser (self);*/
 
   /* We scroll to the top on show, so check the right button for the 1st time */
   gtk_widget_set_state_flags (self->recent.button, GTK_STATE_FLAG_CHECKED, FALSE);
@@ -571,4 +555,56 @@ GtkWidget *
 cb_emoji_chooser_new (void)
 {
   return GTK_WIDGET (g_object_new (CB_TYPE_EMOJI_CHOOSER, NULL));
+}
+
+void
+cb_emoji_chooser_populate (CbEmojiChooser *self)
+{
+  if (self->populated)
+    return;
+
+  self->populated = TRUE;
+  populate_emoji_chooser (self);
+}
+
+gboolean
+cb_emoji_chooser_try_init (CbEmojiChooser *self)
+{
+  GBytes *bytes;
+  char *checksum;
+  GVariant *settings_test;
+  gboolean recent_in_correct_format = FALSE;
+  gboolean correct_checksum = FALSE;
+
+  self->settings = g_settings_new ("org.gtk.Settings.EmojiChooser");
+  settings_test = g_settings_get_value (self->settings, "recent-emoji");
+
+  recent_in_correct_format = g_variant_is_of_type (settings_test, G_VARIANT_TYPE ("a((auss)u)"));
+  g_variant_unref (settings_test);
+
+  if (!recent_in_correct_format)
+    return FALSE;
+
+  bytes = g_resources_lookup_data ("/org/gtk/libgtk/emoji/emoji.data", 0, NULL);
+
+  if (bytes == NULL)
+    return FALSE;
+
+  checksum = g_compute_checksum_for_bytes (G_CHECKSUM_SHA1, bytes);
+
+  correct_checksum = strcmp (checksum, EMOJI_DATA_CHECKSUM) == 0;
+  g_free (checksum);
+  if (!correct_checksum)
+    {
+      g_bytes_unref (bytes);
+      return FALSE;
+    }
+
+  self->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
+                                                             bytes, FALSE));
+  g_bytes_unref (bytes);
+
+  populate_recent_section (self);
+
+  return TRUE;
 }
