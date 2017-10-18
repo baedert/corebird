@@ -30,13 +30,19 @@ struct Cursor {
 
 namespace UserUtils {
   async uint load_friendship (Account account,
-                              int64   user_id)
+                              int64   user_id,
+                              string  screen_name)
   {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/friendships/show.json");
     call.set_method ("GET");
     call.add_param ("source_id", account.id.to_string ());
-    call.add_param ("target_id", user_id.to_string ());
+
+    if (user_id != 0)
+      call.add_param ("target_id", user_id.to_string ());
+    else
+      call.add_param ("target_screen_name", screen_name);
+
 
     Json.Node? root = null;
     try {

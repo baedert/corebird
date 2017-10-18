@@ -186,7 +186,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     ((SimpleAction)actions.lookup_action ("toggle-blocked")).set_enabled (user_id != account.id);
     ((SimpleAction)actions.lookup_action ("toggle-muted")).set_enabled (user_id != account.id);
 
-    uint fr = yield UserUtils.load_friendship (account, this.user_id);
+    uint fr = yield UserUtils.load_friendship (account, this.user_id, this.screen_name);
 
     follows_you_label.visible = (fr & FRIENDSHIP_FOLLOWED_BY) > 0;
     set_user_blocked ((fr & FRIENDSHIP_BLOCKING) > 0);
@@ -204,7 +204,10 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     var call = account.proxy.new_call ();
     call.set_method ("GET");
     call.set_function ("1.1/users/show.json");
-    call.add_param ("user_id", user_id.to_string ());
+    if (user_id != 0)
+      call.add_param ("user_id", user_id.to_string ());
+    else
+      call.add_param ("screen_name", this.screen_name);
     call.add_param ("include_entities", "false");
 
     Json.Node? root_node = null;
@@ -224,6 +227,7 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     var root = root_node.get_object();
     int64 id = root.get_int_member ("id");
+    this.user_id = id;
 
     string avatar_url = root.get_string_member("profile_image_url");
     int scale = this.get_scale_factor ();
@@ -330,7 +334,6 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     name_label.set_markup (name.strip ());
     screen_name_label.set_label ("@" + screen_name);
-    //tweet_to_menu_item.label = _("Tweet to @%s").printf (screen_name);
     string desc = description;
     if (text_urls != null) {
       TweetUtils.sort_entities (ref text_urls);
@@ -378,7 +381,10 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/user_timeline.json");
     call.set_method ("GET");
-    call.add_param ("user_id", this.user_id.to_string ());
+    if (user_id != 0)
+      call.add_param ("user_id", this.user_id.to_string ());
+    else
+      call.add_param ("screen_name", this.screen_name);
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("tweet_mode", "extended");

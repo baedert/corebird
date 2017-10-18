@@ -183,7 +183,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
       var root = parser.get_root ().get_object ();
       int64 user_id = root.get_int_member ("id");
 
-      UserUtils.load_friendship.begin (account, user_id, (obj, res) => {
+      UserUtils.load_friendship.begin (account, user_id, "", (obj, res) => {
         uint fr = UserUtils.load_friendship.end (res);
 
         if ((fr & FRIENDSHIP_CAN_DM) == 0) {
