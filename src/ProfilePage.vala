@@ -302,8 +302,19 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     Cb.TextEntity[]? text_urls = null;
     if (root.has_member ("description")) {
+      int n_tl_entities = 0;
+      Tl.Entity[]? tl_entities = Tl.extract_entities (description, null);
+
+      // We just add hashtags and mentions ourselves and leave links to Twitter
+      foreach (Tl.Entity e in tl_entities) {
+        if (e.type == Tl.EntityType.HASHTAG ||
+            e.type == Tl.EntityType.MENTION)
+          n_tl_entities ++;
+
+      }
+
       Json.Array urls = entities.get_object_member ("description").get_array_member ("urls");
-      text_urls = new Cb.TextEntity[urls.get_length ()];
+      text_urls = new Cb.TextEntity[urls.get_length () + n_tl_entities];
       urls.foreach_element ((arr, i, node) => {
         var ent = node.get_object ();
         string expanded_url = ent.get_string_member ("expanded_url");
@@ -318,6 +329,34 @@ class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
           display_text = ent.get_string_member ("display_url")
         };
       });
+
+      // Adding them now is fine since we will sort them later
+      int i = (int)urls.get_length ();
+      foreach (Tl.Entity e in tl_entities) {
+        if (e.type != Tl.EntityType.HASHTAG &&
+            e.type != Tl.EntityType.MENTION)
+          continue;
+
+        if (e.type == Tl.EntityType.HASHTAG) {
+          text_urls[i] = Cb.TextEntity () {
+            from = (uint)e.start_character_index,
+            to   = (uint)(e.start_character_index + e.length_in_characters),
+            target = e.start->ndup(e.length_in_bytes),
+            display_text = e.start->ndup(e.length_in_bytes),
+            tooltip_text = e.start->ndup(e.length_in_bytes)
+          };
+        } else if (e.type == Tl.EntityType.MENTION) {
+          text_urls[i] = Cb.TextEntity () {
+            from = (uint)e.start_character_index,
+            to   = (uint)(e.start_character_index + e.length_in_characters),
+            target = "@0/%.*s".printf (e.length_in_bytes, e.start),
+            display_text = e.start->ndup(e.length_in_bytes),
+            tooltip_text = e.start->ndup(e.length_in_bytes)
+          };
+        }
+
+        i ++;
+      }
     }
 
     account.user_counter.user_seen (id, screen_name, name);
