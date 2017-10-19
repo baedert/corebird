@@ -38,13 +38,13 @@ src/window/UserListDialog.vala
 ui/about-dialog.ui
 ui/account-create-widget.ui
 ui/account-dialog.ui
+ui/cb-emoji-chooser.ui
 ui/compose-window.ui
 ui/dm-page.ui
 ui/filter-list-entry.ui
 ui/filter-page.ui
 ui/list-list-entry.ui
 ui/list-statuses-page.ui
-ui/load-more-entry.ui
 ui/menus.ui
 ui/modify-filter-dialog.ui
 ui/modify-snippet-dialog.ui
