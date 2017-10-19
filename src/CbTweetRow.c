@@ -187,6 +187,8 @@ create_ui (CbTweetRow *self)
   g_assert (self->tweet != NULL);
 
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
+  avatar_widget_set_verified (AVATAR_WIDGET (self->avatar_widget),
+                              cb_tweet_is_flag_set (self->tweet, CB_TWEET_STATE_VERIFIED));
   gtk_widget_set_parent (self->avatar_widget, (GtkWidget *)self);
   self->top_row_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");

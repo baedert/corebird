@@ -20,8 +20,17 @@
 public class AvatarWidget : Gtk.Widget {
   private const int OVERLAP_DIST = 40;
   public bool overlap  { get; set; default = false; }
-  public bool verified { get; set; default = false; }
-  private Cairo.ImageSurface _surface;
+  public bool verified {
+    get {
+      return container_widget.verified;
+    }
+    set {
+      container_widget.verified = value;
+      this.queue_draw ();
+    }
+    default = false;
+  }
+  private Cairo.Surface _surface;
   public Cairo.Surface surface {
     get {
       return _surface;
@@ -47,6 +56,7 @@ public class AvatarWidget : Gtk.Widget {
       }
 
       container_widget.surface = this._surface;
+      container_widget.texture = Cb.Utils.surface_to_texture (this._surface, 1);
       this.queue_draw ();
     }
   }
@@ -185,25 +195,26 @@ public class AvatarContainer : Gtk.Widget {
   }
 
   public Cairo.Surface surface;
+  public Gsk.Texture texture;
 
 
-  static Cairo.Surface[] verified_icons;
+  static Gsk.Texture[] verified_textures;
   const int[] VERIFIED_SIZES = {12, 25};
   static construct {
     try {
-      verified_icons = {
-        Gdk.cairo_surface_create_from_pixbuf (
+      verified_textures = {
+        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
           new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small.png"),
-          1, null),
-        Gdk.cairo_surface_create_from_pixbuf (
+          1, null), 1),
+        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
           new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-large.png"),
-          1, null),
-        Gdk.cairo_surface_create_from_pixbuf (
+          1, null), 1),
+        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
           new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small@2.png"),
-          2, null),
-        Gdk.cairo_surface_create_from_pixbuf (
+          2, null), 1),
+        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
           new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-large@2.png"),
-          2, null)
+          2, null), 1)
       };
     } catch (GLib.Error e) {
       critical (e.message);
@@ -238,18 +249,13 @@ public class AvatarContainer : Gtk.Widget {
     bounds.size.width = width;
     bounds.size.height = height;
 
-    // TODO: Ultimately, we should save GskTextures everywhere instead of
-    //       cairo surfaces
-    var texture = Cb.Utils.surface_to_texture (this.surface,
-                                               this.get_scale_factor ());
-
     if (_round) {
       Gsk.RoundedRect round_clip = {};
       round_clip.init_from_rect (bounds, width); // radius = width => round.
       snapshot.push_rounded_clip (round_clip, "Avatar clip");
     }
 
-    snapshot.append_texture (texture, bounds, "Avatar Image");
+    snapshot.append_texture (this.texture, bounds, "Avatar Image");
 
     if (_round) {
       snapshot.pop ();
@@ -267,9 +273,7 @@ public class AvatarContainer : Gtk.Widget {
       }
 
       int scale_factor = this.get_scale_factor () - 1;
-      Cairo.Surface verified_img = verified_icons[scale_factor * 2 + index];
-      var verified_texture = Cb.Utils.surface_to_texture (verified_img,
-                                                          this.get_scale_factor ());
+      var verified_texture = verified_textures[scale_factor * 2 + index];
       verified_bounds.origin.x = width - (VERIFIED_SIZES[index] * verified_scale);
       verified_bounds.origin.y = 0;
       verified_bounds.size.width = VERIFIED_SIZES[index] * verified_scale;
