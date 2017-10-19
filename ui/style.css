@@ -268,7 +268,8 @@ row.tweet {
   border-bottom: solid 1px alpha (grey, 0.3);
   padding: 1em;
   margin: 0 1em 1em 1em;
-  box-shadow: 0px 1px 2px #888;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12),
+              0 1px 2px rgba(0,0,0,0.24);
 }
 
 row.tweet:active {
