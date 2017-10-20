@@ -148,7 +148,7 @@ hadjustment_changed_cb (GtkAdjustment *adjustment,
   double new_value;
 
   upper = gtk_adjustment_get_upper (adjustment);
-  new_value = upper * self->initial_scroll_x;
+  new_value = upper * self->initial_scroll_x - (gtk_adjustment_get_page_size (adjustment) / 2.0);
 
   gtk_adjustment_set_value (adjustment, new_value);
 
@@ -164,7 +164,7 @@ vadjustment_changed_cb (GtkAdjustment *adjustment,
   double new_value;
 
   upper = gtk_adjustment_get_upper (adjustment);
-  new_value = upper * self->initial_scroll_y;
+  new_value = upper * self->initial_scroll_y - (gtk_adjustment_get_page_size (adjustment) / 2.0);
 
   gtk_adjustment_set_value (adjustment, new_value);
 
