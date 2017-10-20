@@ -1,4 +1,4 @@
-/*  This file is part of libtweetlength, a Gtk+ linux Twitter client.
+/*  This file is part of libtweetlength
  *  Copyright (C) 2017 Timm Bäder
  *
  *  libtweetlength is free software: you can redistribute it and/or modify

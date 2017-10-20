@@ -1,4 +1,4 @@
-/*  This file is part of libtweetlength, a Gtk+ linux Twitter client.
+/*  This file is part of libtweetlength
  *  Copyright (C) 2017 Timm Bäder
  *
  *  libtweetlength is free software: you can redistribute it and/or modify
@@ -345,7 +345,6 @@ parse_link_tail (GArray      *entities,
       i --;
       break;
     }
-
   }
 
   if (paren_level != 0) {
@@ -438,7 +437,8 @@ parse_link (GArray      *entities,
 
     if (!(t->type == TOK_NUMBER ||
           t->type == TOK_TEXT ||
-          t->type == TOK_DOT)) {
+          t->type == TOK_DOT ||
+          t->type == TOK_DASH)) {
       if (!tld_found) {
         return FALSE;
       } else {
@@ -456,11 +456,13 @@ parse_link (GArray      *entities,
   }
 
   if (tld_index >= n_tokens - 1 ||
-      !tld_found) {
+      !tld_found ||
+      token_in (&tokens[tld_index - 1], INVALID_URL_CHARS)) {
     return FALSE;
   }
 
   // tld_index is the TOK_DOT
+  g_assert (tokens[tld_index].type == TOK_DOT);
   i = tld_index + 1;
 
   // If the next token is a colon, we are reading a port
@@ -475,7 +477,8 @@ parse_link (GArray      *entities,
     }
   }
 
-  // To continue a link, the next token must be a slash or a question mark.
+  // To continue a link, the next token must be a slash, a question mark
+  // or a colon
   // If it isn't, we stop here.
   if (i < n_tokens - 1) {
     // A trailing slash is part of the link, other punctuation is not.
@@ -491,9 +494,11 @@ parse_link (GArray      *entities,
         // Trailing questionmark is not part of the link
         i --;
       }
-    }
-    // An @ means that we've confused the start of an email with a URL without a protocol
-    else if (tokens[i + 1].type == TOK_AT) {
+    } else if (tokens[i + 1].type == TOK_AT) {
+      // We cannot just return FALSE for all non-slash/non-questionmark tokens here since
+      // The Rules say some of them make a link until this token and some of them cause the
+      // entire parsing to produce no link at all, like in the @ case (don't want to turn
+      // email addressed into links).
       return FALSE;
     }
   }
@@ -683,7 +688,7 @@ parse (const Token *tokens,
     }
 
     emplace_entity (entities,
-                    TL_ENT_TEXT,
+                    token->type == TOK_WHITESPACE ? TL_ENT_WHITESPACE : TL_ENT_TEXT,
                     token->start,
                     token->length_in_bytes,
                     token->start_character_index,
@@ -751,8 +756,8 @@ tl_count_characters_n (const char *input,
   }
 
   // From here on, input/length_in_bytes are trusted to be OK
-
   tokens = tokenize (input, length_in_bytes);
+
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
 
@@ -816,7 +821,6 @@ tl_extract_entities_internal (const char *input,
   guint result_index = 0;
 
   tokens = tokenize (input, length_in_bytes);
-
   n_tokens = tokens->len;
   token_array = (const Token *)g_array_free (tokens, FALSE);
   entities = parse (token_array, n_tokens, extract_text_entities, &n_relevant_entities);
