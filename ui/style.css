@@ -213,6 +213,7 @@ replyindicator {
 .profile-button:hover {
   background-image: none;
   background-color: alpha(white, 0.3);
+  border-bottom: 2px solid #aaa;
 }
 
 .profile-button:active {
