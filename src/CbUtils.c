@@ -323,18 +323,14 @@ cb_utils_parse_date (const char *_in)
   GTimeZone *time_zone;
   GTimeZone *local_time_zone;
   double seconds;
-  guint i;
 
   /* The input string is ASCII, in the form  'Wed Jun 20 19:01:28 +0000 2012' */
 
   if (!_in)
     return g_date_time_new_now_local ();
 
-  for (i = 0; i < 30; i ++)
-    in[i] = _in[i];
-
-
   g_assert (strlen (_in) == 30);
+  memcpy (in, _in, 30);
 
   in[3]  = '\0';
   in[7]  = '\0';
