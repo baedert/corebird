@@ -81,6 +81,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     time_delta_label.set_valign (Gtk.Align.BASELINE);
     time_delta_label.set_hexpand (true);
     time_delta_label.show ();
+    time_delta_label.get_style_context ().add_class ("dim-label");
     grid.attach (time_delta_label, 3, 0, 1, 1);
 
     this.text_label = new Gtk.Label (null);
