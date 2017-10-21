@@ -103,6 +103,7 @@
                     <property name="wrap-mode">word-char</property>
                     <property name="accepts-tab">False</property>
                     <property name="height-request">60</property>
+                    <signal name="populate-popup" handler="tweet_text_populate_popup_cb" />
                     <accessibility>
                       <relation type="labelled-by" target="length_label"/>
                     </accessibility>
