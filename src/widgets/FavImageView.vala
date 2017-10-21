@@ -45,6 +45,7 @@ class FavImageView : Gtk.Box {
     this.add (new_fav_image_button);
 
 
+    fav_image_list.set_selection_mode (Gtk.SelectionMode.NONE);
     fav_image_list.get_style_context ().add_class ("view");
     fav_image_list.get_style_context ().add_class ("fav-image-box");
     fav_image_list.child_activated.connect (fav_image_list_child_activated_cb);
