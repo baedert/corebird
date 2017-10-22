@@ -66,6 +66,7 @@
         <li>The mention-completion when composing a new tweet now fetches unknown users from the twitter server</li>
         <li>Videos larger than the screen size are now getting scaled down while playing</li>
         <li>Profiles now indicate when an account is suspended</li>
+        <li>Profiles handle protected accounts better when trying to access followers/following users, etc.</li>
         <li>The compose window now allows tweets with just media attached but not text</li>
         <li>Improve the hashtag/mention/link detection when composing a new tweet</li>
         <li>The compose dialog now shows an emoji chooser. This is only available starting GTK+ 3.22.19 and the emojis will only be rendered with color if you have the needed cairo version installed, as well as an emoji font.</li>
