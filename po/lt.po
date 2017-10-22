@@ -8,15 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-29 18:29+0200\n"
+"POT-Creation-Date: 2017-10-22 12:02+0200\n"
 "PO-Revision-Date: 2017-08-03 13:49+0000\n"
 "Last-Translator: Moo\n"
-"Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/language/lt/)\n"
+"Language-Team: Lithuanian (http://www.transifex.com/corebird/corebird/"
+"language/lt/)\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: lt\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
 #: data/org.baedert.corebird.desktop.in:3
@@ -32,13 +34,18 @@ msgstr "Twitter klientas"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr "Corebird yra savas GTK+ twitter klientas, kuris suteikia svarbiausias ypatybes, tokias kaip Tiesioginės Žinutės (TŽ), tauškalų pranešimai, pokalbių rodiniai."
+msgstr ""
+"Corebird yra savas GTK+ twitter klientas, kuris suteikia svarbiausias "
+"ypatybes, tokias kaip Tiesioginės Žinutės (TŽ), tauškalų pranešimai, "
+"pokalbių rodiniai."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images,"
-" Lists, Filters, multiple accounts, etc."
-msgstr "Papildomas ypatybes sudaro vietinė vaizdo įrašų peržiūra, kelių įterptų paveikslėlių galimybė, Sąrašai, filtrai, kelių paskyrų galimybė ir t. t."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+"Papildomas ypatybes sudaro vietinė vaizdo įrašų peržiūra, kelių įterptų "
+"paveikslėlių galimybė, Sąrašai, filtrai, kelių paskyrų galimybė ir t. t."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -60,42 +67,40 @@ msgstr "Timm Bäder"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Naudokitės Twitter normalioje darbalaukio programoje"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or
-#. localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
-#. file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/CbUtils.c:87 src/TweetInfoPage.vala:479
+#: src/CbUtils.c:177 src/TweetInfoPage.vala:525
 msgid "Replying to"
 msgstr "Atsakoma"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
-#: src/CbUtils.c:98 src/TweetInfoPage.vala:491
+#: src/CbUtils.c:188 src/TweetInfoPage.vala:537
 msgid "and"
 msgstr "ir"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
-#: src/CbUtils.c:107
+#: src/CbUtils.c:197
 #, c-format
 msgid "and %d others"
 msgstr "ir %d kitiems"
 
-#: src/DMPage.vala:346
+#: src/DMPage.vala:344
 msgid "Direct Conversation"
 msgstr "Tiesioginis pokalbis"
 
-#: src/DMThreadsPage.vala:205
+#: src/DMThreadsPage.vala:228
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
@@ -103,21 +108,21 @@ msgstr[0] "%d nauja žinutė nuo %s"
 msgstr[1] "%d naujos žinutės nuo %s"
 msgstr[2] "%d naujų žinučių nuo %s"
 
-#: src/DMThreadsPage.vala:211 src/UserEventReceiver.vala:94
+#: src/DMThreadsPage.vala:234 src/UserEventReceiver.vala:98
 #, c-format
 msgid "New direct message from %s"
 msgstr "Nauja tiesioginė žinutė nuo %s"
 
-#: src/DMThreadsPage.vala:221 src/DMThreadsPage.vala:235
+#: src/DMThreadsPage.vala:244 src/DMThreadsPage.vala:258
 msgid "Direct Messages"
 msgstr "Tiesioginės žinutės"
 
-#: src/DefaultTimeline.vala:357
+#: src/DefaultTimeline.vala:366
 msgid "Could not load tweets"
 msgstr "Nepavyko įkelti tauškalų"
 
-#: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:521
+#: src/FavoritesTimeline.vala:72 src/FavoritesTimeline.vala:76
+#: src/TweetInfoPage.vala:567
 msgid "Favorites"
 msgstr "Mėgstami"
 
@@ -129,17 +134,17 @@ msgstr "Pridėti naują filtrą"
 msgid "Filters"
 msgstr "Filtrai"
 
-#: src/HomeTimeline.vala:140
+#: src/HomeTimeline.vala:143
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s persiuntė naudotojo %s tauškalą"
 
-#: src/HomeTimeline.vala:143
+#: src/HomeTimeline.vala:146
 #, c-format
 msgid "%s tweeted"
 msgstr "%s išsiuntė tauškalą"
 
-#: src/HomeTimeline.vala:152
+#: src/HomeTimeline.vala:155
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
@@ -147,7 +152,7 @@ msgstr[0] "%d naujas tauškalas!"
 msgstr[1] "%d nauji tauškalai!"
 msgstr[2] "%d naujų tauškalų!"
 
-#: src/HomeTimeline.vala:187
+#: src/HomeTimeline.vala:190
 msgid "Home"
 msgstr "Pradžia"
 
@@ -155,53 +160,76 @@ msgstr "Pradžia"
 msgid "List"
 msgstr "Sąrašas"
 
-#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
+#: src/ListsPage.vala:126 src/ListsPage.vala:131 ui/profile-page.ui:368
 msgid "Lists"
 msgstr "Sąrašai"
 
-#: src/MainWindow.vala:79
+#: src/MainWindow.vala:88
+msgid "Show configured accounts"
+msgstr "Rodyti konfigūruotas paskyras"
+
+#: src/MainWindow.vala:100 ui/compose-window.ui:11 ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "Rašyti tauškalą"
+
+#: src/MainWindow.vala:132
 msgid "Add new Account"
 msgstr "Pridėti naują paskyrą"
 
-#: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
+#: src/MentionsTimeline.vala:93 src/UserEventReceiver.vala:115
 #, c-format
 msgid "%s mentioned %s"
 msgstr "%s paminėjo %s"
 
-#: src/MentionsTimeline.vala:108 src/MentionsTimeline.vala:112
+#: src/MentionsTimeline.vala:111 src/MentionsTimeline.vala:115
 msgid "Mentions"
 msgstr "Paminėjimai"
 
-#: src/ProfilePage.vala:261
+#: src/ProfilePage.vala:218
+#, fuzzy
+msgid "Suspended Account"
+msgstr "Nauja paskyra"
+
+#: src/ProfilePage.vala:272
 msgid "Protected profile"
 msgstr "Apsaugotas profilis"
 
-#: src/ProfilePage.vala:319
+#: src/ProfilePage.vala:369
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Siųsti tauškalą naudotojui @%s"
+
+#: src/ProfilePage.vala:507 src/ProfilePage.vala:551
+#, fuzzy
+msgid "Protected Profile"
+msgstr "Apsaugotas profilis"
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Paieška"
 
-#: src/TweetInfoPage.vala:303
+#: src/SearchPage.vala:401
+#, fuzzy
+msgid "Load More"
+msgstr "Įkelti daugiau"
+
+#: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
 msgstr "Nepavyko parodyti tauškalo"
 
-#: src/TweetInfoPage.vala:520
+#: src/TweetInfoPage.vala:566
 msgid "Retweets"
 msgstr "Persiųsti tauškalai"
 
-#: src/TweetInfoPage.vala:529 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:575 src/widgets/MediaButton.vala:103
 msgid "Open in Browser"
 msgstr "Atverti naršyklėje"
 
-#: src/TweetInfoPage.vala:529
+#: src/TweetInfoPage.vala:575
 msgid "Source"
 msgstr "Šaltinis"
 
-#: src/TweetInfoPage.vala:575
+#: src/TweetInfoPage.vala:621
 msgid "Tweet Details"
 msgstr "Išsamiau apie tauškalą"
 
@@ -213,37 +241,37 @@ msgstr[0] "(%d neperskaitytas)"
 msgstr[1] "(%d neperskaityti)"
 msgstr[2] "(%d neperskaitytų)"
 
-#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
-#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: src/list/FavImageRow.vala:81 ui/account-dialog.ui:212
+#: ui/account-dialog.ui:269 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
 #: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
 #: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Ištrinti"
 
-#: src/list/TweetListEntry.vala:453
+#: src/list/TweetListEntry.vala:455
 #, c-format
 msgid "Block %s"
 msgstr "Blokuoti %s"
 
-#: src/list/TweetListEntry.vala:609
+#: src/list/TweetListEntry.vala:611
 msgid "This tweet contains images marked as inappropriate"
 msgstr "Šiame tauškale yra paveikslų, kurie yra pažymėti kaip netinkami"
 
-#: src/list/TweetListEntry.vala:616
+#: src/list/TweetListEntry.vala:618
 msgid "Show anyway"
 msgstr "Vis tiek rodyti"
 
-#: src/util/Utils.vala:168
+#: src/util/Utils.vala:146
 msgid "Now"
 msgstr "Dabar"
 
-#: src/util/Utils.vala:170
+#: src/util/Utils.vala:148
 #, c-format
 msgid "%dm"
 msgstr "%dmin."
 
-#: src/util/Utils.vala:174
+#: src/util/Utils.vala:152
 #, c-format
 msgid "%dh"
 msgstr "%dval."
@@ -256,28 +284,50 @@ msgstr "Dar neturite Twitter paskyros?"
 msgid "Create one"
 msgstr "Susikurkite paskyrą"
 
-#: src/widgets/AccountCreateWidget.vala:57
+#: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with"
-" the Twitter servers and you should try again later"
-msgstr "Neleistina prieiga. Daugelyje atvejų, tai reiškia Twitter serveriuose įvykusius nesklandumus, tad vėliau, turėtumėte pabandyti dar kartą"
+"Unauthorized. Most of the time, this means that there’s something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"Neleistina prieiga. Daugelyje atvejų, tai reiškia Twitter serveriuose "
+"įvykusius nesklandumus, tad vėliau, turėtumėte pabandyti dar kartą"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
 msgid "Could not open %s"
 msgstr "Nepavyko atverti %s"
 
-#: src/widgets/AccountCreateWidget.vala:92
+#: src/widgets/AccountCreateWidget.vala:98
 msgid "Wrong PIN"
 msgstr "Neteisingas PIN"
 
-#: src/widgets/AccountCreateWidget.vala:118
+#: src/widgets/AccountCreateWidget.vala:124
 msgid "Account already in use"
 msgstr "Paskyra jau yra naudojama"
 
-#: src/widgets/CompletionTextView.vala:40
+#: src/widgets/CompletionTextView.vala:59
 msgid "No users found"
 msgstr "Naudotojų nerasta"
+
+#: src/widgets/FavImageView.vala:153 src/window/ComposeTweetWindow.vala:299
+msgid "Select Image"
+msgstr "Pasirinkite paveikslą"
+
+#: src/widgets/FavImageView.vala:156 src/window/AccountDialog.vala:347
+#: src/window/ComposeTweetWindow.vala:302
+msgid "Open"
+msgstr "Atverti"
+
+#: src/widgets/FavImageView.vala:157 src/widgets/MediaButton.vala:276
+#: src/window/AccountDialog.vala:348 src/window/ComposeTweetWindow.vala:275
+#: src/window/ComposeTweetWindow.vala:303 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:256 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
+#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
+#: ui/modify-snippet-dialog.ui:14 ui/shortcuts-window.ui:134
+#: ui/user-filter-entry.ui:114
+msgid "Cancel"
+msgstr "Atsisakyti"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -291,31 +341,20 @@ msgstr "Nustoti sekti"
 msgid "Copy URL"
 msgstr "Kopijuoti URL"
 
-#: src/widgets/MediaButton.vala:106
+#: src/widgets/MediaButton.vala:105
 msgid "Save as…"
 msgstr "Įrašyti kaip…"
 
-#: src/widgets/MediaButton.vala:269
+#: src/widgets/MediaButton.vala:268
 msgid "Save Video"
 msgstr "Įrašyti vaizdo įrašą"
 
-#: src/widgets/MediaButton.vala:271
+#: src/widgets/MediaButton.vala:270
 msgid "Save Image"
 msgstr "Įrašyti paveikslą"
 
-#: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
-#: src/window/ComposeTweetWindow.vala:241
-#: src/window/ComposeTweetWindow.vala:271
-#: src/window/ComposeTweetWindow.vala:380 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:25 ui/account-dialog.ui:246 ui/compose-window.ui:41
-#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
-#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
-#: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
-msgid "Cancel"
-msgstr "Atsisakyti"
-
-#: src/widgets/MediaButton.vala:278 src/window/AccountDialog.vala:406
-#: src/window/AccountDialog.vala:427 src/window/UserListDialog.vala:48
+#: src/widgets/MediaButton.vala:275 src/window/AccountDialog.vala:429
+#: src/window/AccountDialog.vala:450 src/window/UserListDialog.vala:48
 #: ui/account-dialog.ui:33 ui/list-statuses-page.ui:129
 #: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
 msgid "Save"
@@ -333,20 +372,15 @@ msgstr "Nerasta įrašų"
 msgid "Retry"
 msgstr "Pakartoti"
 
-#: src/window/AccountDialog.vala:311
+#: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
 msgstr "Pasirinkite reklamjuostės paveikslą"
 
-#: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
-#: src/window/ComposeTweetWindow.vala:382
-msgid "Open"
-msgstr "Atverti"
-
-#: src/window/AccountDialog.vala:348
+#: src/window/AccountDialog.vala:380
 msgid "Image does not meet minimum size requirements:"
 msgstr "Paveikslas neatitinka minimalių dydžio reikalavimų:"
 
-#: src/window/AccountDialog.vala:349
+#: src/window/AccountDialog.vala:381
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
@@ -354,7 +388,7 @@ msgstr[0] "Minimalus plotis: %d taškas"
 msgstr[1] "Minimalus plotis: %d taškai"
 msgstr[2] "Minimalus plotis: %d taškų"
 
-#: src/window/AccountDialog.vala:351
+#: src/window/AccountDialog.vala:383
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
@@ -362,34 +396,41 @@ msgstr[0] "Minimalus aukštis: %d taškas"
 msgstr[1] "Minimalus aukštis: %d taškai"
 msgstr[2] "Minimalus aukštis: %d taškų"
 
-#: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
+#: src/window/AccountDialog.vala:404 src/window/AccountDialog.vala:417
 msgid "Pick"
 msgstr "Pasirinkti"
 
-#: src/window/ComposeTweetWindow.vala:107
+#: src/window/ComposeTweetWindow.vala:138
 msgid "Quote tweet"
 msgstr "Cituoti tauškalą"
 
-#: src/window/ComposeTweetWindow.vala:268
-#: src/window/ComposeTweetWindow.vala:377
-msgid "Select Image"
-msgstr "Pasirinkite paveikslą"
+#: src/window/ComposeTweetWindow.vala:331
+msgid "Selected file is not an image."
+msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:297
-#, c-format
-msgid ""
-"The selected image is too big. The maximum file size per image is %'d MB"
-msgstr "Pasirinktas paveikslas yra per didelis. Didžiausias vieno paveikslo failo dydis yra %'d MB"
-
-#: src/window/ComposeTweetWindow.vala:299
-#: src/window/ComposeTweetWindow.vala:305
-#: src/window/ComposeTweetWindow.vala:333
+#: src/window/ComposeTweetWindow.vala:332
+#: src/window/ComposeTweetWindow.vala:338
+#: src/window/ComposeTweetWindow.vala:344
+#: src/window/ComposeTweetWindow.vala:365
+#: src/window/ComposeTweetWindow.vala:428
 msgid "Back"
 msgstr "Grįžti"
 
-#: src/window/ComposeTweetWindow.vala:304
+#: src/window/ComposeTweetWindow.vala:336
+#, c-format
+msgid ""
+"The selected image is too big. The maximum file size per image is %'d MB"
+msgstr ""
+"Pasirinktas paveikslas yra per didelis. Didžiausias vieno paveikslo failo "
+"dydis yra %'d MB"
+
+#: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
 msgstr "Viename tauškale leidžiamas tik vienas GIF failas."
+
+#: src/window/ComposeTweetWindow.vala:392
+msgid "Insert Emoji"
+msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -423,11 +464,13 @@ msgstr "Iškarpoje negali būti tarpų"
 msgid "Snippet already exists"
 msgstr "Iškarpa jau yra"
 
-#: src/window/SettingsDialog.vala:83
+#: src/window/SettingsDialog.vala:85
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr "Labas, pažvelk į šią naują #Corebird versiją! \\ (•◡•) / #jega #naujayravisadageriau"
+msgstr ""
+"Labas, pažvelk į šią naują #Corebird versiją! \\ (•◡•) / #jega "
+"#naujayravisadageriau"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -449,7 +492,9 @@ msgstr "Nauja paskyra"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr "Norint programoje Corebird nustatyti tapatybę, yra reikalingas PIN iš twitter.com su paskyra, kurią norite pridėti"
+msgstr ""
+"Norint programoje Corebird nustatyti tapatybę, yra reikalingas PIN iš "
+"twitter.com su paskyra, kurią norite pridėti"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -479,27 +524,77 @@ msgstr "Vardas"
 msgid "Website"
 msgstr "Svetainė"
 
-#: ui/account-dialog.ui:171
+#: ui/account-dialog.ui:181
 msgid "Autostart"
 msgstr "Paleisti įjungus"
 
-#: ui/account-dialog.ui:234
+#: ui/account-dialog.ui:244
 msgid "Do you really want to delete this account?"
 msgstr "Ar tikrai norite ištrinti šią paskyrą?"
 
-#: ui/compose-window.ui:11 ui/compose-window.ui:25
-msgid "Compose Tweet"
-msgstr "Rašyti tauškalą"
+#: ui/cb-emoji-chooser.ui:41
+msgctxt "emoji category"
+msgid "Smileys & People"
+msgstr ""
 
-#: ui/compose-window.ui:48 ui/dm-page.ui:51
+#: ui/cb-emoji-chooser.ui:54
+msgctxt "emoji category"
+msgid "Body & Clothing"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:67
+msgctxt "emoji category"
+msgid "Animals & Nature"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:80
+msgctxt "emoji category"
+msgid "Food & Drink"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:93
+msgctxt "emoji category"
+msgid "Travel & Places"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:106
+msgctxt "emoji category"
+msgid "Activities"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:119
+msgctxt "emoji category"
+msgid "Objects"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:132
+msgctxt "emoji category"
+msgid "Symbols"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:145
+msgctxt "emoji category"
+msgid "Flags"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:272
+#, fuzzy
+msgid "No Results Found"
+msgstr "Nerasta įrašų"
+
+#: ui/cb-emoji-chooser.ui:285
+msgid "Try a different search"
+msgstr ""
+
+#: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
 msgstr "Siųsti"
 
-#: ui/compose-window.ui:151
+#: ui/compose-window.ui:177
 msgid "Add Image"
 msgstr "Pridėti paveikslą"
 
-#: ui/compose-window.ui:159
+#: ui/compose-window.ui:185
 msgid "Show favorite images"
 msgstr "Rodyti mėgstamus paveikslus"
 
@@ -550,22 +645,6 @@ msgstr "Viešas"
 #: ui/list-statuses-page.ui:296
 msgid "Description"
 msgstr "Aprašas"
-
-#: ui/load-more-entry.ui:11
-msgid "Load more"
-msgstr "Įkelti daugiau"
-
-#: ui/main-window.ui:64
-msgid "Show configured accounts"
-msgstr "Rodyti konfigūruotas paskyras"
-
-#: ui/main-window.ui:82
-msgid "Compose tweet"
-msgstr "Rašyti tauškalą"
-
-#: ui/main-window.ui:99
-msgid "New tweet"
-msgstr "Naujas tauškalas"
 
 #: ui/menus.ui:6 ui/settings-dialog.ui:16 ui/settings-dialog.ui:22
 msgid "Settings"
@@ -635,15 +714,15 @@ msgstr "Tauškalų persiuntimas išjungtas"
 msgid "Follows you"
 msgstr "Seka paskui jus"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tauškalai"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:284
 msgid "Followers"
 msgstr "Sekėjų"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:326
 msgid "Following"
 msgstr "Seka"
 
@@ -827,6 +906,16 @@ msgctxt "shortcuts window"
 msgid "Delete"
 msgstr "Ištrinti"
 
+#: ui/shortcuts-window.ui:122
+#, fuzzy
+msgctxt "shortcuts window"
+msgid "Compose"
+msgstr "Rašyti tauškalą"
+
+#: ui/shortcuts-window.ui:141
+msgid "Show Emoji Chooser"
+msgstr ""
+
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
 msgstr "Pradėti naują pokalbį"
@@ -843,19 +932,19 @@ msgstr "Pirmyn"
 msgid "Quote"
 msgstr "Cituoti"
 
-#: ui/tweet-info-page.ui:265
+#: ui/tweet-info-page.ui:252
 msgid "Retweet tweet"
 msgstr "Persiųsti tauškalą"
 
-#: ui/tweet-info-page.ui:292
+#: ui/tweet-info-page.ui:277
 msgid "Favorite tweet"
 msgstr "Mėgstamas tauškalas"
 
-#: ui/tweet-info-page.ui:319
+#: ui/tweet-info-page.ui:302
 msgid "Reply to tweet"
 msgstr "Atsakyti į tauškalą"
 
-#: ui/tweet-info-page.ui:357
+#: ui/tweet-info-page.ui:338
 msgid "More"
 msgstr "Daugiau"
 
@@ -890,3 +979,9 @@ msgstr "Sukurta"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Jūsų prenumeratos"
+
+#~ msgid "Compose tweet"
+#~ msgstr "Rašyti tauškalą"
+
+#~ msgid "New tweet"
+#~ msgstr "Naujas tauškalas"

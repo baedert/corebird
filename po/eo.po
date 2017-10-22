@@ -8,14 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
-"POT-Creation-Date: 2017-04-29 18:29+0200\n"
+"POT-Creation-Date: 2017-10-22 12:02+0200\n"
 "PO-Revision-Date: 2017-08-16 20:47+0000\n"
 "Last-Translator: Iris Ilexiris <iris.ilexiris@gmail.com>\n"
-"Language-Team: Esperanto (http://www.transifex.com/corebird/corebird/language/eo/)\n"
+"Language-Team: Esperanto (http://www.transifex.com/corebird/corebird/"
+"language/eo/)\n"
+"Language: eo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: eo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -32,13 +33,17 @@ msgstr "Tviterokliento"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr "Corebird estas denaskan GTK+ klienton por Tvitero. Ĝi enhavas gravajn eblecojn kiel tujmesaĝoj, tvitavizoj, kaj vidigo de interparoloj."
+msgstr ""
+"Corebird estas denaskan GTK+ klienton por Tvitero. Ĝi enhavas gravajn "
+"eblecojn kiel tujmesaĝoj, tvitavizoj, kaj vidigo de interparoloj."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images,"
-" Lists, Filters, multiple accounts, etc."
-msgstr "Aliaj eblecoj estas vidigi filmeton kaj plurajn bildojn loke. Ankaŭ, listoj, filtriloj, pluraj kontoj, ktp."
+"Additional features include local viewing of videos, multiple inline images, "
+"Lists, Filters, multiple accounts, etc."
+msgstr ""
+"Aliaj eblecoj estas vidigi filmeton kaj plurajn bildojn loke. Ankaŭ, listoj, "
+"filtriloj, pluraj kontoj, ktp."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -60,63 +65,61 @@ msgstr "Timm Bäder"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Uzi Tviteron simila al normala komputerprogramo"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or
-#. localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "tvitero;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
-#. file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
 
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
-#: src/CbUtils.c:87 src/TweetInfoPage.vala:479
+#: src/CbUtils.c:177 src/TweetInfoPage.vala:525
 msgid "Replying to"
 msgstr "Respondas al"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
-#: src/CbUtils.c:98 src/TweetInfoPage.vala:491
+#: src/CbUtils.c:188 src/TweetInfoPage.vala:537
 msgid "and"
 msgstr "kaj"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
-#: src/CbUtils.c:107
+#: src/CbUtils.c:197
 #, c-format
 msgid "and %d others"
 msgstr "kaj %d aligentuloj"
 
-#: src/DMPage.vala:346
+#: src/DMPage.vala:344
 msgid "Direct Conversation"
 msgstr "Tujinterparolo"
 
-#: src/DMThreadsPage.vala:205
+#: src/DMThreadsPage.vala:228
 #, c-format
 msgid "%d new Message from %s"
 msgid_plural "%d new Messages from %s"
 msgstr[0] "%d nova mesaĝo el %s"
 msgstr[1] "%d novaj mesaĝoj el %s"
 
-#: src/DMThreadsPage.vala:211 src/UserEventReceiver.vala:94
+#: src/DMThreadsPage.vala:234 src/UserEventReceiver.vala:98
 #, c-format
 msgid "New direct message from %s"
 msgstr "Nova tujmesaĝo el %s"
 
-#: src/DMThreadsPage.vala:221 src/DMThreadsPage.vala:235
+#: src/DMThreadsPage.vala:244 src/DMThreadsPage.vala:258
 msgid "Direct Messages"
 msgstr "Tujmesaĝoj"
 
-#: src/DefaultTimeline.vala:357
+#: src/DefaultTimeline.vala:366
 msgid "Could not load tweets"
 msgstr "Nepovus elŝuti tvitojn"
 
-#: src/FavoritesTimeline.vala:67 src/FavoritesTimeline.vala:71
-#: src/TweetInfoPage.vala:521
+#: src/FavoritesTimeline.vala:72 src/FavoritesTimeline.vala:76
+#: src/TweetInfoPage.vala:567
 msgid "Favorites"
 msgstr "Favoratoj"
 
@@ -128,24 +131,24 @@ msgstr "Aldoni novan filtrilon"
 msgid "Filters"
 msgstr "Filtriloj"
 
-#: src/HomeTimeline.vala:140
+#: src/HomeTimeline.vala:143
 #, c-format
 msgid "%s retweeted %s"
 msgstr "%s retvitis %s"
 
-#: src/HomeTimeline.vala:143
+#: src/HomeTimeline.vala:146
 #, c-format
 msgid "%s tweeted"
 msgstr "%s tvitis"
 
-#: src/HomeTimeline.vala:152
+#: src/HomeTimeline.vala:155
 #, c-format
 msgid "%d new Tweet!"
 msgid_plural "%d new Tweets!"
 msgstr[0] "%d nova tvito!"
 msgstr[1] "%d novaj tvitoj!"
 
-#: src/HomeTimeline.vala:187
+#: src/HomeTimeline.vala:190
 msgid "Home"
 msgstr "Hejmo"
 
@@ -153,53 +156,76 @@ msgstr "Hejmo"
 msgid "List"
 msgstr "Listo"
 
-#: src/ListsPage.vala:123 src/ListsPage.vala:128 ui/profile-page.ui:364
+#: src/ListsPage.vala:126 src/ListsPage.vala:131 ui/profile-page.ui:368
 msgid "Lists"
 msgstr "Listoj"
 
-#: src/MainWindow.vala:79
+#: src/MainWindow.vala:88
+msgid "Show configured accounts"
+msgstr "Montri agordajn kontojn"
+
+#: src/MainWindow.vala:100 ui/compose-window.ui:11 ui/compose-window.ui:25
+msgid "Compose Tweet"
+msgstr "Skribi tviton"
+
+#: src/MainWindow.vala:132
 msgid "Add new Account"
 msgstr "Aldoni novan konton"
 
-#: src/MentionsTimeline.vala:91 src/UserEventReceiver.vala:111
+#: src/MentionsTimeline.vala:93 src/UserEventReceiver.vala:115
 #, c-format
 msgid "%s mentioned %s"
 msgstr "%s menciis %s"
 
-#: src/MentionsTimeline.vala:108 src/MentionsTimeline.vala:112
+#: src/MentionsTimeline.vala:111 src/MentionsTimeline.vala:115
 msgid "Mentions"
 msgstr "Mencioj"
 
-#: src/ProfilePage.vala:261
+#: src/ProfilePage.vala:218
+#, fuzzy
+msgid "Suspended Account"
+msgstr "Nova konto"
+
+#: src/ProfilePage.vala:272
 msgid "Protected profile"
 msgstr "Malpublikis karakterizo"
 
-#: src/ProfilePage.vala:319
+#: src/ProfilePage.vala:369
 #, c-format
 msgid "Tweet to @%s"
 msgstr "Tviti al @%s"
+
+#: src/ProfilePage.vala:507 src/ProfilePage.vala:551
+#, fuzzy
+msgid "Protected Profile"
+msgstr "Malpublikis karakterizo"
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Serĉi"
 
-#: src/TweetInfoPage.vala:303
+#: src/SearchPage.vala:401
+#, fuzzy
+msgid "Load More"
+msgstr "Ŝargi plimulte"
+
+#: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
 msgstr "Nepovus montri tviton"
 
-#: src/TweetInfoPage.vala:520
+#: src/TweetInfoPage.vala:566
 msgid "Retweets"
 msgstr "Retvitoj"
 
-#: src/TweetInfoPage.vala:529 src/widgets/MediaButton.vala:104
+#: src/TweetInfoPage.vala:575 src/widgets/MediaButton.vala:103
 msgid "Open in Browser"
 msgstr "Malfermi en retumilo"
 
-#: src/TweetInfoPage.vala:529
+#: src/TweetInfoPage.vala:575
 msgid "Source"
 msgstr "Fonto"
 
-#: src/TweetInfoPage.vala:575
+#: src/TweetInfoPage.vala:621
 msgid "Tweet Details"
 msgstr "Tvitodetaloj"
 
@@ -210,37 +236,37 @@ msgid_plural "(%d unread)"
 msgstr[0] "(%d nelegita)"
 msgstr[1] "(%d nelegitaj)"
 
-#: src/list/FavImageRow.vala:68 ui/account-dialog.ui:202
-#: ui/account-dialog.ui:259 ui/filter-list-entry.ui:93
+#: src/list/FavImageRow.vala:81 ui/account-dialog.ui:212
+#: ui/account-dialog.ui:269 ui/filter-list-entry.ui:93
 #: ui/list-list-entry.ui:132 ui/list-statuses-page.ui:166
 #: ui/modify-snippet-dialog.ui:108 ui/tweet-info-page.ui:10
 #: ui/tweet-list-entry.ui:10
 msgid "Delete"
 msgstr "Forigi"
 
-#: src/list/TweetListEntry.vala:453
+#: src/list/TweetListEntry.vala:455
 #, c-format
 msgid "Block %s"
 msgstr "Blokigi %s"
 
-#: src/list/TweetListEntry.vala:609
+#: src/list/TweetListEntry.vala:611
 msgid "This tweet contains images marked as inappropriate"
 msgstr "Tio ĉi tvito povus havi malkonvenajn bildojn."
 
-#: src/list/TweetListEntry.vala:616
+#: src/list/TweetListEntry.vala:618
 msgid "Show anyway"
 msgstr "Montri iel"
 
-#: src/util/Utils.vala:168
+#: src/util/Utils.vala:146
 msgid "Now"
 msgstr "Nun"
 
-#: src/util/Utils.vala:170
+#: src/util/Utils.vala:148
 #, c-format
 msgid "%dm"
 msgstr "%dm"
 
-#: src/util/Utils.vala:174
+#: src/util/Utils.vala:152
 #, c-format
 msgid "%dh"
 msgstr "%dh"
@@ -253,28 +279,50 @@ msgstr "Ĉu vi ne havas Tviterokonton jam?"
 msgid "Create one"
 msgstr "Krei onin"
 
-#: src/widgets/AccountCreateWidget.vala:57
+#: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with"
-" the Twitter servers and you should try again later"
-msgstr "Vi ne estas rajtigitan. Plejparto, ĉi tiu signifas eraro kun la Tvitero-serviloj. Provi denove malfruan."
+"Unauthorized. Most of the time, this means that there’s something wrong with "
+"the Twitter servers and you should try again later"
+msgstr ""
+"Vi ne estas rajtigitan. Plejparto, ĉi tiu signifas eraro kun la Tvitero-"
+"serviloj. Provi denove malfruan."
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
 msgid "Could not open %s"
 msgstr "Nepovus malfermi %s"
 
-#: src/widgets/AccountCreateWidget.vala:92
+#: src/widgets/AccountCreateWidget.vala:98
 msgid "Wrong PIN"
 msgstr "Malĝustan PIN-on"
 
-#: src/widgets/AccountCreateWidget.vala:118
+#: src/widgets/AccountCreateWidget.vala:124
 msgid "Account already in use"
 msgstr "Konto jam uzas"
 
-#: src/widgets/CompletionTextView.vala:40
+#: src/widgets/CompletionTextView.vala:59
 msgid "No users found"
 msgstr "Uzantojn netrovitajn"
+
+#: src/widgets/FavImageView.vala:153 src/window/ComposeTweetWindow.vala:299
+msgid "Select Image"
+msgstr "Selekti bildon"
+
+#: src/widgets/FavImageView.vala:156 src/window/AccountDialog.vala:347
+#: src/window/ComposeTweetWindow.vala:302
+msgid "Open"
+msgstr "Malfermi"
+
+#: src/widgets/FavImageView.vala:157 src/widgets/MediaButton.vala:276
+#: src/window/AccountDialog.vala:348 src/window/ComposeTweetWindow.vala:275
+#: src/window/ComposeTweetWindow.vala:303 src/window/UserListDialog.vala:47
+#: ui/account-dialog.ui:25 ui/account-dialog.ui:256 ui/compose-window.ui:41
+#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
+#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
+#: ui/modify-snippet-dialog.ui:14 ui/shortcuts-window.ui:134
+#: ui/user-filter-entry.ui:114
+msgid "Cancel"
+msgstr "Nuligi"
 
 #: src/widgets/FollowButton.vala:43
 msgid "Follow"
@@ -288,31 +336,20 @@ msgstr "Malpostiri"
 msgid "Copy URL"
 msgstr "Kopii URL"
 
-#: src/widgets/MediaButton.vala:106
+#: src/widgets/MediaButton.vala:105
 msgid "Save as…"
 msgstr "Konservi kiel..."
 
-#: src/widgets/MediaButton.vala:269
+#: src/widgets/MediaButton.vala:268
 msgid "Save Video"
 msgstr "Konservi filmeton"
 
-#: src/widgets/MediaButton.vala:271
+#: src/widgets/MediaButton.vala:270
 msgid "Save Image"
 msgstr "Konservi bildon"
 
-#: src/widgets/MediaButton.vala:276 src/window/AccountDialog.vala:314
-#: src/window/ComposeTweetWindow.vala:241
-#: src/window/ComposeTweetWindow.vala:271
-#: src/window/ComposeTweetWindow.vala:380 src/window/UserListDialog.vala:47
-#: ui/account-dialog.ui:25 ui/account-dialog.ui:246 ui/compose-window.ui:41
-#: ui/filter-list-entry.ui:80 ui/list-list-entry.ui:98
-#: ui/list-statuses-page.ui:173 ui/modify-filter-dialog.ui:13
-#: ui/modify-snippet-dialog.ui:14 ui/user-filter-entry.ui:114
-msgid "Cancel"
-msgstr "Nuligi"
-
-#: src/widgets/MediaButton.vala:278 src/window/AccountDialog.vala:406
-#: src/window/AccountDialog.vala:427 src/window/UserListDialog.vala:48
+#: src/widgets/MediaButton.vala:275 src/window/AccountDialog.vala:429
+#: src/window/AccountDialog.vala:450 src/window/UserListDialog.vala:48
 #: ui/account-dialog.ui:33 ui/list-statuses-page.ui:129
 #: ui/modify-filter-dialog.ui:20 ui/modify-snippet-dialog.ui:21
 msgid "Save"
@@ -330,61 +367,63 @@ msgstr "Neniu elementoj trovitaj"
 msgid "Retry"
 msgstr "Reprovi"
 
-#: src/window/AccountDialog.vala:311
+#: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
 msgstr "Selekti gazetkapon"
 
-#: src/window/AccountDialog.vala:316 src/window/ComposeTweetWindow.vala:273
-#: src/window/ComposeTweetWindow.vala:382
-msgid "Open"
-msgstr "Malfermi"
-
-#: src/window/AccountDialog.vala:348
+#: src/window/AccountDialog.vala:380
 msgid "Image does not meet minimum size requirements:"
 msgstr "Bildo ne konsidas minimumajn grandobezonojn"
 
-#: src/window/AccountDialog.vala:349
+#: src/window/AccountDialog.vala:381
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
 msgstr[0] "Minimuma larĝo: %d bildero"
 msgstr[1] "Minimuma larĝo: %d bilderoj"
 
-#: src/window/AccountDialog.vala:351
+#: src/window/AccountDialog.vala:383
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
 msgstr[0] "Minimuma alto: %d bildero"
 msgstr[1] "Minimuma alto: %d bilderoj"
 
-#: src/window/AccountDialog.vala:381 src/window/AccountDialog.vala:394
+#: src/window/AccountDialog.vala:404 src/window/AccountDialog.vala:417
 msgid "Pick"
 msgstr "Selekti"
 
-#: src/window/ComposeTweetWindow.vala:107
+#: src/window/ComposeTweetWindow.vala:138
 msgid "Quote tweet"
 msgstr "Citi tviton"
 
-#: src/window/ComposeTweetWindow.vala:268
-#: src/window/ComposeTweetWindow.vala:377
-msgid "Select Image"
-msgstr "Selekti bildon"
+#: src/window/ComposeTweetWindow.vala:331
+msgid "Selected file is not an image."
+msgstr ""
 
-#: src/window/ComposeTweetWindow.vala:297
-#, c-format
-msgid ""
-"The selected image is too big. The maximum file size per image is %'d MB"
-msgstr "La selektis bildon estas tro granda. La maksimuma dosierlargo po imagoj estas %'d MB."
-
-#: src/window/ComposeTweetWindow.vala:299
-#: src/window/ComposeTweetWindow.vala:305
-#: src/window/ComposeTweetWindow.vala:333
+#: src/window/ComposeTweetWindow.vala:332
+#: src/window/ComposeTweetWindow.vala:338
+#: src/window/ComposeTweetWindow.vala:344
+#: src/window/ComposeTweetWindow.vala:365
+#: src/window/ComposeTweetWindow.vala:428
 msgid "Back"
 msgstr "Reiri"
 
-#: src/window/ComposeTweetWindow.vala:304
+#: src/window/ComposeTweetWindow.vala:336
+#, c-format
+msgid ""
+"The selected image is too big. The maximum file size per image is %'d MB"
+msgstr ""
+"La selektis bildon estas tro granda. La maksimuma dosierlargo po imagoj "
+"estas %'d MB."
+
+#: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
 msgstr "Nur unu GIF po tvito permesitas."
+
+#: src/window/ComposeTweetWindow.vala:392
+msgid "Insert Emoji"
+msgstr ""
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -418,11 +457,13 @@ msgstr "Kodaĵo ne povi enhavi blankspacon"
 msgid "Snippet already exists"
 msgstr "Kodaĵo ekzistas jam"
 
-#: src/window/SettingsDialog.vala:83
+#: src/window/SettingsDialog.vala:85
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr "Saluton! Vidu ĉi tiu novan version el #Corebird! \\ (•◡•) / #mojoso #novaestasĉiamplibona"
+msgstr ""
+"Saluton! Vidu ĉi tiu novan version el #Corebird! \\ (•◡•) / #mojoso "
+"#novaestasĉiamplibona"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -444,7 +485,9 @@ msgstr "Nova konto"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr "Por verigi Corebird-on, vi bezonas PIN el twitter.com por la konto vi deziros aldoni."
+msgstr ""
+"Por verigi Corebird-on, vi bezonas PIN el twitter.com por la konto vi "
+"deziros aldoni."
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -474,27 +517,77 @@ msgstr "Nomo"
 msgid "Website"
 msgstr "Retpaĝo"
 
-#: ui/account-dialog.ui:171
+#: ui/account-dialog.ui:181
 msgid "Autostart"
 msgstr "Aŭtomata komenci"
 
-#: ui/account-dialog.ui:234
+#: ui/account-dialog.ui:244
 msgid "Do you really want to delete this account?"
 msgstr "Ĉu vi vere volas forigi ĉi tiu konto?"
 
-#: ui/compose-window.ui:11 ui/compose-window.ui:25
-msgid "Compose Tweet"
-msgstr "Skribi tviton"
+#: ui/cb-emoji-chooser.ui:41
+msgctxt "emoji category"
+msgid "Smileys & People"
+msgstr ""
 
-#: ui/compose-window.ui:48 ui/dm-page.ui:51
+#: ui/cb-emoji-chooser.ui:54
+msgctxt "emoji category"
+msgid "Body & Clothing"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:67
+msgctxt "emoji category"
+msgid "Animals & Nature"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:80
+msgctxt "emoji category"
+msgid "Food & Drink"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:93
+msgctxt "emoji category"
+msgid "Travel & Places"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:106
+msgctxt "emoji category"
+msgid "Activities"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:119
+msgctxt "emoji category"
+msgid "Objects"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:132
+msgctxt "emoji category"
+msgid "Symbols"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:145
+msgctxt "emoji category"
+msgid "Flags"
+msgstr ""
+
+#: ui/cb-emoji-chooser.ui:272
+#, fuzzy
+msgid "No Results Found"
+msgstr "Neniu elementoj trovitaj"
+
+#: ui/cb-emoji-chooser.ui:285
+msgid "Try a different search"
+msgstr ""
+
+#: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
 msgstr "Sendi"
 
-#: ui/compose-window.ui:151
+#: ui/compose-window.ui:177
 msgid "Add Image"
 msgstr "Aldoni bildon"
 
-#: ui/compose-window.ui:159
+#: ui/compose-window.ui:185
 msgid "Show favorite images"
 msgstr "Montri favoratbildojn"
 
@@ -545,22 +638,6 @@ msgstr "Publika"
 #: ui/list-statuses-page.ui:296
 msgid "Description"
 msgstr "Priskribo"
-
-#: ui/load-more-entry.ui:11
-msgid "Load more"
-msgstr "Ŝargi plimulte"
-
-#: ui/main-window.ui:64
-msgid "Show configured accounts"
-msgstr "Montri agordajn kontojn"
-
-#: ui/main-window.ui:82
-msgid "Compose tweet"
-msgstr "Skribi tviton"
-
-#: ui/main-window.ui:99
-msgid "New tweet"
-msgstr "Nova tvito"
 
 #: ui/menus.ui:6 ui/settings-dialog.ui:16 ui/settings-dialog.ui:22
 msgid "Settings"
@@ -630,15 +707,15 @@ msgstr "Revtitoj malebligita"
 msgid "Follows you"
 msgstr "Postiras vin"
 
-#: ui/profile-page.ui:241 ui/search-page.ui:74 ui/settings-dialog.ui:420
+#: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
 msgstr "Tvitoj"
 
-#: ui/profile-page.ui:282
+#: ui/profile-page.ui:284
 msgid "Followers"
 msgstr "Postiroj"
 
-#: ui/profile-page.ui:323
+#: ui/profile-page.ui:326
 msgid "Following"
 msgstr "Vi postiras"
 
@@ -822,6 +899,16 @@ msgctxt "shortcuts window"
 msgid "Delete"
 msgstr "Forigi"
 
+#: ui/shortcuts-window.ui:122
+#, fuzzy
+msgctxt "shortcuts window"
+msgid "Compose"
+msgstr "Skribi tviton"
+
+#: ui/shortcuts-window.ui:141
+msgid "Show Emoji Chooser"
+msgstr ""
+
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
 msgstr "Komenci novan interparolon"
@@ -838,19 +925,19 @@ msgstr "Iri"
 msgid "Quote"
 msgstr "Citi"
 
-#: ui/tweet-info-page.ui:265
+#: ui/tweet-info-page.ui:252
 msgid "Retweet tweet"
 msgstr "Retviti tviton"
 
-#: ui/tweet-info-page.ui:292
+#: ui/tweet-info-page.ui:277
 msgid "Favorite tweet"
 msgstr "Favorati tviton"
 
-#: ui/tweet-info-page.ui:319
+#: ui/tweet-info-page.ui:302
 msgid "Reply to tweet"
 msgstr "Respondi al tvito"
 
-#: ui/tweet-info-page.ui:357
+#: ui/tweet-info-page.ui:338
 msgid "More"
 msgstr "Pli"
 
@@ -885,3 +972,9 @@ msgstr "Kreis"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subskribis al"
+
+#~ msgid "Compose tweet"
+#~ msgstr "Skribi tviton"
+
+#~ msgid "New tweet"
+#~ msgstr "Nova tvito"
