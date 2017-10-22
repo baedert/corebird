@@ -4,16 +4,13 @@
 
 _test.db
 
-tweetlength
 utils
 bundlehistory
 usercounter
-hometimeline
 filters
 sql
 tweetparsing
 multimedia
-highlighting
 friends
 tweetmodel
 texttransform
@@ -21,3 +18,4 @@ avatardownload
 inlinemediadownloader
 avatarcache
 dmmanager
+usercompletionmodel
