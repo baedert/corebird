@@ -15,17 +15,24 @@
  *  along with libtweetlength.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __TL_DATA_H_
-#define __TL_DATA_H_
+#ifndef __TL_DATA_H__
+#define __TL_DATA_H__
 
-#define PUNCTUATION   "!'#%&'()*+,\\-./:;<=>?@[]^_{|}~$"
+#define PUNCTUATION   "!'#%&\"()*+,\\-./:;<=>?@[]^_{|}~$`"
 #define SPACES        " \0x0020\0085\00A0"
 #define INVALID_CHARS "\0xFFFE\0xFEFF\0xFFFF"
 
-#define INVALID_URL_CHARS (PUNCTUATION SPACES INVALID_CHARS)
+#define INVALID_URL_CHARS       (PUNCTUATION SPACES INVALID_CHARS)
+#define INVALID_AFTER_URL_CHARS "?,!`~&*^%\\|"
 
 #define INVALID_BEFORE_NON_PROTOCOL_URL_CHARS (".@_-)/")
 #define INVALID_BEFORE_URL_CHARS              ("$")
+
+#define INVALID_HASHTAG_CHARS "!'#%&\"()*+,\\-./:;<=>?@[]^{|}~$`"
+
+#define INVALID_BEFORE_MENTION_CHARS "!_$&#*"
+#define VALID_BEFORE_MENTION_CHARS   ";,`=+"
+#define INVALID_MENTION_CHARS        "!'#%&\"()*+,\\-./:;<=>?@[]^{|}~$`"
 
 
 // List from twitter-text

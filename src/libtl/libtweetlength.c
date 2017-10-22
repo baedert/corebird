@@ -29,6 +29,14 @@ typedef struct {
   gsize length_in_characters;
 } Token;
 
+#ifdef LIBTL_DEBUG
+static char * G_GNUC_UNUSED
+token_str (const Token *t)
+{
+  return g_strdup_printf ("Type: %u, Text: '%.*s'", t->type, (int)t->length_in_bytes, t->start);
+}
+#endif
+
 enum {
   TOK_TEXT = 1,
   TOK_NUMBER,
@@ -45,7 +53,11 @@ enum {
   TOK_DASH,
   TOK_UNDERSCORE,
   TOK_APOSTROPHE,
-  TOK_DOLLAR
+  TOK_QUOTE,
+  TOK_DOLLAR,
+  TOK_AMPERSAND,
+  TOK_EXCLAMATION,
+  TOK_TILDE
 };
 
 static inline guint
@@ -76,8 +88,16 @@ token_type_from_char (gunichar c)
       return TOK_UNDERSCORE;
     case '\'':
       return TOK_APOSTROPHE;
+    case '"':
+      return TOK_QUOTE;
     case '$':
       return TOK_DOLLAR;
+    case '&':
+      return TOK_AMPERSAND;
+    case '!':
+      return TOK_EXCLAMATION;
+    case '~':
+      return TOK_TILDE;
     case '0':
     case '1':
     case '2':
@@ -95,7 +115,7 @@ token_type_from_char (gunichar c)
       return TOK_WHITESPACE;
 
     default:
-    return TOK_TEXT;
+      return TOK_TEXT;
   }
 }
 
@@ -141,23 +161,28 @@ emplace_token (GArray     *array,
 }
 
 static inline void
-emplace_entity (GArray     *array,
-                guint       entity_type,
-                const char *entity_start,
-                gsize       entity_length_in_bytes,
-                gsize       entity_character_start,
-                gsize       entity_length_in_characters)
+emplace_entity_for_tokens (GArray      *array,
+                           const Token *tokens,
+                           guint        entity_type,
+                           guint        start_token_index,
+                           guint        end_token_index)
 {
   TlEntity *e;
+  guint i;
 
   g_array_set_size (array, array->len + 1);
   e = &g_array_index (array, TlEntity, array->len - 1);
 
   e->type = entity_type;
-  e->start = entity_start;
-  e->length_in_bytes = entity_length_in_bytes;
-  e->start_character_index = entity_character_start;
-  e->length_in_characters = entity_length_in_characters;
+  e->start = tokens[start_token_index].start;
+  e->length_in_bytes = 0;
+  e->length_in_characters = 0;
+  e->start_character_index = tokens[start_token_index].start_character_index;
+
+  for (i = start_token_index; i <= end_token_index; i ++) {
+    e->length_in_bytes += tokens[i].length_in_bytes;
+    e->length_in_characters += tokens[i].length_in_characters;
+  }
 }
 
 static inline gboolean
@@ -233,7 +258,22 @@ char_splits (gunichar c)
     case '\0':
     case ' ':
     case '\'':
+    case '"':
     case '$':
+    case '|':
+    case '&':
+    case '^':
+    case '%':
+    case '+':
+    case '*':
+    case '\\':
+    case '{':
+    case '}':
+    case '[':
+    case ']':
+    case '`':
+    case '~':
+    case '!':
       return TRUE;
     default:
       return FALSE;
@@ -267,7 +307,7 @@ tokenize (const char *input,
   const char *p = input;
   gsize cur_character_index = 0;
 
-  while (p - input < length_in_bytes) {
+  while (p - input < (long)length_in_bytes) {
     const char *cur_start = p;
     gunichar cur_char = g_utf8_get_char (p);
     gsize cur_length = 0;
@@ -294,7 +334,8 @@ tokenize (const char *input,
       if (token_type_from_char (cur_char) != last_token_type)
         break;
 
-    } while (!char_splits (cur_char) && p - input < length_in_bytes);
+    } while (!char_splits (cur_char) &&
+             p - input < (long)length_in_bytes);
 
     emplace_token (tokens, cur_start, cur_length, cur_character_index, length_in_chars);
 
@@ -354,11 +395,9 @@ parse_link_tail (GArray      *entities,
 
   t = &tokens[i];
   /* Whatever happened, don't count trailing punctuation */
-  if (t->type == TOK_QUESTIONMARK) {
-    // TODO: We should probably have a more generic way of identifying "punctuation"
+  if (token_in (t, INVALID_AFTER_URL_CHARS)) {
     i --;
   }
-
 
   *current_position = i;
 
@@ -477,8 +516,8 @@ parse_link (GArray      *entities,
     }
   }
 
-  // To continue a link, the next token must be a slash, a question mark
-  // or a colon
+
+  // To continue a link, the next token must be a slash or a question mark
   // If it isn't, we stop here.
   if (i < n_tokens - 1) {
     // A trailing slash is part of the link, other punctuation is not.
@@ -498,7 +537,7 @@ parse_link (GArray      *entities,
       // We cannot just return FALSE for all non-slash/non-questionmark tokens here since
       // The Rules say some of them make a link until this token and some of them cause the
       // entire parsing to produce no link at all, like in the @ case (don't want to turn
-      // email addressed into links).
+      // email addresses into links).
       return FALSE;
     }
   }
@@ -506,21 +545,11 @@ parse_link (GArray      *entities,
   end_token = i;
   g_assert (end_token < n_tokens);
 
-  // Simply add up all the lengths
-  gsize length_in_bytes = 0;
-  gsize length_in_characters = 0;
-  const char *first_byte = tokens[start_token].start;
-  for (i = start_token; i <= end_token; i ++) {
-    length_in_bytes += tokens[i].length_in_bytes;
-    length_in_characters += tokens[i].length_in_characters;
-  }
-
-  emplace_entity (entities,
-                  TL_ENT_LINK,
-                  first_byte,
-                  length_in_bytes,
-                  tokens[start_token].start_character_index,
-                  length_in_characters);
+  emplace_entity_for_tokens (entities,
+                             tokens,
+                             TL_ENT_LINK,
+                             start_token,
+                             end_token);
 
   *current_position = end_token + 1; // Hop to the next token!
 
@@ -533,25 +562,50 @@ parse_mention (GArray      *entities,
                gsize        n_tokens,
                guint       *current_position)
 {
-  const Token *t;
-  gsize i = *current_position;
-  guint start_token;
+  guint i = *current_position;
+  const guint start_token = i;
   guint end_token;
 
-  t = &tokens[i];
-  g_assert (t->type == TOK_AT);
-  start_token = i;
+  g_assert (tokens[i].type == TOK_AT);
 
   // Lookback at the previous token. If it was a text token
   // without whitespace between, this is not going to be a mention...
-  if (i > 0 && tokens[i - 1].type == TOK_TEXT) {
-    return FALSE;
+  if (i > 0) {
+    // Text tokens before an @-token generally destroy the mention,
+    // except in a few cases...
+    if (tokens[i - 1].type == TOK_TEXT &&
+        !token_in (&tokens[i - 1], VALID_BEFORE_MENTION_CHARS)) {
+      return FALSE;
+    }
+
+    // Numbers and special invalid chars always ruin the mention
+    if (tokens[i - 1].type == TOK_NUMBER ||
+        token_in (&tokens[i - 1], INVALID_BEFORE_MENTION_CHARS)) {
+      return FALSE;
+    }
   }
 
-  while (i < n_tokens - 1 &&
-        (tokens[i + 1].type == TOK_TEXT ||
-         tokens[i + 1].type == TOK_NUMBER ||
-         tokens[i + 1].type == TOK_UNDERSCORE)) {
+  // Skip @
+  i ++;
+
+  for (;;) {
+    if (i >= n_tokens) {
+      i --;
+      break;
+    }
+
+    if (token_in (&tokens[i], INVALID_MENTION_CHARS)) {
+      i --;
+      break;
+    }
+
+    if (tokens[i].type != TOK_TEXT &&
+        tokens[i].type != TOK_NUMBER &&
+        tokens[i].type != TOK_UNDERSCORE) {
+      i --;
+      break;
+    }
+
     i ++;
   }
 
@@ -568,21 +622,11 @@ parse_mention (GArray      *entities,
   end_token = i;
   g_assert (end_token < n_tokens);
 
-  // Simply add up all the lengths
-  gsize length_in_bytes = 0;
-  gsize length_in_characters = 0;
-  const char *first_byte = tokens[start_token].start;
-  for (i = start_token; i <= end_token; i ++) {
-    length_in_bytes += tokens[i].length_in_bytes;
-    length_in_characters += tokens[i].length_in_characters;
-  }
-
-  emplace_entity (entities,
-                  TL_ENT_MENTION,
-                  first_byte,
-                  length_in_bytes,
-                  tokens[start_token].start_character_index,
-                  length_in_characters);
+  emplace_entity_for_tokens (entities,
+                             tokens,
+                             TL_ENT_MENTION,
+                             start_token,
+                             end_token);
 
   *current_position = end_token + 1; // Hop to the next token!
 
@@ -596,19 +640,29 @@ parse_hashtag (GArray      *entities,
                guint       *current_position)
 {
   gsize i = *current_position;
-  guint start_token;
+  const guint start_token = i;
   guint end_token;
   gboolean text_found = FALSE;
 
   g_assert (tokens[i].type == TOK_HASH);
-  start_token = i;
+
+  // Lookback at the previous token. If it was a text token
+  // without whitespace between, this is not going to be a mention...
+  if (i > 0 && tokens[i - 1].type == TOK_TEXT) {
+    return FALSE;
+  }
 
   //skip #
   i ++;
 
-  for (;i < n_tokens; i ++) {
+  for (; i < n_tokens; i ++) {
+    if (token_in (&tokens[i], INVALID_HASHTAG_CHARS)) {
+      break;
+    }
+
     if (tokens[i].type != TOK_TEXT &&
-        tokens[i].type != TOK_NUMBER) {
+        tokens[i].type != TOK_NUMBER &&
+        tokens[i].type != TOK_UNDERSCORE) {
       break;
     }
 
@@ -622,21 +676,11 @@ parse_hashtag (GArray      *entities,
   end_token = i - 1;
   g_assert (end_token < n_tokens);
 
-  // Simply add up all the lengths
-  gsize length_in_bytes = 0;
-  gsize length_in_characters = 0;
-  const char *first_byte = tokens[start_token].start;
-  for (i = start_token; i <= end_token; i ++) {
-    length_in_bytes += tokens[i].length_in_bytes;
-    length_in_characters += tokens[i].length_in_characters;
-  }
-
-  emplace_entity (entities,
-                  TL_ENT_HASHTAG,
-                  first_byte,
-                  length_in_bytes,
-                  tokens[start_token].start_character_index,
-                  length_in_characters);
+  emplace_entity_for_tokens (entities,
+                             tokens,
+                             TL_ENT_HASHTAG,
+                             start_token,
+                             end_token);
 
   *current_position = end_token + 1; // Hop to the next token!
 
@@ -687,12 +731,10 @@ parse (const Token *tokens,
       relevant_entities ++;
     }
 
-    emplace_entity (entities,
-                    token->type == TOK_WHITESPACE ? TL_ENT_WHITESPACE : TL_ENT_TEXT,
-                    token->start,
-                    token->length_in_bytes,
-                    token->start_character_index,
-                    token->length_in_characters);
+    emplace_entity_for_tokens (entities,
+                               tokens,
+                               token->type == TOK_WHITESPACE ? TL_ENT_WHITESPACE : TL_ENT_TEXT,
+                               i, i);
 
     i ++;
   }
