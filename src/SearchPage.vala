@@ -134,8 +134,8 @@ class SearchPage : IPage, Gtk.Box {
     });
   }
 
-  public void search_for (string search_term, bool set_text = false) { //{{{
-    if(search_term.length == 0)
+  public void search_for (string search_term, bool set_text = false) {
+    if (search_term.length == 0)
       return;
 
     this.last_search_query = search_term;
@@ -148,7 +148,7 @@ class SearchPage : IPage, Gtk.Box {
     this.cancellable = new GLib.Cancellable ();
 
     n_results = 0;
-    string q = search_term;
+    string q = this.last_search_query;//search_term.copy ();
 
     // clear the list
     tweet_list.remove_all ();
@@ -157,7 +157,7 @@ class SearchPage : IPage, Gtk.Box {
 
 
     if (set_text)
-      search_entry.set_text(search_term);
+      search_entry.set_text(q);
 
     q += " -rt";
 
@@ -170,7 +170,7 @@ class SearchPage : IPage, Gtk.Box {
 
     load_tweets ();
     load_users ();
-  } //}}}
+  }
 
   private void row_activated_cb (Gtk.ListBoxRow row) {
     this.last_focus_widget = row;
