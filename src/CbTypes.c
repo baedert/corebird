@@ -102,7 +102,6 @@ cb_mini_tweet_copy (const CbMiniTweet *t1, CbMiniTweet *t2)
 
   t2->id = t1->id;
   t2->created_at = t1->created_at;
-  cb_user_identity_free (&t2->author);
   cb_user_identity_copy (&t1->author, &t2->author);
   g_free (t2->text);
   t2->text = g_strdup (t1->text);
