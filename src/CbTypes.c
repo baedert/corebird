@@ -497,7 +497,8 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
                    */
                   for (k = 0; k < t->n_medias; k ++)
                     {
-                      if (t->medias[k]->type == CB_MEDIA_TYPE_IMAGE &&
+                      if (t->medias[k] != NULL &&
+                          t->medias[k]->type == CB_MEDIA_TYPE_IMAGE &&
                           strcmp (t->medias[k]->url, thumb_url) == 0)
                         {
                           /* Replace this media */
