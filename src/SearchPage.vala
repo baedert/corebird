@@ -148,7 +148,7 @@ class SearchPage : IPage, Gtk.Box {
     this.cancellable = new GLib.Cancellable ();
 
     n_results = 0;
-    string q = this.last_search_query;//search_term.copy ();
+    string q = this.last_search_query;
 
     // clear the list
     tweet_list.remove_all ();
