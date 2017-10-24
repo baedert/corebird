@@ -1,6 +1,9 @@
 @define-color topbar_bg #333;
 
-.avatar-round {
+avatar>container {
+  border: 1px solid transparent;
+}
+avatar>container.avatar-round {
   border: 1px solid grey;
   border-radius: 50%;
 }
