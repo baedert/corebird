@@ -22,7 +22,7 @@ private class MediaButton : Gtk.Widget {
   private const int MIN_HEIGHT     = 40;
   private const int MIN_WIDTH      = 40;
   private Cb.Media? _media = null;
-  private static Cairo.Surface[] play_icons;
+  private static Gsk.Texture[] play_icons;
   public Cb.Media? media {
     get {
       return _media;
@@ -69,10 +69,10 @@ private class MediaButton : Gtk.Widget {
   static construct {
     try {
       play_icons = {
-        Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play.png"), 1, null),
-        Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play@2.png"), 2, null),
+        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
+            new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play.png"), 1, null), 1),
+        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
+            new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play@2.png"), 2, null), 1)
       };
     } catch (GLib.Error e) {
       critical (e.message);
@@ -214,9 +214,7 @@ private class MediaButton : Gtk.Widget {
       if (_media.is_video ()) {
         Graphene.Rect icon_bounds = {};
 
-        // TODO: Do this only once
-        var icon = play_icons[this.get_scale_factor () - 1];
-        var icon_texture = Cb.Utils.surface_to_texture (icon, this.get_scale_factor ());
+        var icon_texture = play_icons[this.get_scale_factor () - 1];
         icon_bounds.origin.x = (widget_width  / 2) - (PLAY_ICON_SIZE / 2);
         icon_bounds.origin.y = (widget_height / 2) - (PLAY_ICON_SIZE / 2);
         icon_bounds.size.width = PLAY_ICON_SIZE;
