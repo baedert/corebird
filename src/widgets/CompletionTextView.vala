@@ -43,7 +43,6 @@ class CompletionTextView : Gtk.TextView {
 
   public signal void show_completion ();
   public signal void hide_completion ();
-  public signal void update_completion (string query);
 
   private unowned Account account;
 
