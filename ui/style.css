@@ -321,8 +321,17 @@ textview.view.fancy textview {
   padding: 0.5em;
 }
 
+textview.view.fancy>box {
+  border-spacing: 0.2em;
+}
+
 textview.view.fancy button {
   border: none;
+  border-radius: 0px;
   background: none;
   box-shadow: none;
+}
+
+textview.view.fancy button:hover {
+  background-color: alpha(grey, 0.7);
 }
