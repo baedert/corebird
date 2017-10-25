@@ -38,12 +38,12 @@ struct _CbTextView
 G_DECLARE_FINAL_TYPE (CbTextView, cb_text_view, CB, TEXT_VIEW, GtkWidget);
 
 
-GtkWidget * cb_text_view_new (void);
-
-void        cb_text_view_set_account (CbTextView *self,
-                                      void       *acc);
-
-void        cb_text_view_add_widget  (CbTextView *self,
-                                      GtkWidget  *widget);
+GtkWidget * cb_text_view_new              (void);
+void        cb_text_view_set_account      (CbTextView *self,
+                                           void       *acc);
+void        cb_text_view_add_widget       (CbTextView *self,
+                                           GtkWidget  *widget);
+void        cb_text_view_insert_at_cursor (CbTextView *self,
+                                           const char *text);
 
 #endif
