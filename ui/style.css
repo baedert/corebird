@@ -311,3 +311,18 @@ row.tweet>.header {
 list.tweets {
   background-color: #eee;
 }
+
+textview.view.fancy {
+  border: 1px solid alpha(grey, 0.7);
+  border-radius: 2px;
+}
+
+textview.view.fancy textview {
+  padding: 0.5em;
+}
+
+textview.view.fancy button {
+  border: none;
+  background: none;
+  box-shadow: none;
+}

@@ -430,4 +430,13 @@ namespace Cb {
     public TweetRow (Tweet tweet);//, MainWindow toplevel, Account account);
     public Tweet tweet;
   }
+
+  [CCode (cprefix = "CbTextView_", lower_case_cprefix = "cb_text_view_", cheader_filename =
+          "CbTextView.h")]
+  public class TextView : Gtk.Widget {
+    public TextView ();
+    public void set_account (Account acc);
+    public void add_widget (Gtk.Widget widget);
+  }
+
 }

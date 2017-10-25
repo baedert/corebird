@@ -28,9 +28,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Grid content_grid;
   [GtkChild]
-  private CompletionTextView tweet_text;
-  [GtkChild]
-  private Gtk.Label length_label;
+  private Cb.TextView tweet_text;
   [GtkChild]
   private Gtk.Button send_button;
   [GtkChild]
@@ -42,8 +40,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private ComposeImageManager compose_image_manager;
   [GtkChild]
-  private Gtk.Button add_image_button;
-  [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
   private Gtk.Grid image_error_grid;
@@ -54,13 +50,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private FavImageView fav_image_view;
   [GtkChild]
-  private Gtk.Button fav_image_button;
-  [GtkChild]
   private Gtk.Revealer completion_revealer;
   [GtkChild]
   private Gtk.ListBox completion_list;
-  [GtkChild]
-  private Gtk.Box add_button_box;
+  private Gtk.Button add_image_button;
+  private Gtk.Button fav_image_button;
+  private Gtk.Label length_label;
   private Cb.EmojiChooser? emoji_chooser = null;
   private Gtk.Button? emoji_button = null;
   private unowned Account account;
@@ -111,10 +106,27 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       avatar_image.surface = account.avatar;
     });
 
+    this.length_label = new Gtk.Label (Cb.Tweet.MAX_LENGTH.to_string ());
+    length_label.hexpand = true;
+    length_label.halign = Gtk.Align.START;
+    length_label.margin_start = 12;
+    tweet_text.add_widget (length_label);
+
+    this.add_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic",
+                                                           Gtk.IconSize.BUTTON);
+    add_image_button.clicked.connect (add_image_clicked_cb);
+    tweet_text.add_widget (add_image_button);
+
+    this.fav_image_button = new Gtk.Button.from_icon_name ("corebird-favorite-symbolic",
+                                                           Gtk.IconSize.BUTTON);
+    fav_image_button.clicked.connect (fav_image_button_clicked_cb);
+    tweet_text.add_widget (fav_image_button);
+
+
     GLib.NetworkMonitor.get_default ().notify["network-available"].connect (update_send_button_sensitivity);
 
-    length_label.label = Cb.Tweet.MAX_LENGTH.to_string ();
-    tweet_text.buffer.changed.connect (update_send_button_sensitivity);
+
+    //tweet_text.buffer.changed.connect (update_send_button_sensitivity);
 
     if (parent != null) {
       this.set_transient_for (parent);
@@ -142,13 +154,13 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     /* Let the text view immediately grab the keyboard focus */
     tweet_text.grab_focus ();
-    tweet_text.completion_listbox = this.completion_list;
-    tweet_text.show_completion.connect (() => {
-      completion_revealer.reveal_child = true;
-    });
-    tweet_text.hide_completion.connect (() => {
-      completion_revealer.reveal_child = false;
-    });
+    //tweet_text.completion_listbox = this.completion_list;
+    //tweet_text.show_completion.connect (() => {
+      //completion_revealer.reveal_child = true;
+    //});
+    //tweet_text.hide_completion.connect (() => {
+      //completion_revealer.reveal_child = false;
+    //});
 
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
@@ -183,10 +195,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.add_accel_group (ag);
 
     string? last_tweet = account.db.select ("info").cols ("last_tweet").once_string ();
-    if (last_tweet != null && last_tweet.length > 0 &&
-        tweet_text.get_buffer ().text.length == 0) {
-      this.tweet_text.get_buffer ().text = last_tweet;
-    }
+    //if (last_tweet != null && last_tweet.length > 0 &&
+        //tweet_text.get_buffer ().text.length == 0) {
+      //this.tweet_text.get_buffer ().text = last_tweet;
+    //}
 
 
     var image_target_list = new Gtk.TargetList (null);
@@ -202,13 +214,15 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       // Ignore, just don't show the emoji chooser
     }
 
+
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
 
   private void update_send_button_sensitivity () {
     Gtk.TextIter start, end;
-    tweet_text.buffer.get_bounds (out start, out end);
-    string text = tweet_text.buffer.get_text (start, end, true);
+    //tweet_text.buffer.get_bounds (out start, out end);
+    //string text = tweet_text.buffer.get_text (start, end, true);
+    string text = "";
 
     int length = (int)Tl.count_characters (text);
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
@@ -236,9 +250,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     compose_image_manager.insensitivize_buttons ();
 
     Gtk.TextIter start, end;
-    tweet_text.buffer.get_start_iter (out start);
-    tweet_text.buffer.get_end_iter (out end);
-    this.compose_job.set_text (tweet_text.buffer.get_text (start, end, true));
+    //tweet_text.buffer.get_start_iter (out start);
+    //tweet_text.buffer.get_end_iter (out end);
+    //this.compose_job.set_text (tweet_text.buffer.get_text (start, end, true));
 
     this.compose_job.send_async.begin (this.cancellable, (obj, res) => {
       bool success = false;
@@ -261,7 +275,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   private void save_last_tweet () {
     if (this.reply_to == null) {
-      string text = tweet_text.buffer.text;
+      //string text = tweet_text.buffer.text;
+      string text = "";
       account.db.update ("info").val ("last_tweet", text).run ();
     }
   }
@@ -291,10 +306,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   public void set_text (string text) {
-    tweet_text.buffer.text = text;
+    //tweet_text.buffer.text = text;
   }
 
-  [GtkCallback]
   private void add_image_clicked_cb (Gtk.Button source) {
     var filechooser = new Gtk.FileChooserNative (_("Select Image"),
                                                  this,
@@ -360,7 +374,6 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     update_send_button_sensitivity ();
   }
 
-  [GtkCallback]
   public void fav_image_button_clicked_cb () {
     cancel_button.label = _("Back");
     stack.visible_child_name = "fav-images";
@@ -384,19 +397,19 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     update_send_button_sensitivity ();
   }
 
-  [GtkCallback]
-  public void tweet_text_populate_popup_cb (Gtk.Widget popup) {
-    if (this.emoji_chooser == null)
-      return;
+  //[GtkCallback]
+  //public void tweet_text_populate_popup_cb (Gtk.Widget popup) {
+    //if (this.emoji_chooser == null)
+      //return;
 
-    if (!(popup is Gtk.Menu))
-      return;
+    //if (!(popup is Gtk.Menu))
+      //return;
 
-    var menuitem = new Gtk.MenuItem.with_label (_("Insert Emoji"));
-    menuitem.activate.connect (show_emoji_chooser);
-    menuitem.show ();
-    ((Gtk.Container)popup).add (menuitem);
-  }
+    //var menuitem = new Gtk.MenuItem.with_label (_("Insert Emoji"));
+    //menuitem.activate.connect (show_emoji_chooser);
+    //menuitem.show ();
+    //((Gtk.Container)popup).add (menuitem);
+  //}
 
   private void show_emoji_chooser () {
     if (this.emoji_chooser == null)
@@ -413,11 +426,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       return;
     }
 
-    emoji_chooser.emoji_picked.connect ((text) => {
-      this.tweet_text.insert_at_cursor (text);
-      cancel_clicked ();
-    });
-    stack.add (emoji_chooser);
+    //emoji_chooser.emoji_picked.connect ((text) => {
+      //this.tweet_text.insert_at_cursor (text);
+      //cancel_clicked ();
+    //});
+    //stack.add (emoji_chooser);
 
     this.emoji_button = new Gtk.Button.with_label ("🐧");
     emoji_button.clicked.connect (() => {
@@ -426,6 +439,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       cancel_button.label = _("Back");
     });
 
+    tweet_text.add_widget (emoji_button);
     add_button_box.add (emoji_button);
   }
 }
