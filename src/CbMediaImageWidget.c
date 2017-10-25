@@ -105,7 +105,8 @@ cb_media_image_widget_new (CbMedia *media)
   self = CB_MEDIA_IMAGE_WIDGET (g_object_new (CB_TYPE_MEDIA_IMAGE_WIDGET, NULL));
 
   if (media->type == CB_MEDIA_TYPE_GIF)
-    gtk_image_set_from_animation (GTK_IMAGE (self->image), media->animation);
+    g_warning ("Maybe remove the GIF handling support!");
+    /*gtk_image_set_from_animation (GTK_IMAGE (self->image), media->animation);*/
   else
     gtk_image_set_from_surface (GTK_IMAGE (self->image), media->surface);
 
