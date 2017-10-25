@@ -432,7 +432,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     //});
     //stack.add (emoji_chooser);
 
-    this.emoji_button = new Gtk.Button.with_label ("🐧");
+    //this.emoji_button = new Gtk.Button.with_label ("🐧");
+    this.emoji_button = new Gtk.Button.from_icon_name ("face-smile-symbolic", Gtk.IconSize.BUTTON);
     emoji_button.clicked.connect (() => {
       this.emoji_chooser.populate ();
       this.stack.visible_child = this.emoji_chooser;
