@@ -69,8 +69,7 @@
             <property name="row-spacing">6</property>
             <child>
               <object class="AvatarWidget" id="avatar_image">
-                <property name="width-request">48</property>
-                <property name="height-request">48</property>
+                <property name="size">48</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="halign">start</property>
@@ -85,30 +84,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScrolledWindow">
-                <property name="visible">1</property>
-                <property name="can-focus">1</property>
+              <object class="CbTextView" id="tweet_text">
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
                 <property name="margin-start">12</property>
                 <property name="margin-end">12</property>
                 <property name="margin-top">12</property>
                 <property name="margin-bottom">6</property>
-                <property name="shadow-type">in</property>
-                <property name="min-content-height">80</property>
-                <child>
-                  <object class="CompletionTextView" id="tweet_text">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="vexpand">True</property>
-                    <property name="wrap-mode">word-char</property>
-                    <property name="accepts-tab">False</property>
-                    <property name="height-request">60</property>
-                    <signal name="populate-popup" handler="tweet_text_populate_popup_cb" />
-                    <accessibility>
-                      <relation type="labelled-by" target="length_label"/>
-                    </accessibility>
-                  </object>
-                </child>
+                <!--<signal name="populate-popup" handler="tweet_text_populate_popup_cb" />-->
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -143,62 +126,6 @@
               </packing>
             </child>
 
-            <child>
-              <object class="GtkLabel" id="length_label">
-                <property name="visible">1</property>
-                <property name="margin-start">12</property>
-                <property name="margin-end">12</property>
-                <property name="margin-top">5</property>
-                <property name="margin-bottom">5</property>
-                <property name="valign">baseline</property>
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="label-for" target="tweet_text"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-
-            <child>
-              <object class="GtkBox" id="add_button_box">
-                <property name="visible">true</property>
-                <property name="margin-end">10</property>
-                <property name="margin-bottom">10</property>
-                <property name="halign">end</property>
-                <style>
-                  <class name="linked" />
-                </style>
-                <child>
-                  <object class="GtkButton" id="add_image_button">
-                    <property name="visible">1</property>
-                    <property name="label" translatable="yes">Add Image</property>
-                    <property name="valign">baseline</property>
-                    <signal name="clicked" handler="add_image_clicked_cb"/>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="fav_image_button">
-                    <property name="visible">1</property>
-                    <property name="tooltip-text" translatable="yes">Show favorite images</property>
-                    <signal name="clicked" handler="fav_image_button_clicked_cb" />
-                    <child>
-                      <object class="GtkImage">
-                        <property name="visible">1</property>
-                        <property name="icon-name">corebird-favorite-symbolic</property>
-                        <property name="icon-size">1</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
             <child>
               <object class="ComposeImageManager" id="compose_image_manager">
                 <property name="visible">false</property>
