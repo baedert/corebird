@@ -427,7 +427,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
     emoji_chooser.emoji_picked.connect ((text) => {
-      //this.tweet_text.insert_at_cursor (text);
+      this.tweet_text.insert_at_cursor (text);
       cancel_clicked ();
     });
     stack.add (emoji_chooser);

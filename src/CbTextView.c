@@ -77,9 +77,23 @@ cb_text_view_size_allocate (GtkWidget           *widget,
 }
 
 static void
+cb_text_view_finalize (GObject *object)
+{
+  CbTextView *self = CB_TEXT_VIEW (object);
+
+  gtk_widget_unparent (self->box);
+  gtk_widget_unparent (self->scrolled_window);
+
+  G_OBJECT_CLASS (cb_text_view_parent_class)->finalize (object);
+}
+
+static void
 cb_text_view_class_init (CbTextViewClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  object_class->finalize = cb_text_view_finalize;
 
   widget_class->measure = cb_text_view_measure;
   widget_class->size_allocate = cb_text_view_size_allocate;
@@ -127,4 +141,14 @@ cb_text_view_add_widget (CbTextView *self,
                          GtkWidget  *widget)
 {
   gtk_container_add (GTK_CONTAINER (self->box), widget);
+}
+
+void
+cb_text_view_insert_at_cursor (CbTextView *self,
+                               const char *text)
+{
+  g_return_if_fail (text != NULL);
+
+  gtk_text_buffer_insert_at_cursor (gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view)),
+                                    text, -1);
 }
