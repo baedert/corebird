@@ -84,6 +84,8 @@ cb_text_view_finalize (GObject *object)
   gtk_widget_unparent (self->box);
   gtk_widget_unparent (self->scrolled_window);
 
+  g_object_unref (self->account);
+
   G_OBJECT_CLASS (cb_text_view_parent_class)->finalize (object);
 }
 
@@ -132,7 +134,6 @@ void
 cb_text_view_set_account (CbTextView *self,
                           void       *account)
 {
-  // TODO: unref in finalize
   g_set_object (&self->account, account);
 }
 
