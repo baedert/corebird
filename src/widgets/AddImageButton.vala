@@ -21,7 +21,7 @@ class AddImageButton : Gtk.Widget {
   private const int MIN_HEIGHT = 100;
   private const int ICON_SIZE  = 32;
   public string image_path;
-  public Cairo.ImageSurface? surface;
+  public Gsk.Texture? texture = null;
 
   public signal void deleted ();
 
@@ -35,7 +35,7 @@ class AddImageButton : Gtk.Widget {
   public void get_draw_size (out int    width,
                              out int    height,
                              out double scale) {
-    if (this.surface == null) {
+    if (this.texture == null) {
       width  = 0;
       height = 0;
       scale  = 0.0;
@@ -44,34 +44,33 @@ class AddImageButton : Gtk.Widget {
 
     width  = this.get_allocated_width ();
     height = this.get_allocated_height ();
-    double scale_x = (double)width / this.surface.get_width ();
-    double scale_y = (double)height / this.surface.get_height ();
+    double scale_x = (double)width / this.texture.get_width ();
+    double scale_y = (double)height / this.texture.get_height ();
 
     scale = double.min (double.min (scale_x, scale_y), 1.0) * delete_factor;
 
-    width  = (int)(this.surface.get_width ()  * scale);
-    height = (int)(this.surface.get_height () * scale);
+    width  = (int)(this.texture.get_width ()  * scale);
+    height = (int)(this.texture.get_height () * scale);
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
-    if (this.surface == null)
+    if (this.texture == null)
       return;
 
     /* Draw thumbnail */
-    Graphene.Rect bounds = {};
     int draw_width, draw_height;
     double scale;
 
-    var texture = Cb.Utils.surface_to_texture (this.surface,
-                                               this.get_scale_factor ());
-
     this.get_draw_size (out draw_width, out draw_height, out scale);
-    bounds.origin.x = 0;
-    bounds.origin.y = 0;
-    bounds.size.width = draw_width;
-    bounds.size.height = draw_height;
+
 
     if (draw_width > 0 && draw_height > 0) {
+      Graphene.Rect bounds = {};
+      bounds.origin.x = 0;
+      bounds.origin.y = 0;
+      bounds.size.width = draw_width;
+      bounds.size.height = draw_height;
+
       snapshot.append_texture (texture, bounds, "Texture");
     }
 
@@ -96,12 +95,12 @@ class AddImageButton : Gtk.Widget {
     int media_width;
     int media_height;
 
-    if (this.surface == null) {
+    if (this.texture == null) {
       media_width = MIN_WIDTH;
       media_height = MAX_HEIGHT;
     } else {
-      media_width = this.surface.get_width ();
-      media_height = this.surface.get_height ();
+      media_width = this.texture.get_width ();
+      media_height = this.texture.get_height ();
     }
 
     if (orientation == Gtk.Orientation.HORIZONTAL) {

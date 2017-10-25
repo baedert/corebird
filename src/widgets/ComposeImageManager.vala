@@ -264,16 +264,14 @@ class ComposeImageManager : Gtk.Container {
     assert (!this.full);
 #endif
 
-    Cairo.ImageSurface surface;
+    Gsk.Texture texture;
     if (image == null)
-      surface = (Cairo.ImageSurface) load_surface (path);
+      texture = Cb.Utils.surface_to_texture (load_surface (path), 1);
     else
-      surface = (Cairo.ImageSurface) Gdk.cairo_surface_create_from_pixbuf (image,
-                                                                           this.get_scale_factor (),
-                                                                           this.get_window ());
+      texture = Gsk.Texture.for_pixbuf (image);
 
     var button = new AddImageButton ();
-    button.surface = surface;
+    button.texture = texture;
     button.image_path = path;
 
     button.hexpand = false;
