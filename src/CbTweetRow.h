@@ -26,6 +26,7 @@ struct _CbTweetRow
   GtkListBoxRow parent_instance;
 
   CbTweet *tweet;
+  void    *main_window; // TODO: Make this an actual typed pointer
 
   GtkWidget *stack;
   GtkWidget *avatar_widget;
@@ -47,7 +48,8 @@ typedef struct _CbTweetRow CbTweetRow;
 #define CB_TYPE_TWEET_ROW cb_tweet_row_get_type ()
 G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkListBoxRow);
 
-GtkWidget *  cb_tweet_row_new               (CbTweet    *tweet);
+GtkWidget *  cb_tweet_row_new               (CbTweet    *tweet,
+                                             void       *main_window);
 void         cb_tweet_row_update_time_delta (CbTweetRow *self,
                                              GDateTime  *now);
 #endif

@@ -16,7 +16,7 @@
  */
 
 
-enum Page {
+public enum Page {
   STREAM = 0,
   MENTIONS,
   FAVORITES,
