@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
-class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
+public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public const int KEY_MODE        = 0;
   public const int KEY_TWEET       = 1;
   public const int KEY_EXISTING    = 2;
