@@ -77,6 +77,8 @@ private class MediaButton : Gtk.Widget {
     } catch (GLib.Error e) {
       critical (e.message);
     }
+
+    set_css_name ("mediabutton");
   }
 
   construct {
