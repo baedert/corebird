@@ -182,6 +182,35 @@ cb_tweet_row_init (CbTweetRow *self)
 }
 
 static void
+name_button_clicked_cb (GtkButton *source,
+                        gpointer   user_data)
+{
+  CbTweetRow *self = user_data;
+  CbBundle *bundle;
+  gint64 user_id;
+  const char *screen_name;
+
+  if (self->tweet->retweeted_tweet != NULL)
+    {
+      user_id = self->tweet->retweeted_tweet->author.id;
+      screen_name = self->tweet->retweeted_tweet->author.screen_name;
+    }
+  else
+    {
+      user_id = self->tweet->source_tweet.author.id;
+      screen_name = self->tweet->source_tweet.author.screen_name;
+    }
+
+  bundle = cb_bundle_new ();
+  cb_bundle_put_int64 (bundle, PROFILE_PAGE_KEY_USER_ID, user_id);
+  cb_bundle_put_string (bundle, PROFILE_PAGE_KEY_SCREEN_NAME, screen_name);
+
+  main_widget_switch_page (((MainWindow*)self->main_window)->main_widget,
+                           PAGE_PROFILE,
+                           bundle);
+}
+
+static void
 create_ui (CbTweetRow *self)
 {
   g_assert (self->tweet != NULL);
@@ -200,6 +229,7 @@ create_ui (CbTweetRow *self)
   self->name_button = (GtkWidget *)text_button_new ();
   text_button_set_markup ((TextButton*)self->name_button, cb_tweet_get_user_name (self->tweet));
   gtk_widget_set_valign (self->name_button, GTK_ALIGN_BASELINE);
+  g_signal_connect (self->name_button, "clicked", G_CALLBACK (name_button_clicked_cb), self);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
 
   self->screen_name_label = gtk_label_new (g_strdup_printf ("@%s", cb_tweet_get_screen_name (self->tweet)));
@@ -289,13 +319,14 @@ create_ui (CbTweetRow *self)
 }
 
 GtkWidget *
-cb_tweet_row_new (CbTweet    *tweet)
-                  /*MainWindow *main_window,*/
+cb_tweet_row_new (CbTweet    *tweet,
+                  void       *main_window)
                   /*Account    *account)*/
 {
   CbTweetRow *self  = (CbTweetRow *)g_object_new (CB_TYPE_TWEET_ROW, NULL);
 
   g_set_object (&self->tweet, tweet);
+  self->main_window = main_window;
   create_ui (self);
 
   return (GtkWidget *)self;
