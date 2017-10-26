@@ -173,6 +173,21 @@ cb_tweet_row_finalize (GObject *object)
   CbTweetRow *self = CB_TWEET_ROW (object);
 
   g_object_unref (self->tweet);
+  gtk_widget_unparent (self->avatar_widget);
+  gtk_widget_unparent (self->top_row_box);
+  gtk_widget_unparent (self->text_label);
+
+  if (self->reply_label)
+    gtk_widget_unparent (self->reply_label);
+
+  if (self->mm_widget)
+    gtk_widget_unparent (self->mm_widget);
+
+  if (self->rt_label)
+    {
+      gtk_widget_unparent (self->rt_label);
+      gtk_widget_unparent (self->rt_image);
+    }
 
   G_OBJECT_CLASS (cb_tweet_row_parent_class)->finalize (object);
 }
