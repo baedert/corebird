@@ -168,9 +168,22 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
 }
 
 static void
+cb_tweet_row_finalize (GObject *object)
+{
+  CbTweetRow *self = CB_TWEET_ROW (object);
+
+  g_object_unref (self->tweet);
+
+  G_OBJECT_CLASS (cb_tweet_row_parent_class)->finalize (object);
+}
+
+static void
 cb_tweet_row_class_init (CbTweetRowClass *klass)
 {
+  GObjectClass *object_class = (GObjectClass *)klass;
   GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
+
+  object_class->finalize = cb_tweet_row_finalize;
 
   widget_class->measure = cb_tweet_row_measure;
   widget_class->size_allocate = cb_tweet_row_size_allocate;
