@@ -160,3 +160,20 @@ cb_text_view_set_text (CbTextView *self,
 {
   gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view)), text, -1);
 }
+
+char *
+cb_text_view_get_text (CbTextView *self)
+{
+  GtkTextBuffer *buffer;
+  GtkTextIter start_iter;
+  GtkTextIter end_iter;
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
+  gtk_text_buffer_get_start_iter (buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (buffer, &end_iter);
+
+  return gtk_text_buffer_get_text (buffer,
+                                   &start_iter,
+                                   &end_iter,
+                                   FALSE);
+}

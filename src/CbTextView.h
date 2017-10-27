@@ -47,5 +47,6 @@ void        cb_text_view_insert_at_cursor (CbTextView *self,
                                            const char *text);
 void        cb_text_view_set_text         (CbTextView *self,
                                            const char *text);
+char *      cb_text_view_get_text         (CbTextView *self);
 
 #endif

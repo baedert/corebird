@@ -439,6 +439,7 @@ namespace Cb {
     public void add_widget (Gtk.Widget widget);
     public void insert_at_cursor (string s);
     public void set_text (string s);
+    public string get_text ();
   }
 
 }

@@ -219,10 +219,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   private void update_send_button_sensitivity () {
-    Gtk.TextIter start, end;
-    //tweet_text.buffer.get_bounds (out start, out end);
-    //string text = tweet_text.buffer.get_text (start, end, true);
-    string text = "";
+    string text = tweet_text.get_text ();
 
     int length = (int)Tl.count_characters (text);
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
@@ -249,10 +246,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     add_image_button.sensitive = false;
     compose_image_manager.insensitivize_buttons ();
 
-    Gtk.TextIter start, end;
-    //tweet_text.buffer.get_start_iter (out start);
-    //tweet_text.buffer.get_end_iter (out end);
-    //this.compose_job.set_text (tweet_text.buffer.get_text (start, end, true));
+    this.compose_job.set_text (tweet_text.get_text ());
 
     this.compose_job.send_async.begin (this.cancellable, (obj, res) => {
       bool success = false;
@@ -275,8 +269,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
   private void save_last_tweet () {
     if (this.reply_to == null) {
-      //string text = tweet_text.buffer.text;
-      string text = "";
+      string text = tweet_text.get_text ();
       account.db.update ("info").val ("last_tweet", text).run ();
     }
   }
