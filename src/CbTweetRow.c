@@ -209,6 +209,18 @@ cb_tweet_row_init (CbTweetRow *self)
 {
 }
 
+static gboolean
+link_activated_cb (GtkLabel   *label,
+                   const char *uri,
+                   gpointer    user_data)
+{
+  CbTweetRow *self = user_data;
+
+  gtk_widget_grab_focus (GTK_WIDGET (self));
+
+  return tweet_utils_activate_link (uri, self->main_window);
+}
+
 static void
 name_button_clicked_cb (GtkButton *source,
                         gpointer   user_data)
@@ -297,6 +309,7 @@ create_ui (CbTweetRow *self)
       gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),
                                    "invisible-links");
       gtk_widget_set_parent (self->reply_label, (GtkWidget *)self);
+      g_signal_connect (self->reply_label, "activate-link", G_CALLBACK (link_activated_cb), self);
     }
 
   self->text_label = gtk_label_new (cb_tweet_get_trimmed_text (self->tweet,
@@ -308,6 +321,7 @@ create_ui (CbTweetRow *self)
   gtk_label_set_line_wrap (GTK_LABEL (self->text_label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
   gtk_widget_set_parent (self->text_label, (GtkWidget *)self);
+  g_signal_connect (self->text_label, "activate-link", G_CALLBACK (link_activated_cb), self);
 
   /* Retweet indicators */
   if (self->tweet->retweeted_tweet != NULL)
