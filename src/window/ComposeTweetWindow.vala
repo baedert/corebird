@@ -195,11 +195,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.add_accel_group (ag);
 
     string? last_tweet = account.db.select ("info").cols ("last_tweet").once_string ();
-    //if (last_tweet != null && last_tweet.length > 0 &&
-        //tweet_text.get_buffer ().text.length == 0) {
-      //this.tweet_text.get_buffer ().text = last_tweet;
-    //}
-
+    string text = tweet_text.get_text ();
+    if (last_tweet != null && last_tweet.length > 0 &&
+        text.length == 0) {
+      this.tweet_text.set_text (last_tweet);
+    }
 
     var image_target_list = new Gtk.TargetList (null);
     image_target_list.add_text_targets (0);
