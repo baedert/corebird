@@ -299,7 +299,8 @@ create_ui (CbTweetRow *self)
       gtk_widget_set_parent (self->reply_label, (GtkWidget *)self);
     }
 
-  self->text_label = gtk_label_new (cb_tweet_get_trimmed_text (self->tweet, 0));
+  self->text_label = gtk_label_new (cb_tweet_get_trimmed_text (self->tweet,
+                                                               settings_get_text_transform_flags ()));
   gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
