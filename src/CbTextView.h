@@ -45,5 +45,7 @@ void        cb_text_view_add_widget       (CbTextView *self,
                                            GtkWidget  *widget);
 void        cb_text_view_insert_at_cursor (CbTextView *self,
                                            const char *text);
+void        cb_text_view_set_text         (CbTextView *self,
+                                           const char *text);
 
 #endif
