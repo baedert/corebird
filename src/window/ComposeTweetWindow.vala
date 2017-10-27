@@ -125,8 +125,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     GLib.NetworkMonitor.get_default ().notify["network-available"].connect (update_send_button_sensitivity);
 
-
-    //tweet_text.buffer.changed.connect (update_send_button_sensitivity);
+    tweet_text.changed.connect (update_send_button_sensitivity);
 
     if (parent != null) {
       this.set_transient_for (parent);
