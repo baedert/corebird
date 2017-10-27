@@ -435,6 +435,7 @@ namespace Cb {
           "CbTextView.h")]
   public class TextView : Gtk.Widget {
     public TextView ();
+    public signal void changed();
     public void set_account (Account acc);
     public void add_widget (Gtk.Widget widget);
     public void insert_at_cursor (string s);

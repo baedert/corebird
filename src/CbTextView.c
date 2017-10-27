@@ -21,6 +21,12 @@
 
 G_DEFINE_TYPE (CbTextView, cb_text_view, GTK_TYPE_WIDGET);
 
+enum {
+  SIGNAL_CHANGED,
+  LAST_SIGNAL
+};
+static guint text_view_signals[LAST_SIGNAL] = { 0 };
+
 static void
 cb_text_view_measure (GtkWidget      *widget,
                       GtkOrientation  orientation,
@@ -90,6 +96,15 @@ cb_text_view_finalize (GObject *object)
 }
 
 static void
+text_buffer_changed_cb (GtkTextBuffer *buffer,
+                        gpointer       user_data)
+{
+  CbTextView *self = user_data;
+
+  g_signal_emit (self, text_view_signals[SIGNAL_CHANGED], 0);
+}
+
+static void
 cb_text_view_class_init (CbTextViewClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -99,6 +114,13 @@ cb_text_view_class_init (CbTextViewClass *klass)
 
   widget_class->measure = cb_text_view_measure;
   widget_class->size_allocate = cb_text_view_size_allocate;
+
+  text_view_signals[SIGNAL_CHANGED] = g_signal_new ("changed",
+                                                    G_OBJECT_CLASS_TYPE (object_class),
+                                                    G_SIGNAL_RUN_FIRST,
+                                                    0,
+                                                    NULL, NULL,
+                                                    NULL, G_TYPE_NONE, 0);
 
   gtk_widget_class_set_css_name (GTK_WIDGET_CLASS (klass), "textview");
 }
@@ -112,6 +134,8 @@ cb_text_view_init (CbTextView *self)
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
 
   self->text_view = gtk_text_view_new ();
+  g_signal_connect (gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view)),
+                    "changed", G_CALLBACK (text_buffer_changed_cb), self);
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (self->text_view), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->text_view), PANGO_WRAP_WORD_CHAR);
   gtk_container_add (GTK_CONTAINER (self->scrolled_window), self->text_view);
