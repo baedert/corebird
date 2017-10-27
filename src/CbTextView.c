@@ -153,3 +153,10 @@ cb_text_view_insert_at_cursor (CbTextView *self,
   gtk_text_buffer_insert_at_cursor (gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view)),
                                     text, -1);
 }
+
+void
+cb_text_view_set_text (CbTextView *self,
+                       const char *text)
+{
+  gtk_text_buffer_set_text (gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view)), text, -1);
+}

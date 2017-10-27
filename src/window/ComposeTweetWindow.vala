@@ -306,7 +306,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   public void set_text (string text) {
-    //tweet_text.buffer.text = text;
+    tweet_text.set_text (text);
   }
 
   private void add_image_clicked_cb (Gtk.Button source) {
