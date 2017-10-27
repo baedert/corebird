@@ -90,9 +90,8 @@ public class MainWidget : Gtk.Box {
       }
     }
 
-    // TODO: WTF?
-    //Settings.get ().bind ("sidebar-visible", this.topbar_revealer, "reveal-child",
-                          //SettingsBindFlags.DEFAULT);
+    Settings.get ().bind ("sidebar-visible", this.topbar_revealer, "reveal-child",
+                          SettingsBindFlags.DEFAULT);
   }
 
 
