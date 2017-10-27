@@ -56,7 +56,7 @@ public class AvatarWidget : Gtk.Widget {
       }
 
       container_widget.surface = this._surface;
-      container_widget.texture = Cb.Utils.surface_to_texture (this._surface, 1);
+      container_widget.texture = this._surface != null ? Cb.Utils.surface_to_texture (this._surface, 1) : null;
       this.queue_draw ();
     }
   }
