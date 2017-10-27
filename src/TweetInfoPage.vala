@@ -90,25 +90,24 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Box reply_box;
 
+  private Gtk.EventControllerScroll scroll_controller;
+
   public TweetInfoPage (int id, Account account) {
     this.id = id;
     this.account = account;
     this.top_list_box.account = account;
     this.bottom_list_box.account = account;
 
-    mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
-    this.scroll_event.connect ((evt) => {
-      double delta_x, delta_y;
-
-      evt.get_scroll_deltas (out delta_x, out delta_y);
-
+    scroll_controller = new Gtk.EventControllerScroll (this, Gtk.EventControllerScrollFlags.VERTICAL);
+    scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    scroll_controller.scroll.connect ((delta_x, delta_y) => {
       if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (- delta_y));
         max_size_container.max_size += inc;
-        return true;
       }
-      return false;
     });
+
+    mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
     bottom_list_box.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
