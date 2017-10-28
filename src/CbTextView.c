@@ -129,6 +129,7 @@ static void
 cb_text_view_init (CbTextView *self)
 {
   gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
+  gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 
   self->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
