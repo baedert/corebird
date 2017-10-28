@@ -96,6 +96,14 @@ cb_text_view_finalize (GObject *object)
 }
 
 static void
+cb_text_view_grab_focus (GtkWidget *widget)
+{
+  CbTextView *self = CB_TEXT_VIEW (widget);
+
+  gtk_widget_grab_focus (self->text_view);
+}
+
+static void
 text_buffer_changed_cb (GtkTextBuffer *buffer,
                         gpointer       user_data)
 {
@@ -114,6 +122,7 @@ cb_text_view_class_init (CbTextViewClass *klass)
 
   widget_class->measure = cb_text_view_measure;
   widget_class->size_allocate = cb_text_view_size_allocate;
+  widget_class->grab_focus = cb_text_view_grab_focus;
 
   text_view_signals[SIGNAL_CHANGED] = g_signal_new ("changed",
                                                     G_OBJECT_CLASS_TYPE (object_class),
