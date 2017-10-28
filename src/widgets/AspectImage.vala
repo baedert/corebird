@@ -24,11 +24,14 @@ class AspectImage : Gtk.Widget {
           start_animation ();
         }
 
-        if (this.pixbuf_surface != null)
+        if (this.pixbuf_surface != null) {
           this.old_surface = this.pixbuf_surface;
+          this.old_texture = this.pixbuf_texture;
+        }
 
         this.pixbuf_surface = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (value, 1,
                                                                                         this.get_window ());
+        this.pixbuf_texture = Cb.Utils.surface_to_texture (this.pixbuf_surface, 1);
         bg_color.alpha = 0.0;
       }
       this.queue_draw ();
@@ -43,6 +46,8 @@ class AspectImage : Gtk.Widget {
   private Gdk.RGBA bg_color;
   private Cairo.Surface? old_surface;
   private Cairo.ImageSurface? pixbuf_surface = null;
+  private Gsk.Texture? old_texture = null;
+  private Gsk.Texture? pixbuf_texture = null;
 
 
   public AspectImage () {}
@@ -118,9 +123,7 @@ class AspectImage : Gtk.Widget {
 
     // TODO: The old behavior here was to never scale the surface down, so keep scale >= 1.0
 
-    if (this.old_surface != null) {
-      var old_texture = Cb.Utils.surface_to_texture (old_surface,
-                                                     this.get_scale_factor ());
+    if (this.old_texture != null) {
       snapshot.append_texture (old_texture, bounds, "Old Texture");
     } else if (bg_color.alpha > 0.0) {
       snapshot.append_color (bg_color, bounds, "Background color");
@@ -132,9 +135,7 @@ class AspectImage : Gtk.Widget {
       snapshot.push_opacity (alpha, "Alpha");
 
     if (bg_color.alpha == 0.0) {
-      var texture = Cb.Utils.surface_to_texture (pixbuf_surface,
-                                                 this.get_scale_factor());
-      snapshot.append_texture (texture, bounds, "Pixbuf texture");
+      snapshot.append_texture (this.pixbuf_texture, bounds, "Pixbuf texture");
     } else {
       snapshot.append_color (bg_color, bounds, "Color");
     }
