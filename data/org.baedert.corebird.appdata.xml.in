@@ -45,21 +45,7 @@
   <url type="donation">https://flattr.com/profile/baedert</url>
 
   <releases>
-    <release version="1.5" date="2017-05-02">
-      <p>Changes in Corebird 1.5:</p>
-      <ul>Media attached to tweets can be downloaded using Right Click and selecting "save as"</ul>
-      <ul>Profiles use the profile background color set in the Twitter settings if no banner is set</ul>
-      <ul>Support sending Direct Messages to oneself</ul>
-      <ul>The tweet compose window now features a "favorite image" view that allows users to save often sent images and quickly add them to tweets</ul>
-      <ul>The media dialog now shows Previous/Next buttons to quickly switch between multiple media attachments of a tweet></ul>
-      <ul>The Vine support has been removed since the project is discontinued</ul>
-      <ul>Allow text selection in Direct Messages</ul>
-      <ul>New --account parameter allows opening the window for the given account only</ul>
-      <ul>Support tweets with up to 50 replied-to users.</ul>
-      <ul>Add back verified icons next to user avatars</ul>
-      <ul>Redesigned account creation UI</ul>
-    </release>
-    <release version="1.7" date="">
+    <release version="1.7" date="2017-10-28">
       <p>Changes in Corebird 1.7:</p>
       <ul>
         <li>Hashtags and Mentions in profile desriptions are now clickable</li>
@@ -73,6 +59,21 @@
         <li>Fixed a bug that led to wrong Direct Message info being inserted into the database</li>
         <li>Fixed a bug that resulted in broken files when downloading instagram images</li>
       </ul>
+    </release>
+
+    <release version="1.5" date="2017-05-02">
+      <p>Changes in Corebird 1.5:</p>
+      <ul>Media attached to tweets can be downloaded using Right Click and selecting "save as"</ul>
+      <ul>Profiles use the profile background color set in the Twitter settings if no banner is set</ul>
+      <ul>Support sending Direct Messages to oneself</ul>
+      <ul>The tweet compose window now features a "favorite image" view that allows users to save often sent images and quickly add them to tweets</ul>
+      <ul>The media dialog now shows Previous/Next buttons to quickly switch between multiple media attachments of a tweet></ul>
+      <ul>The Vine support has been removed since the project is discontinued</ul>
+      <ul>Allow text selection in Direct Messages</ul>
+      <ul>New --account parameter allows opening the window for the given account only</ul>
+      <ul>Support tweets with up to 50 replied-to users.</ul>
+      <ul>Add back verified icons next to user avatars</ul>
+      <ul>Redesigned account creation UI</ul>
     </release>
   </releases>
 
