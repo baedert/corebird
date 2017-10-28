@@ -251,6 +251,19 @@ name_button_clicked_cb (GtkButton *source,
 }
 
 static void
+media_clicked_cb (GtkWidget *source,
+                  CbMedia   *media,
+                  int        index,
+                  double     px,
+                  double     py,
+                  gpointer   user_data)
+{
+  CbTweetRow *self = user_data;
+
+  tweet_utils_handle_media_click (self->tweet, self->main_window, index, px, py);
+}
+
+static void
 create_ui (CbTweetRow *self)
 {
   g_assert (self->tweet != NULL);
@@ -352,6 +365,7 @@ create_ui (CbTweetRow *self)
       gtk_widget_set_parent (self->mm_widget, (GtkWidget *)self);
 
       multi_media_widget_set_all_media ((MultiMediaWidget *)self->mm_widget, medias, n_medias);
+      g_signal_connect (self->mm_widget, "media-clicked", G_CALLBACK (media_clicked_cb), self);
 
       // TODO: Care about NSFW-ness
     }
