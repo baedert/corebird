@@ -266,6 +266,8 @@ media_clicked_cb (GtkWidget *source,
 static void
 create_ui (CbTweetRow *self)
 {
+  char *text;
+
   g_assert (self->tweet != NULL);
 
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
@@ -285,13 +287,15 @@ create_ui (CbTweetRow *self)
   g_signal_connect (self->name_button, "clicked", G_CALLBACK (name_button_clicked_cb), self);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
 
-  self->screen_name_label = gtk_label_new (g_strdup_printf ("@%s", cb_tweet_get_screen_name (self->tweet)));
+  text = g_strdup_printf ("@%s", cb_tweet_get_screen_name (self->tweet));
+  self->screen_name_label = gtk_label_new (text);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->screen_name_label),
                                "dim-label");
   gtk_widget_set_hexpand (self->screen_name_label, TRUE);
   gtk_widget_set_halign (self->screen_name_label, GTK_ALIGN_START);
   gtk_widget_set_valign (self->screen_name_label, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->screen_name_label);
+  g_free (text);
 
   self->time_delta_label = gtk_label_new ("");
   gtk_widget_set_valign (self->time_delta_label, GTK_ALIGN_BASELINE);
@@ -310,7 +314,7 @@ create_ui (CbTweetRow *self)
       else
         cb_utils_write_reply_text (&self->tweet->source_tweet, str);
 
-      self->reply_label = gtk_label_new (g_string_free (str, FALSE)); // Still leaks
+      self->reply_label = gtk_label_new (str->str);
       gtk_label_set_xalign (GTK_LABEL (self->reply_label), 0.0f);
       gtk_label_set_yalign (GTK_LABEL (self->reply_label), 0.0f);
       gtk_label_set_use_markup (GTK_LABEL (self->reply_label), TRUE);
@@ -323,10 +327,12 @@ create_ui (CbTweetRow *self)
                                    "invisible-links");
       gtk_widget_set_parent (self->reply_label, (GtkWidget *)self);
       g_signal_connect (self->reply_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+
+      g_string_free (str, TRUE);
     }
 
-  self->text_label = gtk_label_new (cb_tweet_get_trimmed_text (self->tweet,
-                                                               settings_get_text_transform_flags ()));
+  text = cb_tweet_get_trimmed_text (self->tweet, settings_get_text_transform_flags ());
+  self->text_label = gtk_label_new (text);
   gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
@@ -335,6 +341,7 @@ create_ui (CbTweetRow *self)
   gtk_label_set_line_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
   gtk_widget_set_parent (self->text_label, (GtkWidget *)self);
   g_signal_connect (self->text_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+  g_free (text);
 
   /* Retweet indicators */
   if (self->tweet->retweeted_tweet != NULL)
@@ -407,4 +414,6 @@ cb_tweet_row_update_time_delta (CbTweetRow *self,
   /* XXX Incomplete: Quotes */
 
   g_free (delta_str);
+  g_date_time_unref (cur_time);
+  g_date_time_unref (then);
 }
