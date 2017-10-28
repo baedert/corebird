@@ -70,6 +70,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
                              Account     acc,
                              Cb.Tweet?   reply_to = null,
                              Mode        mode = Mode.NORMAL) {
+#if DEBUG
+    this.set_focus.connect ((w) => {
+      debug ("Focus widget now: %s %p", w != null ? __class_name (w) : "(null)", w);
+    });
+#endif
+
     this.set_show_menubar (false);
     this.account = acc;
     this.reply_to = reply_to;
