@@ -187,7 +187,8 @@ libcorebird_la_SOURCES = \
 	rest/rest/oauth-proxy.h \
 	rest/rest/oauth-proxy-call.h \
 	libtl/libtweetlength.h \
-	libtl/libtweetlength.c
+	libtl/libtweetlength.c \
+	libtl/data.h
 
 
 
