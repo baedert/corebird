@@ -16,8 +16,11 @@
  */
 
 #include "CbTextView.h"
+#include "libtl/libtweetlength.h"
 #include "corebird.h"
 
+#define TAG_NO_SPELL_CHECK "gtksourceview:context-classes:no-spell-check"
+static const char * TEXT_TAGS[] = {"hashtag", "mention", "link", "snippet" };
 
 G_DEFINE_TYPE (CbTextView, cb_text_view, GTK_TYPE_WIDGET);
 
@@ -26,6 +29,30 @@ enum {
   LAST_SIGNAL
 };
 static guint text_view_signals[LAST_SIGNAL] = { 0 };
+
+
+static void
+get_link_color (CbTextView *self,
+                GdkRGBA    *out_link_color)
+{
+  GtkStyleContext *context = gtk_widget_get_style_context (GTK_WIDGET (self));
+
+  gtk_style_context_save (context);
+  gtk_style_context_set_state (context, GTK_STATE_FLAG_LINK);
+  gtk_style_context_get_color (context, out_link_color);
+  gtk_style_context_restore (context);
+
+  if (out_link_color->red == 1.0 &&
+      out_link_color->green == 1.0 &&
+      out_link_color->blue == 1.0 &&
+      out_link_color->alpha == 1.0)
+    {
+      out_link_color->red = 1.0;
+      out_link_color->green = 0.0;
+      out_link_color->blue = 0.0;
+      out_link_color->alpha = 1.0;
+    }
+}
 
 static void
 cb_text_view_measure (GtkWidget      *widget,
@@ -108,7 +135,53 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
                         gpointer       user_data)
 {
   CbTextView *self = user_data;
+  GtkTextIter start_iter;
+  GtkTextIter end_iter;
+  char *text;
+  TlEntity *entities;
+  gsize n_entities;
+  guint i;
 
+  gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
+
+  /* Remove all *our* tags (gspell might add others) */
+  for (i = 0; i < G_N_ELEMENTS (TEXT_TAGS); i ++)
+    gtk_text_buffer_remove_tag_by_name (buffer, TEXT_TAGS[i], &start_iter, &end_iter);
+
+  text = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, FALSE);
+  entities = tl_extract_entities_and_text (text, &n_entities, NULL);
+
+  for (i = 0; i < n_entities; i ++)
+    {
+      const TlEntity *e = &entities[i];
+      GtkTextIter entity_start;
+      GtkTextIter entity_end;
+
+      gtk_text_buffer_get_iter_at_offset (buffer, &entity_start, e->start_character_index);
+      gtk_text_buffer_get_iter_at_offset (buffer, &entity_end,
+                                          e->start_character_index + e->length_in_characters);
+
+      /* We ignore spell checking for all our special entities */
+      gtk_text_buffer_apply_tag_by_name (buffer, TAG_NO_SPELL_CHECK, &entity_start, &entity_end);
+
+      switch (e->type)
+        {
+          case TL_ENT_MENTION:
+            gtk_text_buffer_apply_tag_by_name (buffer, "mention", &entity_start, &entity_end);
+            break;
+          case TL_ENT_HASHTAG:
+            gtk_text_buffer_apply_tag_by_name (buffer, "hashtag", &entity_start, &entity_end);
+            break;
+          case TL_ENT_LINK:
+            gtk_text_buffer_apply_tag_by_name (buffer, "link", &entity_start, &entity_end);
+            break;
+
+          default: {}
+
+        }
+    }
+
+  g_free (text);
   g_signal_emit (self, text_view_signals[SIGNAL_CHANGED], 0);
 }
 
@@ -137,6 +210,10 @@ cb_text_view_class_init (CbTextViewClass *klass)
 static void
 cb_text_view_init (CbTextView *self)
 {
+  GtkTextBuffer *buffer;
+  GdkRGBA link_color;
+  GdkRGBA snippet_color = { 0.0, 0.65, 0.0627, 1.0};
+
   gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 
@@ -149,6 +226,15 @@ cb_text_view_init (CbTextView *self)
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (self->text_view), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->text_view), PANGO_WRAP_WORD_CHAR);
   gtk_container_add (GTK_CONTAINER (self->scrolled_window), self->text_view);
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
+  get_link_color (self, &link_color);
+  gtk_text_buffer_create_tag (buffer, TAG_NO_SPELL_CHECK, NULL);
+  gtk_text_buffer_create_tag (buffer, "mention", "foreground-rgba", &link_color, NULL);
+  gtk_text_buffer_create_tag (buffer, "hashtag", "foreground-rgba", &link_color, NULL);
+  gtk_text_buffer_create_tag (buffer, "link", "foreground-rgba", &link_color, NULL);
+  gtk_text_buffer_create_tag (buffer, "snippet", "foreground-rgba", &snippet_color, NULL);
+
 
   self->box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->box), "dim-label");
