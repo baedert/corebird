@@ -11,14 +11,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-16 11:24+0000\n"
+"PO-Revision-Date: 2017-10-22 14:06+0000\n"
 "Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
-"Language-Team: Dutch (http://www.transifex.com/corebird/corebird/language/"
-"nl/)\n"
-"Language: nl\n"
+"Language-Team: Dutch (http://www.transifex.com/corebird/corebird/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -35,19 +34,13 @@ msgstr "Twittertoepassing"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird is een geïntegreerde GTK+ Twittertoepassing met ondersteuning voor "
-"de belangrijkste functionaliteiten, zoals privéberichten (DM's), "
-"tweetmeldingen en gespreksweergaven."
+msgstr "Corebird is een geïntegreerde GTK+ Twittertoepassing met ondersteuning voor de belangrijkste functionaliteiten, zoals privéberichten (DM's), tweetmeldingen en gespreksweergaven."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Extra mogelijkheden zijn o.a. het weergeven van video's in de toepassing "
-"zelf, meerdere bijgevoegde afbeeldingen, lijsten, filters, meerdere accounts "
-"en nog veel meer."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Extra mogelijkheden zijn o.a. het weergeven van video's in de toepassing zelf, meerdere bijgevoegde afbeeldingen, lijsten, filters, meerdere accounts en nog veel meer."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -69,12 +62,14 @@ msgstr "Timm Bäder"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Gebruik Twitter vanuit een normale bureaubladtoepassing"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -82,7 +77,7 @@ msgstr "corebird"
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:177 src/TweetInfoPage.vala:525
 msgid "Replying to"
-msgstr "Antwoord op"
+msgstr "In antwoord op"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
@@ -129,7 +124,7 @@ msgstr "Vind-ik-leuks"
 
 #: src/FilterPage.vala:47
 msgid "Add new Filter"
-msgstr "Nieuwe filter toevoegen"
+msgstr "Nieuw filter toevoegen"
 
 #: src/FilterPage.vala:317 src/FilterPage.vala:323
 msgid "Filters"
@@ -143,7 +138,7 @@ msgstr "%s heeft %s geretweet"
 #: src/HomeTimeline.vala:146
 #, c-format
 msgid "%s tweeted"
-msgstr "%s getweet"
+msgstr "%s tweette"
 
 #: src/HomeTimeline.vala:155
 #, c-format
@@ -174,7 +169,7 @@ msgstr "Tweet opstellen"
 
 #: src/MainWindow.vala:132
 msgid "Add new Account"
-msgstr "Nieuwe account toevoegen"
+msgstr "Nieuw account toevoegen"
 
 #: src/MentionsTimeline.vala:93 src/UserEventReceiver.vala:115
 #, c-format
@@ -186,9 +181,8 @@ msgid "Mentions"
 msgstr "Vermeldingen"
 
 #: src/ProfilePage.vala:218
-#, fuzzy
 msgid "Suspended Account"
-msgstr "Nieuwe account"
+msgstr "Opgeschort account"
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -200,7 +194,6 @@ msgid "Tweet to @%s"
 msgstr "Verstuur een tweet naar @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
-#, fuzzy
 msgid "Protected Profile"
 msgstr "Afgeschermd profiel"
 
@@ -209,7 +202,6 @@ msgid "Search"
 msgstr "Zoeken"
 
 #: src/SearchPage.vala:401
-#, fuzzy
 msgid "Load More"
 msgstr "Meer laden"
 
@@ -281,15 +273,13 @@ msgstr "Heeft u nog geen Twitter-account?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
-msgstr "Maak er een aan"
+msgstr "Creëer een account"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Niet geautoriseerd. Meestal betekent dit dat er iets mis is met de Twitter-"
-"servers en dat u het later opnieuw moet proberen."
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Niet geautoriseerd. Meestal betekent dit dat er iets mis is met de Twitter-servers en dat u het later opnieuw moet proberen."
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -403,7 +393,7 @@ msgstr "Tweet citeren"
 
 #: src/window/ComposeTweetWindow.vala:331
 msgid "Selected file is not an image."
-msgstr ""
+msgstr "Het geselecteerde bestand is geen afbeelding."
 
 #: src/window/ComposeTweetWindow.vala:332
 #: src/window/ComposeTweetWindow.vala:338
@@ -417,9 +407,7 @@ msgstr "Terug"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"De geselecteerde afbeelding is te groot. De maximale bestandsgrootte is %'d "
-"MB per afbeelding."
+msgstr "De geselecteerde afbeelding is te groot. De maximale bestandsgrootte is %'d MB per afbeelding."
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
@@ -427,7 +415,7 @@ msgstr "Per tweet wordt slechts één GIF-bestand toegestaan."
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
-msgstr ""
+msgstr "Emoji invoegen"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -465,9 +453,7 @@ msgstr "Het fragment bestaat al"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hé! Kijk eens naar deze nieuwe #Corebird-versie! \\ (•◡•) / #cool "
-"#nieuwisaltijdbeter"
+msgstr "Hé! Kijk eens naar deze nieuwe #Corebird-versie! \\ (•◡•) / #cool #nieuwisaltijdbeter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -483,15 +469,13 @@ msgstr "Over Corebird"
 
 #: ui/account-create-widget.ui:28
 msgid "New Account"
-msgstr "Nieuwe account"
+msgstr "Nieuw account"
 
 #: ui/account-create-widget.ui:47
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
-"Om Corebird toestemming te geven heeft u een pincode nodig van twitter.com "
-"van het toe te voegen account"
+msgstr "Om Corebird toestemming te geven heeft u een pincode nodig van twitter.com van het toe te voegen account"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -523,7 +507,7 @@ msgstr "Website"
 
 #: ui/account-dialog.ui:181
 msgid "Autostart"
-msgstr "Automatisch opstarten"
+msgstr "Automatisch laden"
 
 #: ui/account-dialog.ui:244
 msgid "Do you really want to delete this account?"
@@ -532,56 +516,55 @@ msgstr "Weet u zeker dat u dit account wilt verwijderen?"
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr ""
+msgstr "Smileys en personen"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
 msgid "Body & Clothing"
-msgstr ""
+msgstr "Lichaam en kledij"
 
 #: ui/cb-emoji-chooser.ui:67
 msgctxt "emoji category"
 msgid "Animals & Nature"
-msgstr ""
+msgstr "Dieren en natuur"
 
 #: ui/cb-emoji-chooser.ui:80
 msgctxt "emoji category"
 msgid "Food & Drink"
-msgstr ""
+msgstr "Eten en drinken"
 
 #: ui/cb-emoji-chooser.ui:93
 msgctxt "emoji category"
 msgid "Travel & Places"
-msgstr ""
+msgstr "Reizen en plaatsen"
 
 #: ui/cb-emoji-chooser.ui:106
 msgctxt "emoji category"
 msgid "Activities"
-msgstr ""
+msgstr "Activiteiten"
 
 #: ui/cb-emoji-chooser.ui:119
 msgctxt "emoji category"
 msgid "Objects"
-msgstr ""
+msgstr "Objecten"
 
 #: ui/cb-emoji-chooser.ui:132
 msgctxt "emoji category"
 msgid "Symbols"
-msgstr ""
+msgstr "Symbolen"
 
 #: ui/cb-emoji-chooser.ui:145
 msgctxt "emoji category"
 msgid "Flags"
-msgstr ""
+msgstr "Vlaggen"
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "Geen items gevonden"
+msgstr "Geen resultaten gevonden"
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
-msgstr ""
+msgstr "Probeer een andere zoekopdracht"
 
 #: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
@@ -621,7 +604,7 @@ msgstr "Auteur:"
 
 #: ui/list-statuses-page.ui:84
 msgid "Created at:"
-msgstr "Aangemaakt op:"
+msgstr "Gecreëerd op:"
 
 #: ui/list-statuses-page.ui:119
 msgid "Edit"
@@ -661,7 +644,7 @@ msgstr "Afsluiten"
 
 #: ui/modify-filter-dialog.ui:6
 msgid "Add New Filter"
-msgstr "Nieuwe filter toevoegen"
+msgstr "Nieuw filter toevoegen"
 
 #: ui/modify-snippet-dialog.ui:6
 msgid "Add New Snippet"
@@ -677,7 +660,7 @@ msgstr "Vervangen door"
 
 #: ui/new-list-entry.ui:30
 msgid "Create New List"
-msgstr "Nieuwe lijst aanmaken"
+msgstr "Nieuwe lijst creëren"
 
 #: ui/new-list-entry.ui:51
 msgid "Name:"
@@ -685,7 +668,7 @@ msgstr "Naam:"
 
 #: ui/new-list-entry.ui:73
 msgid "Create"
-msgstr "Aanmaken"
+msgstr "Creëren"
 
 #: ui/profile-page.ui:6
 msgid "Write Direct Message"
@@ -817,9 +800,7 @@ msgstr "Er zijn geen fragmenten ingesteld."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"U kunt fragmenten activeren door het sleutelwoord te typen en daarna op de "
-"tabtoets te drukken."
+msgstr "U kunt fragmenten activeren door het sleutelwoord te typen en daarna op de tabtoets te drukken."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -906,14 +887,13 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: ui/shortcuts-window.ui:122
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr "Tweet opstellen"
+msgstr "Opstellen"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr ""
+msgstr "Emojikiezer weergeven"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -973,14 +953,8 @@ msgstr "Ga naar profiel"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
-msgstr "Aangemaakt"
+msgstr "Gecreëerd"
 
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Geabonneerd op"
-
-#~ msgid "Compose tweet"
-#~ msgstr "Tweet opstellen"
-
-#~ msgid "New tweet"
-#~ msgstr "Nieuwe tweet"

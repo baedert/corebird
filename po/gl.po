@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-03 13:49+0000\n"
-"Last-Translator: antiparvos <marcoslansgarza@gmail.com>\n"
-"Language-Team: Galician (http://www.transifex.com/corebird/corebird/language/"
-"gl/)\n"
-"Language: gl\n"
+"PO-Revision-Date: 2017-10-22 10:08+0000\n"
+"Last-Translator: baedert <mail@baedert.org>\n"
+"Language-Team: Galician (http://www.transifex.com/corebird/corebird/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: gl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,18 +32,13 @@ msgstr "Cliente para o Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird é un cliente GTK+ nativo para o Twitter que fornece funcionalidades "
-"fundamentais como mensaxes directas (MD), notificacións de chíos ou vistas "
-"de conversas."
+msgstr "Corebird é un cliente GTK+ nativo para o Twitter que fornece funcionalidades fundamentais como mensaxes directas (MD), notificacións de chíos ou vistas de conversas."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Inclúe funcionalidades adicionais como visualización local de vídeos, varias "
-"imaxes inseridas, listaxes, filtros, múltiples contas, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Inclúe funcionalidades adicionais como visualización local de vídeos, varias imaxes inseridas, listaxes, filtros, múltiples contas, etc."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -66,12 +60,14 @@ msgstr "Timm Bäder"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Use Twitter desde un aplicativo de escritorio"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -183,9 +179,8 @@ msgid "Mentions"
 msgstr "Mencións"
 
 #: src/ProfilePage.vala:218
-#, fuzzy
 msgid "Suspended Account"
-msgstr "Nova conta"
+msgstr ""
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -197,18 +192,16 @@ msgid "Tweet to @%s"
 msgstr "Chiar a @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
-#, fuzzy
 msgid "Protected Profile"
-msgstr "Perfil protexido"
+msgstr ""
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Buscar"
 
 #: src/SearchPage.vala:401
-#, fuzzy
 msgid "Load More"
-msgstr "Cargar máis"
+msgstr ""
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -282,11 +275,9 @@ msgstr "Crear unha"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Non autorizado. Normalmente significa que algo funciona mal nos servidores "
-"do Twitter e debería tentalo máis tarde"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Non autorizado. Normalmente significa que algo funciona mal nos servidores do Twitter e debería tentalo máis tarde"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -460,9 +451,7 @@ msgstr "A cadea xa existe"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Ei, probe esta nova versión do #Corebird ! \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "Ei, probe esta nova versión do #Corebird ! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -484,9 +473,7 @@ msgstr "Nova conta"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
-"Para autenticar o Corebird, precisa un PIN de twitter.com coa conta que "
-"desexa engadir"
+msgstr "Para autenticar o Corebird, precisa un PIN de twitter.com coa conta que desexa engadir"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -570,9 +557,8 @@ msgid "Flags"
 msgstr ""
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "Non se atoparon entradas"
+msgstr ""
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
@@ -899,10 +885,9 @@ msgid "Delete"
 msgstr "Eliminar"
 
 #: ui/shortcuts-window.ui:122
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr "Escribir un chío"
+msgstr ""
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
@@ -971,9 +956,3 @@ msgstr "Creada"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subscrito a"
-
-#~ msgid "Compose tweet"
-#~ msgstr "Escribir un chío"
-
-#~ msgid "New tweet"
-#~ msgstr "Novo chío"

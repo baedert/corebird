@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-03 13:49+0000\n"
+"PO-Revision-Date: 2017-10-22 17:13+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
-"Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/"
-"fi/)\n"
-"Language: fi\n"
+"Language-Team: Finnish (http://www.transifex.com/corebird/corebird/language/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "Twitter-sovellus"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa "
-"yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
+msgstr "Corebird on GTK+:lla toteutettu Twitter-sovellus, joka tarjoaa muun muassa yksityisviestit, ilmoitukset twiiteistä ja keskustelunäkymän."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan "
-"sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Lisäominaisuuksiin kuuluu muun muassa videoiden katselu suoraan sovelluksesta, useat upotetut kuvat, listat, suodattimet, useat tilit jne."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -65,12 +60,14 @@ msgstr "Timm Bäder"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Käytä Twitteriä tavallisella työpöytäsovelluksella"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -182,9 +179,8 @@ msgid "Mentions"
 msgstr "Maininnat"
 
 #: src/ProfilePage.vala:218
-#, fuzzy
 msgid "Suspended Account"
-msgstr "Uusi tili"
+msgstr "Jäädytetty tili"
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -196,7 +192,6 @@ msgid "Tweet to @%s"
 msgstr "Twiittaa käyttäjälle @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
-#, fuzzy
 msgid "Protected Profile"
 msgstr "Suojattu profiili"
 
@@ -205,7 +200,6 @@ msgid "Search"
 msgstr "Etsi"
 
 #: src/SearchPage.vala:401
-#, fuzzy
 msgid "Load More"
 msgstr "Lataa lisää"
 
@@ -281,11 +275,9 @@ msgstr "Luo uusi tili"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Ei valtuutusta. Yleensä tämä tarkoittaa, että Twitter-palvelimilla on "
-"ongelmia, joten yritä pian uudelleen"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Ei valtuutusta. Yleensä tämä tarkoittaa, että Twitter-palvelimilla on ongelmia, joten yritä pian uudelleen"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -399,7 +391,7 @@ msgstr "Lainaa twiittiä"
 
 #: src/window/ComposeTweetWindow.vala:331
 msgid "Selected file is not an image."
-msgstr ""
+msgstr "Valittu tiedosto ei ole kuva."
 
 #: src/window/ComposeTweetWindow.vala:332
 #: src/window/ComposeTweetWindow.vala:338
@@ -413,8 +405,7 @@ msgstr "Takaisin"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"Valittu kuva on liian suuri. Kuva voi olla kooltaan korkeintaan %'d Mt."
+msgstr "Valittu kuva on liian suuri. Kuva voi olla kooltaan korkeintaan %'d Mt."
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
@@ -422,7 +413,7 @@ msgstr "Vain yksi GIF-tiedosto per twiitti on sallittu."
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
-msgstr ""
+msgstr "Lisää emoji"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -460,9 +451,7 @@ msgstr "Tekstileike on jo olemassa"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool "
-"#newisalwaysbetter"
+msgstr "Hei, #Corebird'in uusi versio on nyt saatavilla! \\ (•◡•) / #cool #newisalwaysbetter"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -484,9 +473,7 @@ msgstr "Uusi tili"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
-"Asettaaksesi Corebirdin tunnistautumisen tulee sinun noutaa twitter.comista "
-"PIN sille tilille, jonka haluat lisätä"
+msgstr "Asettaaksesi Corebirdin tunnistautumisen tulee sinun noutaa twitter.comista PIN sille tilille, jonka haluat lisätä"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -527,56 +514,55 @@ msgstr "Haluatko varmasti poistaa tämän tilin?"
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr ""
+msgstr "Hymiöt ja ihmiset"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
 msgid "Body & Clothing"
-msgstr ""
+msgstr "Ruumis ja vaatetus"
 
 #: ui/cb-emoji-chooser.ui:67
 msgctxt "emoji category"
 msgid "Animals & Nature"
-msgstr ""
+msgstr "Eläimet ja luonto"
 
 #: ui/cb-emoji-chooser.ui:80
 msgctxt "emoji category"
 msgid "Food & Drink"
-msgstr ""
+msgstr "Ruoka ja juoma"
 
 #: ui/cb-emoji-chooser.ui:93
 msgctxt "emoji category"
 msgid "Travel & Places"
-msgstr ""
+msgstr "Matkustaminen ja paikat"
 
 #: ui/cb-emoji-chooser.ui:106
 msgctxt "emoji category"
 msgid "Activities"
-msgstr ""
+msgstr "Toimet"
 
 #: ui/cb-emoji-chooser.ui:119
 msgctxt "emoji category"
 msgid "Objects"
-msgstr ""
+msgstr "Objektit"
 
 #: ui/cb-emoji-chooser.ui:132
 msgctxt "emoji category"
 msgid "Symbols"
-msgstr ""
+msgstr "Symbolit"
 
 #: ui/cb-emoji-chooser.ui:145
 msgctxt "emoji category"
 msgid "Flags"
-msgstr ""
+msgstr "Liput"
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "Kohteita ei löytynyt"
+msgstr "Tuloksia ei löytynyt"
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
-msgstr ""
+msgstr "Yritä eri hakuehtoja"
 
 #: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
@@ -812,8 +798,7 @@ msgstr "Tekstileikkeitä ei ole määritetty."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
-"Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
+msgstr "Voit aktivoida tekstileikkeet kirjoittamalla avainsanan ja painamalla TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -900,14 +885,13 @@ msgid "Delete"
 msgstr "Poista"
 
 #: ui/shortcuts-window.ui:122
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr "Kirjoita twiitti"
+msgstr "Kirjoita"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr ""
+msgstr "Näytä emoji-valitsin"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -972,9 +956,3 @@ msgstr "Luotu"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Tilannut"
-
-#~ msgid "Compose tweet"
-#~ msgstr "Twiittaa"
-
-#~ msgid "New tweet"
-#~ msgstr "Uusi twiitti"

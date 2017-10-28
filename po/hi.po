@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-03 13:49+0000\n"
+"PO-Revision-Date: 2017-10-22 10:08+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Hindi (India) (http://www.transifex.com/corebird/corebird/"
-"language/hi_IN/)\n"
-"Language: hi\n"
+"Language-Team: Hindi (India) (http://www.transifex.com/corebird/corebird/language/hi_IN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: hi_IN\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -37,8 +36,8 @@ msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -61,12 +60,14 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -274,8 +275,8 @@ msgstr "अभि बनाये"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:69
@@ -556,9 +557,8 @@ msgid "Flags"
 msgstr ""
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "कोई अभिलेख नही मिला"
+msgstr ""
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"

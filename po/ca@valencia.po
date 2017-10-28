@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-03 13:49+0000\n"
+"PO-Revision-Date: 2017-10-22 10:08+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Catalan (Valencian) (http://www.transifex.com/corebird/"
-"corebird/language/ca@valencia/)\n"
-"Language: ca@valencia\n"
+"Language-Team: Catalan (Valencian) (http://www.transifex.com/corebird/corebird/language/ca%40valencia/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ca@valencia\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,15 +32,12 @@ msgstr "Client del Twitter"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"El Corebird és un client del twitter natiu GTK+ que proveeix "
-"característiques bàsiques com missatges directes, notificacions de piulades "
-"i visualització de converses. "
+msgstr "El Corebird és un client del twitter natiu GTK+ que proveeix característiques bàsiques com missatges directes, notificacions de piulades i visualització de converses. "
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
 msgstr ""
 
 #: data/org.baedert.corebird.appdata.xml.in:21
@@ -64,12 +60,14 @@ msgstr ""
 msgid "Use Twitter from within a normal desktop application"
 msgstr ""
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr ""
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -181,9 +179,8 @@ msgid "Mentions"
 msgstr "Mencions"
 
 #: src/ProfilePage.vala:218
-#, fuzzy
 msgid "Suspended Account"
-msgstr "Compte nou"
+msgstr ""
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -195,18 +192,16 @@ msgid "Tweet to @%s"
 msgstr "Piula a @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
-#, fuzzy
 msgid "Protected Profile"
-msgstr "Perfil protegit"
+msgstr ""
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Cerca"
 
 #: src/SearchPage.vala:401
-#, fuzzy
 msgid "Load More"
-msgstr "Carrega'n més"
+msgstr ""
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -280,8 +275,8 @@ msgstr "Creeu-ne un"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
 msgstr ""
 
 #: src/widgets/AccountCreateWidget.vala:69
@@ -562,9 +557,8 @@ msgid "Flags"
 msgstr ""
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "No s'ha trobat cap resultat"
+msgstr ""
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
@@ -891,10 +885,9 @@ msgid "Delete"
 msgstr ""
 
 #: ui/shortcuts-window.ui:122
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr "Redacteu una piulada"
+msgstr ""
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
@@ -963,6 +956,3 @@ msgstr "Creat"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subscrit a"
-
-#~ msgid "New tweet"
-#~ msgstr "Piulada nova"

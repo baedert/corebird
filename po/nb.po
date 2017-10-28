@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-03 13:49+0000\n"
+"PO-Revision-Date: 2017-10-22 10:08+0000\n"
 "Last-Translator: baedert <mail@baedert.org>\n"
-"Language-Team: Norwegian Bokmål (http://www.transifex.com/corebird/corebird/"
-"language/nb/)\n"
-"Language: nb\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/corebird/corebird/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "Twitter-klient"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird er en GTK+-basert Twitter-klient som tilbyr viktige funksjoner som "
-"direktemeldinger, tweet-varslinger og samtalevisning."
+msgstr "Corebird er en GTK+-basert Twitter-klient som tilbyr viktige funksjoner som direktemeldinger, tweet-varslinger og samtalevisning."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Du kan også se videoer, flerbilde-tweets, lister, filtre og bruke ulike "
-"kontoer samtidig i programmet."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Du kan også se videoer, flerbilde-tweets, lister, filtre og bruke ulike kontoer samtidig i programmet."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -59,18 +54,20 @@ msgstr "Kontoinnstillinger kan endres"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Bruk Twitter som et vanlig skrivebordsprogram"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
 msgstr "twitter;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -78,21 +75,21 @@ msgstr "corebird"
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:177 src/TweetInfoPage.vala:525
 msgid "Replying to"
-msgstr ""
+msgstr "Svarer"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:188 src/TweetInfoPage.vala:537
 msgid "and"
-msgstr ""
+msgstr "og"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
 #: src/CbUtils.c:197
 #, c-format
 msgid "and %d others"
-msgstr ""
+msgstr "og %d andre"
 
 #: src/DMPage.vala:344
 msgid "Direct Conversation"
@@ -182,9 +179,8 @@ msgid "Mentions"
 msgstr "Nevnelser"
 
 #: src/ProfilePage.vala:218
-#, fuzzy
 msgid "Suspended Account"
-msgstr "Ny konto"
+msgstr ""
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -196,18 +192,16 @@ msgid "Tweet to @%s"
 msgstr "Tweet til @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
-#, fuzzy
 msgid "Protected Profile"
-msgstr "Beskyttet profil"
+msgstr ""
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Søk"
 
 #: src/SearchPage.vala:401
-#, fuzzy
 msgid "Load More"
-msgstr "Last inn mer"
+msgstr ""
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -273,7 +267,7 @@ msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "Har du ikke en Twitter-konto enda?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -281,9 +275,9 @@ msgstr "Lag konto"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Ikke autentisert. Dette betyr som regel at det er noe galt med Twitter-tjenerne. Prøv igjen senere"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -336,15 +330,15 @@ msgstr "Kopier nettadresse"
 
 #: src/widgets/MediaButton.vala:105
 msgid "Save as…"
-msgstr ""
+msgstr "Lagre som …"
 
 #: src/widgets/MediaButton.vala:268
 msgid "Save Video"
-msgstr ""
+msgstr "Lagre video"
 
 #: src/widgets/MediaButton.vala:270
 msgid "Save Image"
-msgstr ""
+msgstr "Lagre bilde"
 
 #: src/widgets/MediaButton.vala:275 src/window/AccountDialog.vala:429
 #: src/window/AccountDialog.vala:450 src/window/UserListDialog.vala:48
@@ -355,7 +349,7 @@ msgstr "Lagre"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "Laster inn …"
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -367,29 +361,29 @@ msgstr "Prøv på nyt"
 
 #: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
-msgstr ""
+msgstr "Velg fanebilde"
 
 #: src/window/AccountDialog.vala:380
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "Bildet tilfredsstiller ikke størrelseskrav:"
 
 #: src/window/AccountDialog.vala:381
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Minimumsbredde: %d piksel"
+msgstr[1] "Minimumsbredde: %d piksler"
 
 #: src/window/AccountDialog.vala:383
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Minimumshøyde: %d piksel"
+msgstr[1] "Minimumshøyde: %d piksler"
 
 #: src/window/AccountDialog.vala:404 src/window/AccountDialog.vala:417
 msgid "Pick"
-msgstr ""
+msgstr "Velg"
 
 #: src/window/ComposeTweetWindow.vala:138
 msgid "Quote tweet"
@@ -415,7 +409,7 @@ msgstr "Valgt bilde er for stort. Maksimal filstørrelse per bilde er %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "Du kan bare legge til én GIF-fil per tweet."
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
@@ -431,7 +425,7 @@ msgstr "Treff"
 
 #: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn’t match"
-msgstr ""
+msgstr "Samsvarer ikke"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
@@ -439,11 +433,11 @@ msgstr "Endre kodesnut"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
-msgstr ""
+msgstr "Kodesnutt kan ikke være tom"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can’t be empty"
-msgstr ""
+msgstr "Erstatning kan ikke være tom"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
@@ -479,7 +473,7 @@ msgstr "Ny konto"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "For å autentisere Corebird må du logge inn på twitter.com med kontoen du vil bruke og hente en PIN-kode"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -487,11 +481,11 @@ msgstr "Be om PIN"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Skriv inn PIN fra twitter.com nedenfor:"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -563,9 +557,8 @@ msgid "Flags"
 msgstr ""
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "Fant ingen elementer"
+msgstr ""
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
@@ -581,7 +574,7 @@ msgstr "Legg til bild"
 
 #: ui/compose-window.ui:185
 msgid "Show favorite images"
-msgstr ""
+msgstr "Vis favorittbilder"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -892,10 +885,9 @@ msgid "Delete"
 msgstr "Slett"
 
 #: ui/shortcuts-window.ui:122
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr "Skriv tweet"
+msgstr ""
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
@@ -964,9 +956,3 @@ msgstr "Laget"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Abonnert på"
-
-#~ msgid "Compose tweet"
-#~ msgstr "Skriv tweet"
-
-#~ msgid "New tweet"
-#~ msgstr "Ny tweet"

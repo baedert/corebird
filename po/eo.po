@@ -9,14 +9,13 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-08-16 20:47+0000\n"
+"PO-Revision-Date: 2017-10-24 10:31+0000\n"
 "Last-Translator: Iris Ilexiris <iris.ilexiris@gmail.com>\n"
-"Language-Team: Esperanto (http://www.transifex.com/corebird/corebird/"
-"language/eo/)\n"
-"Language: eo\n"
+"Language-Team: Esperanto (http://www.transifex.com/corebird/corebird/language/eo/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: eo\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/org.baedert.corebird.appdata.xml.in:5
@@ -33,17 +32,13 @@ msgstr "Tviterokliento"
 msgid ""
 "Corebird is a native GTK+ twitter client that provides vital features such "
 "as Direct Messages (DMs), tweet notifications, conversation views."
-msgstr ""
-"Corebird estas denaskan GTK+ klienton por Tvitero. Ĝi enhavas gravajn "
-"eblecojn kiel tujmesaĝoj, tvitavizoj, kaj vidigo de interparoloj."
+msgstr "Corebird estas denaska GTK+ kliento por Tvitero. Ĝi enhavas gravajn eblecojn—ekzemple tujmesaĝoj, tvitavizoj, kaj vidigo de interparoloj."
 
 #: data/org.baedert.corebird.appdata.xml.in:13
 msgid ""
-"Additional features include local viewing of videos, multiple inline images, "
-"Lists, Filters, multiple accounts, etc."
-msgstr ""
-"Aliaj eblecoj estas vidigi filmeton kaj plurajn bildojn loke. Ankaŭ, listoj, "
-"filtriloj, pluraj kontoj, ktp."
+"Additional features include local viewing of videos, multiple inline images,"
+" Lists, Filters, multiple accounts, etc."
+msgstr "Aliaj eblecoj estas vidigi filmeton kaj plurajn bildojn loke. Ankaŭ, listoj, filtriloj, pluraj kontoj, ktp."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
@@ -65,12 +60,14 @@ msgstr "Timm Bäder"
 msgid "Use Twitter from within a normal desktop application"
 msgstr "Uzi Tviteron simila al normala komputerprogramo"
 
-#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or
+#. localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.baedert.corebird.desktop.in:7
 msgid "twitter;"
-msgstr "tvitero;"
+msgstr "twitter;tvitero;"
 
-#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon file name)!
+#. TRANSLATORS: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
 #: data/org.baedert.corebird.desktop.in:11
 msgid "corebird"
 msgstr "corebird"
@@ -182,13 +179,12 @@ msgid "Mentions"
 msgstr "Mencioj"
 
 #: src/ProfilePage.vala:218
-#, fuzzy
 msgid "Suspended Account"
-msgstr "Nova konto"
+msgstr "Ĉi tiu konto ĉesita"
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
-msgstr "Malpublikis karakterizo"
+msgstr "Karakterizon malpublikita"
 
 #: src/ProfilePage.vala:369
 #, c-format
@@ -196,18 +192,16 @@ msgid "Tweet to @%s"
 msgstr "Tviti al @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
-#, fuzzy
 msgid "Protected Profile"
-msgstr "Malpublikis karakterizo"
+msgstr "Karakterizon malpublikita"
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
 msgstr "Serĉi"
 
 #: src/SearchPage.vala:401
-#, fuzzy
 msgid "Load More"
-msgstr "Ŝargi plimulte"
+msgstr "Ŝargi pli"
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -277,15 +271,13 @@ msgstr "Ĉu vi ne havas Tviterokonton jam?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
-msgstr "Krei onin"
+msgstr "Krei konton"
 
 #: src/widgets/AccountCreateWidget.vala:55
 msgid ""
-"Unauthorized. Most of the time, this means that there’s something wrong with "
-"the Twitter servers and you should try again later"
-msgstr ""
-"Vi ne estas rajtigitan. Plejparto, ĉi tiu signifas eraro kun la Tvitero-"
-"serviloj. Provi denove malfruan."
+"Unauthorized. Most of the time, this means that there’s something wrong with"
+" the Twitter servers and you should try again later"
+msgstr "Vi ne estas rajtigitan. Plejparto, ĉi tiu signifas eraro kun la Tvitero-serviloj. Provi denove malfruan."
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -361,7 +353,7 @@ msgstr "Ŝargas…"
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
-msgstr "Neniu elementoj trovitaj"
+msgstr "Nenio elementoj trovitaj"
 
 #: src/widgets/TweetListBox.vala:137 ui/account-create-widget.ui:119
 msgid "Retry"
@@ -399,7 +391,7 @@ msgstr "Citi tviton"
 
 #: src/window/ComposeTweetWindow.vala:331
 msgid "Selected file is not an image."
-msgstr ""
+msgstr "La elektita dosiero ne estas bildo."
 
 #: src/window/ComposeTweetWindow.vala:332
 #: src/window/ComposeTweetWindow.vala:338
@@ -413,9 +405,7 @@ msgstr "Reiri"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
-"La selektis bildon estas tro granda. La maksimuma dosierlargo po imagoj "
-"estas %'d MB."
+msgstr "La selektis bildon estas tro granda. La maksimuma dosierlargo po imagoj estas %'d MB."
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
@@ -423,7 +413,7 @@ msgstr "Nur unu GIF po tvito permesitas."
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
-msgstr ""
+msgstr "Enmeti miensimbolo"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -461,9 +451,7 @@ msgstr "Kodaĵo ekzistas jam"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr ""
-"Saluton! Vidu ĉi tiu novan version el #Corebird! \\ (•◡•) / #mojoso "
-"#novaestasĉiamplibona"
+msgstr "Saluton! Vidu ĉi tiun novan version de #Corebird! \\ (•◡•) / #mojose #novaestasĉiamplibona"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
@@ -471,7 +459,7 @@ msgstr "Aldoni/forigi ozanton el la listo"
 
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
-msgstr "Vi havas neniu listojn."
+msgstr "Vi havas nenio listojn."
 
 #: ui/about-dialog.ui:5
 msgid "About Corebird"
@@ -485,13 +473,11 @@ msgstr "Nova konto"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
-"Por verigi Corebird-on, vi bezonas PIN el twitter.com por la konto vi "
-"deziros aldoni."
+msgstr "Por verigi Corebird-on, vi bezonas PIN el twitter.com por la konto vi deziros aldoni."
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
-msgstr "Peti PIN"
+msgstr "Peti PIN-on"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
@@ -528,56 +514,55 @@ msgstr "Ĉu vi vere volas forigi ĉi tiu konto?"
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr ""
+msgstr "Miensimbolo kaj homoj"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
 msgid "Body & Clothing"
-msgstr ""
+msgstr "Korpo kaj vestoj"
 
 #: ui/cb-emoji-chooser.ui:67
 msgctxt "emoji category"
 msgid "Animals & Nature"
-msgstr ""
+msgstr "Bestoj kaj naturo"
 
 #: ui/cb-emoji-chooser.ui:80
 msgctxt "emoji category"
 msgid "Food & Drink"
-msgstr ""
+msgstr "Nutraĵo"
 
 #: ui/cb-emoji-chooser.ui:93
 msgctxt "emoji category"
 msgid "Travel & Places"
-msgstr ""
+msgstr "Vojaĝo kaj lokoj"
 
 #: ui/cb-emoji-chooser.ui:106
 msgctxt "emoji category"
 msgid "Activities"
-msgstr ""
+msgstr "Agadoj"
 
 #: ui/cb-emoji-chooser.ui:119
 msgctxt "emoji category"
 msgid "Objects"
-msgstr ""
+msgstr "Objektoj"
 
 #: ui/cb-emoji-chooser.ui:132
 msgctxt "emoji category"
 msgid "Symbols"
-msgstr ""
+msgstr "Simboloj"
 
 #: ui/cb-emoji-chooser.ui:145
 msgctxt "emoji category"
 msgid "Flags"
-msgstr ""
+msgstr "Flagoj"
 
 #: ui/cb-emoji-chooser.ui:272
-#, fuzzy
 msgid "No Results Found"
-msgstr "Neniu elementoj trovitaj"
+msgstr "Nenio trovitaj resultoj"
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
-msgstr ""
+msgstr "Provu alian serĉon"
 
 #: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
@@ -617,7 +602,7 @@ msgstr "Verkanto:"
 
 #: ui/list-statuses-page.ui:84
 msgid "Created at:"
-msgstr "Kreis al:"
+msgstr "Kreis je:"
 
 #: ui/list-statuses-page.ui:119
 msgid "Edit"
@@ -693,11 +678,11 @@ msgstr "Aldoni/forigi el listo"
 
 #: ui/profile-page.ui:20
 msgid "Blocked"
-msgstr "Blokigis"
+msgstr "Blokigita"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr "Mutigis"
+msgstr "Mutigita"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -717,7 +702,7 @@ msgstr "Postiroj"
 
 #: ui/profile-page.ui:326
 msgid "Following"
-msgstr "Vi postiras"
+msgstr "Postiras"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
@@ -753,11 +738,11 @@ msgstr "Kiam okazas novan tviton"
 
 #: ui/settings-dialog.ui:193
 msgid "Actions"
-msgstr "Agodoj"
+msgstr "Agoj"
 
 #: ui/settings-dialog.ui:208
 msgid "On New Mentions"
-msgstr "Kiam okazas novan mencio"
+msgstr "Kiam okazas novan mencion"
 
 #: ui/settings-dialog.ui:222
 msgid "On New Messages"
@@ -809,11 +794,11 @@ msgstr "Malmontri malkonvenan enhavon"
 
 #: ui/settings-dialog.ui:441
 msgid "No snippets configured."
-msgstr "Neniu kodaĵoj agordis."
+msgstr "Nenio kodaĵoj agordis."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr "Puŝo taba klavo ekspansii kodaĵojn."
+msgstr "Puŝi taba klavo ekspansii kodaĵojn."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -900,14 +885,13 @@ msgid "Delete"
 msgstr "Forigi"
 
 #: ui/shortcuts-window.ui:122
-#, fuzzy
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr "Skribi tviton"
+msgstr "Skribi"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr ""
+msgstr "Montri miensimbolilo"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -972,9 +956,3 @@ msgstr "Kreis"
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"
 msgstr "Subskribis al"
-
-#~ msgid "Compose tweet"
-#~ msgstr "Skribi tviton"
-
-#~ msgid "New tweet"
-#~ msgstr "Nova tvito"
