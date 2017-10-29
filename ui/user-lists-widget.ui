@@ -18,18 +18,15 @@
     </child>
     <child>
       <object class="GtkFrame" id="user_list_frame">
-        <property name="visible">1</property>
         <property name="margin-start">25</property>
         <property name="margin-end">25</property>
         <property name="shadow-type">in</property>
         <property name="margin-top">24</property>
         <child>
           <object class="GtkBox">
-            <property name="visible">1</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkListBox" id="new_list_box">
-                <property name="visible">1</property>
                 <property name="selection-mode">none</property>
                 <signal name="row-activated" handler="row_activated" swapped="no"/>
                 <signal name="keynav-failed" handler="new_list_box_keynav_failed_cb"/>
@@ -45,16 +42,13 @@
                 <signal name="notify::child-revealed" handler="revealer_child_revealed_cb"/>
                 <child>
                   <object class="GtkBox">
-                    <property name="visible">1</property>
                     <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkSeparator" id="upper_separator">
-                        <property name="visible">1</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkListBox" id="user_list_box">
-                        <property name="visible">1</property>
                         <property name="selection-mode">none</property>
                         <signal name="row-activated" handler="row_activated" swapped="no"/>
                         <signal name="keynav-failed" handler="user_list_box_keynav_failed_cb"/>
@@ -91,7 +85,6 @@
         <property name="shadow-type">in</property>
         <child>
           <object class="GtkListBox" id="subscribed_list_box">
-            <property name="visible">1</property>
             <property name="selection-mode">none</property>
             <signal name="row-activated" handler="row_activated" swapped="no"/>
             <signal name="keynav-failed" handler="subscribed_list_box_keynav_failed_cb"/>

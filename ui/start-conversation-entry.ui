@@ -5,16 +5,13 @@
     <property name="can-focus">True</property>
     <child>
       <object class="GtkBox">
-        <property name="visible">1</property>
         <property name="orientation">vertical</property>
         <property name="margin-top">4</property>
         <property name="margin-bottom">4</property>
         <child>
           <object class="GtkBox">
-            <property name="visible">1</property>
             <child>
               <object class="GtkImage">
-                <property name="visible">1</property>
                 <property name="halign">end</property>
                 <property name="hexpand">1</property>
                 <property name="pixel-size">32</property>
@@ -23,7 +20,6 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="hexpand">1</property>
                 <property name="label" translatable="yes">Start new conversation</property>
@@ -36,14 +32,11 @@
         </child>
         <child>
           <object class="GtkRevealer" id="revealer">
-            <property name="visible">1</property>
             <child>
               <object class="GtkBox" id="box4">
-                <property name="visible">1</property>
                 <property name="margin-bottom">6</property>
                 <child>
                   <object class="GtkLabel" id="label">
-                    <property name="visible">1</property>
                     <property name="halign">end</property>
                     <property name="margin-start">6</property>
                     <property name="label" translatable="yes">With:</property>
@@ -65,7 +58,6 @@
                 </child>
                 <child>
                   <object class="GtkStack" id="go_stack">
-                    <property name="visible">1</property>
                     <property name="halign">end</property>
                     <property name="margin-end">6</property>
                     <property name="visible-child">go_button</property>
@@ -73,7 +65,6 @@
                     <child>
                       <object class="GtkButton" id="go_button">
                         <property name="label" translatable="yes">Go</property>
-                        <property name="visible">1</property>
                         <property name="can-focus">1</property>
                         <property name="receives-default">1</property>
                         <property name="halign">start</property>
@@ -88,7 +79,6 @@
                     </child>
                     <child>
                       <object class="GtkSpinner" id="go_spinner">
-                        <property name="visible">1</property>
                         <property name="valign">center</property>
                         <property name="halign">center</property>
                         <property name="width-request">16</property>

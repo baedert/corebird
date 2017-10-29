@@ -14,14 +14,11 @@
     <signal name="focus_out_event" handler="focus_out_cb" swapped="false"/>
     <child>
       <object class="GtkStack" id="stack">
-        <property name="visible">1</property>
         <property name="transition-type">slide-up-down</property>
         <child>
           <object class="GtkGrid" id="grid1">
-            <property name="visible">1</property>
             <child>
               <object class="GtkLabel" id="name_label">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="valign">end</property>
                 <property name="margin-start">6</property>
@@ -40,7 +37,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="description_label">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="valign">start</property>
                 <property name="xalign">0</property>
@@ -59,7 +55,6 @@
             </child>
             <child>
               <object class="GtkButton" id="more_button">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
@@ -70,7 +65,6 @@
                 </style>
                 <child>
                   <object class="GtkImage" id="image1">
-                    <property name="visible">1</property>
                     <property name="icon-name">view-more-symbolic</property>
                   </object>
                 </child>
@@ -88,12 +82,10 @@
         </child>
         <child>
           <object class="GtkBox" id="box2">
-            <property name="visible">1</property>
             <property name="spacing">5</property>
             <property name="homogeneous">1</property>
             <child>
               <object class="GtkButton" id="cancel_button">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="valign">center</property>
@@ -103,7 +95,6 @@
             </child>
             <child>
               <object class="GtkButton" id="subscribe_button">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Subscribe</property>
@@ -116,7 +107,6 @@
             </child>
             <child>
               <object class="GtkButton" id="unsubscribe_button">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Unsubscribe</property>
@@ -126,7 +116,6 @@
             </child>
             <child>
               <object class="GtkButton" id="delete_button">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="valign">center</property>
                 <property name="label" translatable="yes">Delete</property>

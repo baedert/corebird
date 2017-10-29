@@ -9,7 +9,6 @@
         <property name="can-focus">True</property>
         <child>
           <object class="GtkListBox" id="messages_list">
-            <property name="visible">1</property>
             <property name="vexpand">1</property>
             <property name="selection-mode">none</property>
           </object>
@@ -21,14 +20,11 @@
     </child>
     <child>
       <object class="GtkBox">
-        <property name="visible">1</property>
         <child>
           <object class="GtkFrame">
-            <property name="visible">1</property>
             <property name="margin">6</property>
             <child>
               <object class="GtkScrolledWindow">
-                <property name="visible">1</property>
                 <property name="hscrollbar-policy">never</property>
                 <child>
                   <object class="CompletionTextView" id="text_view">
@@ -42,13 +38,10 @@
               </object>
             </child>
           </object>
-          <packing>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="send_button">
             <property name="label" translatable="yes">Send</property>
-            <property name="visible">1</property>
             <property name="can-focus">1</property>
             <property name="receives-default">1</property>
             <property name="margin-end">6</property>
