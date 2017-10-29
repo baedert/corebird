@@ -7,35 +7,26 @@
     <signal name="key-press-event" handler="key_press_event_cb"/>
     <child>
       <object class="GtkOverlay" id="overlay">
-        <property name="visible">1</property>
-
         <child>
           <object class="GtkFrame" id="frame">
-            <property name="visible">1</property>
             <property name="shadow-type">none</property>
           </object>
         </child>
-
-
         <child type="overlay">
           <object class="GtkRevealer" id="previous_revealer">
-            <property name="visible">1</property>
             <property name="reveal-child">1</property>
             <property name="halign">start</property>
             <property name="valign">center</property>
             <property name="margin-start">24</property>
             <property name="transition-type">crossfade</property>
-
             <child>
               <object class="GtkButton" id="previous_button">
-                <property name="visible">1</property>
-                <signal name="clicked" handler="previous_button_clicked_cb" />
+                <signal name="clicked" handler="previous_button_clicked_cb"/>
                 <style>
-                  <class name="osd" />
+                  <class name="osd"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">1</property>
                     <property name="icon-name">pan-start-symbolic</property>
                   </object>
                 </child>
@@ -43,26 +34,21 @@
             </child>
           </object>
         </child>
-
         <child type="overlay">
           <object class="GtkRevealer" id="next_revealer">
-            <property name="visible">1</property>
             <property name="reveal-child">1</property>
             <property name="transition-type">crossfade</property>
             <property name="margin-end">24</property>
             <property name="halign">end</property>
             <property name="valign">center</property>
-
             <child>
               <object class="GtkButton" id="next_button">
-                <property name="visible">1</property>
-                <signal name="clicked" handler="next_button_clicked_cb" />
+                <signal name="clicked" handler="next_button_clicked_cb"/>
                 <style>
-                  <class name="osd" />
+                  <class name="osd"/>
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">1</property>
                     <property name="icon-name">pan-end-symbolic</property>
                   </object>
                 </child>
@@ -70,7 +56,6 @@
             </child>
           </object>
         </child>
-
       </object>
     </child>
   </template>

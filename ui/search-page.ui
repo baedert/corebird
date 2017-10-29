@@ -5,10 +5,8 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox">
-        <property name="visible">1</property>
         <child>
           <object class="GtkSearchEntry" id="search_entry">
-            <property name="visible">1</property>
             <property name="can-focus">1</property>
             <property name="margin-start">6</property>
             <property name="margin-top">6</property>
@@ -22,7 +20,6 @@
         <child>
           <object class="GtkButton" id="search_button">
             <property name="label" translatable="yes">Search</property>
-            <property name="visible">1</property>
             <property name="can-focus">1</property>
             <property name="receives-default">1</property>
             <property name="margin-start">6</property>
@@ -62,7 +59,6 @@
     </child>
   </template>
   <object class="GtkLabel" id="tweets_header">
-    <property name="visible">1</property>
     <property name="margin-start">6</property>
     <property name="margin-top">6</property>
     <property name="hexpand">1</property>
@@ -74,7 +70,6 @@
     </attributes>
   </object>
   <object class="GtkLabel" id="users_header">
-    <property name="visible">1</property>
     <property name="margin-start">6</property>
     <property name="margin-top">6</property>
     <property name="hexpand">1</property>

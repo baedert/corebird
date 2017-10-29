@@ -10,14 +10,12 @@
     <child type="action">
       <object class="GtkButton" id="cancel_button">
         <property name="label" translatable="yes">Cancel</property>
-        <property name="visible">1</property>
         <property name="can-focus">1</property>
       </object>
     </child>
     <child type="action">
       <object class="GtkButton" id="save_button">
         <property name="label" translatable="yes">Save</property>
-        <property name="visible">1</property>
         <property name="can-focus">1</property>
         <property name="receives-default">1</property>
         <property name="sensitive">0</property>
@@ -31,12 +29,10 @@
         <property name="margin">12</property>
         <child>
           <object class="GtkGrid" id="regex_grid">
-            <property name="visible">1</property>
             <property name="row-spacing">4</property>
             <property name="column-spacing">6</property>
             <child>
               <object class="GtkLabel" id="label1">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="Yes">Regular Expression:</property>
               </object>
@@ -47,7 +43,6 @@
             </child>
             <child>
               <object class="GtkEntry" id="regex_entry">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="hexpand">1</property>
                 <property name="activates-default">1</property>
@@ -60,7 +55,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="label3">
-                <property name="visible">1</property>
                 <property name="margin-top">6</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="Yes">Test:</property>
@@ -72,13 +66,11 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="scroller">
-                <property name="visible">1</property>
                 <property name="shadow-type">in</property>
                 <property name="vexpand">1</property>
                 <property name="min-content-height">40</property>
                 <child>
                   <object class="GtkTextView" id="regex_test_text">
-                    <property name="visible">1</property>
                     <property name="can-focus">1</property>
                     <property name="accepts-tab">0</property>
                     <property name="left-margin">6</property>
@@ -95,7 +87,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="regex_status_label">
-                <property name="visible">1</property>
                 <property name="wrap">1</property>
               </object>
               <packing>

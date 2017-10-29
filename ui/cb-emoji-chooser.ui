@@ -5,7 +5,6 @@
     <style>
       <class name="emoji-picker"/>
     </style>
-
     <child>
       <object class="GtkSearchEntry" id="search_entry">
         <property name="input-hints">no-emoji</property>
