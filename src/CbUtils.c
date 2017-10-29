@@ -717,7 +717,7 @@ cb_utils_surface_to_texture (cairo_surface_t *surface,
   return tex;
 }
 
-char * 
+char *
 cb_utils_get_time_delta (GDateTime *time,
                          GDateTime *now)
 {
