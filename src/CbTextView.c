@@ -18,6 +18,9 @@
 #include "CbTextView.h"
 #include "libtl/libtweetlength.h"
 #include "corebird.h"
+#ifdef SPELLCHECK
+#include <gspell/gspell.h>
+#endif
 
 #define TAG_NO_SPELL_CHECK "gtksourceview:context-classes:no-spell-check"
 static const char * TEXT_TAGS[] = {"hashtag", "mention", "link", "snippet" };
@@ -242,6 +245,20 @@ cb_text_view_init (CbTextView *self)
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "view");
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "fancy");
+
+#ifdef SPELLCHECK
+  {
+    GspellView *gspell_view = gspell_get_from_gtk_text_view (GTK_TEXT_VIEW (self->text_view));
+    GspellTextBuffer *gspell_buffer;
+    GspellChecker *checker;
+    gspell_text_view_set_inline_spell_checking (gspell_view, TRUE);
+    gspell_text_view_set_enable_language_menu (gspell_view, TRUE);
+
+    gspell_buffer = gspell_text_buffer_get_from_gtk_text_buffer (buffer);
+    checker = gspell_checker_new (gspell_language_get_default ());
+    gspell_buffer_set_spell_checker (checker);
+  }
+#endif
 }
 
 GtkWidget *

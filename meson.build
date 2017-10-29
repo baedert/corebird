@@ -56,7 +56,7 @@ endif
 if (enable_spellcheck)
   #add_project_arguments('-DSPELLCHECK', language: 'c')
   #add_project_arguments('-D', 'SPELLCHECK', language: 'vala')
-  #cb_deps += [dependency('gspell-1', version: '>=1.0')]
+  #cb_deps += [dependency('gspell-1', version: '>=1.2')]
 endif
 
 
