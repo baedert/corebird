@@ -7,7 +7,6 @@
     <property name="page-increment">1</property>
   </object>
   <object class="GtkStackSwitcher" id="custom_title">
-    <property name="visible">1</property>
     <property name="stack">main_stack</property>
   </object>
   <template class="SettingsDialog" parent="GtkWindow">
@@ -17,7 +16,6 @@
     <signal name="delete_event" handler="window_destroy_cb" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-        <property name="visible">1</property>
         <property name="title" translatable="yes">Settings</property>
         <property name="custom-title">custom_title</property>
         <property name="show-close-button">1</property>
@@ -25,18 +23,15 @@
     </child>
     <child>
       <object class="GtkStack" id="main_stack">
-        <property name="visible">1</property>
         <!-- Interface page -->
         <child>
           <object class="GtkGrid" id="interface_grid">
-            <property name="visible">1</property>
             <property name="margin">10</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <property name="column-homogeneous">1</property>
             <child>
               <object class="GtkLabel" id="timeline_category_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="Yes">Timelines</property>
                 <property name="halign">start</property>
                 <attributes>
@@ -51,26 +46,21 @@
             </child>
             <child>
               <object class="GtkLabel" id="media_visibility_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="halign">end</property>
-                <property name="hexpand">True</property>
+                <property name="hexpand">1</property>
                 <property name="label" translatable="yes">Show inline media</property>
                 <accessibility>
-                  <relation type="label-for" target="media_visibility_combobox" />
+                  <relation type="label-for" target="media_visibility_combobox"/>
                 </accessibility>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">3</property>
+                <property name="left-attach">0</property>
+                <property name="top-attach">3</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
-
             <child>
               <object class="GtkComboBoxText" id="media_visibility_combobox">
-                <property name="visible">true</property>
                 <property name="halign">start</property>
                 <!-- The IDs here should match the gsettings enum values -->
                 <items>
@@ -79,22 +69,17 @@
                   <item id="Hide in Timeline" translatable="yes">Hide in timeline</item>
                 </items>
                 <accessibility>
-                  <relation type="labelled-by" target="media_visibility_label" />
+                  <relation type="labelled-by" target="media_visibility_label"/>
                 </accessibility>
               </object>
               <packing>
-                <property name="left_attach">2</property>
-                <property name="top_attach">3</property>
+                <property name="left-attach">2</property>
+                <property name="top-attach">3</property>
                 <property name="width">2</property>
-                <property name="height">1</property>
               </packing>
             </child>
-
-
-
             <child>
               <object class="GtkLabel" id="auto_scroll_label">
-                <property name="visible">1</property>
                 <property name="halign">end</property>
                 <property name="hexpand">1</property>
                 <property name="label" translatable="yes">Auto scroll on new tweets</property>
@@ -110,7 +95,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="auto_scroll_on_new_tweets_switch">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="halign">start</property>
                 <property name="hexpand">1</property>
@@ -126,7 +110,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="double_click_activation_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Double-click activation</property>
                 <property name="halign">end</property>
                 <property name="hexpand">1</property>
@@ -142,7 +125,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="double_click_activation_switch">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="halign">start</property>
                 <accessibility>
@@ -161,17 +143,14 @@
             <property name="name">interface</property>
           </packing>
         </child>
->>>>>>> master
         <!-- Notification page -->
         <child>
           <object class="GtkGrid" id="notification_grid">
-            <property name="visible">1</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <property name="column-homogeneous">1</property>
             <child>
               <object class="GtkLabel" id="label6">
-                <property name="visible">1</property>
                 <property name="halign">end</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">On New Tweets</property>
@@ -186,7 +165,6 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="label" translatable="yes">Actions</property>
                 <attributes>
@@ -201,7 +179,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="label14">
-                <property name="visible">1</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">On New Mentions</property>
                 <accessibility>
@@ -215,7 +192,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="label15">
-                <property name="visible">1</property>
                 <property name="xalign">1</property>
                 <property name="label" translatable="yes">On New Messages</property>
                 <accessibility>
@@ -229,7 +205,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="on_new_mentions_switch">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="halign">start</property>
                 <accessibility>
@@ -243,7 +218,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="on_new_dms_switch">
-                <property name="visible">1</property>
                 <property name="can-focus">1</property>
                 <property name="halign">start</property>
                 <accessibility>
@@ -257,7 +231,6 @@
             </child>
             <child>
               <object class="GtkComboBoxText" id="on_new_tweets_combobox">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="active">0</property>
                 <items>
@@ -286,14 +259,12 @@
         <!-- Tweets page -->
         <child>
           <object class="GtkGrid">
-            <property name="visible">1</property>
             <property name="column-homogeneous">1</property>
             <property name="column-spacing">12</property>
             <property name="row-spacing">6</property>
             <property name="margin-bottom">18</property>
             <child>
               <object class="GtkListBox" id="sample_tweet_list">
-                <property name="visible">1</property>
                 <property name="selection-mode">none</property>
                 <property name="margin-bottom">12</property>
               </object>
@@ -305,7 +276,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="round_avatar_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Round avatars</property>
                 <property name="halign">end</property>
                 <accessibility>
@@ -319,7 +289,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="round_avatar_switch">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <accessibility>
                   <relation type="labelled-by" target="round_avatar_label"/>
@@ -332,7 +301,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="remove_trailing_hashtags_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Remove trailing hashtags</property>
                 <property name="halign">end</property>
                 <accessibility>
@@ -346,7 +314,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="remove_trailing_hashtags_switch">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <signal name="notify::active" handler="remove_trailing_hashtags_cb"/>
                 <accessibility>
@@ -360,7 +327,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="remove_media_links_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Remove media links</property>
                 <property name="halign">end</property>
                 <accessibility>
@@ -374,7 +340,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="remove_media_links_switch">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <signal name="notify::active" handler="remove_media_links_cb"/>
                 <accessibility>
@@ -388,7 +353,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="hide_nsfw_content_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Hide inappropriate content</property>
                 <property name="halign">end</property>
                 <accessibility>
@@ -402,7 +366,6 @@
             </child>
             <child>
               <object class="GtkSwitch" id="hide_nsfw_content_switch">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <accessibility>
                   <relation type="labelled-by" target="hide_nsfw_content_label"/>
@@ -421,21 +384,17 @@
         </child>
         <child>
           <object class="GtkBox">
-            <property name="visible">1</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkScrolledWindow">
-                <property name="visible">1</property>
                 <property name="vexpand">1</property>
                 <property name="hexpand">1</property>
                 <child>
                   <object class="GtkListBox" id="snippet_list_box">
-                    <property name="visible">1</property>
                     <property name="selection-mode">none</property>
                     <signal name="row-activated" handler="snippet_entry_activated_cb"/>
                     <child type="placeholder">
                       <object class="GtkLabel">
-                        <property name="visible">1</property>
                         <property name="label" translatable="yes">No snippets configured.</property>
                         <style>
                           <class name="dim-label"/>
@@ -448,15 +407,12 @@
             </child>
             <child>
               <object class="GtkSeparator">
-                <property name="visible">1</property>
               </object>
             </child>
             <child>
               <object class="GtkBox">
-                <property name="visible">1</property>
                 <child>
                   <object class="GtkButton">
-                    <property name="visible">1</property>
                     <property name="relief">none</property>
                     <property name="valign">center</property>
                     <property name="margin">6</property>
@@ -466,7 +422,6 @@
                     </style>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">list-add-symbolic</property>
                       </object>
                     </child>
@@ -474,7 +429,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="visible">1</property>
                     <property name="label" translatable="yes">You can activate snippets by writing the keyword and pressing TAB.</property>
                     <property name="halign">center</property>
                     <property name="hexpand">1</property>

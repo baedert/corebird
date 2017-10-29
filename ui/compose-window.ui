@@ -14,14 +14,11 @@
     <property name="type-hint">dialog</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-        <property name="visible">1</property>
         <child type="title">
           <object class="GtkStack" id="title_stack">
-            <property name="visible">1</property>
             <property name="transition-type">crossfade</property>
             <child>
               <object class="GtkLabel" id="title_label">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Compose Tweet</property>
                 <style>
                   <class name="title"/>
@@ -30,21 +27,18 @@
             </child>
             <child>
               <object class="GtkSpinner" id="title_spinner">
-                <property name="visible">1</property>
               </object>
             </child>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="cancel_button">
-            <property name="visible">1</property>
             <property name="label" translatable="yes">Cancel</property>
             <signal name="clicked" handler="cancel_clicked" swapped="no"/>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="send_button">
-            <property name="visible">1</property>
             <property name="label" translatable="yes">Send</property>
             <property name="sensitive">0</property>
             <signal name="clicked" handler="start_send_tweet" swapped="no"/>
@@ -60,11 +54,9 @@
     </child>
     <child>
       <object class="GtkStack" id="stack">
-        <property name="visible">1</property>
         <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkGrid" id="content_grid">
-            <property name="visible">1</property>
             <property name="column-spacing">6</property>
             <property name="row-spacing">6</property>
             <child>
@@ -98,26 +90,18 @@
                 <property name="top-attach">1</property>
               </packing>
             </child>
-
-
             <child>
               <object class="GtkRevealer" id="completion_revealer">
-                <property name="visible">1</property>
-                <property name="reveal-child">0</property>
                 <property name="transition-duration">200</property>
-
                 <child>
                   <object class="GtkScrolledWindow">
-                    <property name="visible">1</property>
                     <property name="min-content-height">80</property>
                     <child>
                       <object class="GtkListBox" id="completion_list">
-                        <property name="visible">1</property>
                       </object>
                     </child>
                   </object>
                 </child>
-
               </object>
               <packing>
                 <property name="left-attach">0</property>
@@ -125,7 +109,6 @@
                 <property name="width">2</property>
               </packing>
             </child>
-
             <child>
               <object class="ComposeImageManager" id="compose_image_manager">
                 <property name="visible">false</property>
@@ -139,17 +122,16 @@
                 <property name="width">2</property>
               </packing>
             </child>
-          </object> <!-- Grid end -->
+          </object>
+          <!-- Grid end -->
         </child>
         <child>
           <object class="GtkGrid" id="image_error_grid">
-            <property name="visible">true</property>
             <property name="margin">12</property>
             <property name="column-spacing">6</property>
             <property name="row-spacing">6</property>
             <child>
               <object class="GtkLabel" id="image_error_label">
-                <property name="visible">true</property>
                 <property name="wrap">1</property>
                 <property name="hexpand">1</property>
                 <property name="vexpand">1</property>
@@ -162,13 +144,11 @@
             </child>
           </object>
         </child>
-
         <child>
           <object class="FavImageView" id="fav_image_view">
             <property name="visible">1</property>
-            <signal name="image-selected" handler="favorite_image_selected_cb" />
+            <signal name="image-selected" handler="favorite_image_selected_cb"/>
           </object>
-
           <packing>
             <property name="name">fav-images</property>
           </packing>

@@ -17,10 +17,8 @@
     <property name="hscrollbar-policy">never</property>
     <child>
       <object class="GtkStack" id="main_stack">
-        <property name="visible">1</property>
         <child>
           <object class="GtkBox" id="main_box">
-            <property name="visible">1</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="MaxSizeContainer" id="max_size_container">
@@ -44,14 +42,12 @@
             </child>
             <child>
               <object class="GtkGrid" id="grid">
-                <property name="visible">1</property>
                 <style>
-                  <class name="view" />
-                  <class name="tweet-info-grid" />
+                  <class name="view"/>
+                  <class name="tweet-info-grid"/>
                 </style>
                 <child>
                   <object class="GtkBox">
-                    <property name="visible">1</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="AvatarWidget" id="avatar_image">
@@ -65,14 +61,11 @@
                     </child>
                     <child>
                       <object class="GtkBox">
-                        <property name="visible">1</property>
                         <property name="orientation">vertical</property>
                         <property name="valign">center</property>
                         <property name="spacing">3</property>
                         <child>
                           <object class="GtkBox">
-                            <property name="visible">1</property>
-                            <property name="orientation">horizontal</property>
                             <child>
                               <object class="TextButton" id="name_button">
                                 <property name="visible">True</property>
@@ -83,7 +76,6 @@
                             </child>
                             <child>
                               <object class="GtkLabel" id="screen_name_label">
-                                <property name="visible">1</property>
                                 <property name="margin-bottom">2</property>
                                 <property name="xalign">0</property>
                                 <property name="halign">start</property>
@@ -97,14 +89,10 @@
                             </child>
                           </object>
                         </child>
-
                         <child>
                           <object class="GtkBox">
-                            <property name="visible">1</property>
-                            <property name="orientation">horizontal</property>
                             <child>
                               <object class="GtkLabel" id="time_label">
-                                <property name="visible">1</property>
                                 <property name="xalign">0</property>
                                 <property name="valign">baseline</property>
                                 <property name="use-markup">1</property>
@@ -141,15 +129,13 @@
                 </child>
                 <child>
                   <object class="GtkBox" id="reply_box">
-                    <property name="visible">1</property>
                     <property name="margin-end">6</property>
                     <property name="margin-top">12</property>
                     <style>
-                      <class name="dim-label" />
+                      <class name="dim-label"/>
                     </style>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">corebird-conversation-symbolic</property>
                         <property name="icon-size">1</property>
                         <property name="valign">start</property>
@@ -157,29 +143,27 @@
                     </child>
                     <child>
                       <object class="GtkLabel" id="reply_label">
-                        <property name="visible">1</property>
                         <property name="halign">start</property>
                         <property name="valign">center</property>
                         <property name="xalign">0</property>
                         <property name="wrap">1</property>
                         <property name="margin-start">6</property>
                         <property name="use-markup">1</property>
-                        <signal name="activate-link" handler="link_activated_cb" />
+                        <signal name="activate-link" handler="link_activated_cb"/>
                         <style>
-                          <class name="invisible-links" />
+                          <class name="invisible-links"/>
                         </style>
                       </object>
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
                     <property name="width">8</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="text_label">
-                    <property name="visible">1</property>
                     <property name="margin-bottom">12</property>
                     <property name="margin-top">12</property>
                     <property name="hexpand">1</property>
@@ -214,7 +198,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="rt_label">
-                    <property name="visible">1</property>
                     <property name="margin-end">8</property>
                     <property name="xalign">0</property>
                     <property name="use-markup">1</property>
@@ -231,7 +214,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="fav_label">
-                    <property name="visible">1</property>
                     <property name="xalign">0</property>
                     <property name="use-markup">1</property>
                     <property name="halign">start</property>
@@ -247,14 +229,12 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="retweet_button">
-                    <property name="visible">1</property>
                     <property name="valign">baseline</property>
                     <property name="tooltip-text" translatable="yes">Retweet tweet</property>
                     <property name="relief">none</property>
                     <signal name="toggled" handler="retweet_button_toggled_cb" swapped="no"/>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">corebird-retweet-symbolic</property>
                         <property name="icon-size">1</property>
                       </object>
@@ -272,14 +252,12 @@
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="favorite_button">
-                    <property name="visible">1</property>
                     <property name="valign">baseline</property>
                     <property name="tooltip-text" translatable="yes">Favorite tweet</property>
                     <property name="relief">none</property>
                     <signal name="toggled" handler="favorite_button_toggled_cb" swapped="no"/>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">corebird-favorite-symbolic</property>
                         <property name="icon-size">1</property>
                       </object>
@@ -297,14 +275,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="reply_button">
-                    <property name="visible">1</property>
                     <property name="valign">baseline</property>
                     <property name="tooltip-text" translatable="yes">Reply to tweet</property>
                     <property name="relief">none</property>
                     <signal name="clicked" handler="reply_button_clicked_cb" swapped="no"/>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">mail-replied-symbolic</property>
                         <property name="icon-size">1</property>
                       </object>
@@ -322,13 +298,11 @@
                 </child>
                 <child>
                   <object class="GtkMenuButton">
-                    <property name="visible">1</property>
                     <property name="valign">baseline</property>
                     <property name="relief">none</property>
                     <property name="menu-model">actions_menu</property>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">go-down-symbolic</property>
                         <property name="icon-size">1</property>
                       </object>
@@ -350,7 +324,6 @@
                 </child>
               </object>
             </child>
-
             <child>
               <object class="TweetListBox" id="bottom_list_box">
                 <property name="visible">1</property>
@@ -359,12 +332,10 @@
                 <property name="hexpand">1</property>
               </object>
             </child>
-
           </object>
         </child>
         <child>
           <object class="GtkLabel" id="error_label">
-            <property name="visible">1</property>
             <property name="halign">center</property>
             <property name="valign">center</property>
             <property name="wrap">1</property>

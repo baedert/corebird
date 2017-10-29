@@ -22,12 +22,10 @@
     <signal name="key-release-event" handler="key_released_cb"/>
     <child>
       <object class="GtkStack" id="stack">
-        <property name="visible">1</property>
         <property name="visible-child">grid</property>
         <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkBox" id="action_box">
-            <property name="visible">1</property>
             <property name="spacing">12</property>
             <property name="halign">center</property>
             <child>
@@ -44,7 +42,6 @@
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">1</property>
                     <property name="pixel-size">16</property>
                     <property name="icon-name">corebird-retweet-symbolic</property>
                   </object>
@@ -53,7 +50,6 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="favorite_button">
-                <property name="visible">1</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="tooltip-text" translatable="yes">Favorite</property>
@@ -65,7 +61,6 @@
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">1</property>
                     <property name="pixel-size">16</property>
                     <property name="icon-name">corebird-favorite-symbolic</property>
                   </object>
@@ -74,7 +69,6 @@
             </child>
             <child>
               <object class="GtkButton" id="reply_button">
-                <property name="visible">1</property>
                 <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="tooltip-text" translatable="yes">Reply</property>
@@ -86,7 +80,6 @@
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">1</property>
                     <property name="pixel-size">16</property>
                     <property name="icon-name">mail-replied-symbolic</property>
                   </object>
@@ -105,7 +98,6 @@
                 </style>
                 <child>
                   <object class="GtkImage">
-                    <property name="visible">1</property>
                     <property name="pixel-size">16</property>
                     <property name="icon-name">go-down-symbolic</property>
                   </object>
@@ -116,7 +108,6 @@
         </child>
         <child>
           <object class="GtkGrid" id="grid">
-            <property name="visible">1</property>
             <property name="margin-top">6</property>
             <property name="margin-bottom">6</property>
             <property name="margin-start">6</property>
@@ -155,7 +146,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="screen_name_label">
-                <property name="visible">1</property>
                 <property name="halign">start</property>
                 <property name="valign">baseline</property>
                 <property name="margin-start">6</property>
@@ -211,7 +201,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="time_delta_label">
-                <property name="visible">1</property>
                 <property name="halign">end</property>
                 <property name="valign">baseline</property>
                 <property name="margin-top">4</property>
@@ -234,19 +223,18 @@
                 <property name="track-visited-links">0</property>
                 <signal name="activate-link" handler="link_activated_cb"/>
                 <style>
-                  <class name="dim-label" />
-                  <class name="invisible-links" />
+                  <class name="dim-label"/>
+                  <class name="invisible-links"/>
                 </style>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
+                <property name="left-attach">1</property>
+                <property name="top-attach">1</property>
                 <property name="width">6</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel" id="text_label">
-                <property name="visible">1</property>
                 <property name="margin-end">6</property>
                 <property name="margin-bottom">4</property>
                 <property name="margin-top">4</property>

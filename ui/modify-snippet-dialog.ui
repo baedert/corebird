@@ -11,14 +11,12 @@
     <child type="action">
       <object class="GtkButton" id="cancel_button">
         <property name="label" translatable="yes">Cancel</property>
-        <property name="visible">1</property>
         <property name="can-focus">1</property>
       </object>
     </child>
     <child type="action">
       <object class="GtkButton" id="save_button">
         <property name="label" translatable="yes">Save</property>
-        <property name="visible">1</property>
         <property name="can-focus">1</property>
         <property name="receives-default">1</property>
         <property name="can-default">1</property>
@@ -33,15 +31,12 @@
     </child>
     <child internal-child="vbox">
       <object class="GtkBox">
-        <property name="visible">1</property>
         <child>
           <object class="GtkGrid">
-            <property name="visible">1</property>
             <property name="column-spacing">12</property>
             <property name="row-spacing">6</property>
             <child>
               <object class="GtkLabel">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Keyword</property>
                 <property name="halign">end</property>
                 <style>
@@ -55,7 +50,6 @@
             </child>
             <child>
               <object class="GtkEntry" id="key_entry">
-                <property name="visible">1</property>
                 <property name="hexpand">1</property>
                 <property name="max-length">20</property>
                 <property name="activates-default">1</property>
@@ -67,7 +61,6 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="visible">1</property>
                 <property name="label" translatable="yes">Replacement</property>
                 <property name="halign">end</property>
                 <style>
@@ -81,7 +74,6 @@
             </child>
             <child>
               <object class="GtkEntry" id="value_entry">
-                <property name="visible">1</property>
                 <property name="hexpand">1</property>
                 <property name="max-length">200</property>
                 <property name="activates-default">1</property>
@@ -93,7 +85,6 @@
             </child>
             <child>
               <object class="GtkLabel" id="error_label">
-                <property name="visible">1</property>
                 <property name="halign">center</property>
               </object>
               <packing>

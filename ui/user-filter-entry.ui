@@ -12,16 +12,13 @@
     <property name="activatable">0</property>
     <child>
       <object class="GtkRevealer" id="revealer">
-        <property name="visible">1</property>
         <property name="reveal-child">1</property>
         <child>
           <object class="GtkStack" id="stack">
-            <property name="visible">1</property>
             <property name="transition-type">slide-up-down</property>
             <property name="margin">3</property>
             <child>
               <object class="GtkGrid" id="grid">
-                <property name="visible">1</property>
                 <child>
                   <object class="AvatarWidget" id="avatar_image">
                     <property name="visible">true</property>
@@ -43,7 +40,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="name_label">
-                    <property name="visible">1</property>
                     <property name="halign">start</property>
                     <property name="margin-bottom">1</property>
                     <property name="yalign">1</property>
@@ -59,7 +55,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="screen_name_label">
-                    <property name="visible">1</property>
                     <property name="halign">start</property>
                     <property name="margin-top">1</property>
                     <property name="yalign">0</property>
@@ -75,7 +70,6 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="menu_button">
-                    <property name="visible">1</property>
                     <property name="halign">center</property>
                     <property name="valign">center</property>
                     <property name="relief">none</property>
@@ -87,7 +81,6 @@
                     </style>
                     <child>
                       <object class="GtkImage">
-                        <property name="visible">1</property>
                         <property name="icon-name">list-remove-symbolic</property>
                       </object>
                     </child>
@@ -102,11 +95,9 @@
             </child>
             <child>
               <object class="GtkBox" id="delete_box">
-                <property name="visible">1</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkButton" id="cancel_button">
-                    <property name="visible">1</property>
                     <property name="can-focus">1</property>
                     <property name="hexpand">1</property>
                     <property name="halign">end</property>
@@ -117,7 +108,6 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="delete_button">
-                    <property name="visible">1</property>
                     <property name="can-focus">1</property>
                     <property name="hexpand">1</property>
                     <property name="halign">start</property>
