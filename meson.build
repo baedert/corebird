@@ -1,7 +1,8 @@
 project('Corebird', ['vala', 'c'],
         version: '1.7.4',
         default_options: [
-          'buildtype=debug'
+          'buildtype=debug',
+          'warning_level=2',
         ])
 
 gnome = import('gnome')
