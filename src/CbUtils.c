@@ -93,7 +93,7 @@ void
 cb_utils_bind_non_gobject_model (GtkWidget               *listbox,
                                  GListModel              *model,
                                  CbUtilsCreateWidgetFunc  func,
-                                 gpointer                *user_data)
+                                 gpointer                 user_data)
 {
   ModelData *data;
 
