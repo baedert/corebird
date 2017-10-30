@@ -19,7 +19,7 @@
 #define __CB_TEXT_VIEW_H__
 
 #include <gtk/gtk.h>
-
+#include "CbUserCompletionModel.h"
 
 struct _CbTextView
 {
@@ -31,7 +31,14 @@ struct _CbTextView
   GtkWidget *scrolled_window;
   GtkWidget *box;
 
+  /* Completion */
+  double completion_show_factor;
+  guint64 completion_show_start_time;
+  guint completion_tick_id;
+  GCancellable *completion_cancellable;
   GtkWidget *completion_listbox;
+  GtkWidget *completion_scroller;
+  CbUserCompletionModel *completion_model;
 };
 
 #define CB_TYPE_TEXT_VIEW cb_text_view_get_type ()

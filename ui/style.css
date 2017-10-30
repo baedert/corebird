@@ -339,3 +339,8 @@ textview.view.fancy button {
 textview.view.fancy button:hover {
   background-color: alpha(grey, 0.7);
 }
+
+textview.view.fancy>scrolledwindow.completion {
+  border-top: 1px solid alpha(grey, 0.7);
+}
+
