@@ -20,6 +20,7 @@
 
 #include <gtk/gtk.h>
 #include "CbUserCompletionModel.h"
+#include "CbAnimation.h"
 
 struct _CbTextView
 {
@@ -32,9 +33,8 @@ struct _CbTextView
   GtkWidget *box;
 
   /* Completion */
+  CbAnimation completion_show_animation;
   double completion_show_factor;
-  guint64 completion_show_start_time;
-  guint completion_tick_id;
   GCancellable *completion_cancellable;
   GtkWidget *completion_listbox;
   GtkWidget *completion_scroller;
