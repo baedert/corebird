@@ -33,6 +33,7 @@ struct _CbTextView
   GtkWidget *box;
 
   /* Completion */
+  char *completion_word;
   CbAnimation completion_show_animation;
   double completion_show_factor;
   GCancellable *completion_cancellable;
