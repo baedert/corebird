@@ -16,6 +16,8 @@
  */
 
 #include "CbTextView.h"
+#include "CbUserCounter.h"
+#include "CbUtils.h"
 #include "libtl/libtweetlength.h"
 #include "corebird.h"
 #ifdef SPELLCHECK
@@ -55,6 +57,126 @@ get_link_color (CbTextView *self,
       out_link_color->blue = 0.0;
       out_link_color->alpha = 1.0;
     }
+}
+
+static char *
+cb_text_view_get_cursor_word (CbTextView *self)
+{
+  GtkTextBuffer *buffer;
+  GtkTextIter start_iter;
+  GtkTextIter end_iter;
+  char *text;
+  TlEntity *entities;
+  gsize n_entities;
+  guint i;
+  int cursor_position;
+  char *cursor_word = NULL;
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
+  gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
+  g_object_get (G_OBJECT (buffer), "cursor-position", &cursor_position, NULL);
+
+  text = gtk_text_buffer_get_text (buffer, &start_iter, &end_iter, FALSE);
+  entities = tl_extract_entities_and_text (text, &n_entities, NULL);
+
+  for (i = 0; i < n_entities; i ++)
+    {
+      const TlEntity *e = &entities[i];
+
+      if (e->start_character_index <= cursor_position &&
+          e->start_character_index + e->length_in_characters >= cursor_position)
+        {
+          cursor_word = g_malloc (e->length_in_bytes + 1);
+          memcpy (cursor_word, e->start, e->length_in_bytes);
+          cursor_word[e->length_in_bytes] = '\0';
+          break;
+        }
+    }
+
+  g_free (entities);
+  g_free (text);
+
+  return cursor_word;
+}
+
+static gboolean
+show_completion_scroller_tick_cb (GtkWidget     *widget,
+                                  GdkFrameClock *frame_clock,
+                                  gpointer       user_data)
+{
+  CbTextView *self = (CbTextView *)widget;
+  guint64 now = gdk_frame_clock_get_frame_time (frame_clock);
+  double t;
+
+  t = ease_out_cubic ((now - self->completion_show_start_time) / (double)CB_TRANSITION_DURATION);
+
+  self->completion_show_factor = MIN (t, 1.0);
+  gtk_widget_queue_allocate (widget);
+
+  if (t >= 1.0)
+    {
+      self->completion_tick_id = 0;
+      return G_SOURCE_REMOVE;
+    }
+
+  return G_SOURCE_CONTINUE;
+}
+
+static void
+cb_text_view_start_completion (CbTextView *self,
+                               const char *query)
+{
+  CbUserInfo *local_infos;
+  int n_local_infos;
+
+  if (!gtk_widget_get_realized (GTK_WIDGET (self)))
+    return;
+
+  cb_user_completion_model_clear (self->completion_model);
+
+  cb_user_counter_query_by_prefix (((Account*)self->account)->user_counter,
+                                   sql_database_get_sqlite_db (((Account*)self->account)->db),
+                                   query, 10, &local_infos, &n_local_infos);
+
+  cb_user_completion_model_insert_infos (self->completion_model,
+                                         local_infos,
+                                         n_local_infos);
+
+  gtk_widget_show (self->completion_scroller);
+  if (self->completion_tick_id == 0 &&
+      self->completion_show_factor <= 0.0)
+    {
+      self->completion_show_start_time =
+              gdk_frame_clock_get_frame_time (gtk_widget_get_frame_clock (GTK_WIDGET (self)));
+      self->completion_tick_id = gtk_widget_add_tick_callback (GTK_WIDGET (self),
+                                                               show_completion_scroller_tick_cb,
+                                                               NULL, NULL);
+    }
+
+  g_free (local_infos);
+}
+
+static void
+cb_text_view_stop_completion (CbTextView *self)
+{
+  self->completion_show_factor = 0.0;
+
+  if (self->completion_tick_id != 0)
+    {
+      gtk_widget_remove_tick_callback (GTK_WIDGET (self), self->completion_tick_id);
+      self->completion_tick_id = 0;
+    }
+
+  gtk_widget_hide (self->completion_scroller);
+}
+
+static GtkWidget *
+create_completion_row_func (gpointer item,
+                            gpointer user_data)
+{
+  const CbUserIdentity *id = item;
+
+  return gtk_label_new (id->user_name);
 }
 
 static void
@@ -110,6 +232,38 @@ cb_text_view_size_allocate (GtkWidget           *widget,
   gtk_widget_size_allocate (self->scrolled_window, &child_alloc, -1, &child_clip);
 
   gdk_rectangle_union (&child_clip, &child_clip, out_clip);
+
+  if (gtk_widget_get_visible (self->completion_scroller))
+    {
+      int min_height;
+
+      child_alloc.y = allocation->height - (allocation->height - 50) * self->completion_show_factor;
+      gtk_widget_measure (self->completion_scroller, GTK_ORIENTATION_VERTICAL, -1,
+                          &min_height, NULL, NULL, NULL);
+
+      child_alloc.height = MAX (min_height, allocation->height - child_alloc.y);
+
+      gtk_widget_size_allocate (self->completion_scroller, &child_alloc, -1, &child_clip);
+    }
+}
+
+static void
+cb_text_view_snapshot (GtkWidget   *widget,
+                       GtkSnapshot *snapshot)
+{
+  int width, height;
+
+  /* TODO: Wrong size */
+  /*gtk_widget_get_content_size (widget, &width, &height);*/
+  width = gtk_widget_get_allocated_width (widget);
+  height = gtk_widget_get_allocated_height (widget);
+
+  gtk_snapshot_push_clip (snapshot,
+                          &GRAPHENE_RECT_INIT(0, 0, width, height), "CbTextView");
+
+  GTK_WIDGET_CLASS (cb_text_view_parent_class)->snapshot (widget, snapshot);
+
+  gtk_snapshot_pop (snapshot);
 }
 
 static void
@@ -119,6 +273,7 @@ cb_text_view_finalize (GObject *object)
 
   gtk_widget_unparent (self->box);
   gtk_widget_unparent (self->scrolled_window);
+  gtk_widget_unparent (self->completion_scroller);
 
   g_object_unref (self->account);
 
@@ -131,6 +286,35 @@ cb_text_view_grab_focus (GtkWidget *widget)
   CbTextView *self = CB_TEXT_VIEW (widget);
 
   gtk_widget_grab_focus (self->text_view);
+}
+
+static void
+text_buffer_cursor_position_changed_cb (GObject    *object,
+                                        GParamSpec *pspec,
+                                        gpointer    user_data)
+{
+  CbTextView *self = user_data;
+  char *cursor_word;
+
+  cursor_word = cb_text_view_get_cursor_word (self);
+
+  if (cursor_word == NULL ||
+      cursor_word[0] == '\n')
+    {
+      cb_text_view_stop_completion (self);
+      goto out;
+    }
+
+  g_debug ("'%s'", cursor_word);
+
+  if (cursor_word[0] == '@' &&
+      strlen (cursor_word) > 1)
+    cb_text_view_start_completion (self, cursor_word + 1);
+  else
+    cb_text_view_stop_completion (self);
+
+out:
+  g_free (cursor_word);
 }
 
 static void
@@ -198,6 +382,7 @@ cb_text_view_class_init (CbTextViewClass *klass)
 
   widget_class->measure = cb_text_view_measure;
   widget_class->size_allocate = cb_text_view_size_allocate;
+  widget_class->snapshot = cb_text_view_snapshot;
   widget_class->grab_focus = cb_text_view_grab_focus;
 
   text_view_signals[SIGNAL_CHANGED] = g_signal_new ("changed",
@@ -224,13 +409,14 @@ cb_text_view_init (CbTextView *self)
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
 
   self->text_view = gtk_text_view_new ();
-  g_signal_connect (gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view)),
-                    "changed", G_CALLBACK (text_buffer_changed_cb), self);
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
+  g_signal_connect (buffer, "changed", G_CALLBACK (text_buffer_changed_cb), self);
+  g_signal_connect (buffer, "notify::cursor-position",
+                    G_CALLBACK (text_buffer_cursor_position_changed_cb), self);
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (self->text_view), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->text_view), PANGO_WRAP_WORD_CHAR);
   gtk_container_add (GTK_CONTAINER (self->scrolled_window), self->text_view);
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
   get_link_color (self, &link_color);
   gtk_text_buffer_create_tag (buffer, TAG_NO_SPELL_CHECK, NULL);
   gtk_text_buffer_create_tag (buffer, "mention", "foreground-rgba", &link_color, NULL);
@@ -245,6 +431,22 @@ cb_text_view_init (CbTextView *self)
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "view");
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "fancy");
+
+  self->completion_show_factor = 0.0;
+  self->completion_scroller = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (self->completion_scroller),
+                                                    TRUE);
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->completion_scroller), "completion");
+  gtk_widget_set_parent (self->completion_scroller, GTK_WIDGET (self));
+  self->completion_listbox = gtk_list_box_new ();
+  gtk_container_add (GTK_CONTAINER (self->completion_scroller), self->completion_listbox);
+  self->completion_model = cb_user_completion_model_new ();
+  cb_utils_bind_non_gobject_model (self->completion_listbox,
+                                   G_LIST_MODEL (self->completion_model),
+                                   create_completion_row_func,
+                                   self);
+  /* We aren't in completion mode initially */
+  gtk_widget_hide (self->completion_scroller);
 
 #ifdef SPELLCHECK
   {

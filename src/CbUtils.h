@@ -24,7 +24,12 @@
 #include "rest/rest-proxy-call.h"
 #include "rest/rest-proxy.h"
 
-typedef GtkWidget * (*CbUtilsCreateWidgetFunc) (gpointer *data, gpointer *user_data);
+
+#define CB_TRANSITION_DURATION (200 * 1000)
+
+
+
+typedef GtkWidget * (*CbUtilsCreateWidgetFunc) (gpointer  data, gpointer  user_data);
 
 
 void cb_utils_bind_model (GtkWidget                  *listbox,
@@ -35,7 +40,7 @@ void cb_utils_bind_model (GtkWidget                  *listbox,
 void cb_utils_bind_non_gobject_model (GtkWidget               *listbox,
                                       GListModel              *model,
                                       CbUtilsCreateWidgetFunc  func,
-                                      gpointer                *user_data);
+                                      gpointer                 user_data);
 
 void cb_utils_unbind_non_gobject_model (GtkWidget  *listbox,
                                         GListModel *model);
@@ -87,5 +92,11 @@ cb_clear_source (guint *id)
   *id = 0;
 }
 
+static inline double
+ease_out_cubic (double t)
+{
+  double p = t - 1;
+  return p * p * p + 1;
+}
 
 #endif
