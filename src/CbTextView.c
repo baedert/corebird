@@ -110,6 +110,29 @@ completion_animate_func (CbAnimation *animation,
 }
 
 static void
+users_received_cb (GObject      *source_object,
+                   GAsyncResult *result,
+                   gpointer      user_data)
+{
+  CbTextView *self = user_data;
+  CbUserIdentity *ids;
+  int n_ids;
+  GError *error = NULL;
+
+  ids = cb_utils_query_users_finish (result, &n_ids, &error);
+
+  if (error != NULL)
+    {
+      if (error->code != G_IO_ERROR_CANCELLED)
+        g_warning ("%s Error: %s", __FUNCTION__, error->message);
+
+      return;
+    }
+
+  cb_user_completion_model_insert_items (self->completion_model, ids, n_ids);
+}
+
+static void
 cb_text_view_start_completion (CbTextView *self,
                                const char *query)
 {
@@ -118,6 +141,9 @@ cb_text_view_start_completion (CbTextView *self,
 
   if (!gtk_widget_get_realized (GTK_WIDGET (self)))
     return;
+
+  if (self->completion_cancellable != NULL)
+    g_cancellable_cancel (self->completion_cancellable);
 
   cb_user_completion_model_clear (self->completion_model);
 
@@ -128,6 +154,14 @@ cb_text_view_start_completion (CbTextView *self,
   cb_user_completion_model_insert_infos (self->completion_model,
                                          local_infos,
                                          n_local_infos);
+
+  /* Now load users from the server */
+  self->completion_cancellable = g_cancellable_new ();
+  cb_utils_query_users_async (REST_PROXY (((Account*)self->account)->proxy),
+                              query,
+                              self->completion_cancellable,
+                              users_received_cb,
+                              self);
 
   gtk_widget_show (self->completion_scroller);
   if (!cb_animation_is_running (&self->completion_show_animation) &&
@@ -152,8 +186,22 @@ create_completion_row_func (gpointer item,
                             gpointer user_data)
 {
   const CbUserIdentity *id = item;
+  char *screen_name;
+  GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  GtkWidget *l1 = gtk_label_new (id->user_name);
+  GtkWidget *l2 = gtk_label_new (NULL);
 
-  return gtk_label_new (id->user_name);
+  screen_name = g_strdup_printf ("@%s", id->screen_name);
+  gtk_label_set_label (GTK_LABEL (l2), screen_name);
+  g_free (screen_name);
+
+  gtk_style_context_add_class (gtk_widget_get_style_context (box), "col-spacing");
+  gtk_style_context_add_class (gtk_widget_get_style_context (l2), "dim-label");
+
+  gtk_container_add (GTK_CONTAINER (box), l1);
+  gtk_container_add (GTK_CONTAINER (box), l2);
+
+  return box;
 }
 
 static void
