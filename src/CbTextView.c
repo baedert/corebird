@@ -130,6 +130,8 @@ users_received_cb (GObject      *source_object,
     }
 
   cb_user_completion_model_insert_items (self->completion_model, ids, n_ids);
+
+  g_free (ids);
 }
 
 static void
@@ -148,6 +150,7 @@ cb_text_view_start_completion (CbTextView *self,
       strcmp (query, self->completion_word) == 0)
     return;
 
+  g_free (self->completion_word);
   self->completion_word = g_strdup (query);
 
   if (self->completion_cancellable != NULL)
@@ -404,6 +407,7 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
         }
     }
 
+  g_free (entities);
   g_free (text);
   g_signal_emit (self, text_view_signals[SIGNAL_CHANGED], 0);
 }
