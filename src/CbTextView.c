@@ -432,6 +432,7 @@ cb_text_view_init (CbTextView *self)
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 
   self->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (self->scrolled_window), 80);
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
 
   self->text_view = gtk_text_view_new ();
