@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CB_BUNDLE_HISTORY_H
-#define CB_BUNDLE_HISTORY_H
+#ifndef __CB_BUNDLE_HISTORY_H__
+#define __CB_BUNDLE_HISTORY_H__
 
 #include <glib-object.h>
 #include "CbBundle.h"
