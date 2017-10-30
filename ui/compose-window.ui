@@ -91,25 +91,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkRevealer" id="completion_revealer">
-                <property name="transition-duration">200</property>
-                <child>
-                  <object class="GtkScrolledWindow">
-                    <property name="min-content-height">80</property>
-                    <child>
-                      <object class="GtkListBox" id="completion_list">
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
               <object class="ComposeImageManager" id="compose_image_manager">
                 <property name="visible">false</property>
                 <property name="margin-start">6</property>
