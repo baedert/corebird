@@ -139,8 +139,16 @@ cb_text_view_start_completion (CbTextView *self,
   CbUserInfo *local_infos;
   int n_local_infos;
 
+  g_return_if_fail (query != NULL);
+
   if (!gtk_widget_get_realized (GTK_WIDGET (self)))
     return;
+
+  if (self->completion_word != NULL &&
+      strcmp (query, self->completion_word) == 0)
+    return;
+
+  self->completion_word = g_strdup (query);
 
   if (self->completion_cancellable != NULL)
     g_cancellable_cancel (self->completion_cancellable);
@@ -302,6 +310,8 @@ cb_text_view_finalize (GObject *object)
   cb_animation_destroy (&self->completion_show_animation);
 
   g_object_unref (self->account);
+
+  g_free (self->completion_word);
 
   G_OBJECT_CLASS (cb_text_view_parent_class)->finalize (object);
 }
