@@ -421,10 +421,10 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     emoji_button.clicked.connect (() => {
       this.emoji_chooser.populate ();
       this.stack.visible_child = this.emoji_chooser;
+      cancel_button.label = _("Back");
     });
 
     emoji_button.show_all ();
     add_button_box.add (emoji_button);
-    cancel_button.label = _("Back");
   }
 }
