@@ -322,7 +322,7 @@ textview.view.fancy {
 }
 
 textview.view.fancy textview {
-  padding: 0.5em;
+  padding: 1em;
 }
 
 textview.view.fancy>box {
