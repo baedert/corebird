@@ -50,7 +50,7 @@ class CompletionTextView : Gtk.TextView {
     completion_window = new Gtk.Window (Gtk.WindowType.POPUP);
     completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
     completion_window.focus_out_event.connect (completion_window_focus_out_cb);
-    completion_window.set_screen (this.get_screen ());
+    //completion_window.set_screen (this.get_screen ());
 
     completion_list = new Gtk.ListBox ();
     completion_model = new Cb.UserCompletionModel ();
