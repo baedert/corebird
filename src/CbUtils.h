@@ -82,6 +82,8 @@ GskTexture *cb_utils_surface_to_texture (cairo_surface_t *surface,
 char * cb_utils_get_time_delta (GDateTime *time,
                                 GDateTime *now);
 
+void   cb_utils_load_custom_css (void);
+
 static inline void
 cb_clear_source (guint *id)
 {
