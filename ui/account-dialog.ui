@@ -125,20 +125,8 @@
                     </child>
                     <!-- Description -->
                     <child>
-                      <object class="GtkFrame">
-                        <child>
-                          <object class="GtkScrolledWindow">
-                            <property name="min-content-height">80</property>
-                            <child>
-                              <object class="CompletionTextView" id="description_text_view">
-                                <property name="visible">true</property>
-                                <property name="can-focus">true</property>
-                                <property name="accepts-tab">false</property>
-                                <property name="wrap-mode">word-char</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
+                      <object class="CbTextView" id="description_text_view">
+                        <property name="can-focus">true</property>
                       </object>
                       <packing>
                         <property name="left-attach">0</property>

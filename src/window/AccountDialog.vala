@@ -31,7 +31,7 @@ public class AccountDialog : Gtk.Window {
   [GtkChild]
   private Gtk.Entry website_entry;
   [GtkChild]
-  private CompletionTextView description_text_view;
+  private Cb.TextView description_text_view;
   [GtkChild]
   private CropWidget crop_widget;
   [GtkChild]
@@ -94,14 +94,14 @@ public class AccountDialog : Gtk.Window {
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
     ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
 
-    description_text_view.buffer.notify["text"].connect (update_description_length);
+    description_text_view.changed.connect (update_description_length);
 
     this.add_accel_group (ag);
     this.update_description_length ();
   }
 
   private void update_description_length () {
-    int length = description_text_view.buffer.text.length;
+    int length = description_text_view.get_text ().length;
     description_length_label.label = "%d/160".printf (length);
 
     if (length > MAX_DESCRIPTION_LENGTH) {
@@ -133,7 +133,7 @@ public class AccountDialog : Gtk.Window {
     old_user_name = account.name;
     old_website = account.website ?? "";
     old_description = account.description ?? "";
-    description_text_view.get_buffer ().set_text (account.description ?? "");
+    description_text_view.set_text (account.description ?? "");
   }
 
   [GtkCallback]
@@ -143,7 +143,7 @@ public class AccountDialog : Gtk.Window {
 
   private void save_data () {
     bool needs_save = (old_user_name != name_entry.text) ||
-                      (old_description != description_text_view.buffer.text) ||
+                      (old_description != description_text_view.get_text ()) ||
                       (old_website != website_entry.text);
 
     bool needs_init = needs_save || (new_avatar != null) || (new_banner != null);
@@ -160,7 +160,7 @@ public class AccountDialog : Gtk.Window {
       call.set_method ("POST");
       call.add_param ("url", website_entry.text);
       call.add_param ("name", name_entry.text);
-      call.add_param ("description", description_text_view.buffer.text);
+      call.add_param ("description", description_text_view.get_text ());
       call.invoke_async.begin (null, (obj, res) => {
         try {
           call.invoke_async.end (res);
@@ -174,7 +174,7 @@ public class AccountDialog : Gtk.Window {
 
       /* Update local user data */
       account.name = name_entry.text;
-      account.description = description_text_view.buffer.text;
+      account.description = description_text_view.get_text ();
       account.website = website_entry.text;
     }
 
