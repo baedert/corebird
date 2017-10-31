@@ -298,14 +298,6 @@ namespace Utils {
     icon_theme.add_resource_path ("/org/baedert/corebird/data/");
   }
 
-  public void load_custom_css () {
-    var provider = new Gtk.CssProvider ();
-    provider.load_from_resource ("/org/baedert/corebird/ui/style.css");
-    Gtk.StyleContext.add_provider_for_screen ((!)Gdk.Screen.get_default (),
-                                              provider,
-                                              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-  }
-
   public void init_soup_session () {
     assert (SOUP_SESSION == null);
     SOUP_SESSION = new Soup.Session ();

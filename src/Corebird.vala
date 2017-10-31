@@ -214,7 +214,7 @@ public class Corebird : Gtk.Application {
 
 
 
-    Utils.load_custom_css ();
+    Cb.Utils.load_custom_css ();
     Utils.load_custom_icons ();
     Utils.init_soup_session ();
     Twitter.get ().init ();
