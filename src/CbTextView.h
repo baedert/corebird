@@ -40,6 +40,7 @@ struct _CbTextView
   GtkWidget *completion_listbox;
   GtkWidget *completion_scroller;
   CbUserCompletionModel *completion_model;
+  int selected_row;
 };
 
 #define CB_TYPE_TEXT_VIEW cb_text_view_get_type ()

@@ -60,7 +60,9 @@ get_link_color (CbTextView *self,
 }
 
 static char *
-cb_text_view_get_cursor_word (CbTextView *self)
+cb_text_view_get_cursor_word (CbTextView *self,
+                              guint      *start_index,
+                              guint      *end_index)
 {
   GtkTextBuffer *buffer;
   GtkTextIter start_iter;
@@ -71,6 +73,9 @@ cb_text_view_get_cursor_word (CbTextView *self)
   guint i;
   int cursor_position;
   char *cursor_word = NULL;
+
+  if (start_index != NULL)
+    g_assert (end_index != NULL);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
   gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
@@ -89,6 +94,13 @@ cb_text_view_get_cursor_word (CbTextView *self)
           cursor_word = g_malloc (e->length_in_bytes + 1);
           memcpy (cursor_word, e->start, e->length_in_bytes);
           cursor_word[e->length_in_bytes] = '\0';
+
+          if (start_index != NULL)
+            {
+              *start_index = e->start_character_index;
+              *end_index = e->start_character_index + e->length_in_characters;
+            }
+
           break;
         }
     }
@@ -132,6 +144,25 @@ users_received_cb (GObject      *source_object,
   cb_user_completion_model_insert_items (self->completion_model, ids, n_ids);
 
   g_free (ids);
+}
+
+static void
+cb_text_view_select_completion_row (CbTextView *self,
+                                    int         row_index)
+{
+  int n_rows = (int)g_list_model_get_n_items (G_LIST_MODEL (self->completion_model));
+  int new_index;
+  GtkListBoxRow *row;
+
+  /* We just don't support larger jumps here, which doesn't matter in practice... */
+  if (row_index == -1)
+    row_index = n_rows - 1;
+
+  new_index = row_index % n_rows;
+  row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->completion_listbox), new_index);
+  gtk_list_box_select_row (GTK_LIST_BOX (self->completion_listbox), row);
+
+  self->selected_row = new_index;
 }
 
 static void
@@ -179,6 +210,9 @@ cb_text_view_start_completion (CbTextView *self,
       self->completion_show_factor < 1.0)
     cb_animation_start (&self->completion_show_animation);
 
+  if (g_list_model_get_n_items (G_LIST_MODEL (self->completion_model)) > 0)
+    cb_text_view_select_completion_row (self, 0);
+
   g_free (local_infos);
 }
 
@@ -189,6 +223,7 @@ cb_text_view_stop_completion (CbTextView *self)
     return;
 
   self->completion_show_factor = 0.0;
+  self->selected_row = 0;
   cb_animation_start_reverse (&self->completion_show_animation);
 }
 
@@ -198,6 +233,7 @@ create_completion_row_func (gpointer item,
 {
   const CbUserIdentity *id = item;
   char *screen_name;
+  GtkWidget *row = gtk_list_box_row_new ();
   GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   GtkWidget *l1 = gtk_label_new (id->user_name);
   GtkWidget *l2 = gtk_label_new (NULL);
@@ -211,8 +247,11 @@ create_completion_row_func (gpointer item,
 
   gtk_container_add (GTK_CONTAINER (box), l1);
   gtk_container_add (GTK_CONTAINER (box), l2);
+  gtk_container_add (GTK_CONTAINER (row), box);
 
-  return box;
+  g_object_set_data_full (G_OBJECT (row), "row-data", g_strdup (id->screen_name), g_free);
+
+  return row;
 }
 
 static void
@@ -335,7 +374,7 @@ text_buffer_cursor_position_changed_cb (GObject    *object,
   CbTextView *self = user_data;
   char *cursor_word;
 
-  cursor_word = cb_text_view_get_cursor_word (self);
+  cursor_word = cb_text_view_get_cursor_word (self, NULL, NULL);
 
   if (cursor_word == NULL ||
       cursor_word[0] == '\n')
@@ -413,6 +452,81 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
 }
 
 static void
+cb_text_view_insert_completion (CbTextView    *self,
+                                GtkListBoxRow *row)
+{
+  const char *screen_name = g_object_get_data (G_OBJECT (row), "row-data");
+  GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
+  guint word_start, word_end;
+  char *cursor_word = cb_text_view_get_cursor_word (self, &word_start, &word_end);
+  GtkTextIter word_start_iter, word_end_iter;
+  char *completion;
+
+  g_assert (screen_name != NULL);
+
+  if (cursor_word == NULL)
+    {
+      g_warning ("No cursor word found");
+      return;
+    }
+
+  g_object_freeze_notify (G_OBJECT (buffer));
+
+  gtk_text_buffer_get_iter_at_offset (buffer, &word_start_iter, word_start);
+  gtk_text_buffer_get_iter_at_offset (buffer, &word_end_iter, word_end);
+
+  /* Delete cursor word */
+  gtk_text_buffer_delete (buffer, &word_start_iter, &word_end_iter);
+
+  /* Now insert completion */
+  completion = g_strdup_printf ("@%s ", screen_name);
+  gtk_text_buffer_insert (buffer, &word_start_iter, completion, -1);
+
+  /* Cursor gets placed after the completion automatically! */
+
+  g_object_thaw_notify (G_OBJECT (buffer));
+
+  g_free (completion);
+  g_free (cursor_word);
+}
+
+static gboolean
+cb_text_view_key_press_event_cb (GtkWidget   *widget,
+                                 GdkEventKey *event,
+                                 gpointer     user_data)
+{
+  CbTextView *self = user_data;
+  guint keyval;
+
+  if (!gdk_event_get_keyval ((GdkEvent *)event, &keyval))
+    return GDK_EVENT_PROPAGATE;
+
+  switch (keyval)
+    {
+      case GDK_KEY_Return:
+          {
+            GtkListBoxRow *selected_row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->completion_listbox),
+                                                                     self->selected_row);
+            cb_text_view_insert_completion (self, selected_row);
+          }
+        return GDK_EVENT_STOP;
+
+      case GDK_KEY_Down:
+        cb_text_view_select_completion_row (self, self->selected_row + 1);
+        return GDK_EVENT_STOP;
+
+      case GDK_KEY_Up:
+        cb_text_view_select_completion_row (self, self->selected_row - 1);
+        return GDK_EVENT_STOP;
+
+      default:
+          {}
+    }
+
+  return GDK_EVENT_PROPAGATE;
+}
+
+static void
 cb_text_view_class_init (CbTextViewClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -450,6 +564,8 @@ cb_text_view_init (CbTextView *self)
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
 
   self->text_view = gtk_text_view_new ();
+  g_signal_connect (self->text_view, "key-press-event",
+                    G_CALLBACK (cb_text_view_key_press_event_cb), self);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
   g_signal_connect (buffer, "changed", G_CALLBACK (text_buffer_changed_cb), self);
   g_signal_connect (buffer, "notify::cursor-position",
