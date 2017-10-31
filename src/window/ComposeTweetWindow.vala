@@ -413,6 +413,5 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
 
     tweet_text.add_widget (emoji_button);
-    add_button_box.add (emoji_button);
   }
 }
