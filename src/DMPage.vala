@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-[GtkTemplate (ui = "/org/baedert/corebird/ui/dm-page.ui")]
 class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   public const int KEY_SENDER_ID   = 0;
   public const int KEY_SCREEN_NAME = 1;
@@ -31,39 +30,47 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   }
   public unowned Account account;
   public int id                             { get; set; }
-  [GtkChild]
   private Gtk.Button send_button;
-  [GtkChild]
-  private CompletionTextView text_view;
-  [GtkChild]
+  private Cb.TextView text_view;
   private Gtk.ListBox messages_list;
-  [GtkChild]
   private ScrollWidget scroll_widget;
-  private DMPlaceholderBox placeholder_box = new DMPlaceholderBox ();
+  private DMPlaceholderBox placeholder_box;
 
   public int64 user_id;
   private int64 lowest_id = int64.MAX;
-  private bool was_scrolled_down = false;
 
   public DMPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    text_view.buffer.changed.connect (recalc_length);
-    messages_list.set_sort_func (twitter_item_sort_func_inv);
-    placeholder_box.show ();
-    messages_list.set_placeholder(placeholder_box);
+
+    /* Set up UI */
+    this.set_orientation (Gtk.Orientation.VERTICAL);
+
+    this.scroll_widget = new ScrollWidget ();
+    scroll_widget.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+    scroll_widget.set_vexpand (true);
     scroll_widget.scrolled_to_start.connect (load_older);
-    text_view.size_allocate.connect (() => {
-      if (was_scrolled_down)
-        scroll_widget.scroll_down_next (false, false);
-    });
-    scroll_widget.vadjustment.value_changed.connect (() => {
-      if (scroll_widget.scrolled_down) {
-        this.was_scrolled_down = true;
-      } else {
-        this.was_scrolled_down = false;
-      }
-    });
+    this.messages_list = new Gtk.ListBox ();
+    messages_list.set_selection_mode (Gtk.SelectionMode.NONE);
+    messages_list.set_sort_func (twitter_item_sort_func_inv);
+    this.placeholder_box = new DMPlaceholderBox ();
+    messages_list.set_placeholder (placeholder_box);
+    scroll_widget.add (messages_list);
+    this.add (scroll_widget);
+
+    var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+    this.text_view = new Cb.TextView ();
+    text_view.set_hexpand (true);
+    text_view.changed.connect (recalc_length);
+    bottom_box.add (text_view);
+
+    this.send_button = new Gtk.Button.with_label (_("Send"));
+    send_button.set_receives_default (true);
+    send_button.set_valign (Gtk.Align.START);
+    send_button.get_style_context ().add_class ("suggested-action");
+    send_button.clicked.connect (send_button_clicked_cb);
+    bottom_box.add (send_button);
+    this.add (bottom_box);
   }
 
   public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
@@ -201,6 +208,8 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   }
 
   public void on_join (int page_id, Cb.Bundle? args) {
+    warning ("Add send-activated signal or similar to CbTextView for catching ctrl+return");
+
     int64 user_id = args.get_int64 (KEY_SENDER_ID);
     if (user_id == 0)
       return;
@@ -276,9 +285,8 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
 
   public void on_leave () {}
 
-  [GtkCallback]
   private void send_button_clicked_cb () {
-    if (text_view.buffer.text.length == 0)
+    if (text_view.get_text ().length == 0)
       return;
 
     // Withdraw the notification if there is one
@@ -294,7 +302,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     entry.user_id = account.id;
     entry.screen_name = account.screen_name;
     entry.timestamp = new GLib.DateTime.now_local ().to_unix ();
-    entry.text = GLib.Markup.escape_text (text_view.buffer.text);
+    entry.text = GLib.Markup.escape_text (text_view.get_text ());
     entry.name = account.name;
     entry.avatar = account.avatar;
     entry.update_time_delta ();
@@ -303,7 +311,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     call.set_function ("1.1/direct_messages/new.json");
     call.set_method ("POST");
     call.add_param ("user_id", user_id.to_string ());
-    call.add_param ("text", text_view.buffer.text);
+    call.add_param ("text", text_view.get_text ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
         call.invoke_async.end (res);
@@ -315,32 +323,31 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     });
 
     // clear the text entry
-    text_view.buffer.text = "";
+    text_view.set_text ("");
 
     // Scroll down
     if (scroll_widget.scrolled_down)
       scroll_widget.scroll_down_next ();
   }
 
-  [GtkCallback]
-  private bool text_view_key_press_cb (Gdk.EventKey evt) {
-    uint keyval;
-    Gdk.ModifierType state;
+  //private bool text_view_key_press_cb (Gdk.EventKey evt) {
+    //uint keyval;
+    //Gdk.ModifierType state;
 
-    evt.get_keyval (out keyval);
-    evt.get_state (out state);
+    //evt.get_keyval (out keyval);
+    //evt.get_state (out state);
 
-    if (keyval == Gdk.Key.Return &&
-        (state & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK) {
-      send_button_clicked_cb ();
-      return Gdk.EVENT_STOP;
-    }
+    //if (keyval == Gdk.Key.Return &&
+        //(state & Gdk.ModifierType.CONTROL_MASK) == Gdk.ModifierType.CONTROL_MASK) {
+      //send_button_clicked_cb ();
+      //return Gdk.EVENT_STOP;
+    //}
 
-    return Gdk.EVENT_PROPAGATE;
-  }
+    //return Gdk.EVENT_PROPAGATE;
+  //}
 
   private void recalc_length () {
-    uint text_length = text_view.buffer.text.length;
+    uint text_length = text_view.get_text ().length;
     send_button.sensitive = text_length > 0;
   }
 
