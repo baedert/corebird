@@ -82,8 +82,7 @@
                 <property name="margin-start">12</property>
                 <property name="margin-end">12</property>
                 <property name="margin-top">12</property>
-                <property name="margin-bottom">6</property>
-                <!--<signal name="populate-popup" handler="tweet_text_populate_popup_cb" />-->
+                <property name="margin-bottom">12</property>
               </object>
               <packing>
                 <property name="left-attach">1</property>
