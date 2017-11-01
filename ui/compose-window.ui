@@ -57,8 +57,6 @@
         <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkGrid" id="content_grid">
-            <property name="column-spacing">6</property>
-            <property name="row-spacing">6</property>
             <child>
               <object class="AvatarWidget" id="avatar_image">
                 <property name="size">48</property>
