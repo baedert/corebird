@@ -6,6 +6,7 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="user_list_label">
+        <property name="visible">0</property>
         <property name="halign">start</property>
         <property name="margin-start">24</property>
         <property name="margin-top">15</property>
@@ -39,6 +40,7 @@
             </child>
             <child>
               <object class="GtkRevealer" id="user_lists_revealer">
+                <property name="visible">0</property>
                 <signal name="notify::child-revealed" handler="revealer_child_revealed_cb"/>
                 <child>
                   <object class="GtkBox">
@@ -67,6 +69,7 @@
     </child>
     <child>
       <object class="GtkLabel" id="subscribed_list_label">
+        <property name="visible">0</property>
         <property name="halign">start</property>
         <property name="margin-start">25</property>
         <property name="margin-top">24</property>
@@ -80,6 +83,7 @@
     </child>
     <child>
       <object class="GtkFrame" id="subscribed_list_frame">
+        <property name="visible">0</property>
         <property name="margin-start">25</property>
         <property name="margin-end">25</property>
         <property name="shadow-type">in</property>
