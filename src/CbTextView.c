@@ -326,14 +326,11 @@ static void
 cb_text_view_snapshot (GtkWidget   *widget,
                        GtkSnapshot *snapshot)
 {
-  int width, height;
-
-  /* TODO: Wrong size */
-  width = gtk_widget_get_allocated_width (widget);
-  height = gtk_widget_get_allocated_height (widget);
-
   gtk_snapshot_push_clip (snapshot,
-                          &GRAPHENE_RECT_INIT(0, 0, width, height), "CbTextView");
+                          &GRAPHENE_RECT_INIT(
+                            0, 0,
+                            gtk_widget_get_width (widget), gtk_widget_get_height (widget)),
+                          "CbTextView");
 
   GTK_WIDGET_CLASS (cb_text_view_parent_class)->snapshot (widget, snapshot);
 
