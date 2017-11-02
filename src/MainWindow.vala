@@ -91,22 +91,17 @@ public class MainWindow : Gtk.ApplicationWindow {
     avatar_image.size = 24;
     avatar_image.set_valign (Gtk.Align.CENTER);
     account_button.add (avatar_image);
-    account_button.show ();
     header_box.add (account_button);
     this.compose_tweet_button = new Gtk.ToggleButton ();
     compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic",
                                                             Gtk.IconSize.BUTTON));
     compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
     compose_tweet_button.set_action_name ("win.compose-tweet");
-    compose_tweet_button.show ();
     header_box.add (compose_tweet_button);
     this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
     back_button.clicked.connect (back_button_clicked_cb);
-    back_button.show ();
     header_box.add (back_button);
-    header_box.show ();
     headerbar.pack_start (header_box);
-    headerbar.show ();
     this.set_titlebar (headerbar);
 
     this.account_popover = new Gtk.Popover (account_button);
@@ -121,14 +116,12 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_list.row_activated.connect (account_row_activated_cb);
     frame.add (account_list);
     account_popover.add (frame);
-    account_popover.show ();
 
     change_account (account);
 
     account_list.set_sort_func (account_sort_func);
     account_list.set_header_func (default_header_func);
     var add_entry = new AddListEntry (_("Add new Account"));
-    add_entry.show ();
     account_list.add (add_entry);
 
     for (uint i = 0; i < Account.get_n (); i ++) {
@@ -136,7 +129,6 @@ public class MainWindow : Gtk.ApplicationWindow {
       if (acc.screen_name == Account.DUMMY)
           continue;
       var e = new UserListEntry.from_account (acc);
-      e.show_settings = true;
       e.action_clicked.connect (() => {
         account_popover.popdown ();
       });
@@ -156,7 +148,6 @@ public class MainWindow : Gtk.ApplicationWindow {
         account_popover.popdown ();
       });
       account_list.add (ule);
-      ule.show ();
     });
 
     ((Corebird)app).account_removed.connect ((acc) => {
@@ -217,7 +208,6 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (account != null && account.screen_name != Account.DUMMY) {
       header_box.show ();
       main_widget = new MainWidget (account, this, cb);
-      main_widget.show ();
       this.add (main_widget);
       main_widget.switch_page (0);
       this.set_window_title (main_widget.get_page (0).get_title ());
@@ -236,7 +226,6 @@ public class MainWindow : Gtk.ApplicationWindow {
           app_menu_button = new Gtk.MenuButton ();
           app_menu_button.set_icon_name ("emblem-system-symbolic");
           app_menu_button.menu_model = cb.app_menu;
-          app_menu_button.show ();
           headerbar.pack_end (app_menu_button);
         } else
           app_menu_button.show ();
