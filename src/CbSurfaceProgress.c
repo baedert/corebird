@@ -19,8 +19,9 @@
 
 G_DEFINE_TYPE(CbSurfaceProgress, cb_surface_progress, GTK_TYPE_WIDGET)
 
-static gboolean
-cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
+static void
+cb_surface_progress_snapshot (GtkWidget   *widget,
+                              GtkSnapshot *snapshot)
 {
   CbSurfaceProgress *self = CB_SURFACE_PROGRESS (widget);
   int width, height;
@@ -28,12 +29,16 @@ cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
   cairo_t *ctx;
   double arc_size, cx, cy, radius;
   double scale;
+  cairo_t *ct;
 
   if (self->surface == NULL)
-    return GDK_EVENT_PROPAGATE;
+    return;
 
-  width = gtk_widget_get_allocated_width (widget);
-  height = gtk_widget_get_allocated_height (widget);
+  width = gtk_widget_get_width (widget);
+  height = gtk_widget_get_height (widget);
+
+  ct = gtk_snapshot_append_cairo (snapshot,
+                                  &GRAPHENE_RECT_INIT (0, 0, width, height), "SurfaceProgress");
 
   scale = MIN ((double)width  / (double)cairo_image_surface_get_width (self->surface),
                (double)height / (double)cairo_image_surface_get_height (self->surface));
@@ -82,7 +87,7 @@ cb_surface_progress_draw (GtkWidget *widget, cairo_t *ct)
 
   cairo_surface_destroy (tmp_surface);
 
-  return GDK_EVENT_PROPAGATE;
+  cairo_destroy (ct);
 }
 
 static void
@@ -123,7 +128,7 @@ cb_surface_progress_class_init (CbSurfaceProgressClass *klass)
   object_class->finalize = cb_surface_progress_finalize;
 
   widget_class->measure = cb_surface_progress_measure;
-  widget_class->draw = cb_surface_progress_draw;
+  widget_class->snapshot = cb_surface_progress_snapshot;
 }
 
 GtkWidget *
