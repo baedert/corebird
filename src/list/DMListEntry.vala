@@ -52,15 +52,12 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     this.get_style_context ().add_class ("tweet");
 
     var grid = new Gtk.Grid ();
-    grid.margin = 6;
     grid.show ();
     this.add (grid);
 
     this.avatar_image = new AvatarWidget ();
     avatar_image.size = 48;
     avatar_image.set_valign (Gtk.Align.START);
-    avatar_image.margin = 4;
-    avatar_image.margin_end = 12;
     avatar_image.show ();
     grid.attach (avatar_image, 0, 0, 1, 2);
 
@@ -70,8 +67,6 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     grid.attach (name_button, 1, 0, 1, 1);
 
     this.screen_name_label = new Gtk.Label (null);
-    screen_name_label.set_margin_start (6);
-    screen_name_label.set_margin_end (6);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
     screen_name_label.show ();
@@ -86,9 +81,6 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     grid.attach (time_delta_label, 3, 0, 1, 1);
 
     this.text_label = new Gtk.Label (null);
-    text_label.set_margin_top (6);
-    text_label.set_margin_end (6);
-    text_label.set_margin_bottom (6);
     text_label.set_hexpand (true);
     text_label.set_vexpand (true);
     text_label.set_xalign (0.0f);
