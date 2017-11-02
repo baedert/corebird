@@ -98,7 +98,6 @@ public class MainWindow : Gtk.ApplicationWindow {
                                                             Gtk.IconSize.BUTTON));
     compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
     compose_tweet_button.set_action_name ("win.compose-tweet");
-    compose_tweet_button.get_style_context ().add_class ("image-button");
     compose_tweet_button.show ();
     header_box.add (compose_tweet_button);
     this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
