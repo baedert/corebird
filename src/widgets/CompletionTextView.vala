@@ -278,21 +278,23 @@ class CompletionTextView : Gtk.TextView {
       this.buffer.get_iter_at_offset (out e_start_iter, (int)e.start_character_index);
       this.buffer.get_iter_at_offset (out e_end_iter, (int)(e.start_character_index + e.length_in_characters));
 
-      buffer.apply_tag_by_name (NO_SPELL_CHECK, e_start_iter, e_end_iter);
-
       switch (e.type) {
         case Tl.EntityType.HASHTAG:
+          buffer.apply_tag_by_name (NO_SPELL_CHECK, e_start_iter, e_end_iter);
           buffer.apply_tag_by_name ("hashtag", e_start_iter, e_end_iter);
           break;
         case Tl.EntityType.MENTION:
+          buffer.apply_tag_by_name (NO_SPELL_CHECK, e_start_iter, e_end_iter);
           buffer.apply_tag_by_name ("mention", e_start_iter, e_end_iter);
           break;
         case Tl.EntityType.LINK:
+          buffer.apply_tag_by_name (NO_SPELL_CHECK, e_start_iter, e_end_iter);
           buffer.apply_tag_by_name ("link", e_start_iter, e_end_iter);
           break;
 
         case Tl.EntityType.TEXT:
           if (Corebird.snippet_manager.has_snippet_n (e.start, e.length_in_bytes)) {
+            buffer.apply_tag_by_name (NO_SPELL_CHECK, e_start_iter, e_end_iter);
             buffer.apply_tag_by_name ("snippet", e_start_iter, e_end_iter);
           }
           break;
