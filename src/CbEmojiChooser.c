@@ -448,7 +448,7 @@ cb_emoji_chooser_finalize (GObject *object)
   if (self->data != NULL)
     g_variant_unref (self->data);
 
-  g_object_unref (self->settings);
+  g_clear_object (&self->settings);
 
   if (self->populate_idle_id != 0)
     g_source_remove (self->populate_idle_id);
@@ -574,6 +574,16 @@ cb_emoji_chooser_try_init (CbEmojiChooser *self)
   GVariant *settings_test;
   gboolean recent_in_correct_format = FALSE;
   gboolean correct_checksum = FALSE;
+  GSettingsSchemaSource *schema_source;
+  GSettingsSchema *schema;
+
+  schema_source = g_settings_schema_source_get_default ();
+  schema = g_settings_schema_source_lookup (schema_source, "org.gtk.Settings.EmojiChooser", FALSE);
+
+  if (schema == NULL)
+    return FALSE;
+
+  g_settings_schema_unref (g_steal_pointer (&schema));
 
   self->settings = g_settings_new ("org.gtk.Settings.EmojiChooser");
   settings_test = g_settings_get_value (self->settings, "recent-emoji");
