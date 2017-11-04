@@ -424,17 +424,18 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
                                           e->start_character_index + e->length_in_characters);
 
       /* We ignore spell checking for all our special entities */
-      gtk_text_buffer_apply_tag_by_name (buffer, TAG_NO_SPELL_CHECK, &entity_start, &entity_end);
-
       switch (e->type)
         {
           case TL_ENT_MENTION:
+            gtk_text_buffer_apply_tag_by_name (buffer, TAG_NO_SPELL_CHECK, &entity_start, &entity_end);
             gtk_text_buffer_apply_tag_by_name (buffer, "mention", &entity_start, &entity_end);
             break;
           case TL_ENT_HASHTAG:
+            gtk_text_buffer_apply_tag_by_name (buffer, TAG_NO_SPELL_CHECK, &entity_start, &entity_end);
             gtk_text_buffer_apply_tag_by_name (buffer, "hashtag", &entity_start, &entity_end);
             break;
           case TL_ENT_LINK:
+            gtk_text_buffer_apply_tag_by_name (buffer, TAG_NO_SPELL_CHECK, &entity_start, &entity_end);
             gtk_text_buffer_apply_tag_by_name (buffer, "link", &entity_start, &entity_end);
             break;
 
