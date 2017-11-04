@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEDIA_H
-#define MEDIA_H
+#ifndef __CB_MEDIA_H__
+#define __CB_MEDIA_H__
 
 #include <glib-object.h>
 #include <cairo-gobject.h>
