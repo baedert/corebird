@@ -54,7 +54,7 @@ struct _CbMedia
 
   cairo_surface_t *surface;
   GdkPixbufAnimation *animation;
-  GskTexture *texture;
+  GdkTexture *texture;
 };
 
 typedef struct _CbMedia CbMedia;

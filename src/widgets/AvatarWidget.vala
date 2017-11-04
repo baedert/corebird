@@ -195,10 +195,10 @@ public class AvatarContainer : Gtk.Widget {
   }
 
   public Cairo.Surface surface;
-  public Gsk.Texture texture;
+  public Gdk.Texture texture;
 
 
-  static Gsk.Texture[] verified_textures;
+  static Gdk.Texture[] verified_textures;
   const int[] VERIFIED_SIZES = {12, 25};
   static construct {
     try {

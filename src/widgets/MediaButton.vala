@@ -22,7 +22,7 @@ private class MediaButton : Gtk.Widget {
   private const int MIN_HEIGHT     = 40;
   private const int MIN_WIDTH      = 40;
   private Cb.Media? _media = null;
-  private static Gsk.Texture[] play_icons;
+  private static Gdk.Texture[] play_icons;
   public Cb.Media? media {
     get {
       return _media;
