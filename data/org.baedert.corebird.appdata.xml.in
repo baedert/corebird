@@ -45,6 +45,17 @@
   <url type="donation">https://flattr.com/profile/baedert</url>
 
   <releases>
+    <release version="1.7.2" date="2017-11-04">
+      <p>Changes in Corebird 1.7.2:</p>
+      <ul>
+        <li>Fix window cancel button label mixup</li>
+        <li>Fix potential crash when composing a tweet (#779)</li>
+        <li>Fix abort when trying to detect emoji support (#781)</li>
+        <li>Fix spell checking</li>
+        <li>Update translations</li>
+      </ul>
+    </release>
+
     <release version="1.7" date="2017-10-28">
       <p>Changes in Corebird 1.7:</p>
       <ul>
