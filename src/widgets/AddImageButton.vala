@@ -21,7 +21,7 @@ class AddImageButton : Gtk.Widget {
   private const int MIN_HEIGHT = 100;
   private const int ICON_SIZE  = 32;
   public string image_path;
-  public Gsk.Texture? texture = null;
+  public Gdk.Texture? texture = null;
 
   public signal void deleted ();
 
