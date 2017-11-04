@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-24 10:31+0000\n"
+"PO-Revision-Date: 2017-10-28 11:40+0000\n"
 "Last-Translator: Iris Ilexiris <iris.ilexiris@gmail.com>\n"
 "Language-Team: Esperanto (http://www.transifex.com/corebird/corebird/language/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "Aliaj eblecoj estas vidigi filmeton kaj plurajn bildojn loke. Ankaŭ, li
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr "Malpreciza kronologividigo kiam Corebird uzas"
+msgstr "Malpreciza kronologovidigo kiam Corebird uzata"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
