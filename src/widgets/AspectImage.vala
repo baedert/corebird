@@ -46,8 +46,8 @@ class AspectImage : Gtk.Widget {
   private Gdk.RGBA bg_color;
   private Cairo.Surface? old_surface;
   private Cairo.ImageSurface? pixbuf_surface = null;
-  private Gsk.Texture? old_texture = null;
-  private Gsk.Texture? pixbuf_texture = null;
+  private Gdk.Texture? old_texture = null;
+  private Gdk.Texture? pixbuf_texture = null;
 
 
   public AspectImage () {}

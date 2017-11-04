@@ -687,11 +687,11 @@ cb_utils_query_users_finish (GAsyncResult  *result,
   return ids;
 }
 
-GskTexture *
+GdkTexture *
 cb_utils_surface_to_texture (cairo_surface_t *surface,
                              int              scale)
 {
-  GskTexture *tex;
+  GdkTexture *tex;
   cairo_surface_t *map;
   int width, height;
 
@@ -707,7 +707,7 @@ cb_utils_surface_to_texture (cairo_surface_t *surface,
   map = cairo_surface_map_to_image (surface,
                                     &(GdkRectangle) { 0, 0, width * scale, height * scale});
 
-  tex = gsk_texture_new_for_data (cairo_image_surface_get_data (map),
+  tex = gdk_texture_new_for_data (cairo_image_surface_get_data (map),
                                   width * scale,
                                   height * scale,
                                   cairo_image_surface_get_stride (map));

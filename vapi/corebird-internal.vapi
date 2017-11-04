@@ -58,7 +58,7 @@ namespace Cb {
     public int height;
     public double percent_loaded;
     public Cairo.ImageSurface? surface;
-    public Gsk.Texture texture;
+    public Gdk.Texture texture;
     public Gdk.PixbufAnimation? animation;
     public signal void progress();
 
@@ -315,7 +315,7 @@ namespace Cb {
     public string rest_proxy_call_to_string (Rest.ProxyCall c);
     public async Json.Node? load_threaded_async (Rest.ProxyCall call, GLib.Cancellable? cancellable) throws GLib.Error;
     public async UserIdentity[] query_users_async (Rest.Proxy p, string q, GLib.Cancellable? cancellable) throws GLib.Error;
-    public Gsk.Texture surface_to_texture (Cairo.Surface s, int scale);
+    public Gdk.Texture surface_to_texture (Cairo.Surface s, int scale);
     public void load_custom_css ();
   }
 
