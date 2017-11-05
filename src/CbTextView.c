@@ -71,7 +71,7 @@ cb_text_view_get_cursor_word (CbTextView *self,
   TlEntity *entities;
   gsize n_entities;
   guint i;
-  int cursor_position;
+  guint cursor_position;
   char *cursor_word = NULL;
 
   if (start_index != NULL)

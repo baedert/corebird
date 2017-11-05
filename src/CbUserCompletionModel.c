@@ -90,7 +90,7 @@ cb_user_completion_model_new (void)
 
 static inline gboolean
 cb_user_completion_model_has_id (CbUserCompletionModel *self,
-                                 guint64                id)
+                                 gint64                 id)
 {
   guint x;
 
