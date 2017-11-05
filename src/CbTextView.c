@@ -449,24 +449,25 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
   g_signal_emit (self, text_view_signals[SIGNAL_CHANGED], 0);
 }
 
-static void
+static gboolean
 cb_text_view_insert_completion (CbTextView    *self,
                                 GtkListBoxRow *row)
 {
-  const char *screen_name = g_object_get_data (G_OBJECT (row), "row-data");
+  const char *screen_name;
   GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
   guint word_start, word_end;
   char *cursor_word = cb_text_view_get_cursor_word (self, &word_start, &word_end);
   GtkTextIter word_start_iter, word_end_iter;
   char *completion;
 
+  if (row == NULL)
+    return FALSE;
+
+  screen_name = g_object_get_data (G_OBJECT (row), "row-data");
   g_assert (screen_name != NULL);
 
   if (cursor_word == NULL)
-    {
-      g_warning ("No cursor word found");
-      return;
-    }
+    return FALSE;
 
   g_object_freeze_notify (G_OBJECT (buffer));
 
@@ -486,6 +487,8 @@ cb_text_view_insert_completion (CbTextView    *self,
 
   g_free (completion);
   g_free (cursor_word);
+
+  return TRUE;
 }
 
 static gboolean
@@ -504,10 +507,12 @@ cb_text_view_key_press_event_cb (GtkWidget   *widget,
       case GDK_KEY_Return:
           {
             GtkListBoxRow *selected_row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->completion_listbox),
-                                                                     self->selected_row);
-            cb_text_view_insert_completion (self, selected_row);
+                                                                         self->selected_row);
+            if (cb_text_view_insert_completion (self, selected_row))
+              return GDK_EVENT_STOP;
+            else
+              return GDK_EVENT_PROPAGATE;
           }
-        return GDK_EVENT_STOP;
 
       case GDK_KEY_Down:
         cb_text_view_select_completion_row (self, self->selected_row + 1);
