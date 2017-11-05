@@ -490,7 +490,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
               if (variant != NULL)
                 {
-                  int n_media = t->n_medias;
+                  guint n_media = t->n_medias;
                   const char *thumb_url = json_object_get_string_member (media_obj, "media_url");
                   /* Some tweets have both a video and a thumbnail for that video attached. The tweet json
                    * will list the image first. The url of the image and the thumb_url of the video will match

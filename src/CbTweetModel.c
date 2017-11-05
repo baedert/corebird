@@ -105,7 +105,8 @@ static inline void
 update_min_max_id (CbTweetModel *self,
                    gint64        old_id)
 {
-  int i;
+  guint i;
+
 #ifdef DEBUG
   /* This should be called *after* the
    * tweet has been removed from self->tweets! */
@@ -212,7 +213,7 @@ insert_sorted (CbTweetModel *self,
     {
       /* This case should be relatively rare in real life since
        * we only ever add tweets at the top or bottom of a list */
-      int i;
+      guint i;
 
       for (i = 0; i < self->tweets->len - 1; i ++)
         {
@@ -279,7 +280,8 @@ gboolean
 cb_tweet_model_contains_id (CbTweetModel *self,
                             gint64        id)
 {
-  int i;
+  guint i;
+
   g_return_val_if_fail (CB_IS_TWEET_MODEL (self), FALSE);
 
   for (i = 0; i < self->tweets->len; i ++)
@@ -317,13 +319,13 @@ cb_tweet_model_get_for_id (CbTweetModel *self,
   int i;
   g_return_val_if_fail (CB_IS_TWEET_MODEL (self), NULL);
 
-  for (i = 0; i < self->tweets->len; i ++)
+  for (i = 0; i < (int)self->tweets->len; i ++)
     {
       CbTweet *tweet = g_ptr_array_index (self->tweets, i);
 
       if (tweet->id == id)
         {
-          if (i + diff < self->tweets->len && i + diff >= 0)
+          if (i + diff < (int)self->tweets->len && i + diff >= 0)
             return g_ptr_array_index (self->tweets, i + diff);
 
           return NULL;
@@ -338,7 +340,8 @@ cb_tweet_model_delete_id (CbTweetModel *self,
                           gint64        id,
                           gboolean     *seen)
 {
-  int i;
+  guint i;
+
   g_return_val_if_fail (CB_IS_TWEET_MODEL (self), FALSE);
 
   for (i = 0; i < self->tweets->len; i ++)
@@ -370,7 +373,8 @@ void
 cb_tweet_model_remove_tweet (CbTweetModel *self,
                              CbTweet      *tweet)
 {
-  int i;
+  guint i;
+
   g_return_if_fail (CB_IS_TWEET_MODEL (self));
   g_return_if_fail (CB_IS_TWEET (tweet));
 
@@ -418,7 +422,8 @@ cb_tweet_model_toggle_flag_on_user_tweets (CbTweetModel *self,
                                            CbTweetState  flag,
                                            gboolean      active)
 {
-  int i;
+  guint i;
+
   g_return_if_fail (CB_IS_TWEET_MODEL (self));
 
   for (i = 0; i < self->tweets->len; i ++)
@@ -467,7 +472,8 @@ cb_tweet_model_toggle_flag_on_user_retweets (CbTweetModel *self,
                                              CbTweetState  flag,
                                              gboolean      active)
 {
-  int i;
+  guint i;
+
   g_return_if_fail (CB_IS_TWEET_MODEL (self));
 
   for (i = 0; i < self->tweets->len; i ++)
@@ -517,7 +523,7 @@ cb_tweet_model_set_tweet_flag (CbTweetModel *self,
                                CbTweet      *tweet,
                                CbTweetState  flag)
 {
-  int i;
+  guint i;
 
   if (cb_tweet_is_hidden (tweet))
     {
@@ -588,7 +594,7 @@ cb_tweet_model_unset_tweet_flag (CbTweetModel *self,
                                  CbTweet      *tweet,
                                  CbTweetState  flag)
 {
-  int i;
+  guint i;
 
   if (cb_tweet_is_hidden (tweet))
     {
