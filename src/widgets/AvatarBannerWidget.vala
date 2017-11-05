@@ -58,11 +58,11 @@ public class AvatarBannerWidget : Gtk.Container {
   }
 
   private int get_avatar_x () {
-    return (get_allocated_width () / 2) - (AVATAR_SIZE / 2);
+    return (get_width () / 2) - (AVATAR_SIZE / 2);
   }
 
   private int get_avatar_y () {
-    return get_allocated_height () - AVATAR_SIZE;
+    return get_height () - AVATAR_SIZE;
   }
 
 
