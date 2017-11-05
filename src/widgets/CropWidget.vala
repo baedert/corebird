@@ -359,10 +359,6 @@ class CropWidget : Gtk.DrawingArea {
     snapshot.append_color (quad_color, quad_bounds, "Resize quad");
   }
 
-  private inline void set_cursor (Gdk.Cursor cursor) {
-    this.get_window ().set_cursor (cursor);
-  }
-
   private bool cursor_in_selection (double x, double y) {
     return x >= selection_rect.x &&
            x <= selection_rect.x + selection_rect.width &&
