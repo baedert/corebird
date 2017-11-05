@@ -96,7 +96,7 @@ class MaxSizeContainer : Gtk.Bin {
 
   public override void snapshot (Gtk.Snapshot snapshot) {
     Graphene.Rect clip_bounds = {};
-    clip_bounds.init (0, 0, this.get_allocated_width (), this.get_allocated_height ());
+    clip_bounds.init (0, 0, this.get_width (), this.get_height ());
 
     snapshot.push_clip (clip_bounds, "MaxSizeContainer clip");
     base.snapshot (snapshot);

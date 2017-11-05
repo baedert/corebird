@@ -39,8 +39,8 @@ class PixbufButton : Gtk.Button {
   public PixbufButton () {}
 
   public override void snapshot (Gtk.Snapshot snapshot) {
-    int widget_width = this.get_allocated_width ();
-    int widget_height = this.get_allocated_height ();
+    int widget_width = this.get_width ();
+    int widget_height = this.get_height ();
 
     Graphene.Rect bounds = {};
     bounds.origin.x = 0;

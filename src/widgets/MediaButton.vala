@@ -177,8 +177,8 @@ private class MediaButton : Gtk.Widget {
       return;
     }
 
-    width  = this.get_allocated_width ();
-    height = this.get_allocated_height ();
+    width  = this.get_width ();
+    height = this.get_height ();
     double scale_x = (double)width / this._media.width;
     double scale_y = (double)height / this._media.height;
 
@@ -190,8 +190,8 @@ private class MediaButton : Gtk.Widget {
 
   /* TODO: We conceptually use the texture as a separate widget here... */
   public override void snapshot (Gtk.Snapshot snapshot) {
-    int widget_width = get_allocated_width ();
-    int widget_height = get_allocated_height ();
+    int widget_width = get_width ();
+    int widget_height = get_height ();
 
     /* Draw thumbnail */
     if (_media != null && _media.surface != null && _media.loaded) {
@@ -382,8 +382,8 @@ private class MediaButton : Gtk.Widget {
 
     if (button == Gdk.BUTTON_PRIMARY) {
       this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
-      double px = x / (double)this.get_allocated_width ();
-      double py = y / (double)this.get_allocated_height ();
+      double px = x / (double)this.get_width ();
+      double py = y / (double)this.get_height ();
       this.clicked (this, px, py);
     }
   }
