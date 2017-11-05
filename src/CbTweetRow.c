@@ -17,6 +17,7 @@
 
 #include "CbTweetRow.h"
 #include "CbUtils.h"
+#include "CbQuoteTweetWidget.h"
 #include "corebird.h"
 
 G_DEFINE_TYPE (CbTweetRow, cb_tweet_row, GTK_TYPE_LIST_BOX_ROW);
@@ -47,7 +48,7 @@ cb_tweet_row_measure (GtkWidget      *widget,
         self->reply_label,
         self->text_label,
         self->rt_image,
-        self->mm_widget,
+        self->quote_box == NULL ? self->mm_widget : self->quote_box,
       };
       int avatar_width, left_height;
 
@@ -62,7 +63,6 @@ cb_tweet_row_measure (GtkWidget      *widget,
 
           if (right_group[i])
             {
-
               gtk_widget_measure (right_group[i], GTK_ORIENTATION_VERTICAL,
                                   MAX (-1, for_size - avatar_width), &m, &n, NULL, NULL);
 
@@ -155,15 +155,30 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
 
   if (self->mm_widget != NULL)
     {
-      gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
-                          NULL, NULL);
-      child_alloc.width = MAX (allocation->width - avatar_width, min_width);
-      gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_VERTICAL, child_alloc.width,
-                          &min_height, &nat_height, NULL, NULL);
-      child_alloc.x = avatar_width;
-      child_alloc.y = child_alloc.y + child_alloc.height;
-      child_alloc.height = min_height;
-      gtk_widget_size_allocate (self->mm_widget, &child_alloc, -1, &child_clip);
+      if (self->quote_box != NULL)
+        {
+          gtk_widget_measure (self->quote_box, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
+                              NULL, NULL);
+          child_alloc.width = MAX (allocation->width - avatar_width, min_width);
+          gtk_widget_measure (self->quote_box, GTK_ORIENTATION_VERTICAL, child_alloc.width,
+                              &min_height, &nat_height, NULL, NULL);
+          child_alloc.x = avatar_width;
+          child_alloc.y = child_alloc.y + child_alloc.height;
+          child_alloc.height = min_height;
+          gtk_widget_size_allocate (self->quote_box, &child_alloc, -1, &child_clip);
+        }
+      else
+        {
+          gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
+                              NULL, NULL);
+          child_alloc.width = MAX (allocation->width - avatar_width, min_width);
+          gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_VERTICAL, child_alloc.width,
+                              &min_height, &nat_height, NULL, NULL);
+          child_alloc.x = avatar_width;
+          child_alloc.y = child_alloc.y + child_alloc.height;
+          child_alloc.height = min_height;
+          gtk_widget_size_allocate (self->mm_widget, &child_alloc, -1, &child_clip);
+        }
     }
 }
 
@@ -180,7 +195,10 @@ cb_tweet_row_finalize (GObject *object)
   if (self->reply_label)
     gtk_widget_unparent (self->reply_label);
 
-  if (self->mm_widget)
+  if (self->quote_box)
+    gtk_widget_unparent (self->quote_box);
+
+  if (self->mm_widget && self->quote_box == NULL)
     gtk_widget_unparent (self->mm_widget);
 
   if (self->rt_label)
@@ -362,14 +380,28 @@ create_ui (CbTweetRow *self)
       gtk_widget_set_halign (self->rt_label, GTK_ALIGN_START);
       gtk_widget_set_parent (self->rt_label, (GtkWidget *)self);
     }
+  else if (self->tweet->quoted_tweet != NULL)
+    {
+      self->quote_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+      self->quote_widget = cb_quote_tweet_widget_new (self->tweet->quoted_tweet);
+
+      gtk_container_add (GTK_CONTAINER (self->quote_box), self->quote_widget);
+
+      gtk_style_context_add_class (gtk_widget_get_style_context (self->quote_box), "quote");
+      gtk_widget_set_parent (self->quote_box, (GtkWidget *)self);
+    }
 
   /* Inline media */
   if (cb_tweet_has_inline_media (self->tweet))
     {
       int n_medias;
-      CbMedia ** medias = cb_tweet_get_medias (self->tweet, &n_medias);
+      CbMedia **medias = cb_tweet_get_medias (self->tweet, &n_medias);
       self->mm_widget = (GtkWidget *)multi_media_widget_new ();
-      gtk_widget_set_parent (self->mm_widget, (GtkWidget *)self);
+
+      if (self->quote_box != NULL)
+        gtk_container_add (GTK_CONTAINER (self->quote_box), self->mm_widget);
+      else
+        gtk_widget_set_parent (self->mm_widget, (GtkWidget *)self);
 
       multi_media_widget_set_all_media ((MultiMediaWidget *)self->mm_widget, medias, n_medias);
       g_signal_connect (self->mm_widget, "media-clicked", G_CALLBACK (media_clicked_cb), self);

@@ -25,6 +25,14 @@ struct _CbQuoteTweetWidget
 {
   GtkWidget parent_instance;
 
+  GtkWidget *top_row_box;
+  GtkWidget *name_button;
+  GtkWidget *screen_name_label;
+  GtkWidget *time_delta_label;
+  GtkWidget *text_label;
+
+  gint64 user_id;
+  char *screen_name;
 };
 typedef struct _CbQuoteTweetWidget CbQuoteTweetWidget;
 
