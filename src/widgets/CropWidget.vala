@@ -255,8 +255,8 @@ class CropWidget : Gtk.DrawingArea {
     if (image == null)
       return;
 
-    int widget_width  = get_allocated_width ();
-    int widget_height = get_allocated_height ();
+    int widget_width  = get_width ();
+    int widget_height = get_height ();
 
     Graphene.Rect bounds = {};
     bounds.origin.x = 0;
@@ -379,8 +379,8 @@ class CropWidget : Gtk.DrawingArea {
   }
 
   private void calculate_image_rect () {
-    int widget_width  = this.get_allocated_width ();
-    int widget_height = this.get_allocated_height ();
+    int widget_width  = this.get_width ();
+    int widget_height = this.get_height ();
 
     if (this.image == null) {
       return;

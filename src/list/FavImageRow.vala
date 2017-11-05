@@ -109,8 +109,8 @@ class FavImageRow : Gtk.FlowBoxChild {
 
     if (this.is_gif) {
       float scale = 0.6f;
-      int width = this.get_allocated_width ();
-      int height = this.get_allocated_height ();
+      int width = this.get_width ();
+      int height = this.get_height ();
 
       float x = (width / 2.0f) - (play_icon.get_width () * scale / 2.0f);
       float y = (height / 2.0f) - (play_icon.get_height () * scale / 2.0f);

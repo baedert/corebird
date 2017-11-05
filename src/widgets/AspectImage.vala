@@ -113,8 +113,8 @@ class AspectImage : Gtk.Widget {
 
   public override void snapshot (Gtk.Snapshot snapshot) {
     Graphene.Rect bounds = {};
-    int width  = get_allocated_width ();
-    int height = get_allocated_height ();
+    int width  = get_width ();
+    int height = get_height ();
 
     bounds.origin.x = 0;
     bounds.origin.y = 0;
