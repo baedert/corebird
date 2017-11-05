@@ -95,7 +95,6 @@ private class MediaButton : Gtk.Widget {
   public MediaButton (Cb.Media? media, bool restrict_height = false) {
     this.media = media;
     this.restrict_height = restrict_height;
-    this.get_style_context ().add_class ("inline-media");
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
     this.insert_action_group ("media", actions);
@@ -124,9 +123,8 @@ private class MediaButton : Gtk.Widget {
         /* Invalid media. */
         this.hide ();
         this.set_sensitive (false);
+        this.queue_resize ();
       }
-
-      this.queue_resize ();
     }
   }
 
