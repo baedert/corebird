@@ -47,13 +47,9 @@ class CropWidget : Gtk.DrawingArea {
 
   construct {
     this.motion_notify_event.connect (mouse_motion_cb);
-    warning ("The cursors here are broken");
-    this.drag_cursor = null;//new Gdk.Cursor.for_display (this.get_display (),
-                                    //               Gdk.CursorType.FLEUR);
-    this.default_cursor = null;//new Gdk.Cursor.for_display (this.get_display (),
-                                  //                    Gdk.CursorType.ARROW);
-    this.resize_cursor = null;//new Gdk.Cursor.for_display (this.get_display (),
-                                //                     Gdk.CursorType.BOTTOM_RIGHT_CORNER);
+    this.drag_cursor = new Gdk.Cursor.from_name ("grabbing", null);
+    this.default_cursor = new Gdk.Cursor.from_name ("default", null);
+    this.resize_cursor = new Gdk.Cursor.from_name ("se-resize", null);
     this.image_rect = Gdk.Rectangle ();
     this.selection_rect = Gdk.Rectangle ();
 
