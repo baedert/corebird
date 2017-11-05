@@ -55,7 +55,7 @@ avatar>container.avatar-round {
   background-color: grey;
 }
 
-.inline-media {
+mediabutton {
   background: none;
   border-radius: 0px;
   padding: 0px;
@@ -66,7 +66,7 @@ avatar>container.avatar-round {
   border-top: 2px solid transparent;
 }
 
-.inline-media:hover {
+mediabutton:hover {
   opacity: 1.0;
   box-shadow: none;
   border-top: 2px solid grey;
@@ -227,12 +227,12 @@ replyindicator {
 }
 
 .avatar:disabled,
-.inline-media:disabled {
+mediabutton:disabled {
   opacity: 0.4;
 }
 /* Override the earlier rule to read-only
  * inline media are still full-opacity */
-.read-only .inline-media:disabled {
+.read-only mediabutton:disabled {
   opacity: 1.0;
 }
 
