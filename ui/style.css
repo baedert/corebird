@@ -312,6 +312,14 @@ row.tweet>.header {
   margin-bottom: 0.5em;
 }
 
+row.tweet>box.quote {
+ padding-left: 0.5em;
+ margin-top: 1em;
+}
+row.tweet>box.quote>quotetweet>box.header {
+  margin-bottom: 0.5em;
+}
+
 list.tweets {
   background-color: #eee;
 }

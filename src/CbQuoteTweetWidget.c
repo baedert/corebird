@@ -173,6 +173,7 @@ create_ui (CbQuoteTweetWidget *self,
   char *text;
 
   self->top_row_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");
   gtk_widget_set_parent (self->top_row_box, (GtkWidget *)self);
 
   self->name_button = (GtkWidget *)text_button_new ();
