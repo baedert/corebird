@@ -167,7 +167,7 @@ add_emoji (GtkWidget    *box,
   GVariant *codes;
   char text[64];
   char *p = text;
-  int i;
+  guint i;
 
   codes = g_variant_get_child_value (item, 0);
   for (i = 0; i < g_variant_n_children (codes); i++)
@@ -211,7 +211,7 @@ typedef struct {
 static gboolean
 populate_one_emoji (gpointer user_data)
 {
-  const int N = 4; /* Kinda-sorta sweetspot on my system... */
+  const guint N = 4; /* Kinda-sorta sweetspot on my system... */
   PopulateData *data = user_data;
   GVariant *item;
   const char *name;
