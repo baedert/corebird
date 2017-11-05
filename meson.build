@@ -215,6 +215,7 @@ cb_lib = static_library(
     '--target-glib=' + min_glib_version,
     '--vapidir=' + meson.source_root() + '/vapi/',
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
+    '--disable-since-check'
   ],
   c_args: [
     '-Werror=implicit-function-declaration'
