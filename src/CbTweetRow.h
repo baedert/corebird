@@ -41,6 +41,8 @@ struct _CbTweetRow
   GtkWidget *rt_label;
   GtkWidget *reply_label;
   GtkWidget *mm_widget;
+  GtkWidget *quote_box;
+  GtkWidget *quote_widget;
 };
 typedef struct _CbTweetRow CbTweetRow;
 
