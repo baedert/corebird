@@ -42,7 +42,6 @@ public class AccountDialog : Gtk.Window {
   private Gtk.Label error_label;
   [GtkChild]
   private Gtk.Button save_button;
-  [GtkChild]
   private Gtk.Label description_length_label;
 
   private unowned Account account;
@@ -97,6 +96,11 @@ public class AccountDialog : Gtk.Window {
     description_text_view.changed.connect (update_description_length);
 
     this.add_accel_group (ag);
+
+    warning ("The length label here looks stupid");
+    description_length_label = new Gtk.Label ("");
+    description_length_label.get_style_context ().add_class ("dim-label");
+    description_text_view.add_widget (description_length_label);
     this.update_description_length ();
   }
 
