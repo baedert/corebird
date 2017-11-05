@@ -159,7 +159,7 @@ query_sqlite_cb (void  *user_data,
 {
   struct {
     GArray *infos;
-    int lowest_score;
+    guint lowest_score;
   } *query_data = user_data;
   CbUserInfo *ui;
   guint i;
@@ -194,16 +194,16 @@ void
 cb_user_counter_query_by_prefix (CbUserCounter *counter,
                                  sqlite3       *db,
                                  const char    *prefix,
-                                 int            max_results,
+                                 guint          max_results,
                                  CbUserInfo  **results,
                                  int           *n_results)
 {
   char *sql;
   char *err;
-  int i;
+  guint i;
   struct {
     GArray *infos;
-    int lowest_score;
+    guint lowest_score;
   } query_data;
 
   g_return_if_fail (CB_IS_USER_COUNTER (counter));

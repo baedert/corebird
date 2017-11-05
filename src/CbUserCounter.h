@@ -15,8 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef USER_COUNTER_H
-#define USER_COUNTER_H
+#ifndef __CB_USER_COUNTER_H__
+#define __CB_USER_COUNTER_H__
 
 #include <glib-object.h>
 #include <sqlite3.h>
@@ -62,7 +62,7 @@ int             cb_user_counter_save            (CbUserCounter *counter,
 void            cb_user_counter_query_by_prefix (CbUserCounter *counter,
                                                  sqlite3       *db,
                                                  const char    *prefix,
-                                                 int            max_results,
+                                                 guint          max_results,
                                                  CbUserInfo   **results,
                                                  int           *n_results);
 
