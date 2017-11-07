@@ -53,7 +53,7 @@ struct _RestProxyCallUploadClosure {
   GObject *weak_object;
   gpointer userdata;
   SoupMessage *message;
-  gsize uploaded;
+  gssize uploaded;
 };
 typedef struct _RestProxyCallUploadClosure RestProxyCallUploadClosure;
 
