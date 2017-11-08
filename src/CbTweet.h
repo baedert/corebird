@@ -23,7 +23,7 @@
 #include "CbTypes.h"
 #include "CbMedia.h"
 
-#define CB_TWEET_MAX_LENGTH 140
+#define CB_TWEET_MAX_LENGTH 280
 
 typedef enum
 {
