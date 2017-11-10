@@ -41,6 +41,9 @@
             <property name="transition-type">crossfade</property>
             <child>
               <object class="GtkGrid">
+                <style>
+                  <class name="view" />
+                </style>
                 <child>
                   <object class="AspectImage" id="banner_image">
                     <property name="visible">1</property>
@@ -200,168 +203,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid">
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
-                    <child>
-                      <object class="GtkRadioButton" id="tweets_button">
-                        <property name="hexpand">1</property>
-                        <property name="draw-indicator">0</property>
-                        <property name="relief">none</property>
-                        <style>
-                          <class name="profile-button"/>
-                        </style>
-                        <signal name="toggled" handler="tweets_button_toggled_cb"/>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="hexpand">1</property>
-                                <property name="label" translatable="yes">Tweets</property>
-                                <property name="justify">center</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="tweets_label">
-                                <property name="hexpand">1</property>
-                                <property name="label">--</property>
-                                <property name="justify">center</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">0</property>
-                        <property name="top-attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkRadioButton">
-                        <property name="hexpand">1</property>
-                        <property name="group">tweets_button</property>
-                        <property name="draw-indicator">0</property>
-                        <property name="relief">none</property>
-                        <style>
-                          <class name="profile-button"/>
-                        </style>
-                        <signal name="toggled" handler="followers_button_toggled_cb"/>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="hexpand">1</property>
-                                <property name="label" translatable="yes">Followers</property>
-                                <property name="justify">center</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="followers_label">
-                                <property name="hexpand">1</property>
-                                <property name="label">--</property>
-                                <property name="justify">center</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkRadioButton">
-                        <property name="hexpand">1</property>
-                        <property name="group">tweets_button</property>
-                        <property name="draw-indicator">0</property>
-                        <property name="relief">none</property>
-                        <style>
-                          <class name="profile-button"/>
-                        </style>
-                        <signal name="toggled" handler="following_button_toggled_cb"/>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="hexpand">1</property>
-                                <property name="label" translatable="yes">Following</property>
-                                <property name="justify">center</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="following_label">
-                                <property name="hexpand">1</property>
-                                <property name="label">--</property>
-                                <property name="justify">center</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">2</property>
-                        <property name="top-attach">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkRadioButton">
-                        <property name="hexpand">1</property>
-                        <property name="group">tweets_button</property>
-                        <property name="draw-indicator">0</property>
-                        <property name="relief">none</property>
-                        <style>
-                          <class name="profile-button"/>
-                        </style>
-                        <signal name="toggled" handler="lists_button_toggled_cb"/>
-                        <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="hexpand">1</property>
-                                <property name="label" translatable="yes">Lists</property>
-                                <property name="justify">center</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="hexpand">1</property>
-                                <property name="justify">center</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left-attach">3</property>
-                        <property name="top-attach">0</property>
-                        <property name="height">2</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">8</property>
-                    <property name="width">5</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkSeparator">
                   </object>
                   <packing>
@@ -394,40 +235,6 @@
               </object>
             </child>
           </object>
-        </child>
-        <child>
-          <object class="GtkStack" id="user_stack">
-            <property name="transition-type">crossfade</property>
-            <property name="vhomogeneous">0</property>
-            <child>
-              <object class="TweetListBox" id="tweet_list">
-                <property name="visible">1</property>
-                <property name="can-focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="selection-mode">none</property>
-              </object>
-            </child>
-            <child>
-              <object class="UserListsWidget" id="user_lists"/>
-            </child>
-            <child>
-              <object class="TweetListBox" id="followers_list">
-                <property name="visible">1</property>
-                <property name="vexpand">true</property>
-                <property name="selection-mode">none</property>
-              </object>
-            </child>
-            <child>
-              <object class="TweetListBox" id="following_list">
-                <property name="visible">1</property>
-                <property name="vexpand">true</property>
-                <property name="selection-mode">none</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="position">6</property>
-          </packing>
         </child>
       </object>
     </child>
