@@ -31,6 +31,7 @@
             <property name="yalign">1</property>
             <property name="xalign">0</property>
             <property name="ellipsize">end</property>
+            <property name="max-width-chars">40</property>
             <attributes>
               <attribute name="weight" value="bold"/>
             </attributes>
