@@ -29,7 +29,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set { screen_name_label.label = "@" + value; }
   }
   public new string name {
-    set { name_button.label = value; }
+    set { name_button.set_markup (value.replace ("&", "&amp;")); }
   }
 
   public Cairo.Surface avatar {
@@ -71,6 +71,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
     this.screen_name_label = new Gtk.Label (null);
     screen_name_label.set_margin_start (6);
+    screen_name_label.set_margin_end (6);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
     screen_name_label.show ();

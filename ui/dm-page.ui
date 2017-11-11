@@ -31,6 +31,7 @@
             <child>
               <object class="GtkScrolledWindow">
                 <property name="visible">1</property>
+                <property name="hscrollbar-policy">never</property>
                 <child>
                   <object class="CompletionTextView" id="text_view">
                     <property name="visible">True</property>
