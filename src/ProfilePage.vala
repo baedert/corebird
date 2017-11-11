@@ -40,7 +40,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   public int id { get; set; }
 
   [GtkChild]
-  private AspectImage banner_image;
+  private Cb.AspectImage banner_image;
   [GtkChild]
   private AvatarWidget avatar_image;
   [GtkChild]
@@ -218,9 +218,6 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     //if (protected_user) {
       //tweet_list.set_placeholder_text (_("Protected profile"));
     //}
-
-    string color = root.get_string_member ("profile_background_color");
-    banner_image.color_string = "#" + color;
 
     if (root.has_member ("profile_banner_url")) {
       string banner_base_url = root.get_string_member ("profile_banner_url");
@@ -414,9 +411,9 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
   private inline void set_banner (Gdk.Pixbuf? banner) {
     if (banner == null)
-      banner_image.pixbuf = Twitter.no_banner;
+      banner_image.set_pixbuf (Twitter.no_banner);
     else
-      banner_image.pixbuf = banner;
+      banner_image.set_pixbuf (banner);
   }
 
   /**

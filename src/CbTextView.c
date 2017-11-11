@@ -404,6 +404,8 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
   gsize n_entities;
   guint i;
 
+  g_warning ("Fix the textview so completion only plays a role if we are actually completing.");
+
   gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
 
   /* Remove all *our* tags (gspell might add others) */

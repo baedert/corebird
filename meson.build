@@ -110,7 +110,6 @@ corebird_lib_sources = files([
   'src/util/Utils.vala',
   'src/widgets/AccountCreateWidget.vala',
   'src/widgets/AddImageButton.vala',
-  'src/widgets/AspectImage.vala',
   'src/widgets/AvatarBannerWidget.vala',
   'src/widgets/AvatarWidget.vala',
   'src/widgets/BadgeRadioButton.vala',
@@ -169,6 +168,7 @@ corebird_lib_sources = files([
   'src/CbTextView.c',
   'src/CbAnimation.c',
   'src/CbQuoteTweetWidget.c',
+  'src/CbAspectImage.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',
