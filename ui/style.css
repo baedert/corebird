@@ -308,8 +308,8 @@ row.tweet textbutton {
   margin-right: 0.5em;
 }
 
-row.tweet>.header {
-  margin-bottom: 0.5em;
+row.tweet>label.text {
+  margin-top: 0.5em;
 }
 
 row.tweet>box.quote {
