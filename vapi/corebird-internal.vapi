@@ -444,4 +444,10 @@ namespace Cb {
     public string get_text ();
   }
 
+  [CCode (cprefix = "CbAspectImage_", lower_case_cprefix = "cb_aspect_image_", cheader_filename =
+          "CbAspectImage.h")]
+  public class AspectImage : Gtk.Widget {
+    public AspectImage ();
+    public void set_pixbuf (Gdk.Pixbuf pixbuf);
+  }
 }
