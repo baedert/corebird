@@ -75,6 +75,8 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       var name_label = new Gtk.Label ("<b>" + tweet.get_user_name () + "</b>");
       name_label.set_use_markup (true);
       name_label.valign = Gtk.Align.BASELINE;
+      name_label.ellipsize = Pango.EllipsizeMode.END;
+      name_label.xalign = 0;
       name_label.show ();
       this.grid.attach (name_label, 1, 0, 1, 1);
 
