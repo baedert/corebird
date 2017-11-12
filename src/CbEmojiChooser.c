@@ -581,9 +581,13 @@ cb_emoji_chooser_try_init (CbEmojiChooser *self)
   schema = g_settings_schema_source_lookup (schema_source, "org.gtk.Settings.EmojiChooser", FALSE);
 
   if (schema == NULL)
-    return FALSE;
+    {
+      g_message ("Emoji chooser: Schema not found");
+      return FALSE;
+    }
 
-  g_settings_schema_unref (g_steal_pointer (&schema));
+  g_settings_schema_unref (schema);
+  schema = NULL;
 
   self->settings = g_settings_new ("org.gtk.Settings.EmojiChooser");
   settings_test = g_settings_get_value (self->settings, "recent-emoji");
@@ -592,22 +596,30 @@ cb_emoji_chooser_try_init (CbEmojiChooser *self)
   g_variant_unref (settings_test);
 
   if (!recent_in_correct_format)
-    return FALSE;
+    {
+      g_message ("Emoji chooser: Recent variant in wrong format");
+      return FALSE;
+    }
 
   bytes = g_resources_lookup_data ("/org/gtk/libgtk/emoji/emoji.data", 0, NULL);
 
   if (bytes == NULL)
-    return FALSE;
+    {
+      g_message ("Emoji chooser: resources not available");
+      return FALSE;
+    }
 
   checksum = g_compute_checksum_for_bytes (G_CHECKSUM_SHA1, bytes);
 
   correct_checksum = strcmp (checksum, EMOJI_DATA_CHECKSUM) == 0;
-  g_free (checksum);
   if (!correct_checksum)
     {
+      g_message ("Emoji chooser: checksum mismatch. %s != %s", checksum, EMOJI_DATA_CHECKSUM);
+      g_free (checksum);
       g_bytes_unref (bytes);
       return FALSE;
     }
+  g_free (checksum);
 
   self->data = g_variant_ref_sink (g_variant_new_from_bytes (G_VARIANT_TYPE ("a(auss)"),
                                                              bytes, TRUE));
