@@ -578,7 +578,7 @@ cb_emoji_chooser_try_init (CbEmojiChooser *self)
   GSettingsSchema *schema;
 
   schema_source = g_settings_schema_source_get_default ();
-  schema = g_settings_schema_source_lookup (schema_source, "org.gtk.Settings.EmojiChooser", FALSE);
+  schema = g_settings_schema_source_lookup (schema_source, "org.gtk.Settings.EmojiChooser", TRUE);
 
   if (schema == NULL)
     {
