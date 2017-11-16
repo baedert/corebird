@@ -36,7 +36,7 @@ class FavImageView : Gtk.Box {
     this.add (scrolled_window);
 
     this.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-    this.new_fav_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.BUTTON);
+    this.new_fav_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
     new_fav_image_button.set_halign (Gtk.Align.START);
     new_fav_image_button.set_margin_start (6);
     new_fav_image_button.set_margin_top (6);
@@ -54,14 +54,12 @@ class FavImageView : Gtk.Box {
     var image_target_list = new Gtk.TargetList (null);
     image_target_list.add_text_targets (0);
 
-    Gtk.drag_dest_set (this,
-                       Gtk.DestDefaults.ALL,
-                       null,
-                       Gdk.DragAction.COPY);
-    Gtk.drag_dest_set_target_list (this, image_target_list);
-
-    /* Fuck it */
-    this.show ();
+    warning ("Re-enable gtk_drag_dest_set call");
+    //Gtk.drag_dest_set (this,
+                       //Gtk.DestDefaults.ALL,
+                       //null,
+                       //Gdk.DragAction.COPY);
+    //Gtk.drag_dest_set_target_list (this, image_target_list);
   }
 
   public void load_images () {

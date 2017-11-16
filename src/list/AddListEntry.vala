@@ -18,7 +18,7 @@
 class AddListEntry : Gtk.ListBoxRow {
   public AddListEntry (string label) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
-    var img = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.DIALOG);
+    var img = new Gtk.Image.from_icon_name ("list-add-symbolic");
     img.pixel_size = 32;
     img.margin_start = 10;
     img.hexpand = true;

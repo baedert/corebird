@@ -93,12 +93,11 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_button.add (avatar_image);
     header_box.add (account_button);
     this.compose_tweet_button = new Gtk.ToggleButton ();
-    compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic",
-                                                            Gtk.IconSize.BUTTON));
+    compose_tweet_button.add (new Gtk.Image.from_icon_name ("corebird-compose-symbolic"));
     compose_tweet_button.set_tooltip_text (_("Compose Tweet"));
     compose_tweet_button.set_action_name ("win.compose-tweet");
     header_box.add (compose_tweet_button);
-    this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic", Gtk.IconSize.BUTTON);
+    this.back_button = new Gtk.Button.from_icon_name ("go-previous-symbolic");
     back_button.clicked.connect (back_button_clicked_cb);
     header_box.add (back_button);
     headerbar.pack_start (header_box);
