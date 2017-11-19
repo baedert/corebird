@@ -4,14 +4,15 @@
 #
 # Translators:
 # kumar8600 <kumar8600@gmail.com>, 2014
+# MTD TR <dev.mantendo@gmail.com>, 2017
 # Yuki Katsura <katsura.y.ac@icloud.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-22 10:08+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2017-11-12 23:35+0000\n"
+"Last-Translator: MTD TR <dev.mantendo@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/corebird/corebird/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,7 +60,7 @@ msgstr ""
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
-msgstr ""
+msgstr "通常のデスクトップアプリケーションからTwitterを使用する"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or
 #. localize the semicolons! The list MUST also end with a semicolon!
@@ -150,7 +151,7 @@ msgstr "ホーム"
 
 #: src/ListStatusesPage.vala:378
 msgid "List"
-msgstr ""
+msgstr "リスト"
 
 #: src/ListsPage.vala:126 src/ListsPage.vala:131 ui/profile-page.ui:368
 msgid "Lists"
@@ -179,7 +180,7 @@ msgstr "メンション"
 
 #: src/ProfilePage.vala:218
 msgid "Suspended Account"
-msgstr ""
+msgstr "凍結されたアカウント"
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -192,7 +193,7 @@ msgstr "@%s にツイート"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
 msgid "Protected Profile"
-msgstr ""
+msgstr "非公開アカウント"
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
@@ -200,7 +201,7 @@ msgstr "検索"
 
 #: src/SearchPage.vala:401
 msgid "Load More"
-msgstr ""
+msgstr "更に読み込む"
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -265,7 +266,7 @@ msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "まだTwitterアカウントをお持ちではありませんか?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -296,7 +297,7 @@ msgstr "ユーザが見つかりません"
 
 #: src/widgets/FavImageView.vala:153 src/window/ComposeTweetWindow.vala:299
 msgid "Select Image"
-msgstr ""
+msgstr "画像を選択"
 
 #: src/widgets/FavImageView.vala:156 src/window/AccountDialog.vala:347
 #: src/window/ComposeTweetWindow.vala:302
@@ -324,11 +325,11 @@ msgstr "フォロー解除"
 
 #: src/widgets/MediaButton.vala:48
 msgid "Copy URL"
-msgstr ""
+msgstr "URLをコピー"
 
 #: src/widgets/MediaButton.vala:105
 msgid "Save as…"
-msgstr ""
+msgstr "名前を付けて保存"
 
 #: src/widgets/MediaButton.vala:268
 msgid "Save Video"
@@ -347,7 +348,7 @@ msgstr "保存"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "読み込み中..."
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -355,7 +356,7 @@ msgstr "エントリーがありません"
 
 #: src/widgets/TweetListBox.vala:137 ui/account-create-widget.ui:119
 msgid "Retry"
-msgstr ""
+msgstr "再試行"
 
 #: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
@@ -405,7 +406,7 @@ msgstr "選択された画像は大きすぎます。最大ファイルサイズ
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "1つのツイートには1つのGIFファイルしか添付できません。"
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
@@ -678,11 +679,11 @@ msgstr "ブロック済み"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "ミュート済み"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
-msgstr ""
+msgstr "リツイートはできません"
 
 #: ui/profile-page.ui:166
 msgid "Follows you"
