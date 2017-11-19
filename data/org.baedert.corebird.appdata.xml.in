@@ -45,6 +45,16 @@
   <url type="donation">https://flattr.com/profile/baedert</url>
 
   <releases>
+    <release version="1.7.3" date="2017-11-19">
+      <p>Changes in Corebird 1.7.3:</p>
+      <ul>
+        <li>Increase maximum tweet length to 280 characters</li>
+        <li>Increase maximum name length to 50 characters and improve certain parts of the UI to cope better with longer names</li>
+        <li>Fix the emoji button not showing up in the compose window</li>
+        <li>Update translations</li>
+      </ul>
+    </release>
+
     <release version="1.7.2" date="2017-11-04">
       <p>Changes in Corebird 1.7.2:</p>
       <ul>
