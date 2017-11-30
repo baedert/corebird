@@ -193,6 +193,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.tweet_text.set_text (last_tweet);
     }
 
+    warning ("DND stuff");
     //var image_target_list = new Gtk.TargetList (null);
     //image_target_list.add_text_targets (0);
 
