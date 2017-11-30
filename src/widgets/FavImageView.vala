@@ -49,12 +49,12 @@ class FavImageView : Gtk.Box {
     fav_image_list.get_style_context ().add_class ("view");
     fav_image_list.get_style_context ().add_class ("fav-image-box");
     fav_image_list.child_activated.connect (fav_image_list_child_activated_cb);
-    fav_image_list.drag_data_received.connect (fav_image_list_drag_data_received_cb);
+    //fav_image_list.drag_data_received.connect (fav_image_list_drag_data_received_cb);
 
-    var image_target_list = new Gtk.TargetList (null);
-    image_target_list.add_text_targets (0);
+    warning ("Re-enable DND stuff");
+    //var image_target_list = new Gtk.TargetList (null);
+    //image_target_list.add_text_targets (0);
 
-    warning ("Re-enable gtk_drag_dest_set call");
     //Gtk.drag_dest_set (this,
                        //Gtk.DestDefaults.ALL,
                        //null,
