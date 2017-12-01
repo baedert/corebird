@@ -236,6 +236,122 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkFrame">
+            <property name="shadow-type">in</property>
+            <property name="margin">26</property>
+            <child>
+              <object class="GtkListBox" id="details_listbox">
+                <property name="selection-mode">none</property>
+                <child>
+                  <object class="GtkListBoxRow" id="num_tweets_row">
+                    <child>
+                      <object class="GtkBox">
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Tweets</property>
+                            <property name="hexpand">1</property>
+                            <property name="halign">start</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="num_tweets_label">
+                            <property name="label">1337</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkListBoxRow" id="num_media_row">
+                    <child>
+                      <object class="GtkBox">
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Media</property>
+                            <property name="hexpand">1</property>
+                            <property name="halign">start</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="num_media_label">
+                            <property name="label">1337</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkListBoxRow" id="num_followers_row">
+                    <child>
+                      <object class="GtkBox">
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Followers</property>
+                            <property name="hexpand">1</property>
+                            <property name="halign">start</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="num_followers_label">
+                            <property name="label">1337</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkListBoxRow" id="num_following_row">
+                    <child>
+                      <object class="GtkBox">
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Following</property>
+                            <property name="hexpand">1</property>
+                            <property name="halign">start</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="num_following_label">
+                            <property name="label">1337</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkListBoxRow" id="num_lists_row">
+                    <child>
+                      <object class="GtkBox">
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Lists</property>
+                            <property name="hexpand">1</property>
+                            <property name="halign">start</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="num_lists_label">
+                            <property name="label">1337</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>
