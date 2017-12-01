@@ -118,6 +118,7 @@ private class MediaButton : Gtk.Widget {
 
     if (this._media.loaded) {
       if (!_media.invalid && _media.surface != null) {
+        this.queue_resize ();
         this.start_fade ();
       } else {
         /* Invalid media. */
