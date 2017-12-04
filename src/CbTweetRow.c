@@ -362,8 +362,7 @@ create_ui (CbTweetRow *self)
   /* Retweet indicators */
   if (self->tweet->retweeted_tweet != NULL)
     {
-      self->rt_image = gtk_image_new_from_icon_name ("corebird-retweet-symbolic",
-                                                     GTK_ICON_SIZE_MENU);
+      self->rt_image = gtk_image_new_from_icon_name ("corebird-retweet-symbolic");
       gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
                                    "rt-icon");
       gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
