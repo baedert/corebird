@@ -355,3 +355,7 @@ textview.view.fancy>scrolledwindow.completion {
 box.col-spacing {
   border-spacing: 1em;
 }
+
+row.info {
+  padding: 1em;
+}

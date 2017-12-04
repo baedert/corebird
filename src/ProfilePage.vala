@@ -65,6 +65,8 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   private Gtk.Stack loading_stack;
   [GtkChild]
   private Gtk.Label loading_error_label;
+  [GtkChild]
+  private Gtk.ListBox details_listbox;
   private int64 user_id;
   private new string name;
   private string screen_name;
@@ -104,8 +106,9 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     rt_action.activate.connect (retweet_action_activated);
     actions.add_action (rt_action);
 
-
     this.insert_action_group ("user", actions);
+
+    details_listbox.set_header_func (default_header_func);
   }
 
   private void set_user_id (int64 user_id) {
