@@ -17,6 +17,7 @@
 
 #include <string.h>
 #include "CbComposeJob.h"
+#include "CbUtils.h"
 
 G_DEFINE_TYPE (CbComposeJob, cb_compose_job, G_TYPE_OBJECT);
 
@@ -309,6 +310,7 @@ cb_compose_job_upload_image_async (CbComposeJob *self,
 
   rest_proxy_call_add_param_full (call, param);
 
+  g_debug ("%s: %s", G_STRLOC, cb_utils_rest_proxy_call_to_string (call));
   rest_proxy_call_upload (call,
                           image_upload_cb,
                           G_OBJECT (self),
@@ -394,6 +396,7 @@ do_send (CbComposeJob *self)
   if (media_ids)
     rest_proxy_call_take_param (self->send_call, "media_ids", media_ids);
 
+  g_debug ("%s: %s", G_STRLOC, cb_utils_rest_proxy_call_to_string (self->send_call));
   rest_proxy_call_invoke_async (self->send_call,
                                 self->cancellable,
                                 send_tweet_call_completed_cb,
@@ -440,6 +443,7 @@ cb_compose_job_send_async (CbComposeJob        *self,
     }
 
   rest_proxy_call_take_param (call, "status", g_steal_pointer (&self->text));
+
 
   self->send_call = call;
   self->send_task = task;
