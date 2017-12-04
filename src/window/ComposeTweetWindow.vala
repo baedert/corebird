@@ -114,13 +114,11 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     length_label.margin_start = 12;
     tweet_text.add_widget (length_label);
 
-    this.add_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic",
-                                                           Gtk.IconSize.BUTTON);
+    this.add_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
     add_image_button.clicked.connect (add_image_clicked_cb);
     tweet_text.add_widget (add_image_button);
 
-    this.fav_image_button = new Gtk.Button.from_icon_name ("corebird-favorite-symbolic",
-                                                           Gtk.IconSize.BUTTON);
+    this.fav_image_button = new Gtk.Button.from_icon_name ("corebird-favorite-symbolic");
     fav_image_button.clicked.connect (fav_image_button_clicked_cb);
     tweet_text.add_widget (fav_image_button);
 
@@ -195,8 +193,8 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.tweet_text.set_text (last_tweet);
     }
 
-    var image_target_list = new Gtk.TargetList (null);
-    image_target_list.add_text_targets (0);
+    //var image_target_list = new Gtk.TargetList (null);
+    //image_target_list.add_text_targets (0);
 
     /* The GTK+ version might not have this emoji data variant */
     try {
@@ -405,7 +403,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     });
     stack.add (emoji_chooser);
 
-    this.emoji_button = new Gtk.Button.from_icon_name ("face-smile-symbolic", Gtk.IconSize.BUTTON);
+    this.emoji_button = new Gtk.Button.from_icon_name ("face-smile-symbolic");
     emoji_button.clicked.connect (() => {
       this.emoji_chooser.populate ();
       this.stack.visible_child = this.emoji_chooser;

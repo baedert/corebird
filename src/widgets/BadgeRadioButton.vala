@@ -34,7 +34,7 @@ public class BadgeRadioButton : Gtk.RadioButton {
   public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text="") {
     GLib.Object (group: group);
     this.get_style_context ().add_class ("image-button");
-    var i = new Gtk.Image.from_icon_name (icon_name, Gtk.IconSize.BUTTON);
+    var i = new Gtk.Image.from_icon_name (icon_name);
     this.add (i);
     this.focus_on_click = false;
     this.hexpand = true;
