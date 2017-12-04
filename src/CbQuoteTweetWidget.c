@@ -93,7 +93,6 @@ cb_quote_tweet_widget_size_allocate (GtkWidget           *widget,
 static GtkSizeRequestMode
 cb_quote_tweet_widget_get_request_mode (GtkWidget *widget)
 {
-  /* TODO: GTK+ Should probably not enfore that we need this... */
   return GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH;
 }
 
@@ -103,6 +102,8 @@ cb_quote_tweet_widget_finalize (GObject *object)
   CbQuoteTweetWidget *self = (CbQuoteTweetWidget *)object;
 
   g_free (self->screen_name);
+  gtk_widget_unparent (self->top_row_box);
+  gtk_widget_unparent (self->text_label);
 
   G_OBJECT_CLASS (cb_quote_tweet_widget_parent_class)->finalize (object);
 }
