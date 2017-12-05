@@ -236,10 +236,10 @@ image_upload_cb (RestProxyCall *call,
 
       json_parser_load_from_data (parser, rest_proxy_call_get_payload (call), -1, &json_error);
 
-      if (error)
+      if (json_error)
         {
-          g_warning ("Could not upload %s: %s", upload->filename, error->message);
-          error_message = error->message;
+          g_warning ("Could not upload %s: %s", upload->filename, json_error->message);
+          error_message = json_error->message;
         }
       else
         {
