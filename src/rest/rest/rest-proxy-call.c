@@ -406,7 +406,7 @@ rest_proxy_call_add_param_full (RestProxyCall *call, RestParam *param)
 /**
  * rest_proxy_call_lookup_param:
  * @call: The #RestProxyCall
- * @name: The paramter name
+ * @name: The parameter name
  *
  * Get the value of the parameter called @name.
  *
@@ -425,7 +425,7 @@ rest_proxy_call_lookup_param (RestProxyCall *call,
 /**
  * rest_proxy_call_remove_param:
  * @call: The #RestProxyCall
- * @name: The paramter name
+ * @name: The parameter name
  *
  * Remove the parameter named @name from the call.
  */
