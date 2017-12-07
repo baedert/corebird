@@ -102,4 +102,15 @@ class MaxSizeContainer : Gtk.Bin {
     base.snapshot (snapshot);
     snapshot.pop ();
   }
+
+  public override unowned Gtk.Widget? pick (double x, double y) {
+    if (x >= 0 && x <= this.get_width () &&
+        y >= 0 && y <= this.get_height ()) {
+      return base.pick (x, y);
+    } else if (this.contains (x, y)) {
+      return this;
+    }
+
+    return null;
+  }
 }
