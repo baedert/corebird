@@ -111,14 +111,14 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     bottom_list_box.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
-      bundle.put_object (KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_object (KEY_TWEET, ((Cb.TweetRow)row).tweet);
       bundle.put_bool (KEY_EXISTING, true);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     top_list_box.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
-      bundle.put_object (KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_object (KEY_TWEET, ((Cb.TweetRow)row).tweet);
       bundle.put_bool (KEY_EXISTING, true);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
