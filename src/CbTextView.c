@@ -227,6 +227,12 @@ cb_text_view_stop_completion (CbTextView *self)
   cb_animation_start_reverse (&self->completion_show_animation);
 }
 
+static gboolean
+cb_text_view_is_completing (CbTextView *self)
+{
+  return self->completion_show_factor > 0;
+}
+
 static GtkWidget *
 create_completion_row_func (gpointer item,
                             gpointer user_data)
@@ -404,8 +410,6 @@ text_buffer_changed_cb (GtkTextBuffer *buffer,
   gsize n_entities;
   guint i;
 
-  g_warning ("Fix the textview so completion only plays a role if we are actually completing.");
-
   gtk_text_buffer_get_bounds (buffer, &start_iter, &end_iter);
 
   /* Remove all *our* tags (gspell might add others) */
@@ -502,6 +506,9 @@ cb_text_view_key_press_event_cb (GtkWidget   *widget,
   guint keyval;
 
   if (!gdk_event_get_keyval ((GdkEvent *)event, &keyval))
+    return GDK_EVENT_PROPAGATE;
+
+  if (!cb_text_view_is_completing (self))
     return GDK_EVENT_PROPAGATE;
 
   switch (keyval)
