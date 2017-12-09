@@ -247,6 +247,8 @@ image_upload_cb (RestProxyCall *call,
           upload->id = json_object_get_int_member (root_object, "media_id");
         }
 
+      g_debug ("%s ID: %ld", upload->filename, upload->id);
+
       g_signal_emit (self, compose_job_signals[IMAGE_UPLOAD_FINISHED], 0, upload->filename, error_message);
 
       g_object_unref (parser);
