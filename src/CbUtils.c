@@ -134,7 +134,7 @@ cb_utils_linkify_user (const CbUserIdentity *user,
                        GString              *str)
 {
   g_string_append (str, "<span underline='none'><a href='@");
-  g_string_append_printf (str, "%ld", user->id);
+  g_string_append_printf (str, "%" G_GINT64_FORMAT, user->id);
   g_string_append (str, "/@");
   g_string_append (str, user->screen_name);
   g_string_append (str, "' ");

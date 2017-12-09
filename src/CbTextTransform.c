@@ -54,7 +54,7 @@ is_link (const char *s)
 static inline gboolean
 is_quote_link (const CbTextEntity *e, gint64 quote_id)
 {
-  char *suffix = g_strdup_printf ("/status/%ld", quote_id);
+  char *suffix = g_strdup_printf ("/status/%" G_GINT64_FORMAT, quote_id);
   gboolean ql;
 
   ql = (e->target != NULL) &&

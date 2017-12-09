@@ -72,13 +72,13 @@ build_image_id_string (CbComposeJob *self)
   str = g_string_new (NULL);
 
   /* n_uploads is at least 1 at this point */
-  g_string_append_printf (str, "%ld", uploads[0]->id);
+  g_string_append_printf (str, "%" G_GINT64_FORMAT, uploads[0]->id);
 
   for (i = 1; i < n_uploads; i ++)
     {
       g_assert (uploads[i]->id != 0);
 
-      g_string_append_printf (str, ",%ld", uploads[i]->id);
+      g_string_append_printf (str, ",%" G_GINT64_FORMAT, uploads[i]->id);
     }
 
   return g_string_free (str, FALSE);
@@ -247,7 +247,7 @@ image_upload_cb (RestProxyCall *call,
           upload->id = json_object_get_int_member (root_object, "media_id");
         }
 
-      g_debug ("%s ID: %ld", upload->filename, upload->id);
+      g_debug ("%s ID: %" G_GINT64_FORMAT, upload->filename, upload->id);
 
       g_signal_emit (self, compose_job_signals[IMAGE_UPLOAD_FINISHED], 0, upload->filename, error_message);
 
@@ -440,7 +440,7 @@ cb_compose_job_send_async (CbComposeJob        *self,
 
   if (self->reply_id != 0)
     {
-      char *id_str = g_strdup_printf ("%ld", self->reply_id);
+      char *id_str = g_strdup_printf ("%" G_GINT64_FORMAT, self->reply_id);
 
       g_assert (self->quoted_tweet == NULL);
 
@@ -451,7 +451,7 @@ cb_compose_job_send_async (CbComposeJob        *self,
       const CbMiniTweet *mt = self->quoted_tweet->retweeted_tweet != NULL ?
                               self->quoted_tweet->retweeted_tweet :
                               &self->quoted_tweet->source_tweet;
-      char *quoted_url = g_strdup_printf ("https://twitter.com/%s/status/%ld",
+      char *quoted_url = g_strdup_printf ("https://twitter.com/%s/status/%" G_GINT64_FORMAT,
                                           mt->author.screen_name, mt->id);
 
       g_assert (self->reply_id == 0);

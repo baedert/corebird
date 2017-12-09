@@ -203,7 +203,7 @@ cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *self,
 
   if (entry->refcount <= 0)
     {
-      g_debug ("Removing avatar with id %ld from cache", entry->user_id);
+      g_debug ("Removing avatar with id %" G_GINT64_FORMAT " from cache", entry->user_id);
       g_array_remove_index_fast (self->entries, index);
     }
 }
