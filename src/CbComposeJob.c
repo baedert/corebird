@@ -310,7 +310,14 @@ cb_compose_job_upload_image_async (CbComposeJob *self,
 
   rest_proxy_call_add_param_full (call, param);
 
-  g_debug ("%s: %s", G_STRLOC, cb_utils_rest_proxy_call_to_string (call));
+#ifdef DEBUG
+  {
+    char *s = cb_utils_rest_proxy_call_to_string (call);
+
+    g_debug ("%s: %s", G_STRLOC, s);
+    g_free (s);
+  }
+#endif
   rest_proxy_call_upload (call,
                           image_upload_cb,
                           G_OBJECT (self),
@@ -396,7 +403,15 @@ do_send (CbComposeJob *self)
   if (media_ids)
     rest_proxy_call_take_param (self->send_call, "media_ids", media_ids);
 
-  g_debug ("%s: %s", G_STRLOC, cb_utils_rest_proxy_call_to_string (self->send_call));
+#ifdef DEBUG
+  {
+    char *s = cb_utils_rest_proxy_call_to_string (self->send_call);
+
+    g_debug ("%s: %s", G_STRLOC, s);
+    g_free (s);
+  }
+#endif
+
   rest_proxy_call_invoke_async (self->send_call,
                                 self->cancellable,
                                 send_tweet_call_completed_cb,
