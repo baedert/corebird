@@ -255,7 +255,7 @@ void min_max_id () {
   var t2 = new Cb.Tweet ();
   t2.id = 30000;
   t2.set_flag (Cb.TweetState.HIDDEN_FORCE);
-  tm.add (t2); // Hidden tweets shouldn't affect teh min/max id values
+  tm.add (t2); // Hidden tweets shouldn't affect the min/max id values
 
   assert (tm.min_id == 1337);
   assert (tm.max_id == 1337);
