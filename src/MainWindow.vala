@@ -69,7 +69,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
     this.headerbar = new Gtk.HeaderBar ();
     headerbar.set_title ("Corebird");
-    headerbar.set_show_close_button (true);
+    headerbar.set_show_title_buttons (true);
 
     this.title_stack = new Gtk.Stack ();
     this.title_label = new Gtk.Label ("");
