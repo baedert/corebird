@@ -18,7 +18,7 @@
 #include "CbTextView.h"
 #include "CbUserCounter.h"
 #include "CbUtils.h"
-#include "libtl/libtweetlength.h"
+#include <libtweetlength.h>
 #include "corebird.h"
 #ifdef SPELLCHECK
 #include <gspell/gspell.h>

@@ -175,6 +175,7 @@ class SearchPage : IPage, Gtk.Box {
   private void row_activated_cb (Gtk.ListBoxRow row) {
     this.last_focus_widget = row;
     var bundle = new Cb.Bundle ();
+
     if (row is UserListEntry) {
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
