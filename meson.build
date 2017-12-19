@@ -3,6 +3,7 @@ project('Corebird', ['vala', 'c'],
         default_options: [
           'buildtype=debug',
           'warning_level=2',
+          'default_library=static'
         ])
 
 gnome = import('gnome')
@@ -180,10 +181,6 @@ corebird_lib_sources = files([
   'src/rest/rest/oauth-proxy-call.c',
   'src/rest/rest/sha1.c',
 
-  # libtweetlength sources (TODO: Should be a meson subproject)
-  # https://github.com/baedert/libtweetlength
-  'src/libtl/libtweetlength.c',
-
   # Vapi files
   'vapi/corebird-internal.vapi',
   'vapi/rest-0.7.vapi',
@@ -203,6 +200,11 @@ configure_file(
   output: 'config.h',
   configuration: cdata
 )
+
+# libtl subproject
+libtl = subproject('libtl')
+libtl_dep = libtl.get_variable('libtl_dep')
+cb_deps += libtl_dep
 
 # library (for unit tests)
 cb_lib = static_library(
