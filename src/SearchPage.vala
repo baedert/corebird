@@ -179,9 +179,9 @@ class SearchPage : IPage, Gtk.Box {
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
       _main_window.main_widget.switch_page (Page.PROFILE, bundle);
-    } else if (row is TweetListEntry) {
+    } else if (row is Cb.TweetRow) {
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
-      bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     }
   }
@@ -193,7 +193,7 @@ class SearchPage : IPage, Gtk.Box {
 
     if (before == null && row is UserListEntry) {
       row.set_header (users_header);
-    } else if ((before is UserListEntry || before is LoadMoreEntry) && row is TweetListEntry) {
+    } else if ((before is UserListEntry || before is LoadMoreEntry) && row is Cb.TweetRow) {
       row.set_header (tweets_header);
     }
   } //}}}
@@ -332,7 +332,8 @@ class SearchPage : IPage, Gtk.Box {
         tweet.load_from_json (node, account.id, now);
         if (tweet.id < lowest_tweet_id)
           lowest_tweet_id = tweet.id;
-        var entry = new TweetListEntry (tweet, _main_window, account);
+
+        var entry = new Cb.TweetRow (tweet, _main_window);
         if (!collect_obj.done)
           entry.visible = false;
         else
