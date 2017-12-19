@@ -28,7 +28,9 @@
 #define INVALID_BEFORE_NON_PROTOCOL_URL_CHARS (".@_-)/")
 #define INVALID_BEFORE_URL_CHARS              ("$")
 
-#define INVALID_HASHTAG_CHARS "!'#%&\"()*+,\\-./:;<=>?@[]^{|}~$`"
+#define VALID_BEFORE_HASHTAG_CHARS   "{}!<>()[]\\/?`~:;.,%*"
+#define INVALID_BEFORE_HASHTAG_CHARS "_&"
+#define INVALID_HASHTAG_CHARS        "!'#%&\"()*+,\\-./:;<=>?@[]^{|}~$`"
 
 #define INVALID_BEFORE_MENTION_CHARS "!_$&#*"
 #define VALID_BEFORE_MENTION_CHARS   ";,`=+"

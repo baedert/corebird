@@ -35,6 +35,13 @@ token_str (const Token *t)
 {
   return g_strdup_printf ("Type: %u, Text: '%.*s'", t->type, (int)t->length_in_bytes, t->start);
 }
+
+static char * G_GNUC_UNUSED
+entity_str (const TlEntity *e)
+{
+  return g_strdup_printf ("Type: %u, Text: '%.*s'", e->type, (int)e->length_in_bytes, e->start);
+}
+
 #endif
 
 enum {
@@ -120,6 +127,33 @@ token_type_from_char (gunichar c)
 }
 
 static inline gboolean
+token_ends_in_accented (const Token *t)
+{
+  const char *p = t->start;
+  gunichar c;
+  gsize i;
+
+  if (t->length_in_bytes == 1 ||
+      t->type != TOK_TEXT) {
+    return FALSE;
+  }
+
+  // The rules here aren't exactly clear...
+  // We read the last character of the text pointed to by the given token.
+  // If that's not an ascii character, we return TRUE.
+  for (i = 0; i < t->length_in_characters - 1; i ++) {
+    p = g_utf8_next_char (p);
+  }
+
+  c = g_utf8_get_char (p);
+
+  if (c > 127)
+    return TRUE;
+
+  return FALSE;
+}
+
+static inline gboolean
 token_in (const Token *t,
           const char  *haystack)
 {
@@ -184,6 +218,17 @@ emplace_entity_for_tokens (GArray      *array,
     e->length_in_characters += tokens[i].length_in_characters;
   }
 }
+
+static inline gboolean
+is_valid_mention_char (gunichar c)
+{
+  // Just ASCII
+  if (c > 127)
+    return FALSE;
+
+  return TRUE;
+}
+
 
 static inline gboolean
 token_is_tld (const Token *t,
@@ -574,7 +619,8 @@ parse_mention (GArray      *entities,
     // Text tokens before an @-token generally destroy the mention,
     // except in a few cases...
     if (tokens[i - 1].type == TOK_TEXT &&
-        !token_in (&tokens[i - 1], VALID_BEFORE_MENTION_CHARS)) {
+        !token_in (&tokens[i - 1], VALID_BEFORE_MENTION_CHARS) &&
+        !token_ends_in_accented (&tokens[i - 1])) {
       return FALSE;
     }
 
@@ -604,6 +650,23 @@ parse_mention (GArray      *entities,
         tokens[i].type != TOK_UNDERSCORE) {
       i --;
       break;
+    }
+
+    if (tokens[i].type == TOK_TEXT) {
+      const char *text = tokens[i].start;
+      // Special rules apply about what characters may appear in a @screen_name
+      const char *p = text;
+
+      while (p - text < (long)tokens[i].length_in_bytes) {
+        gunichar c = g_utf8_get_char (p);
+
+        if (!is_valid_mention_char (c)) {
+          return FALSE;
+        }
+
+        p = g_utf8_next_char (p);
+      }
+
     }
 
     i ++;
@@ -648,7 +711,13 @@ parse_hashtag (GArray      *entities,
 
   // Lookback at the previous token. If it was a text token
   // without whitespace between, this is not going to be a mention...
-  if (i > 0 && tokens[i - 1].type == TOK_TEXT) {
+  if (i > 0 && tokens[i - 1].type == TOK_TEXT &&
+      !token_in (&tokens[i - 1], VALID_BEFORE_HASHTAG_CHARS)) {
+    return FALSE;
+  }
+
+  // Some chars make the entire hashtag invalid
+  if (i > 0 && token_in (&tokens[i - 1], INVALID_BEFORE_HASHTAG_CHARS)) {
     return FALSE;
   }
 
