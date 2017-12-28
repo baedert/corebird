@@ -450,4 +450,11 @@ namespace Cb {
     public AspectImage ();
     public void set_pixbuf (Gdk.Pixbuf pixbuf);
   }
+
+  [CCode (cprefix = "CbActivityModel_", lower_case_cprefix = "cb_activity_model_", cheader_filename =
+          "CbActivityModel.h")]
+  public class ActivityModel : GLib.Object, GLib.ListModel, Cb.MessageReceiver {
+    public ActivityModel ();
+    public void poll ();
+  }
 }
