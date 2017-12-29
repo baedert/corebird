@@ -439,10 +439,6 @@ public class MainWindow : Gtk.ApplicationWindow {
    *
    */
   private void load_geometry () {
-    warning ("Geometry loading disabled since the window grows on load.");
-    return;
-
-
     if (account == null || account.screen_name == Account.DUMMY) {
       debug ("Could not load geometry, account == null");
       return;
