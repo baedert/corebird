@@ -61,6 +61,7 @@ class UserListDialog : Gtk.Dialog {
       }
       ((ListUserEntry)row).toggle ();
     });
+    scroller.set_vexpand (true);
     scroller.add (list_list_box);
     content_box.add (scroller);
 
