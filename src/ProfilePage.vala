@@ -34,6 +34,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   public unowned MainWindow main_window {
     set {
       _main_window = value;
+      user_lists.main_window = value;
     }
   }
   public unowned Account account;
@@ -52,17 +53,35 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Label url_label;
   [GtkChild]
+  private Gtk.Label tweets_label;
+  [GtkChild]
+  private Gtk.Label following_label;
+  [GtkChild]
+  private Gtk.Label followers_label;
+  [GtkChild]
   private Gtk.Label location_label;
   [GtkChild]
   private FollowButton follow_button;
+  [GtkChild]
+  private TweetListBox tweet_list;
+  [GtkChild]
+  private TweetListBox followers_list;
+  [GtkChild]
+  private TweetListBox following_list;
   [GtkChild]
   private Gtk.Spinner progress_spinner;
   [GtkChild]
   private Gtk.Label follows_you_label;
   [GtkChild]
+  private UserListsWidget user_lists;
+  [GtkChild]
+  private Gtk.Stack user_stack;
+  [GtkChild]
   private Gtk.MenuButton more_button;
   [GtkChild]
   private Gtk.Stack loading_stack;
+  [GtkChild]
+  private Gtk.RadioButton tweets_button;
   [GtkChild]
   private Gtk.Label loading_error_label;
   private int64 user_id;
@@ -85,6 +104,40 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   public ProfilePage (int id, Account account) {
     this.id = id;
     this.account = account;
+    this.user_lists.account = account;
+    this.tweet_list.account = account;
+
+    this.scrolled_to_end.connect (() => {
+      if (user_stack.visible_child == tweet_list) {
+        this.load_older_tweets.begin ();
+      } else if (user_stack.visible_child == followers_list) {
+        this.load_followers.begin ();
+      } else if (user_stack.visible_child == following_list) {
+        this.load_following.begin ();
+      }
+    });
+
+    tweet_list.row_activated.connect ((row) => {
+      var bundle = new Cb.Bundle ();
+      bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
+      bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
+      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+    });
+    followers_list.row_activated.connect ((row) => {
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
+      _main_window.main_widget.switch_page (Page.PROFILE, bundle);
+    });
+    following_list.row_activated.connect ((row) => {
+      var bundle = new Cb.Bundle ();
+      bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
+      bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
+      _main_window.main_widget.switch_page (Page.PROFILE, bundle);
+    });
+
+
+    user_lists.hide_user_list_entry ();
 
     actions = new GLib.SimpleActionGroup ();
     actions.add_action_entries (action_entries, this);
@@ -215,9 +268,9 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     bool has_url       = root.get_object_member("entities").has_member("url");
     bool verified      = root.get_boolean_member ("verified");
     bool protected_user = root.get_boolean_member ("protected");
-    //if (protected_user) {
-      //tweet_list.set_placeholder_text (_("Protected profile"));
-    //}
+    if (protected_user) {
+      tweet_list.set_placeholder_text (_("Protected profile"));
+    }
 
     if (root.has_member ("profile_banner_url")) {
       string banner_base_url = root.get_string_member ("profile_banner_url");
@@ -329,6 +382,8 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     this.follower_count = followers;
     description_label.label = "<big>%s</big>".printf (desc.replace ("&", "&amp;"));
+    tweets_label.label = "%'d".printf(tweets);
+    following_label.label = "%'d".printf(following);
     update_follower_label ();
 
     if (location != null && location != "") {
@@ -352,6 +407,171 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     this.name = name;
     this.screen_name = screen_name;
     this.avatar_url = avatar_url;
+  }
+
+
+  private async void load_tweets () {
+    tweet_list.set_unempty ();
+    tweets_loading = true;
+    int requested_tweet_count = 10;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_method ("GET");
+    if (user_id != 0)
+      call.add_param ("user_id", this.user_id.to_string ());
+    else
+      call.add_param ("screen_name", this.screen_name);
+    call.add_param ("count", requested_tweet_count.to_string ());
+    call.add_param ("contributor_details", "true");
+    call.add_param ("tweet_mode", "extended");
+    call.add_param ("include_my_retweet", "true");
+
+
+    Json.Node? root = null;
+    try {
+      root = yield Cb.Utils.load_threaded_async (call, data_cancellable);
+    } catch (GLib.Error e) {
+      if (e.message != "Authorization Required") {
+        warning (e.message);
+      }
+      tweet_list.set_empty ();
+      return;
+    }
+
+    if (root == null) return;
+
+    var root_array = root.get_array ();
+    if (root_array.get_length () == 0) {
+      tweet_list.set_empty ();
+      return;
+    }
+    TweetUtils.work_array (root_array,
+                           tweet_list,
+                           account);
+    tweets_loading = false;
+  }
+
+  private async void load_older_tweets () {
+    if (tweets_loading)
+      return;
+
+    if (user_stack.visible_child != tweet_list)
+      return;
+
+    tweets_loading = true;
+    int requested_tweet_count = 15;
+    var call = account.proxy.new_call ();
+    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_method ("GET");
+    call.add_param ("user_id", this.user_id.to_string ());
+    call.add_param ("count", requested_tweet_count.to_string ());
+    call.add_param ("contributor_details", "true");
+    call.add_param ("include_my_retweet", "true");
+    call.add_param ("tweet_mode", "extended");
+    call.add_param ("max_id", (tweet_list.model.min_id - 1).to_string ());
+
+    Json.Node? root = null;
+    try {
+      root = yield Cb.Utils.load_threaded_async (call, data_cancellable);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+
+    if (root == null) return;
+
+    var root_arr = root.get_array ();
+    TweetUtils.work_array (root_arr,
+                           tweet_list,
+                           account);
+    tweets_loading = false;
+  }
+
+  private async void load_followers () {
+    if (this.followers_cursor != null && this.followers_cursor.full)
+      return;
+
+    if (this.followers_loading)
+      return;
+
+    this.followers_loading = true;
+
+    this.followers_cursor = yield UserUtils.load_followers (this.account,
+                                                            this.user_id,
+                                                            this.followers_cursor);
+
+    if (this.followers_cursor == null) {
+      this.followers_list.set_placeholder_text (_("Protected Profile"));
+      this.followers_list.set_empty ();
+      return;
+    }
+
+    var users_array = this.followers_cursor.json_object.get_array ();
+
+    users_array.foreach_element ((array, index, node) => {
+      var user_obj = node.get_object ();
+      string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
+
+
+      var entry = new UserListEntry ();
+      entry.show_settings = false;
+      entry.user_id = user_obj.get_int_member ("id");
+      entry.set_screen_name ("@" + user_obj.get_string_member ("screen_name"));
+      entry.name = user_obj.get_string_member ("name");
+      entry.avatar_url = avatar_url;
+      entry.get_style_context ().add_class ("tweet");
+      entry.show ();
+      this.followers_list.add (entry);
+    });
+
+    this.followers_loading = false;
+  }
+
+  private async void load_following () {
+    if (this.following_cursor != null && this.following_cursor.full)
+      return;
+
+    if (this.following_loading)
+      return;
+
+    this.following_loading = true;
+
+    this.following_cursor = yield UserUtils.load_following (this.account,
+                                                            this.user_id,
+                                                            this.following_cursor);
+
+    if (this.following_cursor == null) {
+      message ("null cursor");
+      this.following_list.set_placeholder_text (_("Protected Profile"));
+      this.following_list.set_empty ();
+      return;
+    }
+
+    var users_array = this.following_cursor.json_object.get_array ();
+
+    users_array.foreach_element ((array, index, node) => {
+      var user_obj = node.get_object ();
+      string avatar_url = user_obj.get_string_member ("profile_image_url");
+
+      if (this.get_scale_factor () == 2)
+        avatar_url = avatar_url.replace ("_normal", "_bigger");
+
+      var entry = new UserListEntry ();
+      entry.show_settings = false;
+      entry.user_id = user_obj.get_int_member ("id");
+      entry.set_screen_name ("@" + user_obj.get_string_member ("screen_name"));
+      entry.name = user_obj.get_string_member ("name");
+      entry.avatar_url = avatar_url;
+      entry.get_style_context ().add_class ("tweet");
+      entry.show ();
+      this.following_list.add (entry);
+
+    });
+
+    this.following_loading = false;
   }
 
   private void load_profile_banner (string base_url) {
@@ -435,24 +655,26 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     if (user_id != this.user_id) {
       reset_data ();
       followers_cursor = null;
-      //followers_list.remove_all ();
+      followers_list.remove_all ();
       following_cursor = null;
-      //following_list.remove_all ();
+      following_list.remove_all ();
       set_user_id (user_id);
       if (account.follows_id (user_id)) {
         this.follow_button.following = true;
         this.follow_button.sensitive = true;
       }
-      //user_lists.clear_lists ();
+      tweet_list.model.clear ();
+      user_lists.clear_lists ();
       lists_page_inited = false;
+      load_tweets.begin ();
     } else {
       /* Still load the friendship since muted/blocked/etc. may have changed */
       load_friendship.begin ();
     }
-    //tweet_list.reset_placeholder_text ();
-    //followers_list.reset_placeholder_text ();
-    //following_list.reset_placeholder_text ();
-    //tweets_button.active = true;
+    tweet_list.reset_placeholder_text ();
+    followers_list.reset_placeholder_text ();
+    following_list.reset_placeholder_text ();
+    tweets_button.active = true;
     //user_stack.visible_child = tweet_list;
   }
 
@@ -468,9 +690,9 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     description_label.label = " ";
     url_label.label = " ";
     location_label.label = " ";
-    //tweets_label.label = " ";
-    //following_label.label = " ";
-    //followers_label.label = " ";
+    tweets_label.label = " ";
+    following_label.label = " ";
+    followers_label.label = " ";
     avatar_image.surface = null;
   }
 
@@ -615,7 +837,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   }
 
   private void update_follower_label () {
-    //followers_label.label = "%'d".printf(follower_count);
+    followers_label.label = "%'d".printf(follower_count);
   }
 
   public void stream_message_received (Cb.StreamMessageType type,
@@ -631,7 +853,48 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       tweet.load_from_json (root_node,
                             account.id,
                             new GLib.DateTime.now_local ());
-      //this.tweet_list.model.add (tweet);
+      this.tweet_list.model.add (tweet);
+    }
+  }
+
+  [GtkCallback]
+  private void tweets_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = tweet_list;
+    }
+  }
+  [GtkCallback]
+  private void followers_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (this.followers_cursor == null) {
+        this.load_followers.begin ();
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = followers_list;
+    }
+  }
+
+  [GtkCallback]
+  private void following_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (this.following_cursor == null) {
+        this.load_following.begin ();
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = following_list;
+    }
+  }
+
+  [GtkCallback]
+  private void lists_button_toggled_cb (GLib.Object source) {
+    if (((Gtk.RadioButton)source).active) {
+      if (!lists_page_inited) {
+        user_lists.load_lists.begin (user_id);
+        lists_page_inited = true;
+      }
+      this.balance_next_upper_change (BOTTOM);
+      user_stack.visible_child = user_lists;
     }
   }
 }
