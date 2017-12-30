@@ -245,9 +245,6 @@
                 <property name="selection-mode">none</property>
                 <child>
                   <object class="GtkListBoxRow" id="num_tweets_row">
-                    <style>
-                      <class name="info" />
-                    </style>
                     <child>
                       <object class="GtkBox">
                         <child>
@@ -269,9 +266,6 @@
 
                 <child>
                   <object class="GtkListBoxRow" id="num_media_row">
-                    <style>
-                      <class name="info" />
-                    </style>
                     <child>
                       <object class="GtkBox">
                         <child>
@@ -293,9 +287,6 @@
 
                 <child>
                   <object class="GtkListBoxRow" id="num_followers_row">
-                    <style>
-                      <class name="info" />
-                    </style>
                     <child>
                       <object class="GtkBox">
                         <child>
@@ -317,9 +308,6 @@
 
                 <child>
                   <object class="GtkListBoxRow" id="num_following_row">
-                    <style>
-                      <class name="info" />
-                    </style>
                     <child>
                       <object class="GtkBox">
                         <child>
@@ -341,9 +329,6 @@
 
                 <child>
                   <object class="GtkListBoxRow" id="num_lists_row">
-                    <style>
-                      <class name="info" />
-                    </style>
                     <child>
                       <object class="GtkBox">
                         <child>
