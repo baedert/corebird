@@ -67,12 +67,6 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   private Gtk.Label loading_error_label;
   [GtkChild]
   private Gtk.ListBox details_listbox;
-  [GtkChild]
-  private Gtk.Label num_tweets_label;
-  [GtkChild]
-  private Gtk.Label num_followers_label;
-  [GtkChild]
-  private Gtk.Label num_following_label;
   private int64 user_id;
   private new string name;
   private string screen_name;
@@ -83,6 +77,11 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   private bool block_item_blocked = false;
   private bool retweet_item_blocked = false;
   private bool mute_item_blocked = false;
+  private bool tweets_loading = false;
+  private bool followers_loading = false;
+  private Cursor? followers_cursor = null;
+  private bool following_loading = false;
+  private Cursor? following_cursor = null;
   private GLib.SimpleActionGroup actions;
 
   public ProfilePage (int id, Account account) {
@@ -222,10 +221,6 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     //if (protected_user) {
       //tweet_list.set_placeholder_text (_("Protected profile"));
     //}
-
-    num_tweets_label.label = "%'d".printf (tweets);
-    num_followers_label.label = "%'d".printf (followers);
-    num_following_label.label = "%'d".printf (following);
 
     if (root.has_member ("profile_banner_url")) {
       string banner_base_url = root.get_string_member ("profile_banner_url");
@@ -442,6 +437,10 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
 
     if (user_id != this.user_id) {
       reset_data ();
+      followers_cursor = null;
+      //followers_list.remove_all ();
+      following_cursor = null;
+      //following_list.remove_all ();
       set_user_id (user_id);
       if (account.follows_id (user_id)) {
         this.follow_button.following = true;
@@ -453,6 +452,11 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       /* Still load the friendship since muted/blocked/etc. may have changed */
       load_friendship.begin ();
     }
+    //tweet_list.reset_placeholder_text ();
+    //followers_list.reset_placeholder_text ();
+    //following_list.reset_placeholder_text ();
+    //tweets_button.active = true;
+    //user_stack.visible_child = tweet_list;
   }
 
   public void on_leave () {
@@ -467,6 +471,9 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     description_label.label = " ";
     url_label.label = " ";
     location_label.label = " ";
+    //tweets_label.label = " ";
+    //following_label.label = " ";
+    //followers_label.label = " ";
     avatar_image.surface = null;
   }
 
