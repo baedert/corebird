@@ -120,7 +120,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     tweet_list.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
-      bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
     followers_list.row_activated.connect ((row) => {
