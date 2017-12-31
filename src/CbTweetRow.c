@@ -18,10 +18,82 @@
 #include "CbTweetRow.h"
 #include "CbUtils.h"
 #include "CbQuoteTweetWidget.h"
+#include "CbTwitterItem.h"
 #include "corebird.h"
 
-G_DEFINE_TYPE (CbTweetRow, cb_tweet_row, GTK_TYPE_LIST_BOX_ROW);
+static void cb_twitter_item_iface_init (CbTwitterItemInterface *iface);
 
+G_DEFINE_TYPE_WITH_CODE (CbTweetRow, cb_tweet_row, GTK_TYPE_LIST_BOX_ROW,
+                         G_IMPLEMENT_INTERFACE (CB_TYPE_TWITTER_ITEM, cb_twitter_item_iface_init));
+
+
+static gint64
+cb_tweet_row_get_sort_factor (CbTwitterItem *item)
+{
+  CbTweetRow *self = CB_TWEET_ROW (item);
+
+  return self->tweet->id;
+}
+
+static gint64
+cb_tweet_row_get_timestamp (CbTwitterItem *item)
+{
+  CbTweetRow *self = CB_TWEET_ROW (item);
+
+  return self->tweet->source_tweet.created_at;
+}
+
+static int
+cb_tweet_row_update_time_delta (CbTwitterItem *item,
+                                GDateTime     *now)
+{
+  CbTweetRow *self = CB_TWEET_ROW (item);
+  GDateTime *cur_time = now != NULL ? g_date_time_ref (now) :
+                                      g_date_time_new_now_local ();
+  GDateTime *then;
+  char *delta_str;
+
+  then = g_date_time_new_from_unix_local (self->tweet->retweeted_tweet != NULL ?
+                                          self->tweet->retweeted_tweet->created_at :
+                                          self->tweet->source_tweet.created_at);
+
+  delta_str = cb_utils_get_time_delta (then, cur_time);
+  gtk_label_set_label (GTK_LABEL (self->time_delta_label), delta_str);
+  /* XXX Incomplete: Quotes */
+
+  g_free (delta_str);
+  g_date_time_unref (cur_time);
+  g_date_time_unref (then);
+
+  return 0;
+}
+
+static void
+cb_tweet_row_set_last_set_timediff (CbTwitterItem *item,
+                                    GTimeSpan      diff)
+{
+  CbTweetRow *self = CB_TWEET_ROW (item);
+
+  self->last_timediff = diff;
+}
+
+static GTimeSpan
+cb_tweet_row_get_last_set_timediff (CbTwitterItem *item)
+{
+  CbTweetRow *self = CB_TWEET_ROW (item);
+
+  return self->last_timediff;
+}
+
+static void
+cb_twitter_item_iface_init (CbTwitterItemInterface *iface)
+{
+  iface->get_sort_factor = cb_tweet_row_get_sort_factor;
+  iface->get_timestamp = cb_tweet_row_get_timestamp;
+  iface->update_time_delta = cb_tweet_row_update_time_delta;
+  iface->set_last_set_timediff = cb_tweet_row_set_last_set_timediff;
+  iface->get_last_set_timediff = cb_tweet_row_get_last_set_timediff;
+}
 
 static void
 cb_tweet_row_measure (GtkWidget      *widget,
@@ -409,7 +481,7 @@ create_ui (CbTweetRow *self)
 
   gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self), "tweet");
 
-  cb_tweet_row_update_time_delta (self, NULL);
+  cb_tweet_row_update_time_delta (CB_TWITTER_ITEM (self), NULL);
 }
 
 GtkWidget *
@@ -426,24 +498,3 @@ cb_tweet_row_new (CbTweet    *tweet,
   return (GtkWidget *)self;
 }
 
-void
-cb_tweet_row_update_time_delta (CbTweetRow *self,
-                                GDateTime  *now)
-{
-  GDateTime *cur_time = now != NULL ? g_date_time_ref (now) :
-                                      g_date_time_new_now_local ();
-  GDateTime *then;
-  char *delta_str;
-
-  then = g_date_time_new_from_unix_local (self->tweet->retweeted_tweet != NULL ?
-                                          self->tweet->retweeted_tweet->created_at :
-                                          self->tweet->source_tweet.created_at);
-
-  delta_str = cb_utils_get_time_delta (then, cur_time);
-  gtk_label_set_label (GTK_LABEL (self->time_delta_label), delta_str);
-  /* XXX Incomplete: Quotes */
-
-  g_free (delta_str);
-  g_date_time_unref (cur_time);
-  g_date_time_unref (then);
-}

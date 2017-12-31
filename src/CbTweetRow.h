@@ -43,6 +43,8 @@ struct _CbTweetRow
   GtkWidget *mm_widget;
   GtkWidget *quote_box;
   GtkWidget *quote_widget;
+
+  GTimeSpan last_timediff;
 };
 typedef struct _CbTweetRow CbTweetRow;
 
@@ -52,6 +54,4 @@ G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkListBoxRow);
 
 GtkWidget *  cb_tweet_row_new               (CbTweet    *tweet,
                                              void       *main_window);
-void         cb_tweet_row_update_time_delta (CbTweetRow *self,
-                                             GDateTime  *now);
 #endif
