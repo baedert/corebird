@@ -63,11 +63,11 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     this.add (tweet_list);
 
     tweet_list.row_activated.connect ((row) => {
-      if (row is Cb.TweetRow || row is TweetListEntry) {
+      if (row is Cb.TweetRow || row is Cb.TweetRow) {
         var bundle = new Cb.Bundle ();
         bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
-        if (row is TweetListEntry)
-          bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
+        if (row is Cb.TweetRow)
+          bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
         else
           bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
 
@@ -261,8 +261,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     if (t.retweeted_tweet != null) {
       /* Fifth case */
       foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        if (w is TweetListEntry) {
-          var tt = ((TweetListEntry)w).tweet;
+        if (w is Cb.TweetRow) {
+          var tt = ((Cb.TweetRow)w).tweet;
           if (tt.retweeted_tweet != null && tt.retweeted_tweet.id == t.retweeted_tweet.id) {
             flags |= Cb.TweetState.HIDDEN_FORCE;
             break;
@@ -276,10 +276,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   protected void mark_seen (int64 id) {
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
-      if (w == null || !(w is TweetListEntry))
+      if (w == null || !(w is Cb.TweetRow))
         continue;
 
-      var tle = (TweetListEntry) w;
+      var tle = (Cb.TweetRow) w;
       if (tle.tweet.id == id || id == -1) {
         if (!tle.tweet.get_seen ()) {
           this.unread_count--;
@@ -425,10 +425,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
     // We HAVE to use widgets here.
     tweet_list.forall ((w) => {
-      if (!(w is TweetListEntry))
+      if (!(w is Cb.TweetRow))
         return;
 
-      var tle = (TweetListEntry)w;
+      var tle = (Cb.TweetRow)w;
       if (tle.tweet.get_seen ())
         return;
 
