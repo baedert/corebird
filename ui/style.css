@@ -132,7 +132,7 @@ mediabutton:hover {
   background-color: transparent;
   border:none;
   text-shadow: none;
-  padding: 0px;
+  padding: 0 2px 0 2px;
   box-shadow: none;
   border-radius: 0px;
   border-bottom: 1px solid transparent;
