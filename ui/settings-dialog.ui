@@ -18,7 +18,7 @@
       <object class="GtkHeaderBar" id="header_bar">
         <property name="title" translatable="yes">Settings</property>
         <property name="custom-title">custom_title</property>
-        <property name="show-close-button">1</property>
+        <property name="show-title-buttons">1</property>
       </object>
     </child>
     <child>
