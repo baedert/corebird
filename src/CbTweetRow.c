@@ -498,3 +498,14 @@ cb_tweet_row_new (CbTweet    *tweet,
   return (GtkWidget *)self;
 }
 
+gboolean
+cb_tweet_row_shows_actions (CbTweetRow *self)
+{
+  return FALSE;
+}
+
+void
+cb_tweet_row_toggle_mode (CbTweetRow *self)
+{
+
+}

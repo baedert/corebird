@@ -430,6 +430,8 @@ namespace Cb {
   public class TweetRow : Gtk.ListBoxRow {
     public TweetRow (Tweet tweet, MainWindow toplevel);//, Account account);
     public Tweet tweet;
+    public void toggle_mode ();
+    public bool shows_actions ();
   }
 
   [CCode (cprefix = "CbTextView_", lower_case_cprefix = "cb_text_view_", cheader_filename =

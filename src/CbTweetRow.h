@@ -54,4 +54,6 @@ G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkListBoxRow);
 
 GtkWidget *  cb_tweet_row_new               (CbTweet    *tweet,
                                              void       *main_window);
+void         cb_tweet_row_toggle_mode       (CbTweetRow *self);
+gboolean     cb_tweet_row_shows_actions     (CbTweetRow *self);
 #endif

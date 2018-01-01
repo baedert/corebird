@@ -22,8 +22,8 @@ public class TweetListBox : Gtk.ListBox {
   private Gtk.Box error_box;
   private Gtk.Label error_label;
   private Gtk.Button retry_button;
-  private TweetListEntry? _action_entry;
-  public TweetListEntry? action_entry {
+  private Cb.TweetRow? _action_entry;
+  public Cb.TweetRow? action_entry {
     get {
       return _action_entry;
     }
@@ -62,7 +62,7 @@ public class TweetListBox : Gtk.ListBox {
     var row = new Cb.TweetRow ((Cb.Tweet) obj,
                                (MainWindow) get_toplevel ());
                                //this.account);
-    //var row = new TweetListEntry ((Cb.Tweet) obj,
+    //var row = new Cb.TweetRow ((Cb.Tweet) obj,
                                   //(MainWindow) get_toplevel (),
                                   //this.account);
     //row.fade_in ();
@@ -78,14 +78,14 @@ public class TweetListBox : Gtk.ListBox {
 
     if (event.triggers_context_menu ()) {
       Gtk.Widget row = this.get_row_at_y ((int)y);
-      if (row is TweetListEntry && row.sensitive) {
-        var tle = (TweetListEntry) row;
+      if (row is Cb.TweetRow && row.sensitive) {
+        var tle = (Cb.TweetRow) row;
         if (tle != this._action_entry && this._action_entry != null &&
-            this._action_entry.shows_actions) {
+            this._action_entry.shows_actions ()) {
           this._action_entry.toggle_mode ();
         }
         tle.toggle_mode ();
-        if (tle.shows_actions)
+        if (tle.shows_actions ())
           set_action_entry (tle);
         else
           set_action_entry (null);
@@ -95,7 +95,7 @@ public class TweetListBox : Gtk.ListBox {
     }
   }
 
-  private void set_action_entry (TweetListEntry? entry) {
+  private void set_action_entry (Cb.TweetRow? entry) {
     if (this._action_entry != null) {
       this._action_entry.destroy.disconnect (action_entry_destroyed_cb);
       this._action_entry = null;

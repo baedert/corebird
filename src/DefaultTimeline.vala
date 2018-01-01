@@ -120,7 +120,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   public virtual void on_leave () {
     this.last_focus_widget = _main_window.get_focus ();
 
-    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions)
+    if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions ())
       tweet_list.action_entry.toggle_mode ();
 
     last_value = this.get_vadjustment ().value;

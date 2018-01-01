@@ -318,10 +318,10 @@ class ListStatusesPage : ScrollWidget, IPage {
 
   [GtkCallback]
   private void tweet_activated_cb (Gtk.ListBoxRow row) {
-    if (row is TweetListEntry) {
+    if (row is Cb.TweetRow) {
       var bundle = new Cb.Bundle ();
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
-      bundle.put_object (TweetInfoPage.KEY_TWEET, ((TweetListEntry)row).tweet);
+      bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     } else
       warning ("row is of unknown type");
