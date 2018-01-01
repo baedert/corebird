@@ -52,8 +52,11 @@ typedef struct _CbTweetRow CbTweetRow;
 #define CB_TYPE_TWEET_ROW cb_tweet_row_get_type ()
 G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkListBoxRow);
 
-GtkWidget *  cb_tweet_row_new               (CbTweet    *tweet,
-                                             void       *main_window);
-void         cb_tweet_row_toggle_mode       (CbTweetRow *self);
-gboolean     cb_tweet_row_shows_actions     (CbTweetRow *self);
+GtkWidget *  cb_tweet_row_new               (CbTweet         *tweet,
+                                             void            *main_window);
+void         cb_tweet_row_toggle_mode       (CbTweetRow      *self);
+gboolean     cb_tweet_row_shows_actions     (CbTweetRow      *self);
+void         cb_tweet_row_set_read_only     (CbTweetRow      *self);
+void         cb_tweet_row_set_avatar        (CbTweetRow      *self,
+                                             cairo_surface_t *avatar);
 #endif

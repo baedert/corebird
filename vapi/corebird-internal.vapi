@@ -432,6 +432,8 @@ namespace Cb {
     public Tweet tweet;
     public void toggle_mode ();
     public bool shows_actions ();
+    public void set_read_only ();
+    public void set_avatar (Cairo.Surface s);
   }
 
   [CCode (cprefix = "CbTextView_", lower_case_cprefix = "cb_text_view_", cheader_filename =

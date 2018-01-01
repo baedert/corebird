@@ -44,7 +44,7 @@ class SettingsDialog : Gtk.Window {
   [GtkChild]
   private Gtk.ComboBoxText media_visibility_combobox;
 
-  private TweetListEntry sample_tweet_entry;
+  private Cb.TweetRow sample_tweet_row;
 
   private bool block_flag_emission = false;
 
@@ -126,13 +126,11 @@ class SettingsDialog : Gtk.Window {
     TweetUtils.sort_entities (ref sample_tweet.source_tweet.entities);
 
 
-    this.sample_tweet_entry = new TweetListEntry (sample_tweet, null,
-                                                  new Account (10, "", ""));
-    sample_tweet_entry.set_avatar (avatar_surface);
-    sample_tweet_entry.activatable = false;
-    sample_tweet_entry.read_only = true;
-    sample_tweet_entry.show ();
-    this.sample_tweet_list.add (sample_tweet_entry);
+    this.sample_tweet_row = new Cb.TweetRow (sample_tweet, null);
+    sample_tweet_row.set_avatar (avatar_surface);
+    sample_tweet_row.activatable = false;
+    sample_tweet_row.set_read_only ();
+    this.sample_tweet_list.add (sample_tweet_row);
     // }}}
 
     var text_transform_flags = Settings.get_text_transform_flags ();
