@@ -36,96 +36,94 @@ void main (string[] args) {
   // Ensure types
   new LazyMenuButton ();
 
-  var fake_acount = new Account (1337, "baedert", "Foo Bar Baedert");
-
   {
     // Normal tweet.
     var tweet = parse_tweet (NORMAL_TWEET);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list.add (row);
   }
 
   {
     // Retweet
     var tweet = parse_tweet (RETWEET);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list.add (row);
   }
 
   {
     // Normal, but with media attached
     var tweet = parse_tweet (NORMAL_WITH_MEDIA);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list.add (row);
   }
 
   {
     // Normal quote
     var tweet = parse_tweet (NORMAL_QUOTE);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list.add (row);
   }
 
   {
     // Quote with Media
     var tweet = parse_tweet (QUOTE_WITH_MEDIA);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list2.add (row);
   }
 
   {
     // Retweet with media
     var tweet = parse_tweet (RETWEET_WITH_MEDIA);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list2.add (row);
   }
 
   {
     // Empty (no text) tweet with media
     var tweet = parse_tweet (EMPTY_TWEET_WITH_MEDIA);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list.add (row);
   }
 
   {
     // Retweet with media but no text
     var tweet = parse_tweet (EMPTY_RETWEET_WITH_MEDIA);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list3.add (row);
   }
 
   {
     // Video + Thumbnail of that video, but should only show video
     var tweet = parse_tweet (VIDEO_AND_THUMBNAIL);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list3.add (row);
   }
 
   {
     // Reply to ONE user.
     var tweet = parse_tweet (REPLY);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list3.add (row);
   }
 
   {
     // Reply to TWO users.
     var tweet = parse_tweet (REPLY_TO_TWO);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list3.add (row);
   }
 
   {
     // Reply to MORE users.
     var tweet = parse_tweet (REPLY2);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list3.add (row);
   }
 
   {
     // Retweet of a tweet that replies to multiple users (2!)
     var tweet = parse_tweet (REPLY3);
-    var row = new TweetListEntry (tweet, null, fake_acount);
+    var row = new Cb.TweetRow (tweet, null);
     list3.add (row);
   }
 
