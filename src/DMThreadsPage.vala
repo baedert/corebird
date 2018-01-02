@@ -133,7 +133,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     row.last_message = thread.last_message;
     row.unread_count = thread.unread_count;
     thread.load_avatar.begin (this.account, this.get_scale_factor (), () => {
-      row.avatar = thread.avatar_surface;
+      row.avatar = thread.avatar_texture;
     });
 
     return row;

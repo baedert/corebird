@@ -210,8 +210,8 @@ public class AccountDialog : Gtk.Window {
         }
 
         /* Locally set new avatar */
-        var s = Gdk.cairo_surface_create_from_pixbuf (new_avatar, 1, null);
-        account.set_new_avatar (s);
+        var t = Gdk.Texture.for_pixbuf (new_avatar);
+        account.set_new_avatar (t);
       });
     }
 

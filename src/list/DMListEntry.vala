@@ -32,8 +32,8 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set { name_button.set_markup (value.replace ("&", "&amp;")); }
   }
 
-  public Cairo.Surface avatar {
-    set { avatar_image.surface = value; }
+  public Gdk.Texture avatar {
+    set { avatar_image.texture = value; }
   }
 
   public bool seen {

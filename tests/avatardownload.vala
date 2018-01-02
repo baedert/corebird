@@ -7,7 +7,7 @@ void simple () {
   var avatar_widget = new AvatarWidget ();
   Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
                                              avatar_widget, 48, false, () => {
-    assert (avatar_widget.surface != null);
+    assert (avatar_widget.texture != null);
 
     loop.quit ();
   });
@@ -23,13 +23,13 @@ void cached () {
   var avatar_widget2 = new AvatarWidget ();
   Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
                                    avatar_widget, 48, false, () => {
-    assert (avatar_widget.surface != null);
+    assert (avatar_widget.texture != null);
 
     Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
                                      avatar_widget2, 48, false, () => {
 
-      assert (avatar_widget2.surface != null);
-      assert (avatar_widget2.surface == avatar_widget.surface);
+      assert (avatar_widget2.texture != null);
+      assert (avatar_widget2.texture == avatar_widget.texture);
       loop.quit ();
     });
   });
@@ -46,13 +46,13 @@ void double_download ()
   var avatar_widget2 = new AvatarWidget ();
   Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
                                    avatar_widget, 48, false, () => {
-    assert (avatar_widget.surface != null);
+    assert (avatar_widget.texture != null);
     loop.quit ();
   });
 
   Twitter.get ().get_avatar.begin (10, "http://i.imgur.com/GzdoOMu.jpg",
                                    avatar_widget2, 48, false, () => {
-    assert (avatar_widget2.surface != null);
+    assert (avatar_widget2.texture != null);
   });
 
   loop.run ();

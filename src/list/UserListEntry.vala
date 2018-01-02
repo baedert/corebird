@@ -47,8 +47,8 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set { real_set_avatar (value); }
   }
 
-  public Cairo.Surface avatar_surface {
-    set { avatar_image.surface = value; }
+  public Gdk.Texture avatar_texture {
+    set { avatar_image.texture = value; }
   }
 
   public bool verified {
@@ -81,17 +81,17 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public UserListEntry.from_account (Account acc) {
     this.screen_name_label.label = "@" + acc.screen_name;
     this.name = acc.name;
-    this.avatar_surface = acc.avatar;
+    //this.avatar_surface = acc.avatar;
     this.account = acc;
     this.user_id = acc.id;
     acc.info_changed.connect ((screen_name, name, nop, avatar) => {
       this.screen_name_label.label = "@" + acc.screen_name;
       this.name = name;
-      this.avatar_surface = avatar;
+      //this.avatar_surface = avatar;
     });
-    acc.notify["avatar"].connect (() => {
-      this.avatar_surface = this.account.avatar;
-    });
+    //acc.notify["avatar"].connect (() => {
+      //this.avatar_surface = this.account.avatar;
+    //});
     var cb = (Corebird) GLib.Application.get_default ();
     cb.window_added.connect ((window) => {
       if (window is MainWindow) {

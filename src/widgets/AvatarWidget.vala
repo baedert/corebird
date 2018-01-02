@@ -30,33 +30,32 @@ public class AvatarWidget : Gtk.Widget {
     }
     default = false;
   }
-  private Cairo.Surface _surface;
-  public Cairo.Surface surface {
-    get {
-      return _surface;
-    }
+  private Gdk.Texture _texture;
+  public Gdk.Texture texture {
+    get { return _texture; }
     set {
-      if (this._surface == value) return;
+      if (this._texture == value) {
+        return;
+      }
 
       bool animate = false;
 
-      if (this._surface != null)
-        Twitter.get ().unref_avatar (this._surface);
+      if (this._texture != null)
+        Twitter.get ().unref_avatar (this._texture);
       else
         animate = true;
 
-      this._surface = (Cairo.ImageSurface)value;
+      this._texture = value;
 
-      if (this._surface != null) {
-        Twitter.get ().ref_avatar (this._surface);
+      if (this._texture != null) {
+        Twitter.get ().ref_avatar (this._texture);
         if (animate)
           this.start_animation ();
         else
           container_widget.set_opacity (1.0);
       }
 
-      container_widget.surface = this._surface;
-      container_widget.texture = this._surface != null ? Cb.Utils.surface_to_texture (this._surface, 1) : null;
+      container_widget.texture = this._texture;
       this.queue_draw ();
     }
   }
@@ -194,7 +193,6 @@ public class AvatarContainer : Gtk.Widget {
     }
   }
 
-  public Cairo.Surface surface;
   public Gdk.Texture texture;
 
 
@@ -203,18 +201,10 @@ public class AvatarContainer : Gtk.Widget {
   static construct {
     try {
       verified_textures = {
-        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small.png"),
-          1, null), 1),
-        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-large.png"),
-          1, null), 1),
-        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-small@2.png"),
-          2, null), 1),
-        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/verified-large@2.png"),
-          2, null), 1)
+        Gdk.Texture.from_resource ("/org/baedert/corebird/data/verified-small.png"),
+        Gdk.Texture.from_resource ("/org/baedert/corebird/data/verified-large.png"),
+        Gdk.Texture.from_resource ("/org/baedert/corebird/data/verified-small@2.png"),
+        Gdk.Texture.from_resource ("/org/baedert/corebird/data/verified-large@2.png"),
       };
     } catch (GLib.Error e) {
       critical (e.message);
@@ -231,15 +221,15 @@ public class AvatarContainer : Gtk.Widget {
   }
 
   ~AvatarContainer () {
-    if (this.surface != null)
-      Twitter.get ().unref_avatar (this.surface);
+    if (this.texture != null)
+      Twitter.get ().unref_avatar (this.texture);
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
     int width  = this.size;
     int height = this.size;
 
-    if (this.surface == null) {
+    if (this.texture == null) {
       return;
     }
 

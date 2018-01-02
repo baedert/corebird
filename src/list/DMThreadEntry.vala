@@ -43,8 +43,8 @@ class DMThreadEntry : Gtk.ListBoxRow {
       last_message_label.label = value;
     }
   }
-  public Cairo.Surface? avatar {
-    set { avatar_image.surface = value;}
+  public Gdk.Texture? avatar {
+    set { avatar_image.texture = value;}
   }
 
   private int _unread_count = 0;

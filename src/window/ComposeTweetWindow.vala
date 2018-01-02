@@ -103,9 +103,9 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     else if (this.mode == Mode.QUOTE)
       this.compose_job.set_quoted_tweet (this.reply_to);
 
-    avatar_image.surface = acc.avatar;
+    avatar_image.texture = acc.avatar;
     acc.notify["avatar"].connect (() => {
-      avatar_image.surface = account.avatar;
+      avatar_image.texture = account.avatar;
     });
 
     this.length_label = new Gtk.Label (Cb.Tweet.MAX_LENGTH.to_string ());

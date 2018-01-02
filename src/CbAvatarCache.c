@@ -26,7 +26,7 @@ struct _CacheEntry
   gint64 user_id;
   int refcount;
   char *url;
-  cairo_surface_t *surface;
+  GdkTexture *texture;
 };
 
 static void
@@ -34,8 +34,8 @@ cache_entry_destroy (CacheEntry *entry)
 {
   g_free (entry->url);
 
-  if (entry->surface)
-    cairo_surface_destroy (entry->surface);
+  if (entry->texture)
+    g_object_unref (entry->texture);
 }
 
 static inline CacheEntry *
@@ -64,7 +64,7 @@ cb_avatar_cache_new (void)
 void
 cb_avatar_cache_add (CbAvatarCache   *self,
                      gint64           user_id,
-                     cairo_surface_t *surface,
+                     GdkTexture      *texture,
                      const char      *url)
 {
   CacheEntry *entry = NULL;
@@ -79,8 +79,8 @@ cb_avatar_cache_add (CbAvatarCache   *self,
       g_array_set_size (self->entries, self->entries->len + 1);
       entry = &g_array_index (self->entries, CacheEntry, self->entries->len - 1);
       entry->user_id = user_id;
-      if (surface)
-        entry->surface = cairo_surface_reference (surface);
+      if (texture)
+        entry->texture = g_object_ref (texture);
       entry->url = g_strdup (url);
       /* The subsequent incrase_refcount will push this up to 1. Entries with
        * refcount 0 won't be removed from the cache until a decrease_refcount call */
@@ -88,14 +88,8 @@ cb_avatar_cache_add (CbAvatarCache   *self,
     }
   else
     {
-      if (entry->surface != NULL)
-        cairo_surface_destroy (entry->surface);
-
-      if (surface)
-        entry->surface = cairo_surface_reference (surface);
-
-      if (entry->url != NULL)
-        g_free (entry->url);
+      g_set_object (&entry->texture, texture);
+      g_free (entry->url);
       entry->url = g_strdup (url);
     }
 }
@@ -103,30 +97,26 @@ cb_avatar_cache_add (CbAvatarCache   *self,
 void
 cb_avatar_cache_set_avatar (CbAvatarCache   *self,
                             gint64           user_id,
-                            cairo_surface_t *surface,
+                            GdkTexture      *texture,
                             const char      *url)
 {
   CacheEntry *entry = NULL;
 
   g_return_if_fail (CB_IS_AVATAR_CACHE (self));
-  g_return_if_fail (surface != NULL);
+  g_return_if_fail (texture != NULL);
 
   entry = get_entry_for_user_id (self, user_id);
 
   g_assert (entry != NULL);
 
-  if (entry->surface != NULL)
-    cairo_surface_destroy (entry->surface);
+  g_set_object (&entry->texture, texture);
 
-  entry->surface = cairo_surface_reference (surface);
-
-  if (entry->url != NULL)
-    g_free (entry->url);
+  g_free (entry->url);
   entry->url = g_strdup (url);
 }
 
-cairo_surface_t *
-cb_avatar_cache_get_surface_for_id (CbAvatarCache *self,
+GdkTexture *
+cb_avatar_cache_get_texture_for_id (CbAvatarCache *self,
                                     gint64         user_id,
                                     gboolean      *out_found)
 {
@@ -141,7 +131,7 @@ cb_avatar_cache_get_surface_for_id (CbAvatarCache *self,
   if (entry != NULL)
     {
       *out_found = TRUE;
-      return entry->surface; /* Can still be NULL... */
+      return entry->texture; /* Can still be NULL... */
     }
   else
     {
@@ -171,21 +161,21 @@ cb_avatar_cache_set_url (CbAvatarCache *self,
 }
 
 void
-cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *self,
-                                               cairo_surface_t *surface)
+cb_avatar_cache_decrease_refcount_for_texture (CbAvatarCache   *self,
+                                               GdkTexture      *texture)
 {
   guint i;
   guint index = (guint) -1;
   CacheEntry *entry = NULL;
 
   g_return_if_fail (CB_IS_AVATAR_CACHE (self));
-  g_return_if_fail (surface != NULL);
+  g_return_if_fail (texture != NULL);
 
   for (i = 0; i < self->entries->len; i ++)
     {
       CacheEntry *e = &g_array_index (self->entries, CacheEntry, i);
 
-      if (e->surface == surface)
+      if (e->texture == texture)
         {
           entry = e;
           index = i;
@@ -195,7 +185,7 @@ cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *self,
 
   if (entry == NULL)
     {
-      /* Surface not even in cache */
+      /* Texture not even in cache */
       return;
     }
 
@@ -209,19 +199,19 @@ cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *self,
 }
 
 void
-cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *self,
-                                               cairo_surface_t *surface)
+cb_avatar_cache_increase_refcount_for_texture (CbAvatarCache   *self,
+                                               GdkTexture      *texture)
 {
   guint i;
 
   g_return_if_fail (CB_IS_AVATAR_CACHE (self));
-  g_return_if_fail (surface != NULL);
+  g_return_if_fail (texture != NULL);
 
   for (i = 0; i < self->entries->len; i ++)
     {
       CacheEntry *e = &g_array_index (self->entries, CacheEntry, i);
 
-      if (e->surface == surface)
+      if (e->texture == texture)
         {
           e->refcount ++;
           break;

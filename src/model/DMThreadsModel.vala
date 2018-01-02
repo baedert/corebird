@@ -22,24 +22,24 @@ public class DMThread : GLib.Object {
   public int unread_count = 0;
   public string? notification_id = null;
 
-  public Cairo.Surface? avatar_surface = null;
+  public Gdk.Texture? avatar_texture = null;
 
   public async void load_avatar (Account account, int scale_factor) {
     assert (this.user.id != 0);
 
-    if (this.avatar_surface != null)
+    if (this.avatar_texture != null)
       return;
 
-    this.avatar_surface = yield Twitter.get ().load_avatar_for_user_id (account,
+    this.avatar_texture = yield Twitter.get ().load_avatar_for_user_id (account,
                                                                         user.id,
                                                                         48 * scale_factor);
-    if (this.avatar_surface != null)
-      Twitter.get ().ref_avatar (this.avatar_surface);
+    if (this.avatar_texture != null)
+      Twitter.get ().ref_avatar (this.avatar_texture);
   }
 
   ~DMThread () {
-    if (this.avatar_surface != null)
-      Twitter.get ().unref_avatar (this.avatar_surface);
+    if (this.avatar_texture != null)
+      Twitter.get ().unref_avatar (this.avatar_texture);
   }
 }
 

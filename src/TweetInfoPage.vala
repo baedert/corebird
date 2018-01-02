@@ -160,7 +160,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       // Only possible BY_INSTANCE
       var tweet = (Cb.Tweet) args.get_object (KEY_TWEET);
       if (Twitter.get ().has_avatar (tweet.get_user_id ()))
-        avatar_image.surface = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
+        avatar_image.texture = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
 
       rearrange_tweets (tweet.id);
     } else {
@@ -174,7 +174,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       Cb.Tweet tweet = (Cb.Tweet)args.get_object (KEY_TWEET);
 
       if (Twitter.get ().has_avatar (tweet.get_user_id ()))
-        avatar_image.surface = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
+        avatar_image.texture = Twitter.get ().get_cached_avatar (tweet.get_user_id ());
 
       if (tweet.retweeted_tweet != null)
         this.tweet_id = tweet.retweeted_tweet.id;
@@ -203,19 +203,19 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       avatar_url = url.replace ("_normal", "_200x200");
 
     TweetUtils.download_avatar.begin (avatar_url, 73 * scale, cancellable, (obj, res) => {
-      Cairo.Surface surface;
+      Gdk.Texture texture;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
         if (pixbuf == null) {
-          surface = scale_surface ((Cairo.ImageSurface)Twitter.no_avatar, 73, 73);
+          texture = Twitter.no_avatar;
         } else {
-          surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, scale, null);
+          texture = Gdk.Texture.for_pixbuf (pixbuf);
         }
       } catch (GLib.Error e) {
         warning (e.message);
-        surface = Twitter.no_avatar;
+        texture = Twitter.no_avatar;
       }
-      avatar_image.surface = surface;
+      avatar_image.texture = texture;
     });
   }
 

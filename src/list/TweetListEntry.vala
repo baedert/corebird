@@ -503,10 +503,10 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     this.values_set = true;
   }
 
-  public void set_avatar (Cairo.Surface surface) {
+  //public void set_avatar (Cairo.Surface surface) {
     /* This should only ever be called from the settings page. */
-    this.avatar_image.surface = surface;
-  }
+    //this.avatar_image.surface = surface;
+  //}
 
 
   /**

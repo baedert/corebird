@@ -19,7 +19,7 @@
 #define AVATAR_CACHE_H
 
 #include <glib-object.h>
-#include <cairo.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
@@ -34,20 +34,20 @@ struct _CbAvatarCache
 #define CB_TYPE_AVATAR_CACHE cb_avatar_cache_get_type ()
 G_DECLARE_FINAL_TYPE (CbAvatarCache, cb_avatar_cache, CB, AVATAR_CACHE, GObject);
 
-CbAvatarCache *cb_avatar_cache_new (void);
-void              cb_avatar_cache_decrease_refcount_for_surface (CbAvatarCache   *self,
-                                                                 cairo_surface_t *surface);
-void              cb_avatar_cache_increase_refcount_for_surface (CbAvatarCache   *self,
-                                                                 cairo_surface_t *surface);
+CbAvatarCache *   cb_avatar_cache_new                           (void);
+void              cb_avatar_cache_decrease_refcount_for_texture (CbAvatarCache   *self,
+                                                                 GdkTexture      *texture);
+void              cb_avatar_cache_increase_refcount_for_texture (CbAvatarCache   *self,
+                                                                 GdkTexture      *texture);
 void              cb_avatar_cache_add                           (CbAvatarCache   *self,
                                                                  gint64           user_id,
-                                                                 cairo_surface_t *surface,
+                                                                 GdkTexture      *texture,
                                                                  const char      *url);
 void              cb_avatar_cache_set_avatar                    (CbAvatarCache   *self,
                                                                  gint64           user_id,
-                                                                 cairo_surface_t *surface,
+                                                                 GdkTexture      *texture,
                                                                  const char      *url);
-cairo_surface_t * cb_avatar_cache_get_surface_for_id            (CbAvatarCache *self,
+GdkTexture *      cb_avatar_cache_get_texture_for_id            (CbAvatarCache *self,
                                                                  gint64         user_id,
                                                                  gboolean      *out_found);
 const char *      cb_avatar_cache_get_url_for_id                (CbAvatarCache *self,

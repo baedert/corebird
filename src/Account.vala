@@ -25,8 +25,8 @@ public class Account : GLib.Object {
   public string? banner_url;
   public string? website;
   public string? description;
-  public Cairo.Surface avatar_small {public get; public set;}
-  public Cairo.Surface avatar       {public get; public set;}
+  public Gdk.Texture avatar_small {public get; public set;}
+  public Gdk.Texture avatar       {public get; public set;}
   public Rest.OAuthProxy proxy;
   public Cb.UserStream user_stream;
   public Cb.UserCounter user_counter;
@@ -38,7 +38,7 @@ public class Account : GLib.Object {
   public int64[] disabled_rts;
   public GLib.GenericArray<Cb.Filter> filters;
   public signal void info_changed (string screen_name, string name,
-                                   Cairo.Surface avatar_small, Cairo.Surface avatar);
+                                   Gdk.Texture avatar_small, Gdk.Texture avatar);
 
   public Account (int64 id, string screen_name, string name) {
     this.id = id;
@@ -115,25 +115,36 @@ public class Account : GLib.Object {
   public void load_avatar () {
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
     string path = Dirs.config (@"accounts/$(id).png");
-    this.avatar_small = load_surface (small_path);
-    this.avatar       = load_surface (path);
+    try {
+      this.avatar_small = Gdk.Texture.from_file (File.new_for_path (small_path));
+    } catch (GLib.Error e) {
+      warning ("Couldn't load small avatar variant (%s): %s", small_path, e.message);
+      this.avatar_small = Twitter.no_avatar;
+    }
+    try {
+      this.avatar = Gdk.Texture.from_file (File.new_for_path (path));
+    } catch (GLib.Error e) {
+      warning ("Couldn't load avatar (%s): %s", path, e.message);
+      this.avatar = Twitter.no_avatar;
+    }
+
     info_changed (screen_name, name, avatar, avatar_small);
   }
 
-  public void set_new_avatar (Cairo.Surface new_avatar) {
+  public void set_new_avatar (Gdk.Texture new_avatar) {
     string path       = Dirs.config (@"accounts/$(id).png");
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
 
+    warning ("");
+    //Cairo.Surface avatar = scale_surface ((Cairo.ImageSurface)new_avatar, 48, 48);
+    //Cairo.Surface avatar_small = scale_surface ((Cairo.ImageSurface)new_avatar, 24, 24);
 
-    Cairo.Surface avatar = scale_surface ((Cairo.ImageSurface)new_avatar, 48, 48);
-    Cairo.Surface avatar_small = scale_surface ((Cairo.ImageSurface)new_avatar, 24, 24);
 
+    //write_surface (avatar, path);
+    //write_surface (avatar_small, small_path);
 
-    write_surface (avatar, path);
-    write_surface (avatar_small, small_path);
-
-    this.avatar = avatar;
-    this.avatar_small = avatar_small;
+    //this.avatar = avatar;
+    //this.avatar_small = avatar_small;
   }
 
   /**
@@ -321,8 +332,8 @@ public class Account : GLib.Object {
           pixbuf.scale(scaled_pixbuf, 0, 0, 24, 24, 0, 0, scale_x, scale_y, Gdk.InterpType.HYPER);
           scaled_pixbuf.save(dest_path, type);
           debug ("saving to %s", dest_path);
-          this.avatar_small = Gdk.cairo_surface_create_from_pixbuf (scaled_pixbuf, 1, null);
-          this.avatar = Gdk.cairo_surface_create_from_pixbuf (pixbuf, 1, null);
+          this.avatar_small = Gdk.Texture.for_pixbuf (scaled_pixbuf);
+          this.avatar = Gdk.Texture.for_pixbuf (pixbuf);
         } catch (GLib.Error e) {
           critical (e.message);
         }

@@ -238,20 +238,19 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     // We don't use our AvatarCache here because this (100×100) avatar is only
     // ever loaded here.
     TweetUtils.download_avatar.begin (avatar_url, 100 * scale, data_cancellable, (obj, res) => {
-      Cairo.Surface surface;
+      Gdk.Texture texture;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
         if (pixbuf == null) {
-          surface = scale_surface ((Cairo.ImageSurface)Twitter.no_avatar,
-                                   100, 100);
+          texture = Twitter.no_avatar;
         } else {
-          surface = Gdk.cairo_surface_create_from_pixbuf (pixbuf, scale, null);
+          texture = Gdk.Texture.for_pixbuf (pixbuf);
         }
       } catch (GLib.Error e) {
         warning (e.message);
-        surface = Twitter.no_avatar;
+        texture = Twitter.no_avatar;
       }
-      avatar_image.surface = surface;
+      avatar_image.texture = texture;
       progress_spinner.stop ();
       loading_stack.visible_child_name = "data";
     });
@@ -693,7 +692,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     tweets_label.label = " ";
     following_label.label = " ";
     followers_label.label = " ";
-    avatar_image.surface = null;
+    avatar_image.texture = null;
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}

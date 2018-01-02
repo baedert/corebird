@@ -210,9 +210,9 @@ public class MainWindow : Gtk.ApplicationWindow {
       this.add (main_widget);
       main_widget.switch_page (0);
       this.set_window_title (main_widget.get_page (0).get_title ());
-      avatar_image.surface = account.avatar_small;
+      avatar_image.texture = account.avatar_small;
       account.notify["avatar-small"].connect(() => {
-        avatar_image.surface = this.account.avatar_small;
+        avatar_image.texture = this.account.avatar_small;
       });
 
       account.info_changed.connect (account_info_changed);
@@ -429,8 +429,8 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   private void account_info_changed (string        screen_name,
                                      string        name,
-                                     Cairo.Surface small_avatar,
-                                     Cairo.Surface avatar) {
+                                     Gdk.Texture   small_avatar,
+                                     Gdk.Texture   avatar) {
     this.set_window_title (main_widget.get_page (main_widget.cur_page_id).get_title ());
     this.set_title ("Corebird - @%s".printf (screen_name));
   }
