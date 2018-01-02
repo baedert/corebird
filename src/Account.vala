@@ -135,16 +135,20 @@ public class Account : GLib.Object {
     string path       = Dirs.config (@"accounts/$(id).png");
     string small_path = Dirs.config (@"accounts/$(id)_small.png");
 
-    warning ("");
-    //Cairo.Surface avatar = scale_surface ((Cairo.ImageSurface)new_avatar, 48, 48);
-    //Cairo.Surface avatar_small = scale_surface ((Cairo.ImageSurface)new_avatar, 24, 24);
+    // TODO: Maybe just remove avatar_small?
+    Cairo.ImageSurface new_avatar_surface = new Cairo.ImageSurface (Cairo.Format.ARGB32,
+                                                                    new_avatar.get_width (),
+                                                                    new_avatar.get_height ());
+    new_avatar.download (new_avatar_surface.get_data (), new_avatar_surface.get_stride ());
 
+    Cairo.Surface avatar_surface = scale_surface (new_avatar_surface, 48, 48);
+    Cairo.Surface avatar_small_surface = scale_surface (new_avatar_surface, 24, 24);
 
-    //write_surface (avatar, path);
-    //write_surface (avatar_small, small_path);
+    write_surface (avatar_surface, path);
+    write_surface (avatar_small_surface, small_path);
 
-    //this.avatar = avatar;
-    //this.avatar_small = avatar_small;
+    this.avatar = new_avatar;
+    this.avatar_small = new_avatar;
   }
 
   /**
