@@ -366,8 +366,9 @@ create_ui (CbTweetRow *self)
   gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");
   gtk_widget_set_parent (self->top_row_box, (GtkWidget *)self);
 
-  twitter_get_avatar (twitter_get (), cb_tweet_get_user_id (self->tweet), self->tweet->avatar_url,
-                      (AvatarWidget *)self->avatar_widget, 48, FALSE, NULL, NULL);
+  if (self->tweet->avatar_url != NULL)
+    twitter_get_avatar (twitter_get (), cb_tweet_get_user_id (self->tweet), self->tweet->avatar_url,
+                        (AvatarWidget *)self->avatar_widget, 48, FALSE, NULL, NULL);
 
   self->name_button = (GtkWidget *)text_button_new ();
   text_button_set_markup ((TextButton*)self->name_button, cb_tweet_get_user_name (self->tweet));
