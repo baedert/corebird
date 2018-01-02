@@ -353,8 +353,8 @@ cb_media_video_widget_new (CbMedia *media)
   /* TODO: Replace GdkScreen usage */
   g_warning ("%s: Fix automatic media window size negotiation", __FILE__);
 
-  width = cairo_image_surface_get_width (media->surface);
-  height = cairo_image_surface_get_height (media->surface) + h;
+  width = gdk_texture_get_width (media->texture);
+  height = gdk_texture_get_height (media->texture) + h;
 
   monitor_width = 800;
   monitor_height = 600;

@@ -100,7 +100,7 @@ cb_media_image_widget_new (CbMedia *media)
 
   g_return_val_if_fail (CB_IS_MEDIA (media), NULL);
   g_return_val_if_fail (!media->invalid, NULL);
-  g_return_val_if_fail (media->surface != NULL, NULL);
+  g_return_val_if_fail (media->texture != NULL, NULL);
 
   self = CB_MEDIA_IMAGE_WIDGET (g_object_new (CB_TYPE_MEDIA_IMAGE_WIDGET, NULL));
 
@@ -108,10 +108,10 @@ cb_media_image_widget_new (CbMedia *media)
     g_warning ("Maybe remove the GIF handling support!");
     /*gtk_image_set_from_animation (GTK_IMAGE (self->image), media->animation);*/
   else
-    gtk_image_set_from_surface (GTK_IMAGE (self->image), media->surface);
+    gtk_image_set_from_texture (GTK_IMAGE (self->image), media->texture);
 
-  img_width  = cairo_image_surface_get_width (media->surface);
-  img_height = cairo_image_surface_get_height (media->surface);
+  img_width  = gdk_texture_get_width (media->texture);
+  img_height = gdk_texture_get_height (media->texture);
 
   win_width = 800;
   win_height = 600;
