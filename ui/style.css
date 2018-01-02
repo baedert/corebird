@@ -1,5 +1,10 @@
 @define-color topbar_bg #333;
 
+/* Used for rows so we can spare ourselves an entire GtkSeparator */
+.border-bottom {
+  border-bottom: solid 1px alpha (grey, 0.3);
+}
+
 avatar>container {
   border: 1px solid transparent;
 }
