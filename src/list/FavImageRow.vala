@@ -54,7 +54,7 @@ class FavImageRow : Gtk.FlowBoxChild {
     gesture.set_button (0);
     gesture.pressed.connect (() => {
       Gdk.EventSequence sequence = this.gesture.get_current_sequence ();
-      Gdk.EventButton event = (Gdk.EventButton)this.gesture.get_last_event (sequence);
+      Gdk.Event event = this.gesture.get_last_event (sequence);
 
       if (event.triggers_context_menu ()) {
         var menu = new Gtk.Menu ();

@@ -74,7 +74,7 @@ public class TweetListBox : Gtk.ListBox {
                                    double x,
                                    double y) {
     Gdk.EventSequence sequence = this.press_gesture.get_current_sequence ();
-    Gdk.EventButton event = (Gdk.EventButton)this.press_gesture.get_last_event (sequence);
+    Gdk.Event event = this.press_gesture.get_last_event (sequence);
 
     if (event.triggers_context_menu ()) {
       Gtk.Widget row = this.get_row_at_y ((int)y);

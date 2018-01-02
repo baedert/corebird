@@ -388,7 +388,7 @@ private class MediaButton : Gtk.Widget {
     }
   }
 
-  public override bool key_press_event (Gdk.EventKey event) {
+  public override bool key_press_event (Gdk.Event event) {
     uint keyval;
     event.get_keyval (out keyval);
     if (keyval == Gdk.Key.Return ||

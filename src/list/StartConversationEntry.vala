@@ -91,7 +91,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
     completion_window.resize (alloc.width, 50);
   }
 
-  private bool name_entry_key_pressed (Gdk.EventKey evt) {
+  private bool name_entry_key_pressed (Gdk.Event evt) {
     uint num_results = completion_list.get_children ().length ();
     uint keyval;
 

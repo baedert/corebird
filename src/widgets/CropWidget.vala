@@ -60,7 +60,7 @@ class CropWidget : Gtk.DrawingArea {
     this.drag_gesture.drag_update.connect (drag_gesture_update_cb);
   }
 
-  private bool mouse_motion_cb (Gdk.EventMotion event) {
+  private bool mouse_motion_cb (Gdk.Event event) {
     double x, y;
     /* Just check whether the cursor is over the drag or resize area (or not)
        and change the cursor accordingly */

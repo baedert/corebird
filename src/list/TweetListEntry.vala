@@ -308,7 +308,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   }
 
   [GtkCallback]
-  private bool focus_out_cb (Gdk.EventFocus evt) {
+  private bool focus_out_cb (Gdk.Event evt) {
     delete_first_activated = false;
     retweet_button.reset ();
     return false;
@@ -316,7 +316,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
 
   [GtkCallback]
-  private bool key_released_cb (Gdk.EventKey evt) {
+  private bool key_released_cb (Gdk.Event evt) {
 #if DEBUG
     uint keyval;
 

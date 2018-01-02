@@ -389,7 +389,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_button.active = false;
   }
 
-  private bool window_delete_cb (Gdk.EventAny evt) {
+  private bool window_delete_cb (Gdk.Event evt) {
     if (main_widget != null)
       main_widget.stop ();
 

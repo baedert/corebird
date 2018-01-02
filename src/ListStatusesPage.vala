@@ -94,7 +94,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     tweet_list.set_adjustment (this.get_vadjustment ());
   }
 
-  private bool scroll_event_cb (Gdk.EventScroll evt) {
+  private bool scroll_event_cb (Gdk.Event evt) {
     double delta_x, delta_y;
 
     evt.get_scroll_deltas (out delta_x, out delta_y);

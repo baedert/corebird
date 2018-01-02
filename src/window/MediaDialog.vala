@@ -114,7 +114,7 @@ class MediaDialog : Gtk.Window {
   }
 
   [GtkCallback]
-  private bool key_press_event_cb (Gdk.EventKey evt) {
+  private bool key_press_event_cb (Gdk.Event evt) {
     uint keyval;
     evt.get_keyval (out keyval);
 
@@ -138,7 +138,7 @@ class MediaDialog : Gtk.Window {
     previous_media ();
   }
 
-  public override bool enter_notify_event (Gdk.EventCrossing event) {
+  public override bool enter_notify_event (Gdk.Event event) {
     uint detail;
 
     event.get_crossing_detail (out detail);
@@ -152,7 +152,7 @@ class MediaDialog : Gtk.Window {
     return false;
   }
 
-  public override bool leave_notify_event (Gdk.EventCrossing event) {
+  public override bool leave_notify_event (Gdk.Event event) {
     uint detail;
 
     event.get_crossing_detail (out detail);
