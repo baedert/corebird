@@ -428,7 +428,7 @@ namespace Cb {
   [CCode (cprefix = "CbTweetRow_", lower_case_cprefix = "cb_tweet_row_", cheader_filename =
           "CbTweetRow.h")]
   public class TweetRow : Gtk.ListBoxRow {
-    public TweetRow (Tweet tweet, MainWindow toplevel);//, Account account);
+    public TweetRow (Tweet tweet, MainWindow? toplevel);//, Account account);
     public Tweet tweet;
     public void toggle_mode ();
     public bool shows_actions ();
