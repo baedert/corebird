@@ -117,6 +117,7 @@ cb_media_image_widget_new (CbMedia *media)
   win_height = 600;
 
   /* TODO: Replace the GdkScreen usage here */
+  g_warning ("%s: Fix automatic media window size negotiation", __FILE__);
 
   if (img_width <= 800)
     {
