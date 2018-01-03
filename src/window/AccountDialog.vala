@@ -442,11 +442,11 @@ public class AccountDialog : Gtk.Window {
       Gdk.Pixbuf new_pixbuf = crop_widget.get_cropped_image ();
       if (crop_widget.desired_aspect_ratio == 1.0) {
         /* Avatar */
-        avatar_banner_widget.set_avatar (new_pixbuf);
+        avatar_banner_widget.set_avatar (Gdk.Texture.for_pixbuf (new_pixbuf));
         new_avatar = new_pixbuf;
       } else if (crop_widget.desired_aspect_ratio == 2.0) {
         /* Banner */
-        avatar_banner_widget.set_banner (new_pixbuf);
+        avatar_banner_widget.set_banner (Gdk.Texture.for_pixbuf (new_pixbuf));
         new_banner = new_pixbuf;
       } else {
         GLib.assert_not_reached ();

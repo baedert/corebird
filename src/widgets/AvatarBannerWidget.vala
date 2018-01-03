@@ -54,7 +54,7 @@ public class AvatarBannerWidget : Gtk.Container {
     this.account = account;
     fetch_banner.begin ();
     this.queue_draw ();
-    set_avatar_button.set_bg ((Cairo.ImageSurface)account.avatar);
+    set_avatar_button.set_bg (account.avatar);
   }
 
   private int get_avatar_x () {
@@ -91,12 +91,12 @@ public class AvatarBannerWidget : Gtk.Container {
 
   private async void fetch_banner () {
     if (account.banner_url == null) {
-      set_banner_button.set_pixbuf (Twitter.no_banner);
+      set_banner_button.set_bg (Gdk.Texture.for_pixbuf (Twitter.no_banner));
       return;
     }
 
     var pixbuf = yield Utils.download_pixbuf (account.banner_url + "/600x200");
-    this.set_banner_button.set_pixbuf (pixbuf);
+    this.set_banner_button.set_bg (Gdk.Texture.for_pixbuf (pixbuf));
   }
 
   public override void size_allocate (Gtk.Allocation allocation, int baseline, out Gtk.Allocation out_clip) {
@@ -145,11 +145,11 @@ public class AvatarBannerWidget : Gtk.Container {
     this.avatar_clicked ();
   }
 
-  public void set_avatar (Gdk.Pixbuf avatar) {
-    set_avatar_button.set_pixbuf (avatar);
+  public void set_avatar (Gdk.Texture avatar) {
+    set_avatar_button.set_bg (avatar);
   }
 
-  public void set_banner (Gdk.Pixbuf banner) {
-    set_banner_button.set_pixbuf (banner);
+  public void set_banner (Gdk.Texture banner) {
+    set_banner_button.set_bg (banner);
   }
 }
