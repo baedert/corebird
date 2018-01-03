@@ -58,5 +58,5 @@ void         cb_tweet_row_toggle_mode       (CbTweetRow      *self);
 gboolean     cb_tweet_row_shows_actions     (CbTweetRow      *self);
 void         cb_tweet_row_set_read_only     (CbTweetRow      *self);
 void         cb_tweet_row_set_avatar        (CbTweetRow      *self,
-                                             cairo_surface_t *avatar);
+                                             GdkTexture      *avatar);
 #endif

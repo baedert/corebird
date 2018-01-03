@@ -519,8 +519,9 @@ cb_tweet_row_set_read_only (CbTweetRow *self)
 
 void
 cb_tweet_row_set_avatar (CbTweetRow      *self,
-                         cairo_surface_t *avatar)
+                         GdkTexture      *avatar)
 {
-
+  if (avatar == NULL)
+    return;
 }
 
