@@ -146,6 +146,7 @@
         <!-- Notification page -->
         <child>
           <object class="GtkGrid" id="notification_grid">
+            <property name="margin">10</property>
             <property name="row-spacing">6</property>
             <property name="column-spacing">12</property>
             <property name="column-homogeneous">1</property>
