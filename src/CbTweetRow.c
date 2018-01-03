@@ -518,10 +518,12 @@ cb_tweet_row_set_read_only (CbTweetRow *self)
 }
 
 void
-cb_tweet_row_set_avatar (CbTweetRow      *self,
-                         GdkTexture      *avatar)
+cb_tweet_row_set_avatar (CbTweetRow *self,
+                         GdkTexture *avatar)
 {
   if (avatar == NULL)
     return;
+
+  avatar_widget_set_texture (AVATAR_WIDGET (self->avatar_widget), avatar);
 }
 
