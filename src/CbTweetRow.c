@@ -451,7 +451,8 @@ create_ui (CbTweetRow *self)
       gtk_widget_set_halign (self->rt_label, GTK_ALIGN_START);
       gtk_widget_set_parent (self->rt_label, (GtkWidget *)self);
     }
-  else if (self->tweet->quoted_tweet != NULL)
+
+  if (self->tweet->quoted_tweet != NULL)
     {
       self->quote_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
       self->quote_widget = cb_quote_tweet_widget_new (self->tweet->quoted_tweet);
