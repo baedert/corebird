@@ -240,7 +240,8 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
       gtk_widget_size_allocate (self->rt_label, &child_alloc, -1, &child_clip);
     }
 
-  if (self->mm_widget != NULL)
+  if (self->mm_widget != NULL &&
+      self->quote_box == NULL)
     {
       gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
