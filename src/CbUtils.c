@@ -166,6 +166,39 @@ cb_utils_linkify_user (const CbUserIdentity *user,
 }
 
 void
+cb_utils_linkify_user_name (const CbUserIdentity *user,
+                            GString              *str)
+{
+  char *s1, *s2, *s3, *s4;
+
+  g_string_append (str, "<span underline='none'><a href='@");
+  g_string_append_printf (str, "%" G_GINT64_FORMAT, user->id);
+  g_string_append (str, "/@");
+  g_string_append (str, user->screen_name);
+  g_string_append (str, "' ");
+
+  g_string_append (str, "title=\"");
+  g_string_append (str, user->screen_name);
+  g_string_append_c (str, '"');
+
+  g_string_append (str, ">");
+
+  s1 = cb_utils_escape_quotes (user->user_name);
+  s2 = cb_utils_escape_ampersands (s1);
+  s3 = cb_utils_escape_quotes (s2);
+  s4 = cb_utils_escape_ampersands (s3);
+
+  g_string_append (str, s4);
+
+  g_free (s1);
+  g_free (s2);
+  g_free (s3);
+  g_free (s4);
+
+  g_string_append (str, "</a></span>");
+}
+
+void
 cb_utils_write_reply_text (const CbMiniTweet *t,
                            GString           *str)
 {

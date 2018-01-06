@@ -439,6 +439,8 @@ create_ui (CbTweetRow *self)
   /* Retweet indicators */
   if (self->tweet->retweeted_tweet != NULL)
     {
+      GString *user_str = g_string_new (NULL);
+
       self->rt_image = gtk_image_new_from_icon_name ("corebird-retweet-symbolic");
       gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
                                    "rt-icon");
@@ -446,11 +448,18 @@ create_ui (CbTweetRow *self)
                                    "dim-label");
       gtk_widget_set_parent (self->rt_image, (GtkWidget *)self);
 
-      self->rt_label = gtk_label_new (self->tweet->source_tweet.author.user_name);
+      cb_utils_linkify_user_name (&self->tweet->source_tweet.author, user_str);
+      self->rt_label = gtk_label_new (user_str->str);
+      g_string_free (user_str, TRUE);
+      g_signal_connect (self->rt_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+
+      gtk_label_set_use_markup (GTK_LABEL (self->rt_label), TRUE);
       gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
                                    "rt-label");
       gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
                                    "dim-label");
+      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
+                                   "invisible-links");
       gtk_widget_set_halign (self->rt_label, GTK_ALIGN_START);
       gtk_widget_set_parent (self->rt_label, (GtkWidget *)self);
     }

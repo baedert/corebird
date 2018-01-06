@@ -45,8 +45,13 @@ void cb_utils_bind_non_gobject_model (GtkWidget               *listbox,
 void cb_utils_unbind_non_gobject_model (GtkWidget  *listbox,
                                         GListModel *model);
 
+/* Generates @screen_name link */
 void cb_utils_linkify_user (const CbUserIdentity *user,
                             GString              *str);
+
+/* Generates 'user_name' link */
+void cb_utils_linkify_user_name (const CbUserIdentity *user,
+                                 GString              *str);
 
 void cb_utils_write_reply_text (const CbMiniTweet *t,
                                 GString           *str);
