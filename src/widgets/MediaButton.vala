@@ -68,12 +68,8 @@ private class MediaButton : Gtk.Widget {
 
   static construct {
     try {
-      play_icons = {
-        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
-            new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play.png"), 1, null), 1),
-        Cb.Utils.surface_to_texture (Gdk.cairo_surface_create_from_pixbuf (
-            new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play@2.png"), 2, null), 1)
-      };
+      play_icons = { Gdk.Texture.from_resource ("/org/baedert/corebird/data/play.png"),
+                     Gdk.Texture.from_resource ("/org/baedert/corebird/data/play@2.png") };
     } catch (GLib.Error e) {
       critical (e.message);
     }
@@ -117,7 +113,7 @@ private class MediaButton : Gtk.Widget {
     this.queue_draw ();
 
     if (this._media.loaded) {
-      if (!_media.invalid && _media.surface != null) {
+      if (!_media.invalid && _media.texture != null) {
         this.queue_resize ();
         this.start_fade ();
       } else {
@@ -154,7 +150,7 @@ private class MediaButton : Gtk.Widget {
 
   private void start_fade () {
     assert (this.media != null);
-    assert (this.media.surface != null);
+    assert (this.media.texture != null);
 
     if (!this.get_realized () || !this.get_mapped () ||
         !Gtk.Settings.get_default ().gtk_enable_animations) {
@@ -193,7 +189,7 @@ private class MediaButton : Gtk.Widget {
     int widget_height = get_height ();
 
     /* Draw thumbnail */
-    if (_media != null && _media.surface != null && _media.loaded) {
+    if (_media != null && _media.texture != null && _media.loaded) {
       Graphene.Rect texture_bounds = {};
       int draw_width, draw_height;
       double scale;

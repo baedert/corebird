@@ -81,9 +81,6 @@ load_animation (GInputStream *input_stream,
   GdkPixbufAnimation *animation;
   GdkPixbuf *frame;
   GError *error = NULL;
-  cairo_surface_t *surface;
-  cairo_t *ct;
-  gboolean has_alpha;
 
   animation = gdk_pixbuf_animation_new_from_stream (input_stream, NULL, &error);
   if (error)
@@ -106,34 +103,12 @@ load_animation (GInputStream *input_stream,
   else
     media->animation = NULL;
 
-  has_alpha = gdk_pixbuf_get_has_alpha (frame);
-
-  surface = cairo_image_surface_create (has_alpha ? CAIRO_FORMAT_ARGB32 : CAIRO_FORMAT_RGB24,
-                                        gdk_pixbuf_get_width (frame),
-                                        gdk_pixbuf_get_height (frame));
-
-  ct = cairo_create (surface);
-  gdk_cairo_set_source_pixbuf (ct, frame, 0.0, 0.0);
-  cairo_paint (ct);
-  cairo_destroy (ct);
-
-  media->surface = surface;
-
-  if (media->surface == NULL)
-    {
-      g_warning ("Surface of %p is null", media);
-      media->texture = NULL;
-      mark_invalid (media);
-      goto out;
-    }
-
-  media->texture = cb_utils_surface_to_texture (media->surface, 1);
+  media->texture = gdk_texture_new_for_pixbuf (frame);
   media->width   = gdk_pixbuf_get_width (frame);
   media->height  = gdk_pixbuf_get_height (frame);
   media->loaded  = TRUE;
   media->invalid = FALSE;
 
-out:
   if (media->animation == NULL)
     g_object_unref (animation);
 
@@ -409,7 +384,7 @@ cb_media_downloader_load_async (CbMediaDownloader   *downloader,
   g_return_if_fail (CB_IS_MEDIA_DOWNLOADER (downloader));
   g_return_if_fail (CB_IS_MEDIA (media));
   g_return_if_fail (!media->loaded);
-  g_return_if_fail (media->surface == NULL);
+  g_return_if_fail (media->texture == NULL);
 
   task = g_task_new (downloader, downloader->cancellable, callback, user_data);
   data = g_new0 (LoadingData, 1);

@@ -341,11 +341,11 @@ cb_media_video_widget_new (CbMedia *media)
   CbMediaVideoWidget *self = CB_MEDIA_VIDEO_WIDGET (g_object_new (CB_TYPE_MEDIA_VIDEO_WIDGET, NULL));
 
   g_return_val_if_fail (CB_IS_MEDIA (media), self);
-  g_return_val_if_fail (media->surface != NULL, self);
+  g_return_val_if_fail (media->texture != NULL, self);
   g_return_val_if_fail (media->url != NULL, self);
 
-  cb_surface_progress_set_surface (CB_SURFACE_PROGRESS (self->surface_progress),
-                                   media->surface);
+  cb_surface_progress_set_texture (CB_SURFACE_PROGRESS (self->surface_progress),
+                                   media->texture);
 
   gtk_widget_measure (self->video_progress, GTK_ORIENTATION_VERTICAL, -1,
                       &h, NULL, NULL, NULL);

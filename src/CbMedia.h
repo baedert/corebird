@@ -52,7 +52,7 @@ struct _CbMedia
   guint invalid : 1;
   double percent_loaded;
 
-  cairo_surface_t *surface;
+  //cairo_surface_t *surface;
   GdkPixbufAnimation *animation;
   GdkTexture *texture;
 };

@@ -32,8 +32,6 @@ cb_media_finalize (GObject *object)
 {
   CbMedia *media = CB_MEDIA (object);
 
-  if (media->surface)
-    cairo_surface_destroy (media->surface);
   if (media->texture)
     g_object_unref (media->texture);
   g_free (media->thumb_url);
@@ -63,11 +61,9 @@ cb_media_class_init (CbMediaClass *class)
 static void
 cb_media_init (CbMedia *media)
 {
-  media->surface = NULL;
   media->animation = NULL;
   media->loaded  = FALSE;
   media->invalid = FALSE;
-  media->surface = NULL;
   media->url     = NULL;
   media->percent_loaded = 0;
   media->width = -1;

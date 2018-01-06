@@ -26,7 +26,7 @@ struct _CbSurfaceProgress
 {
   GtkWidget parent_instance;
 
-  cairo_surface_t *surface;
+  GdkTexture *texture;
   double progress;
 };
 typedef struct _CbSurfaceProgress CbSurfaceProgress;
@@ -35,8 +35,8 @@ GtkWidget *       cb_surface_progress_new (void);
 double            cb_surface_progress_get_progress (CbSurfaceProgress *self);
 void              cb_surface_progress_set_progress (CbSurfaceProgress *self,
                                                     double             progress);
-cairo_surface_t * cb_surface_progress_get_surface  (CbSurfaceProgress *self);
-void              cb_surface_progress_set_surface  (CbSurfaceProgress *self,
-                                                    cairo_surface_t   *surface);
+GdkTexture*       cb_surface_progress_get_texture  (CbSurfaceProgress *self);
+void              cb_surface_progress_set_texture  (CbSurfaceProgress *self,
+                                                    GdkTexture        *texture);
 
 #endif

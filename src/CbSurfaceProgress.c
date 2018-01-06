@@ -24,6 +24,12 @@ cb_surface_progress_snapshot (GtkWidget   *widget,
                               GtkSnapshot *snapshot)
 {
   CbSurfaceProgress *self = CB_SURFACE_PROGRESS (widget);
+  if (self->texture == NULL)
+    return;
+
+  g_warning ("CbSurfaceProgress is still a thing, but video playback doesn't work right now anyway...");
+
+#if 0
   int width, height;
   cairo_surface_t *tmp_surface;
   cairo_t *ctx;
@@ -31,8 +37,6 @@ cb_surface_progress_snapshot (GtkWidget   *widget,
   double scale;
   cairo_t *ct;
 
-  if (self->surface == NULL)
-    return;
 
   width = gtk_widget_get_width (widget);
   height = gtk_widget_get_height (widget);
@@ -88,6 +92,7 @@ cb_surface_progress_snapshot (GtkWidget   *widget,
   cairo_surface_destroy (tmp_surface);
 
   cairo_destroy (ct);
+#endif
 }
 
 static void
@@ -107,8 +112,7 @@ cb_surface_progress_finalize (GObject *object)
 {
   CbSurfaceProgress *self = CB_SURFACE_PROGRESS (object);
 
-  if (self->surface)
-    cairo_surface_destroy (self->surface);
+  g_clear_object (&self->texture);
 
   G_OBJECT_CLASS (cb_surface_progress_parent_class)->finalize (object);
 }
@@ -158,20 +162,16 @@ cb_surface_progress_set_progress (CbSurfaceProgress *self,
   gtk_widget_queue_draw (GTK_WIDGET (self));
 }
 
-cairo_surface_t *
-cb_surface_progress_get_surface (CbSurfaceProgress *self)
+GdkTexture *
+cb_surface_progress_get_texture (CbSurfaceProgress *self)
 {
-  return self->surface;
+  return self->texture;
 }
 
 void
-cb_surface_progress_set_surface (CbSurfaceProgress *self,
-                                 cairo_surface_t   *surface)
+cb_surface_progress_set_texture (CbSurfaceProgress *self,
+                                 GdkTexture        *texture)
 {
-  if (self->surface)
-    cairo_surface_destroy (self->surface);
-
-  self->surface = cairo_surface_reference (surface);
-
+  g_set_object (&self->texture, texture);
   gtk_widget_queue_resize (GTK_WIDGET (self));
 }
