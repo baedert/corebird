@@ -59,7 +59,9 @@ cb_tweet_row_update_time_delta (CbTwitterItem *item,
 
   delta_str = cb_utils_get_time_delta (then, cur_time);
   gtk_label_set_label (GTK_LABEL (self->time_delta_label), delta_str);
-  /* XXX Incomplete: Quotes */
+
+  if (self->quote_widget != NULL)
+    cb_quote_tweet_widget_update_time (CB_QUOTE_TWEET_WIDGET (self->quote_widget), now);
 
   g_free (delta_str);
   g_date_time_unref (cur_time);

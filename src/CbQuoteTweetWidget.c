@@ -16,6 +16,7 @@
  */
 
 #include "CbQuoteTweetWidget.h"
+#include "CbUtils.h"
 #include "corebird.h"
 
 G_DEFINE_TYPE (CbQuoteTweetWidget, cb_quote_tweet_widget, GTK_TYPE_WIDGET);
@@ -219,8 +220,29 @@ cb_quote_tweet_widget_new (const CbMiniTweet *quote)
 
   self->user_id = quote->author.id;
   self->screen_name = g_strdup (quote->author.screen_name);
+  self->tweet_created_at = quote->created_at;
 
   create_ui (self, quote);
 
   return (GtkWidget *)self;
+}
+
+
+void
+cb_quote_tweet_widget_update_time (CbQuoteTweetWidget *self,
+                                   GDateTime          *now)
+{
+  GDateTime *cur_time = now != NULL ? g_date_time_ref (now) :
+                                      g_date_time_new_now_local ();
+  GDateTime *then;
+  char *delta_str;
+
+  then = g_date_time_new_from_unix_local (self->tweet_created_at);
+
+  delta_str = cb_utils_get_time_delta (then, cur_time);
+  gtk_label_set_label (GTK_LABEL (self->time_delta_label), delta_str);
+
+  g_free (delta_str);
+  g_date_time_unref (cur_time);
+  g_date_time_unref (then);
 }

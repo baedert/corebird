@@ -33,6 +33,7 @@ struct _CbQuoteTweetWidget
 
   gint64 user_id;
   char *screen_name;
+  gint64 tweet_created_at;
 };
 typedef struct _CbQuoteTweetWidget CbQuoteTweetWidget;
 
@@ -40,5 +41,7 @@ typedef struct _CbQuoteTweetWidget CbQuoteTweetWidget;
 G_DECLARE_FINAL_TYPE (CbQuoteTweetWidget, cb_quote_tweet_widget, CB, QUOTE_TWEET_WIDGET, GtkWidget);
 
 GtkWidget * cb_quote_tweet_widget_new (const CbMiniTweet *quote);
+void        cb_quote_tweet_widget_update_time (CbQuoteTweetWidget *self,
+                                               GDateTime          *now);
 
 #endif
