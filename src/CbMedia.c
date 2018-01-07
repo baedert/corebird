@@ -61,6 +61,7 @@ cb_media_class_init (CbMediaClass *class)
 static void
 cb_media_init (CbMedia *media)
 {
+  media->texture = NULL;
   media->animation = NULL;
   media->loaded  = FALSE;
   media->invalid = FALSE;
