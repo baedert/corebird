@@ -131,7 +131,7 @@ mediabutton:hover {
   background-color: transparent;
 }
 
-.text-only-button{
+textbutton {
   font-weight: bold;
   background-image: none;
   background-color: transparent;
@@ -146,16 +146,16 @@ mediabutton:hover {
   outline-offset: 0;
 }
 
-.text-only-button:hover {
+textbutton:hover {
   border-bottom: 1px solid currentColor;
 }
 
-.text-only-button:active {
+textbutton:active {
   color: inherit;
   background-color: alpha(currentColor, 0.4);
 }
 
-.text-only-button:backdrop {
+textbutton:backdrop {
   background-color: transparent;
 }
 

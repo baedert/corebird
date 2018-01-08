@@ -23,10 +23,6 @@ public class TextButton : Gtk.Button {
     set_css_name ("textbutton");
   }
 
-  construct {
-    this.get_style_context ().add_class ("text-only-button");
-  }
-
   /**
    * Adds a GtkLabel to the Button using the given text as markup.
    * If the button already contains another child, that will either be replaced if it's
