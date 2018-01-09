@@ -79,7 +79,6 @@ mediabutton:hover {
   background-color: transparent;
 
   color: white;
-  background-color: alpha (green, 0.5);
   -gtk-icon-source: -gtk-icontheme("object-select-symbolic");
 }
 
@@ -91,7 +90,6 @@ mediabutton:hover {
   background-color: transparent;
 
   color: white;
-  background-color: alpha (red, 0.5);
   -gtk-icon-source: -gtk-icontheme("dialog-error-symbolic");
 }
 
