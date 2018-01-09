@@ -115,10 +115,12 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.add_widget (length_label);
 
     this.add_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
+    this.add_image_button.set_tooltip_text (_("Attach image"));
     add_image_button.clicked.connect (add_image_clicked_cb);
     tweet_text.add_widget (add_image_button);
 
     this.fav_image_button = new Gtk.Button.from_icon_name ("corebird-favorite-symbolic");
+    this.fav_image_button.set_tooltip_text (_("Show favorite images"));
     fav_image_button.clicked.connect (fav_image_button_clicked_cb);
     tweet_text.add_widget (fav_image_button);
 
@@ -410,6 +412,7 @@ class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.stack.visible_child = this.emoji_chooser;
       cancel_button.label = _("Back");
     });
+    this.emoji_button.set_tooltip_text (_("Show Emojis"));
 
     tweet_text.add_widget (emoji_button);
   }
