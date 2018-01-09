@@ -109,6 +109,9 @@ class FavImageView : Gtk.Box {
   private void fav_image_list_child_activated_cb (Gtk.FlowBoxChild _child) {
     FavImageRow child = (FavImageRow) _child;
 
+    if (!child.sensitive)
+      return;
+
     this.image_selected (child.get_image_path ());
   }
 
