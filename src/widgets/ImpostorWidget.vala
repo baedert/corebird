@@ -30,12 +30,17 @@ class ImpostorWidget : Gtk.Image {
 
     var texture = Cb.Utils.surface_to_texture (surface,
                                                this.get_scale_factor ());
-    Graphene.Rect bounds = {};
-    bounds.origin.x = 0;
-    bounds.origin.y = 0;
-    bounds.size.width = get_allocated_width ();
-    bounds.size.height = get_allocated_height ();
-    snapshot.append_texture (texture, bounds, "Clone Texture");
+
+    if (texture != null) {
+      Graphene.Rect bounds = {};
+      bounds.origin.x = 0;
+      bounds.origin.y = 0;
+      bounds.size.width = get_allocated_width ();
+      bounds.size.height = get_allocated_height ();
+      snapshot.append_texture (texture, bounds, "Clone Texture");
+    } else {
+      warning ("ImpostorWidget is broken.");
+    }
   }
 
   public void clone (Gtk.Widget widget) {
