@@ -19,7 +19,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   private AvatarWidget avatar_image;
   private Gtk.Label text_label;
   private Gtk.Label screen_name_label;
-  private TextButton name_button;
+  private Gtk.Button name_button;
   private Gtk.Label time_delta_label;
 
   public string text {
@@ -29,7 +29,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set { screen_name_label.label = "@" + value; }
   }
   public new string name {
-    set { name_button.set_markup (value.replace ("&", "&amp;")); }
+    set { name_button.set_label (value.replace ("&", "&amp;")); }
   }
 
   public Gdk.Texture avatar {
@@ -58,25 +58,22 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     this.avatar_image = new AvatarWidget ();
     avatar_image.size = 48;
     avatar_image.set_valign (Gtk.Align.START);
-    avatar_image.show ();
     grid.attach (avatar_image, 0, 0, 1, 2);
 
-    this.name_button = new TextButton ();
+    this.name_button = new Gtk.Button ();
     name_button.set_valign (Gtk.Align.BASELINE);
-    name_button.show ();
+    name_button.get_style_context ().add_class ("user-name");
     grid.attach (name_button, 1, 0, 1, 1);
 
     this.screen_name_label = new Gtk.Label (null);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
-    screen_name_label.show ();
     grid.attach (screen_name_label, 2, 0, 1, 1);
 
     this.time_delta_label = new Gtk.Label (null);
     time_delta_label.set_halign (Gtk.Align.END);
     time_delta_label.set_valign (Gtk.Align.BASELINE);
     time_delta_label.set_hexpand (true);
-    time_delta_label.show ();
     time_delta_label.get_style_context ().add_class ("dim-label");
     grid.attach (time_delta_label, 3, 0, 1, 1);
 
@@ -89,7 +86,6 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     text_label.set_use_markup (true);
     text_label.set_use_markup (true);
     text_label.set_selectable (true);
-    text_label.show ();
     grid.attach (text_label, 1, 1, 3, 1);
 
     name_button.clicked.connect (() => {

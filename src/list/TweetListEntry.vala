@@ -25,7 +25,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   [GtkChild]
   private Gtk.Label screen_name_label;
   [GtkChild]
-  private TextButton name_button;
+  private Gtk.Button name_button;
   [GtkChild]
   private Gtk.Label time_delta_label;
   [GtkChild]
@@ -55,7 +55,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
   /* Conditionally created widgets... */
   private Gtk.Label? quote_label = null;
-  private TextButton? quote_name = null;
+  private Gtk.Button? quote_name = null;
   private Gtk.Label? quote_time_delta = null;
   private Gtk.Label? quote_screen_name = null;
   private Gtk.Label? quote_reply_label = null;
@@ -114,7 +114,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     this.tweet = tweet;
     this.main_window = main_window;
 
-    name_button.set_markup (tweet.get_user_name ());
+    name_button.set_label (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
     if (tweet.avatar_url != null) {
       string avatar_url = tweet.avatar_url;
@@ -163,7 +163,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
       if (quote_label.label.length == 0)
         quote_label.hide ();
 
-      quote_name.set_markup (tweet.quoted_tweet.author.user_name);
+      quote_name.set_label (tweet.quoted_tweet.author.user_name);
       quote_screen_name.label = "@" + tweet.quoted_tweet.author.screen_name;
       if (tweet.quoted_tweet.reply_id != 0) {
         var buff = new GLib.StringBuilder ();
@@ -671,7 +671,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     quote_grid.margin_end = 6;
     quote_grid.get_style_context ().add_class ("quote");
 
-    this.quote_name = new TextButton ();
+    this.quote_name = new Gtk.Button ();
     quote_name.halign = Gtk.Align.START;
     quote_name.valign = Gtk.Align.BASELINE;
     quote_name.margin_start = 12;

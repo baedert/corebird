@@ -130,7 +130,7 @@
               </packing>
             </child>
             <child>
-              <object class="TextButton" id="name_button">
+              <object class="GtkButton" id="name_button">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>

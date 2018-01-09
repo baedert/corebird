@@ -122,7 +122,7 @@ mediabutton:hover {
   background-color: transparent;
 }
 
-textbutton {
+button.user-name {
   font-weight: bold;
   background-image: none;
   background-color: transparent;
@@ -137,16 +137,16 @@ textbutton {
   outline-offset: 0;
 }
 
-textbutton:hover {
+button.user-name:hover {
   border-bottom: 1px solid currentColor;
 }
 
-textbutton:active {
+button.user-name:active {
   color: inherit;
   background-color: alpha(currentColor, 0.4);
 }
 
-textbutton:backdrop {
+button.user-name:backdrop {
   background-color: transparent;
 }
 
@@ -300,7 +300,7 @@ row.tweet>multimedia {
   margin-top: 0.5em;
 }
 
-row.tweet textbutton {
+row.tweet button.user-name {
   margin-right: 0.5em;
 }
 

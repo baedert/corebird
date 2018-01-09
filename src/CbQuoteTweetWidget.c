@@ -178,8 +178,8 @@ create_ui (CbQuoteTweetWidget *self,
   gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");
   gtk_widget_set_parent (self->top_row_box, (GtkWidget *)self);
 
-  self->name_button = (GtkWidget *)text_button_new ();
-  text_button_set_markup ((TextButton*)self->name_button, quote->author.user_name);
+  self->name_button = gtk_button_new_with_label (quote->author.user_name);
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->name_button), "user-name");
   g_signal_connect (self->name_button, "clicked", G_CALLBACK (name_button_clicked_cb), self);
   gtk_widget_set_valign (self->name_button, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
