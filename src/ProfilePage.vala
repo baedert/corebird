@@ -217,7 +217,10 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       if (e.message == "Forbidden") {
         loading_error_label.label = _("Suspended Account");
         loading_stack.visible_child = loading_error_label;
-      } else {
+      } else if (e.message == "Not Found") {
+        loading_error_label.label = _("Not Found");
+        loading_stack.visible_child = loading_error_label;
+      }else {
         warning (e.message);
       }
       return;
@@ -430,7 +433,8 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     try {
       root = yield Cb.Utils.load_threaded_async (call, data_cancellable);
     } catch (GLib.Error e) {
-      if (e.message != "Authorization Required") {
+      if (e.message != "Authorization Required" &&
+          e.message != "Not Found") {
         warning (e.message);
       }
       tweet_list.set_empty ();
