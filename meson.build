@@ -169,6 +169,7 @@ corebird_lib_sources = files([
   'src/CbAnimation.c',
   'src/CbQuoteTweetWidget.c',
   'src/CbAspectImage.c',
+  'src/CbTextButton.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',
