@@ -24,6 +24,8 @@ cb_text_button_new (const char *text)
   GtkWidget *button;
 
   gtk_label_set_use_markup ((GtkLabel *)label, TRUE);
+  gtk_label_set_ellipsize ((GtkLabel *)label, PANGO_ELLIPSIZE_END);
+  gtk_label_set_xalign ((GtkLabel *)label, 0.0f);
 
   button = gtk_button_new ();
   gtk_container_add ((GtkContainer *)button, label);
