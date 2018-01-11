@@ -128,7 +128,7 @@ button.user-name {
   background-color: transparent;
   border:none;
   text-shadow: none;
-  padding: 0 2px 0 2px;
+  padding: 0;
   box-shadow: none;
   border-radius: 0px;
   border-bottom: 1px solid transparent;
@@ -259,7 +259,7 @@ progressbar.horizontal.embedded-progress>trough>progress {
 }
 
 .tweet-info-grid {
-  padding: 12px;
+  padding: 1em;
 }
 
 row.tweet {
