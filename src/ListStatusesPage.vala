@@ -38,7 +38,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   private int64 list_id;
   private uint tweet_remove_timeout = 0;
   [GtkChild]
-  private TweetListBox tweet_list;
+  private Cb.TweetListBox tweet_list;
   [GtkChild]
   private MaxSizeContainer max_size_container;
   [GtkChild]
@@ -87,7 +87,7 @@ class ListStatusesPage : ScrollWidget, IPage {
   public ListStatusesPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.tweet_list.account = account;
+    //this.tweet_list.account = account;
     this.scroll_event.connect (scroll_event_cb);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);

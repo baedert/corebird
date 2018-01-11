@@ -25,7 +25,7 @@ class FavoritesTimeline : Cb.MessageReceiver, DefaultTimeline {
   public FavoritesTimeline (int id, Account account) {
     base (id);
     this.account = account;
-    this.tweet_list.account = account;
+    //this.tweet_list.account = account;
   }
 
   private void stream_message_received (Cb.StreamMessageType type, Json.Node root) {

@@ -25,7 +25,7 @@ public class HomeTimeline : Cb.MessageReceiver, DefaultTimeline {
   public HomeTimeline(int id, Account account) {
     base (id);
     this.account = account;
-    this.tweet_list.account = account;
+    //this.tweet_list.account = account;
   }
 
   public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {

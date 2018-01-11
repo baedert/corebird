@@ -128,7 +128,6 @@ corebird_lib_sources = files([
   'src/widgets/ReplyEntry.vala',
   'src/widgets/ReplyIndicator.vala',
   'src/widgets/ScrollWidget.vala',
-  'src/widgets/TweetListBox.vala',
   'src/widgets/UserListsWidget.vala',
   'src/widgets/FavImageView.vala',
   'src/window/AboutDialog.vala',
@@ -170,6 +169,7 @@ corebird_lib_sources = files([
   'src/CbQuoteTweetWidget.c',
   'src/CbAspectImage.c',
   'src/CbTextButton.c',
+  'src/CbTweetListBox.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',

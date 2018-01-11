@@ -454,4 +454,21 @@ namespace Cb {
     public AspectImage ();
     public void set_pixbuf (Gdk.Pixbuf pixbuf);
   }
+
+  [CCode (cprefix = "CbTweetListBox_", lower_case_cprefix = "cb_tweet_list_box_", cheader_filename =
+          "CbTweetListBox.h")]
+  public class TweetListBox : Gtk.ListBox {
+    public Cb.TweetModel model;
+    public Cb.TweetRow action_entry;
+    public TweetListBox ();
+    public signal void retry_button_clicked ();
+    public void set_empty ();
+    public void set_unempty ();
+    public void set_error (string s);
+    public void set_placeholder_text (string s);
+    public void reset_placeholder_text ();
+    public unowned Gtk.Widget get_first_visible_row ();
+    public unowned Gtk.Widget get_placeholder ();
+    public void remove_all ();
+  }
 }

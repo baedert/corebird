@@ -400,7 +400,7 @@
             <property name="transition-type">crossfade</property>
             <property name="vhomogeneous">0</property>
             <child>
-              <object class="TweetListBox" id="tweet_list">
+              <object class="CbTweetListBox" id="tweet_list">
                 <property name="visible">1</property>
                 <property name="can-focus">False</property>
                 <property name="vexpand">True</property>
@@ -411,14 +411,14 @@
               <object class="UserListsWidget" id="user_lists"/>
             </child>
             <child>
-              <object class="TweetListBox" id="followers_list">
+              <object class="CbTweetListBox" id="followers_list">
                 <property name="visible">1</property>
                 <property name="vexpand">true</property>
                 <property name="selection-mode">none</property>
               </object>
             </child>
             <child>
-              <object class="TweetListBox" id="following_list">
+              <object class="CbTweetListBox" id="following_list">
                 <property name="visible">1</property>
                 <property name="vexpand">true</property>
                 <property name="selection-mode">none</property>

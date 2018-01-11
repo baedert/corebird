@@ -63,11 +63,11 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   [GtkChild]
   private FollowButton follow_button;
   [GtkChild]
-  private TweetListBox tweet_list;
+  private Cb.TweetListBox tweet_list;
   [GtkChild]
-  private TweetListBox followers_list;
+  private Cb.TweetListBox followers_list;
   [GtkChild]
-  private TweetListBox following_list;
+  private Cb.TweetListBox following_list;
   [GtkChild]
   private Gtk.Spinner progress_spinner;
   [GtkChild]
@@ -105,7 +105,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     this.id = id;
     this.account = account;
     this.user_lists.account = account;
-    this.tweet_list.account = account;
+    //this.tweet_list.account = account;
 
     this.scrolled_to_end.connect (() => {
       if (user_stack.visible_child == tweet_list) {

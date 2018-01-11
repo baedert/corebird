@@ -26,7 +26,7 @@
                 <property name="can-focus">0</property>
                 <property name="hexpand">1</property>
                 <child>
-                  <object class="TweetListBox" id="top_list_box">
+                  <object class="CbTweetListBox" id="top_list_box">
                     <property name="can-focus">False</property>
                     <property name="selection-mode">none</property>
                   </object>
@@ -328,7 +328,7 @@
               </object>
             </child>
             <child>
-              <object class="TweetListBox" id="bottom_list_box">
+              <object class="CbTweetListBox" id="bottom_list_box">
                 <property name="visible">1</property>
                 <property name="selection-mode">none</property>
                 <property name="hexpand">1</property>

@@ -194,9 +194,9 @@ namespace TweetUtils {
   }
 
 
-  void work_array (Json.Array   json_array,
-                   TweetListBox tweet_list,
-                   Account      account) {
+  void work_array (Json.Array      json_array,
+                   Cb.TweetListBox tweet_list,
+                   Account         account) {
     uint n_tweets = json_array.get_length ();
     /* If the request returned no results at all, we don't
        need to do all the later stuff */

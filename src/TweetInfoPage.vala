@@ -66,9 +66,9 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private TweetListBox bottom_list_box;
+  private Cb.TweetListBox bottom_list_box;
   [GtkChild]
-  private TweetListBox top_list_box;
+  private Cb.TweetListBox top_list_box;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
   [GtkChild]
@@ -95,8 +95,8 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public TweetInfoPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    this.top_list_box.account = account;
-    this.bottom_list_box.account = account;
+    //this.top_list_box.account = account;
+    //this.bottom_list_box.account = account;
 
     scroll_controller = new Gtk.EventControllerScroll (this, Gtk.EventControllerScrollFlags.VERTICAL);
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);

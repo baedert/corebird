@@ -25,7 +25,7 @@ class MentionsTimeline : Cb.MessageReceiver, DefaultTimeline {
   public MentionsTimeline(int id, Account account) {
     base (id);
     this.account = account;
-    this.tweet_list.account= account;
+    //this.tweet_list.account= account;
   }
 
   private void stream_message_received (Cb.StreamMessageType type, Json.Node root) {

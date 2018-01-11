@@ -37,7 +37,7 @@ class SearchPage : IPage, Gtk.Box {
   [GtkChild]
   private Gtk.Button search_button;
   [GtkChild]
-  private TweetListBox tweet_list;
+  private Cb.TweetListBox tweet_list;
   [GtkChild]
   private Gtk.Label users_header;
   [GtkChild]

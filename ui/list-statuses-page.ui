@@ -305,7 +305,7 @@
           </packing>
         </child>
         <child>
-          <object class="TweetListBox" id="tweet_list">
+          <object class="CbTweetListBox" id="tweet_list">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="vexpand">True</property>
