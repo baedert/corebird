@@ -25,27 +25,35 @@ class ImpostorWidget : Gtk.Image {
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
-    if (this.surface == null)
-      return;
+    warning ("ImpostorWidget is broken.");
+    return;
 
-    var texture = Cb.Utils.surface_to_texture (surface,
-                                               this.get_scale_factor ());
 
-    if (texture != null) {
-      Graphene.Rect bounds = {};
-      bounds.origin.x = 0;
-      bounds.origin.y = 0;
-      bounds.size.width = get_allocated_width ();
-      bounds.size.height = get_allocated_height ();
-      snapshot.append_texture (texture, bounds, "Clone Texture");
-    } else {
-      warning ("ImpostorWidget is broken.");
-    }
+    //if (this.surface == null)
+      //return;
+
+    //var texture = Cb.Utils.surface_to_texture (surface,
+                                               //this.get_scale_factor ());
+
+    //if (texture != null) {
+      //Graphene.Rect bounds = {};
+      //bounds.origin.x = 0;
+      //bounds.origin.y = 0;
+      //bounds.size.width = get_allocated_width ();
+      //bounds.size.height = get_allocated_height ();
+      //snapshot.append_texture (texture, bounds, "Clone Texture");
+    //} else {
+    //}
   }
 
   public void clone (Gtk.Widget widget) {
     int widget_width  = widget.get_allocated_width ();
     int widget_height = widget.get_allocated_height ();
+
+    if (widget_width == 0 || widget_height == 0) {
+      this.surface = null;
+      return;
+    }
 
     this.surface = widget.get_window ().create_similar_surface (Cairo.Content.COLOR_ALPHA,
                                                                 widget_width,
