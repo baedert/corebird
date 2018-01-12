@@ -225,5 +225,14 @@ cb_tweet_list_box_get_placeholder (CbTweetListBox *self)
 void
 cb_tweet_list_box_remove_all (CbTweetListBox *self)
 {
+  GList *children = gtk_container_get_children (GTK_CONTAINER (self));
+  GList *l;
 
+  for (l = children; l; l = l->next)
+    {
+      if (GTK_WIDGET (l->data) != self->placeholder)
+        gtk_container_remove ((GtkContainer *)self, l->data);
+    }
+
+  g_list_free (children);
 }
