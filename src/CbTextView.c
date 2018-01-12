@@ -31,6 +31,7 @@ G_DEFINE_TYPE (CbTextView, cb_text_view, GTK_TYPE_WIDGET);
 
 enum {
   SIGNAL_CHANGED,
+  SIGNAL_SEND,
   LAST_SIGNAL
 };
 static guint text_view_signals[LAST_SIGNAL] = { 0 };
@@ -504,9 +505,21 @@ cb_text_view_key_press_event_cb (GtkWidget   *widget,
 {
   CbTextView *self = user_data;
   guint keyval;
+  GdkModifierType state;
 
   if (!gdk_event_get_keyval ((GdkEvent *)event, &keyval))
     return GDK_EVENT_PROPAGATE;
+
+  gdk_event_get_state ((GdkEvent *)event, &state);
+
+  /* Control + Return is send for us */
+  if (keyval == GDK_KEY_Return &&
+      (state & GDK_CONTROL_MASK) > 0)
+    {
+      g_signal_emit (self, text_view_signals[SIGNAL_SEND], 0);
+      return GDK_EVENT_STOP;
+    }
+
 
   if (!cb_text_view_is_completing (self))
     return GDK_EVENT_PROPAGATE;
@@ -557,6 +570,14 @@ cb_text_view_class_init (CbTextViewClass *klass)
                                                     0,
                                                     NULL, NULL,
                                                     NULL, G_TYPE_NONE, 0);
+
+  text_view_signals[SIGNAL_SEND] = g_signal_new ("send",
+                                                 G_OBJECT_CLASS_TYPE (object_class),
+                                                 G_SIGNAL_RUN_FIRST,
+                                                 0,
+                                                 NULL, NULL,
+                                                 NULL, G_TYPE_NONE, 0);
+
 
   gtk_widget_class_set_css_name (GTK_WIDGET_CLASS (klass), "textview");
 }
