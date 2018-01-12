@@ -128,7 +128,7 @@ cb_tweet_list_box_init (CbTweetListBox *self)
                            tweet_row_create_func,
                            self,
                            NULL);
-  
+
   /* Create some pre-defined placeholder widgetry */
   {
     GtkWidget *loading_label;
@@ -137,7 +137,7 @@ cb_tweet_list_box_init (CbTweetListBox *self)
 
     self->placeholder = gtk_stack_new ();
     gtk_stack_set_transition_type ((GtkStack *)self->placeholder, GTK_STACK_TRANSITION_TYPE_CROSSFADE);
-    
+
     loading_label = gtk_label_new (_("Loading…"));
     gtk_style_context_add_class (gtk_widget_get_style_context (loading_label), "dim-label");
     gtk_stack_add_named ((GtkStack *)self->placeholder, loading_label, "spinner");
@@ -220,7 +220,6 @@ cb_tweet_list_box_get_placeholder (CbTweetListBox *self)
 {
   return self->placeholder;
 }
-
 
 void
 cb_tweet_list_box_remove_all (CbTweetListBox *self)
