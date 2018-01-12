@@ -62,6 +62,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     this.text_view = new Cb.TextView ();
     text_view.set_hexpand (true);
     text_view.changed.connect (recalc_length);
+    text_view.send.connect (send_button_clicked_cb);
     bottom_box.add (text_view);
 
     this.send_button = new Gtk.Button.with_label (_("Send"));
@@ -208,8 +209,6 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   }
 
   public void on_join (int page_id, Cb.Bundle? args) {
-    warning ("Add send-activated signal or similar to CbTextView for catching ctrl+return");
-
     int64 user_id = args.get_int64 (KEY_SENDER_ID);
     if (user_id == 0)
       return;
