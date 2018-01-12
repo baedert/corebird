@@ -308,6 +308,10 @@ row.tweet>label.text {
   margin-top: 0.5em;
 }
 
+row.tweet label.time-delta {
+  margin-left: 0.5em;
+}
+
 row.tweet>box.quote {
  padding-left: 0.5em;
  margin-top: 1em;
