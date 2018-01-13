@@ -39,7 +39,6 @@ add_project_arguments('-DGETTEXT_PACKAGE="corebird"', language: 'c')
 add_project_arguments('-DDATADIR="' + get_option('datadir') + '"', language: 'c')
 add_project_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
 add_project_arguments('--enable-deprecated', language: 'vala')
-add_project_arguments('-D', 'GTK322', language: 'vala')
 
 if (enable_debug)
   add_project_arguments('-g', language: 'c')
