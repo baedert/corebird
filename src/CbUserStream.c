@@ -377,6 +377,13 @@ continuous_cb (RestProxyCall *call,
 
         if (error != NULL)
           {
+            if (g_str_has_prefix (error->message, "Exceeded connection limit for user"))
+              {
+                /* Ignore this one, let the next reconnect handle it */
+                g_string_erase (self->data, 0, -1);
+                return;
+              }
+
             g_warning ("%s: %s", __FUNCTION__, error->message);
             g_warning ("\n%s\n", self->data->str);
             g_string_erase (self->data, 0, -1);
