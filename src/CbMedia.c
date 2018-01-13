@@ -101,7 +101,7 @@ emit_media_progress (gpointer data)
 
   g_return_val_if_fail (CB_IS_MEDIA (media), G_SOURCE_REMOVE);
 
-  g_signal_emit (data, media_signals[PROGRESS], 0);
+  g_signal_emit (media, media_signals[PROGRESS], 0);
 
   return G_SOURCE_REMOVE;
 }
