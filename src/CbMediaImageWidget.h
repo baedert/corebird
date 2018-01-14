@@ -37,6 +37,9 @@ struct _CbMediaImageWidget
   double initial_scroll_x;
   double initial_scroll_y;
 
+  int img_width;
+  int img_height;
+
   gulong hadj_changed_id;
   gulong vadj_changed_id;
 };
@@ -46,5 +49,6 @@ GtkWidget * cb_media_image_widget_new       (CbMedia *media);
 void        cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
                                              double              px,
                                              double              py);
+void        cb_media_image_widget_calc_size (CbMediaImageWidget *self);
 
 #endif

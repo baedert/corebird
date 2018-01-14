@@ -253,6 +253,7 @@ namespace Cb {
   public class MediaImageWidget : Gtk.ScrolledWindow {
     public MediaImageWidget (Media media);
     public void scroll_to (double x, double y);
+    public void calc_size ();
   }
 
   [CCode (cprefix = "CbTweetModel_", lower_case_cprefix = "cb_tweet_model_", cheader_filename =

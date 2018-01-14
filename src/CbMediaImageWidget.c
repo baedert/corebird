@@ -93,10 +93,6 @@ GtkWidget *
 cb_media_image_widget_new (CbMedia *media)
 {
   CbMediaImageWidget *self;
-  int img_width;
-  int img_height;
-  int win_width;
-  int win_height;
 
   g_return_val_if_fail (CB_IS_MEDIA (media), NULL);
   g_return_val_if_fail (!media->invalid, NULL);
@@ -110,33 +106,8 @@ cb_media_image_widget_new (CbMedia *media)
   else
     gtk_image_set_from_texture (GTK_IMAGE (self->image), media->texture);
 
-  img_width  = gdk_texture_get_width (media->texture);
-  img_height = gdk_texture_get_height (media->texture);
-
-  win_width = 800;
-  win_height = 600;
-
-  /* TODO: Replace the GdkScreen usage here */
-  g_warning ("%s: Fix automatic media window size negotiation", __FILE__);
-
-  if (img_width <= 800)
-    {
-      win_width = img_width;
-      g_object_set (self,
-                    "hscrollbar-policy", GTK_POLICY_NEVER,
-                    NULL);
-    }
-
-  if (img_height <= 600)
-    {
-      win_height = img_height;
-      g_object_set (self,
-                    "vscrollbar-policy", GTK_POLICY_NEVER,
-                    NULL);
-    }
-
-
-  gtk_widget_set_size_request (GTK_WIDGET (self), win_width, win_height);
+  self->img_width  = gdk_texture_get_width (media->texture);
+  self->img_height = gdk_texture_get_height (media->texture);
 
   return GTK_WIDGET (self);
 }
@@ -193,4 +164,44 @@ cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
                                             "changed",
                                             G_CALLBACK (vadjustment_changed_cb),
                                             self);
+}
+
+void
+cb_media_image_widget_calc_size (CbMediaImageWidget *self)
+{
+  GdkWindow *window;
+  GdkMonitor *monitor;
+  GdkRectangle workarea;
+
+  g_assert (GTK_IS_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (self))));
+
+  window = gtk_widget_get_window (gtk_widget_get_toplevel (GTK_WIDGET (self)));
+  g_assert_nonnull (window);
+
+  monitor = gdk_display_get_monitor_at_window (gdk_display_get_default (),
+                                               window);
+
+  if (!monitor)
+    {
+       g_warning (G_STRLOC ": monitor is NULL");
+       return;
+    }
+
+  gdk_monitor_get_workarea (monitor, &workarea);
+
+  {
+    int win_width;
+    int win_height;
+
+    win_width  = MIN ((int)(workarea.width * 0.95), self->img_width);
+    win_height = MIN ((int)(workarea.height * 0.95), self->img_height);
+
+    if (win_width >= self->img_width)
+      g_object_set ((GObject *)self, "hscrollbar-policy", GTK_POLICY_NEVER, NULL);
+
+    if (win_height >= self->img_height)
+      g_object_set ((GObject *)self, "vscrollbar-policy", GTK_POLICY_NEVER, NULL);
+
+    gtk_widget_set_size_request ((GtkWidget *)self, win_width, win_height);
+  }
 }
