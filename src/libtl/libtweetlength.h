@@ -27,6 +27,7 @@ struct _TlEntity {
 
   gsize start_character_index;
   gsize length_in_characters;
+  gsize length_in_weighted_characters;
 };
 typedef struct _TlEntity TlEntity;
 
@@ -40,6 +41,9 @@ typedef enum {
 
 gsize      tl_count_characters            (const char *input);
 gsize      tl_count_characters_n          (const char *input,
+                                           gsize       length_in_bytes);
+gsize      tl_count_weighted_characters   (const char *input);
+gsize      tl_count_weighted_characters_n (const char *input,
                                            gsize       length_in_bytes);
 TlEntity * tl_extract_entities            (const char *input,
                                            gsize      *out_n_entities,
