@@ -617,6 +617,7 @@ cb_text_view_init (CbTextView *self)
 
   self->box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->box), "dim-label");
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->box), "extra");
   gtk_widget_set_parent (self->box, GTK_WIDGET (self));
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "view");

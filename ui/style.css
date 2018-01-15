@@ -341,6 +341,7 @@ textview.view.fancy button {
   border-radius: 0px;
   background: none;
   box-shadow: none;
+  -gtk-icon-shadow: none;
 }
 
 textview.view.fancy button:hover {
@@ -349,6 +350,10 @@ textview.view.fancy button:hover {
 
 textview.view.fancy>scrolledwindow.completion {
   border-top: 1px solid alpha(grey, 0.7);
+}
+
+textview>.extra {
+  min-height: 32px;
 }
 
 box.col-spacing {

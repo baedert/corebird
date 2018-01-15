@@ -97,9 +97,8 @@ public class AccountDialog : Gtk.Window {
 
     this.add_accel_group (ag);
 
-    warning ("The length label here looks stupid");
     description_length_label = new Gtk.Label ("");
-    description_length_label.get_style_context ().add_class ("dim-label");
+    description_length_label.margin_start = 12;
     description_text_view.add_widget (description_length_label);
     this.update_description_length ();
   }
