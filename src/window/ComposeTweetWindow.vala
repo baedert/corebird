@@ -58,7 +58,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   private unowned Cb.Tweet reply_to;
   private Mode mode;
   private GLib.Cancellable? cancellable;
-  private Gtk.ListBox? reply_list = null;
+  private Cb.TweetListBox? reply_list = null;
   private Cb.ComposeJob compose_job;
 
 
@@ -135,8 +135,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     }
 
     if (mode != Mode.NORMAL) {
-      reply_list = new Gtk.ListBox ();
-      reply_list.selection_mode = Gtk.SelectionMode.NONE;
+      reply_list = new Cb.TweetListBox ();
       TweetListEntry reply_entry = new TweetListEntry (reply_to, parent, acc, true);
       reply_entry.activatable = false;
       reply_entry.read_only = true;
