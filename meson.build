@@ -44,10 +44,10 @@ if (enable_debug)
   add_project_arguments('-g', language: 'c')
   add_project_arguments('-g', language: 'vala')
   add_project_arguments('-DDEBUG', language: 'c')
+  add_project_arguments('-D', 'DEBUG', language: 'vala')
   add_project_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
   add_project_arguments('-DG_DISABLE_CHECKS', language: 'c')
   add_project_arguments('-D', 'G_DISABLE_CHECKS', language: 'vala')
-  add_project_arguments('-D', 'DEBUG', language: 'vala')
 endif
 
 if (enable_video)
