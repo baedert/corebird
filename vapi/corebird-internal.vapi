@@ -464,6 +464,7 @@ namespace Cb {
     public Cb.TweetRow action_entry;
     public TweetListBox ();
     public signal void retry_button_clicked ();
+    public void set_account (Account a);
     public void set_empty ();
     public void set_unempty ();
     public void set_error (string s);

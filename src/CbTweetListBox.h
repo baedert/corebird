@@ -27,6 +27,8 @@ struct _CbTweetListBox
 {
   GtkListBox parent_instance;
 
+  void *account;
+
   CbTweetModel *model;
   CbDeltaUpdater *delta_updater;
   GtkGesture *multipress_gesture;
@@ -41,6 +43,8 @@ struct _CbTweetListBox
 G_DECLARE_FINAL_TYPE (CbTweetListBox, cb_tweet_list_box, CB, TWEET_LIST_BOX, GtkListBox);
 
 GtkWidget * cb_tweet_list_box_new                    (void);
+void        cb_tweet_list_box_set_account            (CbTweetListBox *self,
+                                                      void           *account);
 void        cb_tweet_list_box_set_empty              (CbTweetListBox *self);
 void        cb_tweet_list_box_set_unempty            (CbTweetListBox *self);
 void        cb_tweet_list_box_set_error              (CbTweetListBox *self,

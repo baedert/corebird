@@ -70,6 +70,104 @@ retry_button_clicked_cb (GtkButton *source,
   g_signal_emit (user_data, tweet_list_box_signals[RETRY_BUTTON_CLICKED], 0);
 }
 
+static GtkWidget *
+get_focused_row (CbTweetListBox *self)
+{
+  GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget *)self);
+  GtkWidget *focus_widget;
+
+  if (!GTK_IS_WINDOW (toplevel))
+    return NULL;
+
+  focus_widget = gtk_window_get_focus (GTK_WINDOW (toplevel));
+
+  if (focus_widget != NULL &&
+      gtk_widget_get_parent (focus_widget) == GTK_WIDGET (self) &&
+      CB_IS_TWEET_ROW (focus_widget))
+    return focus_widget;
+
+  return NULL;
+}
+
+static gboolean
+cb_tweet_list_box_event (GtkWidget *widget,
+                         GdkEvent  *event)
+{
+  CbTweetListBox *self = (CbTweetListBox*)widget;
+
+  switch (gdk_event_get_event_type (event))
+    {
+    case GDK_KEY_RELEASE:
+      {
+        guint keyval;
+
+        gdk_event_get_keyval (event, &keyval);
+
+        /* switch² */
+        switch (keyval)
+          {
+          case GDK_KEY_r: /* Reply */
+            {
+              GtkWidget *focus_row = get_focused_row (self);
+              CbTweet *tweet = CB_TWEET_ROW (focus_row)->tweet;
+
+              if (focus_row)
+                {
+                  MainWindow *main_window = MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
+
+                  ComposeTweetWindow *window = compose_tweet_window_new (main_window,
+                                                                         self->account,
+                                                                         tweet,
+                                                                         COMPOSE_TWEET_WINDOW_MODE_REPLY);
+                  gtk_widget_show (GTK_WIDGET (window));
+
+                  return GDK_EVENT_STOP;
+                }
+            }
+          return GDK_EVENT_PROPAGATE;
+
+          case GDK_KEY_t: /* Retweet */
+          return GDK_EVENT_STOP;
+
+          case GDK_KEY_q: /* Quote */
+            {
+              GtkWidget *focus_row = get_focused_row (self);
+              CbTweet *tweet = CB_TWEET_ROW (focus_row)->tweet;
+
+              if (focus_row)
+                {
+                  MainWindow *main_window = MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
+
+                  ComposeTweetWindow *window = compose_tweet_window_new (main_window,
+                                                                         self->account,
+                                                                         tweet,
+                                                                         COMPOSE_TWEET_WINDOW_MODE_QUOTE);
+                  gtk_widget_show (GTK_WIDGET (window));
+
+                  return GDK_EVENT_STOP;
+                }
+            }
+          return GDK_EVENT_PROPAGATE;
+
+          case GDK_KEY_f: /* Favorite */
+          return GDK_EVENT_STOP;
+
+          case GDK_KEY_j: /* Down */
+          case GDK_KEY_k: /* Up */
+          break;
+          }
+
+        g_message ("Keyval: %u", keyval);
+
+      }
+    break;
+
+    default: {}
+    }
+
+  return GDK_EVENT_PROPAGATE;
+}
+
 static void
 cb_tweet_list_box_finalize (GObject *obj)
 {
@@ -85,10 +183,12 @@ cb_tweet_list_box_finalize (GObject *obj)
 static void
 cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
 {
-  GtkBindingSet *binding_set;
   GObjectClass *object_class = (GObjectClass *)klass;
+  GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
   /* vfuncs */
+  widget_class->event = cb_tweet_list_box_event;
+
   object_class->finalize = cb_tweet_list_box_finalize;
 
   /* signals */
@@ -98,9 +198,6 @@ cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
                                                                0,
                                                                NULL, NULL,
                                                                NULL, G_TYPE_NONE, 0);
-  /* key bindings */
-  binding_set = gtk_binding_set_by_class (klass);
-  // TODO :(
 }
 
 static void
@@ -173,7 +270,16 @@ cb_tweet_list_box_init (CbTweetListBox *self)
 GtkWidget *
 cb_tweet_list_box_new (void)
 {
-  return GTK_WIDGET (g_object_new (CB_TYPE_TWEET_LIST_BOX, NULL));
+  return (GtkWidget *)g_object_new (CB_TYPE_TWEET_LIST_BOX, NULL);
+}
+
+void
+cb_tweet_list_box_set_account (CbTweetListBox *self,
+                               void           *account)
+{
+  g_assert (IS_ACCOUNT (account));
+
+  self->account = account;
 }
 
 void

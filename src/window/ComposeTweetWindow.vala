@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/compose-window.ui")]
-class ComposeTweetWindow : Gtk.ApplicationWindow {
+public class ComposeTweetWindow : Gtk.ApplicationWindow {
   const int DEFAULT_WIDTH = 450;
   public enum Mode {
     NORMAL,
