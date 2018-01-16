@@ -315,8 +315,13 @@ row.tweet>box.quote {
  padding-left: 0.5em;
  margin-top: 1em;
 }
+
 row.tweet>box.quote>quotetweet>box.header {
   margin-bottom: 0.5em;
+}
+
+row.tweet>box.quote>multimedia {
+  margin-top: 0.5em;
 }
 
 list.tweets {
