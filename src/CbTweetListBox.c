@@ -153,12 +153,13 @@ cb_tweet_list_box_event (GtkWidget *widget,
           return GDK_EVENT_STOP;
 
           case GDK_KEY_j: /* Down */
+            gtk_widget_child_focus (GTK_WIDGET (self), GTK_DIR_DOWN);
+          return GDK_EVENT_STOP;
+
           case GDK_KEY_k: /* Up */
-          break;
+            gtk_widget_child_focus (GTK_WIDGET (self), GTK_DIR_UP);
+          return GDK_EVENT_STOP;
           }
-
-        g_message ("Keyval: %u", keyval);
-
       }
     break;
 
