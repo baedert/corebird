@@ -172,8 +172,13 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
   GdkWindow *window;
   GdkMonitor *monitor;
   GdkRectangle workarea;
+  int win_width;
+  int win_height;
 
   g_assert (GTK_IS_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (self))));
+
+  /* :( */
+  gtk_widget_realize (gtk_widget_get_toplevel (GTK_WIDGET (self)));
 
   window = gtk_widget_get_window (gtk_widget_get_toplevel (GTK_WIDGET (self)));
   g_assert_nonnull (window);
@@ -189,19 +194,14 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
 
   gdk_monitor_get_workarea (monitor, &workarea);
 
-  {
-    int win_width;
-    int win_height;
+  win_width  = MIN ((int)(workarea.width * 0.95), self->img_width);
+  win_height = MIN ((int)(workarea.height * 0.95), self->img_height);
 
-    win_width  = MIN ((int)(workarea.width * 0.95), self->img_width);
-    win_height = MIN ((int)(workarea.height * 0.95), self->img_height);
+  if (win_width >= self->img_width)
+    g_object_set ((GObject *)self, "hscrollbar-policy", GTK_POLICY_NEVER, NULL);
 
-    if (win_width >= self->img_width)
-      g_object_set ((GObject *)self, "hscrollbar-policy", GTK_POLICY_NEVER, NULL);
+  if (win_height >= self->img_height)
+    g_object_set ((GObject *)self, "vscrollbar-policy", GTK_POLICY_NEVER, NULL);
 
-    if (win_height >= self->img_height)
-      g_object_set ((GObject *)self, "vscrollbar-policy", GTK_POLICY_NEVER, NULL);
-
-    gtk_widget_set_size_request ((GtkWidget *)self, win_width, win_height);
-  }
+  gtk_widget_set_size_request ((GtkWidget *)self, win_width, win_height);
 }

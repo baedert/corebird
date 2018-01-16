@@ -81,14 +81,10 @@ class MediaDialog : Gtk.Window {
       ((Cb.MediaImageWidget)new_widget).scroll_to (this.initial_px, this.initial_py);
       frame.add (new_widget);
 
-      this.show ();
       ((Cb.MediaImageWidget)new_widget).calc_size ();
-      // TODO: The above code sizes the initial window only after it has been show()n.
-      //       This causes weird behavior with certain WMs, i.e. the windwo only
-      //       changes size but does not get automatically repositioned.
-      //       However, we can't get the window's GdkMonitor before it has been realized, which happens
-      //       on show(). Maybe just force a gtk_widget_realize()?
 
+      /* FIXME: Te above calc_size calls gtk_widget_realize on the toplevel, i.e. this window,
+         but that's not clean and we already pass a toplevel to TweetUtils.handle_media_click */
       /* Reset to default values */
       this.initial_px = 0.5;
       this.initial_py = 0.0;
