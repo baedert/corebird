@@ -23,6 +23,7 @@ class MediaDialog : Gtk.Window {
   private Gtk.Revealer next_revealer;
   [GtkChild]
   private Gtk.Revealer previous_revealer;
+  private Gtk.EventControllerMotion motion_controller;
   private unowned Cb.Tweet tweet;
   private int cur_index = 0;
   private Gtk.GestureMultiPress button_gesture;
@@ -43,6 +44,11 @@ class MediaDialog : Gtk.Window {
 
     this.initial_px = px;
     this.initial_py = py;
+
+    this.motion_controller = new Gtk.EventControllerMotion (this);
+    motion_controller.enter.connect (enter_cb);
+    motion_controller.leave.connect (leave_cb);
+
 
     if (tweet.get_medias ().length == 1) {
       next_revealer.hide ();
@@ -140,17 +146,13 @@ class MediaDialog : Gtk.Window {
     previous_media ();
   }
 
-  public override bool enter_notify_event (Gdk.Event event) {
+  private void enter_cb () {
     next_revealer.reveal_child = true;
     previous_revealer.reveal_child = true;
-
-    return Gdk.EVENT_PROPAGATE;
   }
 
-  public override bool leave_notify_event (Gdk.Event event) {
+  private void leave_cb () {
     next_revealer.reveal_child = false;
     previous_revealer.reveal_child = false;
-
-    return Gdk.EVENT_PROPAGATE;
   }
 }

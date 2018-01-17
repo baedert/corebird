@@ -40,14 +40,14 @@ class StartConversationEntry : Gtk.ListBoxRow {
     completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
     //completion_window.set_screen (name_entry.get_screen ());
     completion_window.destroy_with_parent = true;
-    completion_window.focus_out_event.connect (() => {
-      completion_window.hide ();
-      return false;
-    });
-    name_entry.focus_out_event.connect (() => {
-      completion_window.hide ();
-      return false;
-    });
+    //completion_window.focus_out_event.connect (() => {
+      //completion_window.hide ();
+      //return false;
+    //});
+    //name_entry.focus_out_event.connect (() => {
+      //completion_window.hide ();
+      //return false;
+    //});
 
     var popup_frame = new Gtk.Frame (null);
     var scroller = new Gtk.ScrolledWindow (null, null);

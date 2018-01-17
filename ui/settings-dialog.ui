@@ -13,7 +13,6 @@
     <property name="default-width">500</property>
     <property name="default-height">300</property>
     <property name="title" translatable="yes">Settings</property>
-    <signal name="delete_event" handler="window_destroy_cb" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="title" translatable="yes">Settings</property>
