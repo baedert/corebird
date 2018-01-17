@@ -136,10 +136,9 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     if (mode != Mode.NORMAL) {
       reply_list = new Cb.TweetListBox ();
-      TweetListEntry reply_entry = new TweetListEntry (reply_to, parent, acc, true);
+      var reply_entry = new Cb.TweetRow (reply_to, parent);
       reply_entry.activatable = false;
-      reply_entry.read_only = true;
-      reply_entry.show ();
+      reply_entry.set_read_only ();
       reply_list.add (reply_entry);
       reply_list.show ();
       content_grid.attach (reply_list, 0, 0, 2, 1);
