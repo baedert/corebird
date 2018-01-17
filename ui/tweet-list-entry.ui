@@ -18,7 +18,6 @@
     <style>
       <class name="tweet"/>
     </style>
-    <signal name="focus-out-event" handler="focus_out_cb"/>
     <signal name="key-release-event" handler="key_released_cb"/>
     <child>
       <object class="GtkStack" id="stack">

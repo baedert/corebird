@@ -178,7 +178,6 @@ public class ListListEntry : Gtk.ListBoxRow {
     this.activatable = true;
   }
 
-  [GtkCallback]
   private bool focus_out_cb () {
     stack.visible_child_name = "default";
     return false;

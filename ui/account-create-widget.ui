@@ -10,7 +10,6 @@
     <property name="margin-start">20</property>
     <property name="margin-end">20</property>
     <property name="spacing">24</property>
-    <signal name="delete_event" handler="delete_event_cb" swapped="no"/>
     <child>
       <object class="GtkImage">
         <property name="icon-name">corebird</property>

@@ -153,7 +153,7 @@ class AccountCreateWidget : Gtk.Box {
     confirm_button.sensitive = confirm_possible;
   }
 
-  [GtkCallback]
+  //[GtkCallback]
   private bool delete_event_cb () {
     Account.remove_account (Account.DUMMY);
     return false;

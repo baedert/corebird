@@ -11,7 +11,7 @@
   <template class="ListListEntry" parent="GtkListBoxRow">
     <property name="visible">1</property>
     <property name="can-focus">1</property>
-    <signal name="focus_out_event" handler="focus_out_cb" swapped="false"/>
+    <!--<signal name="focus_out_event" handler="focus_out_cb" swapped="false"/>-->
     <child>
       <object class="GtkStack" id="stack">
         <property name="transition-type">slide-up-down</property>

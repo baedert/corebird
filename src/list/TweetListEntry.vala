@@ -307,7 +307,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     Gtk.BindingEntry.add_signal (binding_set, Gdk.Key.q, 0, "quote-tweet", 0, null);
   }
 
-  [GtkCallback]
+  //[GtkCallback]
   private bool focus_out_cb (Gdk.Event evt) {
     delete_first_activated = false;
     retweet_button.reset ();
