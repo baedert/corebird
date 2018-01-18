@@ -158,6 +158,7 @@
             </child>
             <child>
               <object class="GtkBox">
+                <property name="homogeneous">1</property>
                 <child>
                   <object class="GtkButton" id="recent.button">
                     <property name="relief">none</property>
