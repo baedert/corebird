@@ -21,6 +21,7 @@ class CropWidget : Gtk.DrawingArea {
   private Gtk.GestureDrag drag_gesture;
   private Gdk.Pixbuf? image;
   private Cairo.Surface? surface;
+  private Gdk.Texture? texture;
   private Gdk.Rectangle selection_rect;
   private Gdk.Rectangle image_rect;
   private Gdk.Cursor drag_cursor;
@@ -224,8 +225,11 @@ class CropWidget : Gtk.DrawingArea {
 
   public void set_image (Gdk.Pixbuf? image) {
     this.image = image;
-    if (image != null)
+    if (image != null) {
       this.surface = Gdk.cairo_surface_create_from_pixbuf (image, this.get_scale_factor (), null);
+      this.texture = Cb.Utils.surface_to_texture (this.surface,
+                                                  this.get_scale_factor ());
+    }
     calculate_image_rect ();
 
     /* Place the selection rect initially, using the maximum size
@@ -271,9 +275,7 @@ class CropWidget : Gtk.DrawingArea {
     image_bounds.origin.y = image_rect.y;
     image_bounds.size.width = image_rect.width;
     image_bounds.size.height = image_rect.height;
-    var texture = Cb.Utils.surface_to_texture (this.surface,
-                                               this.get_scale_factor ());
-    snapshot.append_texture (texture, image_bounds, "Crop Texture");
+    snapshot.append_texture (this.texture, image_bounds, "Crop Texture");
 
     /* Draw half-transparent dark over the non-selected part of the image */
     Graphene.Rect dark_bounds = {};
