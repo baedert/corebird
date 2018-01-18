@@ -154,6 +154,8 @@ cb_text_view_select_completion_row (CbTextView *self,
   int n_rows = (int)g_list_model_get_n_items (G_LIST_MODEL (self->completion_model));
   int new_index;
   GtkListBoxRow *row;
+  GtkAllocation row_allocation;
+  GtkAdjustment *list_adjustment;
 
   /* We just don't support larger jumps here, which doesn't matter in practice... */
   if (row_index == -1)
@@ -162,6 +164,13 @@ cb_text_view_select_completion_row (CbTextView *self,
   new_index = row_index % n_rows;
   row = gtk_list_box_get_row_at_index (GTK_LIST_BOX (self->completion_listbox), new_index);
   gtk_list_box_select_row (GTK_LIST_BOX (self->completion_listbox), row);
+
+  list_adjustment = gtk_list_box_get_adjustment (GTK_LIST_BOX (self->completion_listbox));
+  g_assert (list_adjustment != NULL);
+
+  gtk_widget_get_allocation (GTK_WIDGET (row), &row_allocation);
+  gtk_adjustment_clamp_page (list_adjustment,
+                             row_allocation.y, row_allocation.y + row_allocation.height);
 
   self->selected_row = new_index;
 }
