@@ -38,6 +38,7 @@ class CropWidget : Gtk.DrawingArea {
   private int min_width  = MIN_SIZE;
   private double drag_start_x;
   private double drag_start_y;
+  private Gtk.EventControllerMotion motion_controller;
   /**
    * Ratio of the width to the height, i.e. (width/height)
    * => values >1.0 for landscape pictures
@@ -46,8 +47,8 @@ class CropWidget : Gtk.DrawingArea {
 
 
 
+
   construct {
-    this.motion_notify_event.connect (mouse_motion_cb);
     this.drag_cursor = new Gdk.Cursor.from_name ("grabbing", null);
     this.default_cursor = new Gdk.Cursor.from_name ("default", null);
     this.resize_cursor = new Gdk.Cursor.from_name ("se-resize", null);
@@ -59,20 +60,22 @@ class CropWidget : Gtk.DrawingArea {
     this.drag_gesture.drag_begin.connect (drag_gesture_begin_cb);
     this.drag_gesture.drag_end.connect (drag_gesture_end_cb);
     this.drag_gesture.drag_update.connect (drag_gesture_update_cb);
+
+    this.motion_controller = new Gtk.EventControllerMotion (this);
+    motion_controller.motion.connect (mouse_motion_cb);
   }
 
-  private bool mouse_motion_cb (Gdk.Event event) {
-    double x, y;
+  private void mouse_motion_cb (Gtk.EventControllerMotion controller,
+                                double                    x,
+                                double                    y) {
     /* Just check whether the cursor is over the drag or resize area (or not)
        and change the cursor accordingly */
-
-    event.get_coords (out x, out y);
 
     if (over_resize_area (x, y)) {
       set_cursor (resize_cursor);
       resize_area_hovered = true;
       queue_draw ();
-      return false; /* Don't check resize area */
+      return; /* Don't check resize area */
     } else if (resize_area_hovered) {
       resize_area_hovered = false;
       set_cursor (default_cursor);
@@ -85,8 +88,6 @@ class CropWidget : Gtk.DrawingArea {
     } else {
       set_cursor (default_cursor);
     }
-
-    return false;
   }
 
   private void drag_gesture_update_cb (Gtk.GestureDrag gesture,
