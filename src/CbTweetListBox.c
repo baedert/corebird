@@ -319,7 +319,10 @@ cb_tweet_list_box_reset_placeholder_text (CbTweetListBox *self)
 GtkWidget *
 cb_tweet_list_box_get_first_visible_row (CbTweetListBox *self)
 {
-  return NULL;
+  /* This is more a historical function. These days, we only have visible rows
+   * in the listbox, so we can always return the first one. */
+
+  return (GtkWidget*)gtk_list_box_get_row_at_index ((GtkListBox *)self, 0);
 }
 
 GtkWidget *
