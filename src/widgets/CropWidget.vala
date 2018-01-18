@@ -305,7 +305,7 @@ class CropWidget : Gtk.DrawingArea {
     dark_bounds.origin.y = selection_rect.y + selection_rect.height;
     dark_bounds.size.width = selection_rect.width;
     dark_bounds.size.height = image_rect.y + image_rect.height - (selection_rect.y + selection_rect.height);
-    snapshot.append_color (dark, dark_bounds, "Dark Top");
+    snapshot.append_color (dark, dark_bounds, "Dark Bottom");
 
 
 
