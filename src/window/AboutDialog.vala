@@ -22,7 +22,8 @@ class AboutDialog : Gtk.AboutDialog {
   private void response_cb (int id) {
     if (id == Gtk.ResponseType.DELETE_EVENT) {
       this.close ();
-    } else
+    } else if (id != -1) {
       warning ("Unhandled response: %d", id);
+    }
   }
 }
