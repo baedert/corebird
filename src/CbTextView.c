@@ -595,8 +595,8 @@ static void
 cb_text_view_init (CbTextView *self)
 {
   GtkTextBuffer *buffer;
+  const GdkRGBA snippet_color = { 0.0, 0.65, 0.0627, 1.0};
   GdkRGBA link_color;
-  GdkRGBA snippet_color = { 0.0, 0.65, 0.0627, 1.0};
 
   gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
@@ -606,6 +606,7 @@ cb_text_view_init (CbTextView *self)
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
 
   self->text_view = gtk_text_view_new ();
+  gtk_text_view_set_input_hints (GTK_TEXT_VIEW (self->text_view), GTK_INPUT_HINT_NO_EMOJI);
   g_signal_connect (self->text_view, "key-press-event",
                     G_CALLBACK (cb_text_view_key_press_event_cb), self);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
