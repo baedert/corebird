@@ -82,29 +82,26 @@ class ListStatusesPage : ScrollWidget, IPage {
   [GtkChild]
   private Gtk.Button refresh_button;
   private bool loading = false;
+  private Gtk.EventControllerScroll scroll_controller;
 
 
   public ListStatusesPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    //this.tweet_list.account = account;
-    this.scroll_event.connect (scroll_event_cb);
+    this.tweet_list.set_account (account);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
     tweet_list.set_adjustment (this.get_vadjustment ());
-  }
 
-  private bool scroll_event_cb (Gdk.Event evt) {
-    double delta_x, delta_y;
+    scroll_controller = new Gtk.EventControllerScroll (this, Gtk.EventControllerScrollFlags.VERTICAL);
+    scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    scroll_controller.scroll.connect ((delta_x, delta_y) => {
+      if (delta_y < 0 && this.vadjustment.value == 0) {
+        int inc = (int)(vadjustment.step_increment * (- delta_y));
+        max_size_container.max_size += inc;
+      }
+    });
 
-    evt.get_scroll_deltas (out delta_x, out delta_y);
-
-    if (delta_y < 0 && this.vadjustment.value == 0) {
-      int inc = (int)(vadjustment.step_increment * (- delta_y));
-      max_size_container.max_size += inc;
-      return Gdk.EVENT_STOP;
-    }
-    return Gdk.EVENT_PROPAGATE;
   }
 
   /**
