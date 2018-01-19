@@ -139,6 +139,6 @@ cb_aspect_image_set_pixbuf (CbAspectImage   *self,
   texture = cb_utils_surface_to_texture (surface, 1);
 
   g_set_object (&self->texture, texture);
-
   gtk_widget_queue_resize (GTK_WIDGET (self));
+  cb_animation_start (&self->opacity_animation);
 }

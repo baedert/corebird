@@ -125,7 +125,6 @@ cb_animation_start (CbAnimation *self)
     }
   else
     {
-
       self->start_percentage = 0.0;
       self->duration = CB_TRANSITION_DURATION;
       self->start_time = now;
