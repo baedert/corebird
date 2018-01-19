@@ -196,7 +196,7 @@ cb_utils_linkify_user_name (const CbUserIdentity *user,
   g_string_append (str, user->screen_name);
   g_string_append (str, "' ");
 
-  g_string_append (str, "title=\"");
+  g_string_append (str, "title=\"@");
   g_string_append (str, user->screen_name);
   g_string_append_c (str, '"');
 
