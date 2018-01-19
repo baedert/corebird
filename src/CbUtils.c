@@ -169,7 +169,26 @@ void
 cb_utils_linkify_user_name (const CbUserIdentity *user,
                             GString              *str)
 {
-  char *s1, *s2, *s3, *s4;
+  char *s1, *s2;
+
+  /* ATTENTION: The usernames passed in here should already have
+   * escaped ampersand charactes. */
+#ifdef DEBUG
+  {
+    const char *a = strchr (user->user_name, '&');
+
+    if (a != NULL)
+      {
+        /* All & characters must actually be "&amp;", so followed by an 'a'.
+         * This check is pretty weak but we only do it for debugging purposes anyway. */
+        if (*(a + 1) != 'a')
+          {
+            g_warning ("Username with unescaped ampersand characters passed to %s: %s",
+                       __FUNCTION__, user->user_name);
+          }
+      }
+  }
+#endif
 
   g_string_append (str, "<span underline='none'><a href='@");
   g_string_append_printf (str, "%" G_GINT64_FORMAT, user->id);
@@ -184,16 +203,12 @@ cb_utils_linkify_user_name (const CbUserIdentity *user,
   g_string_append (str, ">");
 
   s1 = cb_utils_escape_quotes (user->user_name);
-  s2 = cb_utils_escape_ampersands (s1);
-  s3 = cb_utils_escape_quotes (s2);
-  s4 = cb_utils_escape_ampersands (s3);
+  s2 = cb_utils_escape_quotes (s1);
 
-  g_string_append (str, s4);
+  g_string_append (str, s2);
 
   g_free (s1);
   g_free (s2);
-  g_free (s3);
-  g_free (s4);
 
   g_string_append (str, "</a></span>");
 }
