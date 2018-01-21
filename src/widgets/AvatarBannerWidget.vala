@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class AvatarBannerWidget : Gtk.Container {
+public class AvatarBannerWidget : Gtk.Widget {
   private const int MIN_HEIGHT      = 200;
   private const int MAX_HEIGHT      = 250;
   private const double BANNER_RATIO = 0.5; /* 320/640 */
@@ -39,15 +39,19 @@ public class AvatarBannerWidget : Gtk.Container {
     /* set_banner_button */
     this.set_banner_button = new PixbufButton ();
     set_banner_button.clicked.connect (banner_clicked_cb);
-    this.add (set_banner_button);
+    set_banner_button.set_parent (this);
 
     /* set_avatar_button */
     this.set_avatar_button = new PixbufButton ();
     set_avatar_button.clicked.connect (avatar_clicked_cb);
-    this.add (set_avatar_button);
+    set_avatar_button.set_parent (this);
     Settings.get ().bind ("round-avatars", set_avatar_button, "round",
                           GLib.SettingsBindFlags.DEFAULT);
+  }
 
+  ~AvatarBannerWidget () {
+    set_banner_button.unparent ();
+    set_avatar_button.unparent ();
   }
 
   public void set_account (Account account) {
@@ -122,19 +126,6 @@ public class AvatarBannerWidget : Gtk.Container {
     set_avatar_button.size_allocate (child_allocation, -1, out out_clip);
 
     out_clip = allocation;
-  }
-
-  public override void add (Gtk.Widget w) {
-    w.set_parent (this);
-  }
-
-  public override void remove (Gtk.Widget w) {
-    w.unparent ();
-  }
-
-  public override void forall (Gtk.Callback cb) {
-    cb (set_banner_button);
-    cb (set_avatar_button);
   }
 
   private void banner_clicked_cb () {
