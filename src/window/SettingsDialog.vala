@@ -152,7 +152,8 @@ class SettingsDialog : Gtk.Window {
     load_geometry ();
   }
 
-  private bool window_destroy_cb () {
+  [GtkCallback]
+  private bool window_close_cb (Gtk.Window window) {
     save_geometry ();
     return Gdk.EVENT_PROPAGATE;
   }

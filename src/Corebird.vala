@@ -170,7 +170,7 @@ public class Corebird : Gtk.Application {
     var dialog = new SettingsDialog (this);
     var action = (GLib.SimpleAction)this.lookup_action ("show-settings");
     action.set_enabled (false);
-    dialog.delete_event.connect (() => {
+    dialog.close_request.connect (() => {
       action.set_enabled (true);
       this.settings_dialog = null;
       return Gdk.EVENT_PROPAGATE;

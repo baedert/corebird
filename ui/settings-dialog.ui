@@ -13,6 +13,7 @@
     <property name="default-width">500</property>
     <property name="default-height">300</property>
     <property name="title" translatable="yes">Settings</property>
+    <signal name="close-request" handler="window_close_cb" />
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="title" translatable="yes">Settings</property>

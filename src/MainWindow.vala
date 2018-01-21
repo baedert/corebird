@@ -65,7 +65,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     /* Create widgets */
     this.set_show_menubar (false);
     this.set_icon_name ("corebird");
-    this.delete_event.connect (window_delete_cb);
+    this.close_request.connect (window_delete_cb);
 
     this.headerbar = new Gtk.HeaderBar ();
     headerbar.set_title ("Corebird");
@@ -389,7 +389,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     account_button.active = false;
   }
 
-  private bool window_delete_cb (Gdk.Event evt) {
+  private bool window_delete_cb (Gtk.Window window) {
     if (main_widget != null)
       main_widget.stop ();
 
