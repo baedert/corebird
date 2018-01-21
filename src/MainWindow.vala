@@ -45,7 +45,7 @@ public class MainWindow : Gtk.ApplicationWindow {
 
   public int cur_page_id {
     get {
-      return main_widget.cur_page_id;
+      return main_widget != null ? main_widget.cur_page_id : -1;
     }
   }
 
