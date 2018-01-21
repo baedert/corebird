@@ -302,7 +302,6 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
                 NULL);
   g_object_get (self->src, "flags", &flags, NULL);
   g_object_set (self->src, "flags", flags | (1 << 7) /* DOWNLOAD */, NULL);
-#endif
 
 
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -312,6 +311,7 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
   gtk_container_add (GTK_CONTAINER (box), self->video_progress);
 
   gtk_stack_add_named (GTK_STACK (self), box, "video");
+#endif
 }
 
 static void
