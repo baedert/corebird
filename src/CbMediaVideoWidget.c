@@ -16,8 +16,6 @@
  */
 
 #include "CbMediaVideoWidget.h"
-#include "CbGtkCompat.h"
-
 
 G_DEFINE_TYPE(CbMediaVideoWidget, cb_media_video_widget, GTK_TYPE_STACK)
 
