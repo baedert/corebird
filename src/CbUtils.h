@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 #include <glib-object.h>
 #include "CbTypes.h"
+#include "CbTweet.h"
 #include "rest/rest-proxy-call.h"
 #include "rest/rest-proxy.h"
 
@@ -88,6 +89,8 @@ char * cb_utils_get_time_delta (GDateTime *time,
                                 GDateTime *now);
 
 void   cb_utils_load_custom_css (void);
+
+char * cb_utils_get_tweet_debug_info (CbTweet *tweet);
 
 static inline void
 cb_clear_source (guint *id)

@@ -810,3 +810,15 @@ cb_utils_load_custom_css (void)
                                               GTK_STYLE_PROVIDER (provider),
                                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
+
+char *
+cb_utils_get_tweet_debug_info (CbTweet *tweet)
+{
+  GString *s = g_string_new (NULL);
+
+  g_assert (tweet->json_data);
+  g_string_append (s, tweet->json_data);
+  g_string_append_c (s, '\n');
+
+  return g_string_free (s, FALSE);
+}

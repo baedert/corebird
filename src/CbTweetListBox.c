@@ -18,6 +18,7 @@
 #include <glib/gi18n.h>
 #include "CbTweetListBox.h"
 #include "CbTweetRow.h"
+#include "CbUtils.h"
 #include "corebird.h"
 
 G_DEFINE_TYPE (CbTweetListBox, cb_tweet_list_box, GTK_TYPE_LIST_BOX);
@@ -159,6 +160,18 @@ cb_tweet_list_box_event (GtkWidget *widget,
           case GDK_KEY_k: /* Up */
             gtk_widget_child_focus (GTK_WIDGET (self), GTK_DIR_UP);
           return GDK_EVENT_STOP;
+
+#ifdef DEBUG
+          case GDK_KEY_m: /* Print debug info */
+            {
+              GtkWidget *row = get_focused_row (self);
+
+              /* Will leak that string */
+              if (row)
+                g_message ("\n%s\n", cb_utils_get_tweet_debug_info (CB_TWEET_ROW (row)->tweet));
+            }
+          return GDK_EVENT_STOP;
+#endif
           }
       }
     break;
