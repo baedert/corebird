@@ -243,12 +243,7 @@ public class Corebird : Gtk.Application {
 
     this.add_action_entries (app_entries, this);
 
-    // If the user wants the dark theme, apply it
     var gtk_s = Gtk.Settings.get_default ();
-    if (Settings.use_dark_theme ()) {
-      gtk_s.gtk_application_prefer_dark_theme = true;
-    }
-
     if (gtk_s.gtk_decoration_layout.contains ("menu")) {
       gtk_s.gtk_decoration_layout = gtk_s.gtk_decoration_layout.replace ("menu", "");
     }

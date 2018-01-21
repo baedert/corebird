@@ -41,13 +41,6 @@ public class Settings : GLib.Object {
     return setting_val;
   }
 
-  /**
-  * Check whether the user wants Corebird to always use the dark gtk theme variant.
-  */
-  public static bool use_dark_theme(){
-    return settings.get_boolean("use-dark-theme");
-  }
-
   public static bool notify_new_mentions(){
     return settings.get_boolean("new-mentions-notify");
   }
