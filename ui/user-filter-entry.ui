@@ -77,15 +77,8 @@
                     <property name="relief">none</property>
                     <property name="can-focus">1</property>
                     <property name="tooltip-text" translatable="Yes">Remove this Filter</property>
+                    <property name="icon-name">list-remove-symbolic</property>
                     <signal name="clicked" handler="menu_button_clicked_cb"/>
-                    <style>
-                      <class name="image-button"/>
-                    </style>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">list-remove-symbolic</property>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="left-attach">2</property>
