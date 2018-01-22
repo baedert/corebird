@@ -417,15 +417,8 @@
                     <property name="relief">none</property>
                     <property name="valign">center</property>
                     <property name="margin">6</property>
+                    <property name="icon-name">list-add-symbolic</property>
                     <signal name="clicked" handler="add_snippet_button_clicked_cb"/>
-                    <style>
-                      <class name="image-button"/>
-                    </style>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="icon-name">list-add-symbolic</property>
-                      </object>
-                    </child>
                   </object>
                 </child>
                 <child>

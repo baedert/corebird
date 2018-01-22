@@ -59,15 +59,8 @@
                 <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="margin">6</property>
+                <property name="icon-name">view-more-symbolic</property>
                 <signal name="clicked" handler="more_button_clicked_cb" swapped="no"/>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="icon-name">view-more-symbolic</property>
-                  </object>
-                </child>
               </object>
               <packing>
                 <property name="left-attach">1</property>

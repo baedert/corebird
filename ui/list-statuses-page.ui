@@ -285,16 +285,8 @@
                 <property name="margin-start">5</property>
                 <property name="can-focus">1</property>
                 <property name="valign">center</property>
+                <property name="icon-name">view-refresh-symbolic</property>
                 <signal name="clicked" handler="refresh_button_clicked_cb" swapped="false"/>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">view-refresh-symbolic</property>
-                    <property name="icon-size">1</property>
-                  </object>
-                </child>
               </object>
               <packing>
                 <property name="position">1</property>
