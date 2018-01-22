@@ -257,17 +257,10 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       }
     }
 
-
+    /* Fifth case */
     if (t.retweeted_tweet != null) {
-      /* Fifth case */
-      foreach (Gtk.Widget w in tweet_list.get_children ()) {
-        if (w is Cb.TweetRow) {
-          var tt = ((Cb.TweetRow)w).tweet;
-          if (tt.retweeted_tweet != null && tt.retweeted_tweet.id == t.retweeted_tweet.id) {
-            flags |= Cb.TweetState.HIDDEN_FORCE;
-            break;
-          }
-        }
+      if (tweet_list.model.contains_rt_id (t.retweeted_tweet.id)) {
+        flags |= Cb.TweetState.HIDDEN_FORCE;
       }
     }
 

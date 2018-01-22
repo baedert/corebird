@@ -49,53 +49,41 @@ struct _CbTweetModelClass
   GObjectClass parent_class;
 };
 
-GType    cb_tweet_model_get_type     (void) G_GNUC_CONST;
-
-CbTweetModel *cb_tweet_model_new (void);
-
-gboolean cb_tweet_model_contains_id  (CbTweetModel *self,
-                                      gint64        id);
-
-void     cb_tweet_model_clear        (CbTweetModel *self);
-
-CbTweet *cb_tweet_model_get_for_id   (CbTweetModel *self,
-                                      gint64        id,
-                                      int           diff);
-
-gboolean cb_tweet_model_delete_id    (CbTweetModel *self,
-                                      gint64        id,
-                                      gboolean     *seen);
-
-void     cb_tweet_model_remove_tweet (CbTweetModel *self,
-                                      CbTweet      *tweet);
-
-void     cb_tweet_model_toggle_flag_on_user_tweets (CbTweetModel *self,
-                                                    gint64        user_id,
-                                                    CbTweetState  flag,
-                                                    gboolean      active);
-
-void     cb_tweet_model_toggle_flag_on_user_retweets (CbTweetModel *self,
-                                                      gint64        user_id,
-                                                      CbTweetState  flag,
-                                                      gboolean      active);
-
-gboolean cb_tweet_model_set_tweet_flag (CbTweetModel *self,
-                                        CbTweet      *tweet,
-                                        CbTweetState  flag);
-
-gboolean cb_tweet_model_unset_tweet_flag (CbTweetModel *self,
-                                          CbTweet      *tweet,
-                                          CbTweetState  flag);
-
-void     cb_tweet_model_add (CbTweetModel *self,
-                             CbTweet      *tweet);
-
-void     cb_tweet_model_remove_last_n_visible (CbTweetModel *self,
-                                               guint         amount);
-
-void     cb_tweet_model_remove_tweets_above (CbTweetModel *self,
-                                             gint64        id);
-
+GType          cb_tweet_model_get_type                     (void) G_GNUC_CONST;
+CbTweetModel * cb_tweet_model_new                          (void);
+gboolean       cb_tweet_model_contains_id                  (CbTweetModel *self,
+                                                            gint64        id);
+gboolean       cb_tweet_model_contains_rt_id               (CbTweetModel *self,
+                                                            gint64        rt_id);
+void           cb_tweet_model_clear                        (CbTweetModel *self);
+CbTweet *      cb_tweet_model_get_for_id                   (CbTweetModel *self,
+                                                            gint64        id,
+                                                            int           diff);
+gboolean       cb_tweet_model_delete_id                    (CbTweetModel *self,
+                                                            gint64        id,
+                                                            gboolean     *seen);
+void           cb_tweet_model_remove_tweet                 (CbTweetModel *self,
+                                                            CbTweet      *tweet);
+void           cb_tweet_model_toggle_flag_on_user_tweets   (CbTweetModel *self,
+                                                            gint64        user_id,
+                                                            CbTweetState  flag,
+                                                            gboolean      active);
+void           cb_tweet_model_toggle_flag_on_user_retweets (CbTweetModel *self,
+                                                            gint64        user_id,
+                                                            CbTweetState  flag,
+                                                            gboolean      active);
+gboolean       cb_tweet_model_set_tweet_flag               (CbTweetModel *self,
+                                                            CbTweet      *tweet,
+                                                            CbTweetState  flag);
+gboolean       cb_tweet_model_unset_tweet_flag             (CbTweetModel *self,
+                                                            CbTweet      *tweet,
+                                                            CbTweetState  flag);
+void           cb_tweet_model_add                          (CbTweetModel *self,
+                                                            CbTweet      *tweet);
+void           cb_tweet_model_remove_last_n_visible        (CbTweetModel *self,
+                                                            guint         amount);
+void           cb_tweet_model_remove_tweets_above          (CbTweetModel *self,
+                                                            gint64        id);
 
 
 #endif

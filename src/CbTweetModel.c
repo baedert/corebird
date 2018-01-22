@@ -295,6 +295,28 @@ cb_tweet_model_contains_id (CbTweetModel *self,
   return FALSE;
 }
 
+gboolean
+cb_tweet_model_contains_rt_id (CbTweetModel *self,
+                               gint64        id)
+{
+  guint i;
+
+  g_return_val_if_fail (CB_IS_TWEET_MODEL (self), FALSE);
+
+  for (i = 0; i < self->tweets->len; i ++)
+    {
+      CbTweet *tweet = g_ptr_array_index (self->tweets, i);
+
+      if (tweet->retweeted_tweet != NULL &&
+          tweet->retweeted_tweet->id == id)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+
+
 void
 cb_tweet_model_clear (CbTweetModel *self)
 {
