@@ -9,6 +9,7 @@
   "copy-icon" : true,
   "desktop-file-name-prefix": "(Next)",
   "finish-args" : [
+    "--device=dri",
     "--share=ipc",
     "--share=network",
     "--socket=wayland",
