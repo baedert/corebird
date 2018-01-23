@@ -32,3 +32,16 @@ cb_text_button_new (const char *text)
 
   return button;
 }
+
+void
+cb_text_button_set_text (GtkWidget  *button,
+                         const char *text)
+{
+  GtkWidget *child;
+  /* Should've been created using cb_text_button_new () */
+  g_assert (GTK_IS_LABEL (gtk_bin_get_child (GTK_BIN (button))));
+
+  child = gtk_bin_get_child (GTK_BIN (button));
+
+  gtk_label_set_label (GTK_LABEL (child), text);
+}

@@ -23,6 +23,8 @@
 /* This is not actually a new class, just some convenience API around
  * a normal GtkButton. */
 
-GtkWidget * cb_text_button_new (const char *text);
+GtkWidget * cb_text_button_new      (const char *text);
+void        cb_text_button_set_text (GtkWidget  *button,
+                                     const char *text);
 
 #endif
