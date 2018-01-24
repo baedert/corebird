@@ -49,7 +49,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     vadjustment.notify["value"].connect (keep_value_func);
   }
 
-  private void keep_upper_func() { // {{{
+  private void keep_upper_func() {
     double upper = vadjustment.upper;
     if (balance == TOP){
       double inc = (upper - upper_cache);
@@ -59,9 +59,9 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     }
     this.upper_cache = vadjustment.upper;
     this.value_cache = vadjustment.value;
-  } // }}}
+  }
 
-  private void keep_value_func () { // {{{
+  private void keep_value_func () {
     // Call the scrolled_to_top signal if necessary
     if(vadjustment.value < 10.0) {
       scrolled_to_start(vadjustment.value);
@@ -80,7 +80,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     }
     this.upper_cache = vadjustment.upper;
     this.value_cache = vadjustment.value;
-  } // }}}
+  }
 
   public void balance_next_upper_change (int mode) {
     balance = mode;
@@ -97,7 +97,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
    * @param animate    Whether to animate/transition the change or not (default: true)
    */
   public void scroll_up_next (bool animate = true,
-                              bool force_start = false) { // {{{
+                              bool force_start = false) {
     if (!this.get_mapped ()) {
       this.vadjustment.value = 0;
       return;
@@ -134,7 +134,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
         this.scroll_up_id = 0;
       });
     }
-  } // }}}
+  }
 
   /**
    * Scroll to the very end of the scrolled window once the next
