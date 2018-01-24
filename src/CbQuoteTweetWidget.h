@@ -40,7 +40,9 @@ typedef struct _CbQuoteTweetWidget CbQuoteTweetWidget;
 #define CB_TYPE_QUOTE_TWEET_WIDGET cb_quote_tweet_widget_get_type ()
 G_DECLARE_FINAL_TYPE (CbQuoteTweetWidget, cb_quote_tweet_widget, CB, QUOTE_TWEET_WIDGET, GtkWidget);
 
-GtkWidget * cb_quote_tweet_widget_new (const CbMiniTweet *quote);
+GtkWidget * cb_quote_tweet_widget_new         (void);
+void        cb_quote_tweet_widget_set_tweet   (CbQuoteTweetWidget *self,
+                                               const CbMiniTweet  *quote);
 void        cb_quote_tweet_widget_update_time (CbQuoteTweetWidget *self,
                                                GDateTime          *now);
 

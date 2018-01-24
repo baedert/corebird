@@ -16,6 +16,7 @@
  */
 
 #include "CbQuoteTweetWidget.h"
+#include "CbTextButton.h"
 #include "CbUtils.h"
 #include "corebird.h"
 
@@ -169,39 +170,35 @@ name_button_clicked_cb (GtkButton *source,
 }
 
 static void
-create_ui (CbQuoteTweetWidget *self,
-           const CbMiniTweet  *quote)
+create_ui (CbQuoteTweetWidget *self)
 {
-  char *text;
+  g_assert (self->top_row_box == NULL);
 
   self->top_row_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");
   gtk_widget_set_parent (self->top_row_box, (GtkWidget *)self);
 
-  self->name_button = gtk_button_new_with_label (quote->author.user_name);
+  self->name_button = cb_text_button_new (NULL);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->name_button), "user-name");
   g_signal_connect (self->name_button, "clicked", G_CALLBACK (name_button_clicked_cb), self);
   gtk_widget_set_valign (self->name_button, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
 
-  text = g_strdup_printf ("@%s", quote->author.screen_name);
-  self->screen_name_label = gtk_label_new (text);
+  self->screen_name_label = gtk_label_new (NULL);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->screen_name_label),
                                "dim-label");
   gtk_widget_set_hexpand (self->screen_name_label, TRUE);
   gtk_widget_set_halign (self->screen_name_label, GTK_ALIGN_START);
   gtk_widget_set_valign (self->screen_name_label, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->screen_name_label);
-  g_free (text);
 
-  self->time_delta_label = gtk_label_new ("Time");
+  self->time_delta_label = gtk_label_new (NULL);
   gtk_widget_set_valign (self->time_delta_label, GTK_ALIGN_BASELINE);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "dim-label");
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "time-delta");
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->time_delta_label);
 
-  text = cb_text_transform_tweet (quote, settings_get_text_transform_flags (), 0);
-  self->text_label = gtk_label_new (text);
+  self->text_label = gtk_label_new (NULL);
   gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
@@ -210,21 +207,42 @@ create_ui (CbQuoteTweetWidget *self,
   gtk_label_set_line_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
   gtk_widget_set_parent (self->text_label, (GtkWidget *)self);
   g_signal_connect (self->text_label, "activate-link", G_CALLBACK (link_activated_cb), self);
-  g_free (text);
 }
 
 GtkWidget *
-cb_quote_tweet_widget_new (const CbMiniTweet *quote)
+cb_quote_tweet_widget_new (void)
 {
   CbQuoteTweetWidget *self = g_object_new (CB_TYPE_QUOTE_TWEET_WIDGET, NULL);
 
-  self->user_id = quote->author.id;
-  self->screen_name = g_strdup (quote->author.screen_name);
-  self->tweet_created_at = quote->created_at;
-
-  create_ui (self, quote);
+  create_ui (self);
 
   return (GtkWidget *)self;
+}
+
+void
+cb_quote_tweet_widget_set_tweet (CbQuoteTweetWidget *self,
+                                 const CbMiniTweet  *quote)
+{
+  char *text;
+
+  g_assert (self->top_row_box != NULL);
+
+  cb_text_button_set_text (self->name_button, quote->author.user_name);
+
+  text = g_strdup_printf ("@%s", quote->author.screen_name);
+  gtk_label_set_label (GTK_LABEL (self->screen_name_label), text);
+  g_free (text);
+
+
+  text = cb_text_transform_tweet (quote, settings_get_text_transform_flags (), 0);
+  gtk_label_set_label (GTK_LABEL (self->text_label), text);
+  g_free (text);
+
+  self->user_id = quote->author.id;
+  self->tweet_created_at = quote->created_at;
+
+  g_free (self->screen_name);
+  self->screen_name = g_strdup (quote->author.screen_name);
 }
 
 
