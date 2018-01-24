@@ -358,43 +358,99 @@ media_clicked_cb (GtkWidget *source,
 static void
 create_ui (CbTweetRow *self)
 {
-  char *text;
-
-  g_assert (self->tweet != NULL);
-
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
-  avatar_widget_set_verified (AVATAR_WIDGET (self->avatar_widget),
-                              cb_tweet_is_flag_set (self->tweet, CB_TWEET_STATE_VERIFIED));
   gtk_widget_set_parent (self->avatar_widget, (GtkWidget *)self);
   self->top_row_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->top_row_box), "header");
   gtk_widget_set_parent (self->top_row_box, (GtkWidget *)self);
 
-  if (self->tweet->avatar_url != NULL)
-    twitter_get_avatar (twitter_get (), cb_tweet_get_user_id (self->tweet), self->tweet->avatar_url,
-                        (AvatarWidget *)self->avatar_widget, 48, FALSE, NULL, NULL);
-
-  self->name_button = cb_text_button_new (cb_tweet_get_user_name (self->tweet));
+  self->name_button = cb_text_button_new ("");
   gtk_style_context_add_class (gtk_widget_get_style_context (self->name_button), "user-name");
   gtk_widget_set_valign (self->name_button, GTK_ALIGN_BASELINE);
   g_signal_connect (self->name_button, "clicked", G_CALLBACK (name_button_clicked_cb), self);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
 
-  text = g_strdup_printf ("@%s", cb_tweet_get_screen_name (self->tweet));
-  self->screen_name_label = gtk_label_new (text);
+  self->screen_name_label = gtk_label_new (NULL);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->screen_name_label),
                                "dim-label");
   gtk_widget_set_hexpand (self->screen_name_label, TRUE);
   gtk_widget_set_halign (self->screen_name_label, GTK_ALIGN_START);
   gtk_widget_set_valign (self->screen_name_label, GTK_ALIGN_BASELINE);
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->screen_name_label);
-  g_free (text);
 
   self->time_delta_label = gtk_label_new ("");
   gtk_widget_set_valign (self->time_delta_label, GTK_ALIGN_BASELINE);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "dim-label");
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "time-delta");
   gtk_container_add (GTK_CONTAINER (self->top_row_box), self->time_delta_label);
+
+  self->text_label = gtk_label_new (NULL);
+  gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
+  gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
+  gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
+  gtk_label_set_track_visited_links (GTK_LABEL (self->text_label), FALSE);
+  gtk_label_set_line_wrap (GTK_LABEL (self->text_label), TRUE);
+  gtk_label_set_line_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
+  gtk_style_context_add_class (gtk_widget_get_style_context (self->text_label), "text");
+  gtk_widget_set_parent (self->text_label, (GtkWidget *)self);
+  g_signal_connect (self->text_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+
+  gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self), "tweet");
+}
+
+GtkWidget *
+cb_tweet_row_new (CbTweet    *tweet,
+                  void       *main_window)
+                  /*Account    *account)*/
+{
+  CbTweetRow *self  = (CbTweetRow *)g_object_new (CB_TYPE_TWEET_ROW, NULL);
+
+  self->main_window = main_window;
+  create_ui (self);
+  cb_tweet_row_set_tweet (self, tweet);
+
+  return (GtkWidget *)self;
+}
+
+//
+// 1) _new will first call create_ui and then _set_tweet.
+// 2) Thus, create_ui will only *CREATE* the widgets that always exist,
+//    but not set any values on them
+// 3) So, set_tweet() will then create and/or destroy widgets that don't apply
+//    to the given tweet, as well as fill out the ones that do apply.
+//
+void
+cb_tweet_row_set_tweet (CbTweetRow *self,
+                        CbTweet    *tweet)
+{
+  char *text;
+
+  /* If we get here, create_ui() should've already been called. */
+  g_assert (self->avatar_widget != NULL);
+
+  if (!g_set_object (&self->tweet, tweet))
+    return;
+
+  /* First, set the values on all the widgets that always exist */
+  avatar_widget_set_verified (AVATAR_WIDGET (self->avatar_widget),
+                              cb_tweet_is_flag_set (self->tweet, CB_TWEET_STATE_VERIFIED));
+
+  avatar_widget_set_texture ((AvatarWidget *)self->avatar_widget, NULL);
+
+  if (self->tweet->avatar_url != NULL)
+    twitter_get_avatar (twitter_get (), cb_tweet_get_user_id (self->tweet), self->tweet->avatar_url,
+                        (AvatarWidget *)self->avatar_widget, 48, FALSE, NULL, NULL);
+
+  cb_text_button_set_text (self->name_button, cb_tweet_get_user_name (self->tweet));
+
+  text = g_strdup_printf ("@%s", cb_tweet_get_screen_name (self->tweet));
+  gtk_label_set_label (GTK_LABEL (self->screen_name_label), text);
+  g_free (text);
+
+  text = cb_tweet_get_trimmed_text (self->tweet, settings_get_text_transform_flags ());
+  gtk_label_set_label (GTK_LABEL (self->text_label), text);
+  gtk_widget_set_visible (self->text_label, strlen (text) > 0);
+  g_free (text);
 
   /* Reply label */
   if (self->tweet->source_tweet.reply_id != 0 ||
@@ -407,112 +463,160 @@ create_ui (CbTweetRow *self)
       else
         cb_utils_write_reply_text (&self->tweet->source_tweet, str);
 
-      self->reply_label = gtk_label_new (str->str);
-      gtk_label_set_xalign (GTK_LABEL (self->reply_label), 0.0f);
-      gtk_label_set_yalign (GTK_LABEL (self->reply_label), 0.0f);
-      gtk_label_set_use_markup (GTK_LABEL (self->reply_label), TRUE);
-      gtk_label_set_track_visited_links (GTK_LABEL (self->reply_label), FALSE);
-      gtk_label_set_line_wrap (GTK_LABEL (self->reply_label), TRUE);
-      gtk_label_set_line_wrap_mode (GTK_LABEL (self->reply_label), PANGO_WRAP_WORD_CHAR);
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),
-                                   "dim-label");
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),
-                                   "invisible-links");
-      gtk_widget_set_parent (self->reply_label, (GtkWidget *)self);
-      g_signal_connect (self->reply_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+      if (self->reply_label == NULL)
+        {
+          self->reply_label = gtk_label_new (NULL);
+          gtk_label_set_xalign (GTK_LABEL (self->reply_label), 0.0f);
+          gtk_label_set_yalign (GTK_LABEL (self->reply_label), 0.0f);
+          gtk_label_set_use_markup (GTK_LABEL (self->reply_label), TRUE);
+          gtk_label_set_track_visited_links (GTK_LABEL (self->reply_label), FALSE);
+          gtk_label_set_line_wrap (GTK_LABEL (self->reply_label), TRUE);
+          gtk_label_set_line_wrap_mode (GTK_LABEL (self->reply_label), PANGO_WRAP_WORD_CHAR);
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),
+                                       "dim-label");
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),
+                                       "invisible-links");
+          gtk_widget_set_parent (self->reply_label, (GtkWidget *)self);
+          g_signal_connect (self->reply_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+        }
+
+      gtk_label_set_label (GTK_LABEL (self->reply_label), str->str);
 
       g_string_free (str, TRUE);
     }
+  else if (self->reply_label != NULL)
+    {
+      gtk_widget_unparent (self->reply_label);
+      self->reply_label = NULL;
+    }
 
-  text = cb_tweet_get_trimmed_text (self->tweet, settings_get_text_transform_flags ());
-  self->text_label = gtk_label_new (text);
-  if (strlen (text) == 0)
-    gtk_widget_set_visible (self->text_label, FALSE);
-  gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
-  gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
-  gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
-  gtk_label_set_track_visited_links (GTK_LABEL (self->text_label), FALSE);
-  gtk_label_set_line_wrap (GTK_LABEL (self->text_label), TRUE);
-  gtk_label_set_line_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
-  gtk_style_context_add_class (gtk_widget_get_style_context (self->text_label), "text");
-  gtk_widget_set_parent (self->text_label, (GtkWidget *)self);
-  g_signal_connect (self->text_label, "activate-link", G_CALLBACK (link_activated_cb), self);
-  g_free (text);
-
-  /* Retweet indicators */
+  /* Retweet Indicators */
   if (self->tweet->retweeted_tweet != NULL)
     {
       GString *user_str = g_string_new (NULL);
 
-      self->rt_image = gtk_image_new_from_icon_name ("corebird-retweet-symbolic");
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
-                                   "rt-icon");
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
-                                   "dim-label");
-      gtk_widget_set_parent (self->rt_image, (GtkWidget *)self);
+      if (self->rt_image == NULL)
+        {
+          self->rt_image = gtk_image_new_from_icon_name ("corebird-retweet-symbolic");
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
+                                       "rt-icon");
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_image),
+                                       "dim-label");
+          gtk_widget_set_parent (self->rt_image, (GtkWidget *)self);
 
+          self->rt_label = gtk_label_new (NULL);
+
+          gtk_label_set_use_markup (GTK_LABEL (self->rt_label), TRUE);
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
+                                       "rt-label");
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
+                                       "dim-label");
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
+                                       "invisible-links");
+          gtk_widget_set_halign (self->rt_label, GTK_ALIGN_START);
+          gtk_widget_set_parent (self->rt_label, (GtkWidget *)self);
+
+          g_signal_connect (self->rt_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+        }
+
+      // TODO(Perf): We create a bunch of GString* here, maybe just unconditionally create one?
       cb_utils_linkify_user_name (&self->tweet->source_tweet.author, user_str);
-      self->rt_label = gtk_label_new (user_str->str);
-      g_string_free (user_str, TRUE);
-      g_signal_connect (self->rt_label, "activate-link", G_CALLBACK (link_activated_cb), self);
+      gtk_label_set_label (GTK_LABEL (self->rt_label), user_str->str);
 
-      gtk_label_set_use_markup (GTK_LABEL (self->rt_label), TRUE);
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
-                                   "rt-label");
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
-                                   "dim-label");
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
-                                   "invisible-links");
-      gtk_widget_set_halign (self->rt_label, GTK_ALIGN_START);
-      gtk_widget_set_parent (self->rt_label, (GtkWidget *)self);
+      g_string_free (user_str, TRUE);
+    }
+  else if (self->rt_label != NULL)
+    {
+      g_assert (self->rt_image != NULL);
+      gtk_widget_unparent (self->rt_label);
+      gtk_widget_unparent (self->rt_image);
+      self->rt_label = NULL;
+      self->rt_image = NULL;
     }
 
+  /* Quotes */
   if (self->tweet->quoted_tweet != NULL)
     {
-      self->quote_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-      self->quote_widget = cb_quote_tweet_widget_new (self->tweet->quoted_tweet);
+      if (self->quote_box == NULL)
+        {
+          g_assert (self->quote_widget == NULL);
 
-      gtk_container_add (GTK_CONTAINER (self->quote_box), self->quote_widget);
+          self->quote_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+          self->quote_widget = cb_quote_tweet_widget_new ();
+          gtk_container_add (GTK_CONTAINER (self->quote_box), self->quote_widget);
 
-      gtk_style_context_add_class (gtk_widget_get_style_context (self->quote_box), "quote");
-      gtk_widget_set_parent (self->quote_box, (GtkWidget *)self);
+          gtk_style_context_add_class (gtk_widget_get_style_context (self->quote_box), "quote");
+          gtk_widget_set_parent (self->quote_box, (GtkWidget *)self);
+        }
+
+      cb_quote_tweet_widget_set_tweet (CB_QUOTE_TWEET_WIDGET (self->quote_widget), self->tweet->quoted_tweet);
+    }
+  else if (self->quote_box != NULL)
+    {
+      /* mm_widget might be a child of quote_box */
+      if (self->mm_widget != NULL && gtk_widget_get_parent (self->mm_widget) == self->quote_box)
+        self->mm_widget = NULL;
+
+      gtk_widget_unparent (self->quote_box);
+      self->quote_widget = NULL;
+      self->quote_box = NULL;
     }
 
-  /* Inline media */
+  /* Inline Media */
   if (cb_tweet_has_inline_media (self->tweet))
     {
       int n_medias;
       CbMedia **medias = cb_tweet_get_medias (self->tweet, &n_medias);
-      self->mm_widget = (GtkWidget *)multi_media_widget_new ();
 
-      if (self->quote_box != NULL)
-        gtk_container_add (GTK_CONTAINER (self->quote_box), self->mm_widget);
+      if (self->mm_widget == NULL)
+        {
+          self->mm_widget = (GtkWidget *)multi_media_widget_new ();
+
+          if (self->quote_box != NULL)
+            gtk_container_add (GTK_CONTAINER (self->quote_box), self->mm_widget);
+          else
+            gtk_widget_set_parent (self->mm_widget, (GtkWidget *)self);
+
+          g_signal_connect (self->mm_widget, "media-clicked", G_CALLBACK (media_clicked_cb), self);
+        }
       else
-        gtk_widget_set_parent (self->mm_widget, (GtkWidget *)self);
+        {
+          /* Maybe re-arrange mm_widget */
+          g_object_ref ((GObject *)self->mm_widget);
+
+          if (self->quote_box != NULL && gtk_widget_get_parent (self->mm_widget) != self->quote_box)
+            {
+              g_assert (gtk_widget_get_parent (self->mm_widget) == (GtkWidget *)self);
+              gtk_widget_unparent (self->mm_widget);
+              gtk_container_add (GTK_CONTAINER (self->quote_box), self->mm_widget);
+            }
+          else
+            {
+              /*g_assert (gtk_widget_get_parent (self->mm_widget) == self->quote_box);*/
+
+              /*gtk_container_remove (*/
+
+            }
+
+          g_object_unref ((GObject *)self->mm_widget);
+        }
 
       multi_media_widget_set_all_media ((MultiMediaWidget *)self->mm_widget, medias, n_medias);
-      g_signal_connect (self->mm_widget, "media-clicked", G_CALLBACK (media_clicked_cb), self);
 
       // TODO: Care about NSFW-ness
     }
+  else if (self->mm_widget != NULL)
+    {
+      if (gtk_widget_get_parent (self->mm_widget) == self->quote_box)
+        gtk_container_remove (GTK_CONTAINER (self->quote_box), self->mm_widget);
+      else
+        gtk_widget_unparent (self->mm_widget);
 
-  gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self), "tweet");
+      self->mm_widget = NULL;
+    }
 
+  /* New tweet, so update time delta */
   cb_tweet_row_update_time_delta (CB_TWITTER_ITEM (self), NULL);
-}
-
-GtkWidget *
-cb_tweet_row_new (CbTweet    *tweet,
-                  void       *main_window)
-                  /*Account    *account)*/
-{
-  CbTweetRow *self  = (CbTweetRow *)g_object_new (CB_TYPE_TWEET_ROW, NULL);
-
-  g_set_object (&self->tweet, tweet);
-  self->main_window = main_window;
-  create_ui (self);
-
-  return (GtkWidget *)self;
 }
 
 gboolean

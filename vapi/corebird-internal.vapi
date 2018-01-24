@@ -432,6 +432,7 @@ namespace Cb {
   public class TweetRow : Gtk.ListBoxRow {
     public TweetRow (Tweet tweet, MainWindow? toplevel);//, Account account);
     public Tweet tweet;
+    public void set_tweet (Tweet t);
     public void toggle_mode ();
     public bool shows_actions ();
     public void set_read_only ();
