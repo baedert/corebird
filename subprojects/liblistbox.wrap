@@ -1,0 +1,4 @@
+[wrap-git]
+directory = liblistbox
+url=https://github.com/baedert/liblistbox
+revision=head

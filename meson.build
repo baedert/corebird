@@ -32,6 +32,7 @@ enable_debug = get_option('buildtype') == 'debug' or get_option('buildtype') == 
 enable_video = get_option('video')
 enable_spellcheck = get_option('spellcheck')
 enable_examples = get_option('examples')
+enable_listbox = get_option('experimental-listbox')
 
 # Project arguments
 
@@ -184,6 +185,7 @@ corebird_lib_sources = files([
 
   # Vapi files
   'vapi/corebird-internal.vapi',
+  'vapi/gd-model-list-box.vapi',
   'vapi/rest-0.7.vapi',
   'vapi/libtl.vapi'
 ])
@@ -206,6 +208,17 @@ configure_file(
 libtl = subproject('libtl')
 libtl_dep = libtl.get_variable('libtl_dep')
 cb_deps += libtl_dep
+
+if enable_listbox
+  corebird_lib_sources += ['src/ModelListBox.vala', 'vapi/gd-model-list-box.vapi']
+  # liblistbox subproject
+  liblistbox = subproject('liblistbox')
+  liblistbox_dep = liblistbox.get_variable('liblistbox_dep')
+  cb_deps += liblistbox_dep
+
+  add_project_arguments('-DEXPERIMENTAL_LISTBOX', language: 'c')
+  add_project_arguments('-D', 'EXPERIMENTAL_LISTBOX', language: 'vala')
+endif
 
 # library (for unit tests)
 cb_lib = static_library(
@@ -240,6 +253,7 @@ executable(
   include_directories: srcdir,
   vala_args: [
     meson.source_root() + '/vapi/corebird-internal.vapi',
+    meson.source_root() + '/vapi/gd-model-list-box.vapi',
     meson.source_root() + '/vapi/rest-0.7.vapi',
     meson.source_root() + '/vapi/libtl.vapi',
   ],

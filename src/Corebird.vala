@@ -201,6 +201,7 @@ public class Corebird : Gtk.Application {
     typeof (Cb.EmojiChooser).ensure ();
     typeof (Cb.TextView).ensure ();
     typeof (Cb.AspectImage).ensure ();
+    typeof (Cb.TweetListBox).ensure ();
 
 #if DEBUG
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "corebird", true);

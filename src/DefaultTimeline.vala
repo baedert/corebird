@@ -37,7 +37,11 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       _main_window = value;
     }
   }
+#if EXPERIMENTAL_LISTBOX
+  public ModelListBox tweet_list = new ModelListBox ();
+#else
   public Cb.TweetListBox tweet_list = new Cb.TweetListBox ();
+#endif
   public unowned Account account;
   protected BadgeRadioButton radio_button;
   protected uint tweet_remove_timeout = 0;
@@ -105,6 +109,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       mark_seen (-1);
     }
 
+#if !EXPERIMENTAL_LISTBOX
     if (last_focus_widget != null) {
       /* We might have a reference to a row that's been removed
          from the listbox */
@@ -113,6 +118,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       else
         last_focus_widget = null;
     }
+#endif
 
     this.get_vadjustment ().value = this.last_value;
   }
@@ -268,6 +274,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   }
 
   protected void mark_seen (int64 id) {
+#if !EXPERIMENTAL_LISTBOX
     foreach (Gtk.Widget w in tweet_list.get_children ()) {
       if (w == null || !(w is Cb.TweetRow))
         continue;
@@ -282,6 +289,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
           break;
       }
     }
+#endif
   }
 
 
@@ -369,9 +377,16 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
+
+#if EXPERIMENTAL_LISTBOX
+    TweetUtils.work_array2 (root,
+                            tweet_list,
+                            account);
+#else
     TweetUtils.work_array (root,
                            tweet_list,
                            account);
+#endif
   }
 
   /**
@@ -402,9 +417,16 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       tweet_list.set_empty ();
       return;
     }
+
+#if EXPERIMENTAL_LISTBOX
+    TweetUtils.work_array2 (root,
+                            tweet_list,
+                            account);
+#else
     TweetUtils.work_array (root,
                            tweet_list,
                            account);
+#endif
   }
 
   /**
@@ -417,6 +439,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       return;
 
     // We HAVE to use widgets here.
+#if !EXPERIMENTAL_LISTBOX
     tweet_list.forall ((w) => {
       if (!(w is Cb.TweetRow))
         return;
@@ -432,6 +455,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         unread_count--;
       }
     });
+#endif
   }
 
   public void rerun_filters () {

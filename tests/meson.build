@@ -21,6 +21,7 @@ foreach test_name : tests
     test_name,
     test_name + '.vala',
     meson.source_root() + '/vapi/corebird-internal.vapi',
+    meson.source_root() + '/vapi/gd-model-list-box.vapi',
     meson.source_root() + '/vapi/rest-0.7.vapi',
     cb_resources,
     dependencies: cb_dep,
