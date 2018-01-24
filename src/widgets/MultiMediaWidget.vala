@@ -72,7 +72,6 @@ public class MultiMediaWidget : Gtk.Box {
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
     this.add (button);
-    this.queue_draw ();
   }
 
   private void button_clicked_cb (MediaButton source, double px, double py) {
