@@ -512,7 +512,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     }
 
     text_label.label = tweet.get_formatted_text ();
-    name_button.set_label (tweet.get_user_name ());
+    ((Gtk.Label)name_button.get_child ()).set_label (tweet.get_user_name ());
     screen_name_label.label = "@" + tweet.get_screen_name ();
 
     load_user_avatar (tweet.avatar_url);

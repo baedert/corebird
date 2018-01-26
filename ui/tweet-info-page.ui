@@ -68,13 +68,17 @@
                           <object class="GtkBox">
                             <child>
                               <object class="GtkButton" id="name_button">
-                                <property name="visible">True</property>
                                 <property name="halign">start</property>
                                 <property name="valign">baseline</property>
                                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                                 <style>
                                   <class name="user-name" />
                                 </style>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="use-markup">1</property>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                             <child>
