@@ -89,8 +89,8 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     text_label.set_line_wrap (true);
     text_label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
     text_label.set_use_markup (true);
-    text_label.set_use_markup (true);
     text_label.set_selectable (true);
+    text_label.set_valign (Gtk.Align.START);
     grid.attach (text_label, 1, 1, 3, 1);
 
     name_button.clicked.connect (() => {
