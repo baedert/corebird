@@ -115,7 +115,7 @@
       "build-options": {
         "build-args" : ["--share=network"]
       },
-      "config-opts" : ["-Ddebug=true", "-Dvideo=false", "-Dspellcheck=false"],
+      "config-opts" : ["-Dbuildtype=debug", "-Dvideo=false", "-Dspellcheck=false"],
       "sources" : [
         {
           "type"   : "git",
