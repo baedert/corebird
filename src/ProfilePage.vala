@@ -525,7 +525,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       entry.set_screen_name ("@" + user_obj.get_string_member ("screen_name"));
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
-      entry.get_style_context ().add_class ("tweet");
+      entry.get_style_context ().add_class ("border-bottom");
       entry.show ();
       this.followers_list.add (entry);
     });
@@ -568,7 +568,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       entry.set_screen_name ("@" + user_obj.get_string_member ("screen_name"));
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
-      entry.get_style_context ().add_class ("tweet");
+      entry.get_style_context ().add_class ("border-bottom");
       entry.show ();
       this.following_list.add (entry);
 
