@@ -154,8 +154,10 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     /* Let the text view immediately grab the keyboard focus */
     tweet_text.grab_focus ();
 
+    warning ("ESCAPE to close the compose window is broken atm; sort this out once the key event controller stuff lands in gtk+.");
+
     Gtk.AccelGroup ag = new Gtk.AccelGroup ();
-    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
+    //ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
     ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
         () => {start_send_tweet (); return true;});
     ag.connect (Gdk.Key.E, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
