@@ -553,6 +553,10 @@ cb_text_view_key_press_event_cb (GtkWidget   *widget,
         cb_text_view_select_completion_row (self, self->selected_row - 1);
         return GDK_EVENT_STOP;
 
+      case GDK_KEY_Escape:
+        cb_text_view_stop_completion (self);
+        return GDK_EVENT_STOP;
+
       default:
           {}
     }
