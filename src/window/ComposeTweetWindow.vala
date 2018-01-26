@@ -279,6 +279,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       /* Use this instead of just setting send_button.sensitive to true to avoid
          sending tweets with 0 length */
       this.update_send_button_sensitivity ();
+      this.tweet_text.grab_focus ();
     } else {
       if (this.cancellable != null) {
         this.cancellable.cancel ();
