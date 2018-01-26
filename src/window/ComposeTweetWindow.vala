@@ -161,6 +161,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     ag.connect (Gdk.Key.E, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
         () => {show_emoji_chooser (); return true;});
 
+    this.add_accel_group (ag);
 
     this.compose_image_manager.image_removed.connect ((path) => {
       this.compose_job.abort_image_upload (path);
@@ -184,7 +185,6 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       update_send_button_sensitivity ();
     });
 
-    this.add_accel_group (ag);
 
     string? last_tweet = account.db.select ("info").cols ("last_tweet").once_string ();
     string text = tweet_text.get_text ();
