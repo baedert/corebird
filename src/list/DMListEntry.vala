@@ -52,8 +52,6 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     this.get_style_context ().add_class ("border-bottom");
 
     var grid = new Gtk.Grid ();
-    grid.show ();
-    this.add (grid);
 
     this.avatar_image = new AvatarWidget ();
     avatar_image.size = 48;
@@ -100,7 +98,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
 
-    this.show ();
+    this.add (grid);
   }
 
   public void load_avatar (string avatar_url) {
