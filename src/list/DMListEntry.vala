@@ -29,7 +29,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set { screen_name_label.label = "@" + value; }
   }
   public new string name {
-    set { name_button.set_label (value.replace ("&", "&amp;")); }
+    set { ((Gtk.Label)name_button.get_child ()).set_label (value.replace ("&", "&amp;")); }
   }
 
   public Gdk.Texture avatar {
@@ -49,7 +49,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
   public DMListEntry () {
     this.set_activatable (false);
-    this.get_style_context ().add_class ("tweet");
+    this.get_style_context ().add_class ("border-bottom");
 
     var grid = new Gtk.Grid ();
     grid.show ();
@@ -61,8 +61,13 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     grid.attach (avatar_image, 0, 0, 1, 2);
 
     this.name_button = new Gtk.Button ();
+    var name_label = new Gtk.Label (null);
+    name_label.set_use_markup (true);
+    name_label.set_ellipsize (Pango.EllipsizeMode.END);
+    name_label.xalign = 0;
     name_button.set_valign (Gtk.Align.BASELINE);
     name_button.get_style_context ().add_class ("user-name");
+    name_button.add (name_label);
     grid.attach (name_button, 1, 0, 1, 1);
 
     this.screen_name_label = new Gtk.Label (null);
