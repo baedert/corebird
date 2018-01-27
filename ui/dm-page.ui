@@ -37,6 +37,8 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="wrap-mode">word-char</property>
+                    <property name="left-margin">0</property>
+                    <property name="right-margin">0</property>
                     <signal name="key_press_event" handler="text_view_key_press_cb"/>
                   </object>
                 </child>
