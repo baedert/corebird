@@ -49,7 +49,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
 
   public DMListEntry () {
     this.set_activatable (false);
-    this.get_style_context ().add_class ("border-bottom");
+    this.get_style_context ().add_class ("dm");
 
     var grid = new Gtk.Grid ();
 
@@ -78,9 +78,11 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     time_delta_label.set_valign (Gtk.Align.BASELINE);
     time_delta_label.set_hexpand (true);
     time_delta_label.get_style_context ().add_class ("dim-label");
+    time_delta_label.get_style_context ().add_class ("time-delta");
     grid.attach (time_delta_label, 3, 0, 1, 1);
 
     this.text_label = new Gtk.Label (null);
+    text_label.get_style_context ().add_class ("text");
     text_label.set_hexpand (true);
     text_label.set_vexpand (true);
     text_label.set_xalign (0.0f);

@@ -364,3 +364,24 @@ textview>.extra {
 box.col-spacing {
   border-spacing: 1em;
 }
+
+row.dm {
+  border-bottom: solid 1px alpha (grey, 0.3);
+  padding: 0.5em;
+}
+
+row.dm avatar {
+  margin-right: 0.5em;
+}
+
+row.dm button.user-name {
+  margin-right: 0.5em;
+}
+
+row.dm label.time-delta {
+  margin-left: 0.5em;
+}
+
+row.dm label.text {
+  margin-top: 0.5em;
+}
