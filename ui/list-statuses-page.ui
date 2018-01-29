@@ -118,7 +118,7 @@
                       <object class="GtkButton" id="edit_button">
                         <property name="label" translatable="yes">Edit</property>
                         <property name="visible">1</property>
-                        <property name="can-focus">1</property>
+                        <property name="can-focus">0</property>
                         <property name="receives-default">1</property>
                         <property name="halign">start</property>
                         <signal name="clicked" handler="edit_button_clicked_cb" swapped="no"/>
@@ -154,8 +154,7 @@
                     <child>
                       <object class="GtkMenuButton" id="delete_button">
                         <property name="visible">1</property>
-                        <property name="can-focus">1</property>
-                        <property name="receives-default">1</property>
+                        <property name="can-focus">0</property>
                         <property name="popup">delete_menu</property>
                         <style>
                           <class name="destructive-action"/>
@@ -172,7 +171,7 @@
                       <object class="GtkButton" id="cancel_button">
                         <property name="label" translatable="yes">Cancel</property>
                         <property name="visible">1</property>
-                        <property name="can-focus">1</property>
+                        <property name="can-focus">0</property>
                         <property name="receives-default">1</property>
                         <property name="halign">end</property>
                         <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no"/>
