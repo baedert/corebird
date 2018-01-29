@@ -21,7 +21,7 @@ void main (string[] args) {
   Twitter.get ().init ();
 
   var window = new Gtk.Window ();
-  window.delete_event.connect (() => {Gtk.main_quit (); return true; });
+  window.close_request.connect (() => {Gtk.main_quit (); return true; });
   var list = new Gtk.ListBox ();
   list.selection_mode = Gtk.SelectionMode.NONE;
   var list2 = new Gtk.ListBox ();
