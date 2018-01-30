@@ -63,6 +63,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     text_view.set_hexpand (true);
     text_view.changed.connect (recalc_length);
     text_view.send.connect (send_button_clicked_cb);
+    text_view.set_account (account);
     bottom_box.add (text_view);
 
     this.send_button = new Gtk.Button.with_label (_("Send"));
@@ -225,8 +226,6 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       placeholder_box.avatar_url = args.get_string (KEY_AVATAR_URL);
       placeholder_box.load_avatar ();
     }
-
-    text_view.set_account (this.account);
 
     // Clear list
     messages_list.foreach ((w) => {messages_list.remove (w);});
