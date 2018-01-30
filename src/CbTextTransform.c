@@ -90,13 +90,13 @@ is_whitespace (const char *s)
 }
 
 char *
-cb_text_transform_text (const char   *text,
-                        CbTextEntity *entities,
-                        gsize         n_entities,
-                        guint         flags,
-                        gsize         n_medias,
-                        gint64        quote_id,
-                        guint         display_range_start)
+cb_text_transform_text (const char         *text,
+                        const CbTextEntity *entities,
+                        gsize               n_entities,
+                        guint               flags,
+                        gsize               n_medias,
+                        gint64              quote_id,
+                        guint               display_range_start)
 {
   GString *str;
   const  guint text_len   = g_utf8_strlen (text, -1);
@@ -105,11 +105,15 @@ cb_text_transform_text (const char   *text,
   gboolean last_entity_was_trailing = FALSE;
   guint last_end   = 0;
   guint cur_end    = text_len;
+  gint32 *info;
 
   if (text_len == 0)
     return g_strdup (text);
 
   str = g_string_new (NULL);
+
+  info = g_newa (gint32, n_entities);
+  memset (info, 0, n_entities * sizeof (gint32));
 
   for (i = (int)n_entities - 1; i >= 0; i --)
     {
@@ -137,7 +141,7 @@ cb_text_transform_text (const char   *text,
       if (entities[i].to == cur_end &&
           (is_hashtag (entities[i].display_text) || is_link (entities[i].target)))
           {
-            entities[i].info |= TRAILING;
+            info[i] |= TRAILING;
             cur_end = entities[i].from - display_range_start;
           }
       else
@@ -152,7 +156,7 @@ cb_text_transform_text (const char   *text,
 
   for (i = 0; i < (int)n_entities; i ++)
     {
-      CbTextEntity *entity = &entities[i];
+      const CbTextEntity *entity = &entities[i];
       char *before;
       guint entity_to;
 
@@ -168,7 +172,7 @@ cb_text_transform_text (const char   *text,
         g_string_append (str, before);
 
       if ((flags & CB_TEXT_TRANSFORM_REMOVE_TRAILING_HASHTAGS) > 0 &&
-          (entity->info & TRAILING) > 0 &&
+          (info[i] & TRAILING) > 0 &&
           is_hashtag (entity->display_text))
         {
           last_end = entity_to;

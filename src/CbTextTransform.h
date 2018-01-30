@@ -34,12 +34,12 @@ char *cb_text_transform_tweet (const CbMiniTweet *tweet,
                                guint64            quote_id);
 
 
-char *cb_text_transform_text  (const char   *text,
-                               CbTextEntity *entities,
-                               gsize         n_entities,
-                               guint         flags,
-                               gsize         n_medias,
-                               gint64        quote_id,
-                               guint         display_range_start);
+char *cb_text_transform_text  (const char         *text,
+                               const CbTextEntity *entities,
+                               gsize               n_entities,
+                               guint               flags,
+                               gsize               n_medias,
+                               gint64              quote_id,
+                               guint               display_range_start);
 
 #endif
