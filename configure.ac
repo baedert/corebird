@@ -58,7 +58,7 @@ if test "$enable_video" != "no"; then
 fi
 
 if test "$enable_spellcheck" != "no"; then
-  pkg_modules="$pkg_modules gspell-1 >= 1.0"
+  pkg_modules="$pkg_modules gspell-1 >= 1.2"
 fi
 
 PKG_CHECK_MODULES(CB, [$pkg_modules])

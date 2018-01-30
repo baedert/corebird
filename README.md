@@ -51,7 +51,7 @@
  - `gst-plugins-bad-1.0 >= 1.6` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
  - `gst-libav-1.0` (disable via --disable-video, default enabled)
- - `gspell-1 >= 1.0` (for spellchecking, disable via --disable-spellcheck, default enabled)
+ - `gspell-1 >= 1.2` (for spellchecking, disable via --disable-spellcheck, default enabled)
 
 Note that the above packages are just rough estimations, the actual package names on your distribution may vary.
 
