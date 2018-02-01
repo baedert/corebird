@@ -264,11 +264,17 @@ class ComposeImageManager : Gtk.Container {
     assert (!this.full);
 #endif
 
-    Gdk.Texture texture;
-    if (image == null)
-      texture = Cb.Utils.surface_to_texture (load_surface (path), 1);
-    else
-      texture = Gdk.Texture.for_pixbuf (image);
+    Gdk.Texture texture = null;
+
+    try {
+      if (image == null)
+        texture = Gdk.Texture.from_file (GLib.File.new_for_path (path));
+      else
+        texture = Gdk.Texture.for_pixbuf (image);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
 
     var button = new AddImageButton ();
     button.texture = texture;
