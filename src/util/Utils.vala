@@ -100,19 +100,6 @@ Cairo.Surface scale_surface (Cairo.ImageSurface input,
   return new_surface;
 }
 
-Cairo.Surface? load_surface (string path)
-{
-  try {
-    var p = new Gdk.Pixbuf.from_file (path);
-    var s = Gdk.cairo_surface_create_from_pixbuf (p, 1, null);
-    return s;
-  } catch (GLib.Error e) {
-    warning (e.message);
-    return null;
-  }
-}
-
-
 void write_surface (Cairo.Surface surface,
                     string        path)
 {
