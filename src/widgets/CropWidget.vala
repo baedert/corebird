@@ -20,7 +20,6 @@ class CropWidget : Gtk.DrawingArea {
 
   private Gtk.GestureDrag drag_gesture;
   private Gdk.Pixbuf? image;
-  private Cairo.Surface? surface;
   private Gdk.Texture? texture;
   private Gdk.Rectangle selection_rect;
   private Gdk.Rectangle image_rect;
@@ -227,9 +226,7 @@ class CropWidget : Gtk.DrawingArea {
   public void set_image (Gdk.Pixbuf? image) {
     this.image = image;
     if (image != null) {
-      this.surface = Gdk.cairo_surface_create_from_pixbuf (image, this.get_scale_factor (), null);
-      this.texture = Cb.Utils.surface_to_texture (this.surface,
-                                                  this.get_scale_factor ());
+      this.texture = Gdk.Texture.for_pixbuf (image);
     }
     calculate_image_rect ();
 
