@@ -735,36 +735,6 @@ cb_utils_query_users_finish (GAsyncResult  *result,
   return ids;
 }
 
-GdkTexture *
-cb_utils_surface_to_texture (cairo_surface_t *surface,
-                             int              scale)
-{
-  GdkTexture *tex;
-  cairo_surface_t *map;
-  int width, height;
-
-  g_return_val_if_fail (surface != NULL, NULL);
-  g_return_val_if_fail (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE, NULL);
-
-  width = cairo_image_surface_get_width (surface);
-  height = cairo_image_surface_get_height (surface);
-  /* TODO: This is forced to 1 right now since that makes the drawing work.
-   *       It does look wrong, however... */
-  scale = 1;
-
-  map = cairo_surface_map_to_image (surface,
-                                    &(GdkRectangle) { 0, 0, width * scale, height * scale});
-
-  tex = gdk_texture_new_for_data (cairo_image_surface_get_data (map),
-                                  width * scale,
-                                  height * scale,
-                                  cairo_image_surface_get_stride (map));
-
-  cairo_surface_unmap_image (surface, map);
-
-  return tex;
-}
-
 char *
 cb_utils_get_time_delta (GDateTime *time,
                          GDateTime *now)

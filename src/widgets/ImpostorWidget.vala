@@ -32,9 +32,6 @@ class ImpostorWidget : Gtk.Image {
     //if (this.surface == null)
       //return;
 
-    //var texture = Cb.Utils.surface_to_texture (surface,
-                                               //this.get_scale_factor ());
-
     //if (texture != null) {
       //Graphene.Rect bounds = {};
       //bounds.origin.x = 0;

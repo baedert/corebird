@@ -317,7 +317,6 @@ namespace Cb {
     public string rest_proxy_call_to_string (Rest.ProxyCall c);
     public async Json.Node? load_threaded_async (Rest.ProxyCall call, GLib.Cancellable? cancellable) throws GLib.Error;
     public async UserIdentity[] query_users_async (Rest.Proxy p, string q, GLib.Cancellable? cancellable) throws GLib.Error;
-    public Gdk.Texture surface_to_texture (Cairo.Surface s, int scale);
     public void load_custom_css ();
   }
 

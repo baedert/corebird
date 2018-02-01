@@ -82,9 +82,6 @@ CbUserIdentity * cb_utils_query_users_finish (GAsyncResult  *result,
                                               int           *out_length,
                                               GError       **error);
 
-GdkTexture *cb_utils_surface_to_texture (cairo_surface_t *surface,
-                                         int              scale);
-
 char * cb_utils_get_time_delta (GDateTime *time,
                                 GDateTime *now);
 
