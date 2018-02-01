@@ -19,7 +19,7 @@ class FavImageRow : Gtk.FlowBoxChild {
   private const int THUMB_WIDTH  = 80;
   private const int THUMB_HEIGHT = 50;
 
-  private static Cairo.ImageSurface play_icon;
+  private static Gdk.Texture play_icon;
 
   private Gtk.Image image;
   private string file_path;
@@ -28,12 +28,7 @@ class FavImageRow : Gtk.FlowBoxChild {
   public bool is_gif = false;
 
   static construct {
-    try {
-      play_icon = (Cairo.ImageSurface)Gdk.cairo_surface_create_from_pixbuf (
-          new Gdk.Pixbuf.from_resource ("/org/baedert/corebird/data/play.png"), 1, null);
-    } catch (GLib.Error e) {
-      critical (e.message);
-    }
+    play_icon = Gdk.Texture.from_resource ("/org/baedert/corebird/data/play.png");
   }
 
   public FavImageRow (string path) {
@@ -115,14 +110,13 @@ class FavImageRow : Gtk.FlowBoxChild {
       float x = (width / 2.0f) - (play_icon.get_width () * scale / 2.0f);
       float y = (height / 2.0f) - (play_icon.get_height () * scale / 2.0f);
 
-      var texture = Cb.Utils.surface_to_texture (play_icon, 1);
       Graphene.Rect bounds = {};
       bounds.origin.x = x;
       bounds.origin.y = y;
-      bounds.size.width = (int)(play_icon.get_width () * scale);
-      bounds.size.height = (int)(play_icon.get_height () * scale);
+      bounds.size.width = (int)(play_icon.get_width ());
+      bounds.size.height = (int)(play_icon.get_height ());
 
-      snapshot.append_texture (texture, bounds, "GIF indicator");
+      snapshot.append_texture (play_icon, bounds, "GIF indicator");
     }
   }
 
