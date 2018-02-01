@@ -38,7 +38,7 @@ G_DECLARE_FINAL_TYPE (CbAspectImage, cb_aspect_image, CB, ASPECT_IMAGE, GtkWidge
 
 GtkWidget * cb_aspect_image_new (void);
 
-void        cb_aspect_image_set_pixbuf (CbAspectImage   *self,
-                                        const GdkPixbuf *pixbuf);
+void        cb_aspect_image_set_pixbuf (CbAspectImage *self,
+                                        GdkPixbuf     *pixbuf);
 
 #endif

@@ -128,15 +128,13 @@ cb_aspect_image_new (void)
 
 /* Takes the given pixbuf and just converts it to a GdkTexture */
 void
-cb_aspect_image_set_pixbuf (CbAspectImage   *self,
-                            const GdkPixbuf *pixbuf)
+cb_aspect_image_set_pixbuf (CbAspectImage *self,
+                            GdkPixbuf     *pixbuf)
 {
-  cairo_surface_t *surface;
   GdkTexture *texture;
   /* We don't use new_for_pixbuf since that's slower when drawing with the cairo renderer */
 
-  surface = gdk_cairo_surface_create_from_pixbuf (pixbuf, 1, NULL);
-  texture = cb_utils_surface_to_texture (surface, 1);
+  texture = gdk_texture_new_for_pixbuf (pixbuf);
 
   g_set_object (&self->texture, texture);
   gtk_widget_queue_resize (GTK_WIDGET (self));
