@@ -444,14 +444,17 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
       if (scale_factor >= 2)
         {
           char *url = g_strdup (self->tweet->avatar_url);
+          char *suffix_start = strstr (url, "_normal");
+
           /* HIdpi, we load the _bigger version.
            * Replace '_normal' at the end with '_bigger'. file ending is either png,jpg or gif */
 #ifdef DEBUG
           g_assert (strlen (url) > strlen ("_bigger.png"));
-          g_assert (strstr (url, "_normal.") != NULL);
+          g_assert (strstr (url, "_normal") != NULL);
 #endif
-          /* Only replace 'normal' by 'bigger', not the file suffix! */
-          memcpy (url + strlen(url) - strlen ("normal.png"), "bigger", strlen ("bigger"));
+          /* Only replace 'normal' by 'bigger', not the file suffix! Also, not all of them have a file suffix */
+          memcpy (suffix_start, "_bigger", strlen ("_bigger"));
+
           twitter_get_avatar (twitter_get (), cb_tweet_get_user_id (self->tweet), url,
                               (AvatarWidget *)self->avatar_widget, 48 * scale_factor , FALSE, NULL, NULL);
 
