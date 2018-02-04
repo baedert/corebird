@@ -77,6 +77,7 @@
                                 <child>
                                   <object class="GtkLabel">
                                     <property name="use-markup">1</property>
+                                    <property name="ellipsize">end</property>
                                   </object>
                                 </child>
                               </object>
