@@ -181,6 +181,9 @@ class SettingsDialog : Gtk.Window {
   private void snippet_updated_func (string? old_key, string? key, string? value) {
     if (old_key != null && key == null && value == null) {
       foreach (var _row in snippet_list_box.get_children ()) {
+        if (!(_row is SnippetListEntry))
+          continue;
+
         var srow = (SnippetListEntry) _row;
         if (srow.key == old_key) {
           srow.reveal ();
@@ -195,6 +198,9 @@ class SettingsDialog : Gtk.Window {
       snippet_list_box.add (e);
     } else {
       foreach (var _row in snippet_list_box.get_children ()) {
+        if (!(_row is SnippetListEntry))
+          continue;
+
         var srow = (SnippetListEntry) _row;
         if (srow.key == old_key) {
           srow.key = key;
