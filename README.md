@@ -30,7 +30,9 @@
 
 ## Translations
 
-  Since February 2014, there's a [Corebird project on Transifex](https://www.transifex.com/projects/p/corebird)
+  Translations are handled through the [Corebird project on Transifex](https://www.transifex.com/projects/p/corebird).
+  Changing the .po files in this repo won't work and they will just be overridden the next time I merge the
+  translations from Transifex, which usually happens before every stable release.
 
 ## Contributing
 
