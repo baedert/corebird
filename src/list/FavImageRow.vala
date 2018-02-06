@@ -113,8 +113,8 @@ class FavImageRow : Gtk.FlowBoxChild {
       Graphene.Rect bounds = {};
       bounds.origin.x = x;
       bounds.origin.y = y;
-      bounds.size.width = (int)(play_icon.get_width ());
-      bounds.size.height = (int)(play_icon.get_height ());
+      bounds.size.width = play_icon.get_width () * scale;
+      bounds.size.height = play_icon.get_height () * scale;
 
       snapshot.append_texture (play_icon, bounds, "GIF indicator");
     }
