@@ -356,6 +356,16 @@ media_clicked_cb (GtkWidget *source,
 }
 
 static void
+tweet_state_changed_cb (CbTweet *tweet,
+                        gpointer user_data)
+{
+  CbTweetRow *self = user_data;
+
+  if ((tweet->state & CB_TWEET_STATE_DELETED) > 0)
+    gtk_widget_set_sensitive (GTK_WIDGET (self), FALSE);
+}
+
+static void
 create_ui (CbTweetRow *self)
 {
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
@@ -428,8 +438,13 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
   /* If we get here, create_ui() should've already been called. */
   g_assert (self->avatar_widget != NULL);
 
-  if (!g_set_object (&self->tweet, tweet))
+  if (tweet == self->tweet)
     return;
+
+  g_signal_handlers_disconnect_by_func (self->tweet, tweet_state_changed_cb, self);
+  g_set_object (&self->tweet, tweet);
+  g_signal_connect (tweet, "state-changed", G_CALLBACK (tweet_state_changed_cb), self);
+
 
   /* First, set the values on all the widgets that always exist */
   avatar_widget_set_verified (AVATAR_WIDGET (self->avatar_widget),
