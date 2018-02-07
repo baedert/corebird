@@ -74,9 +74,9 @@ canonicalize_url (const char *url)
 }
 
 static void
-load_animation (GInputStream *input_stream,
-                CbMedia      *media,
-                GCancellable *cancellable)
+load_pixbuf (GInputStream *input_stream,
+             CbMedia      *media,
+             GCancellable *cancellable)
 {
   GdkPixbuf *frame;
   GError *error = NULL;
@@ -343,7 +343,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
                                                       msg->response_body->length,
                                                       NULL);
 
-  load_animation (input_stream, media, cancellable);
+  load_pixbuf (input_stream, media, cancellable);
   g_input_stream_close (input_stream, NULL, NULL);
   g_object_unref (input_stream);
   g_object_unref (msg);
