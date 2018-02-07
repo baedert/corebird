@@ -78,11 +78,10 @@ load_animation (GInputStream *input_stream,
                 CbMedia      *media,
                 GCancellable *cancellable)
 {
-  GdkPixbufAnimation *animation;
   GdkPixbuf *frame;
   GError *error = NULL;
 
-  animation = gdk_pixbuf_animation_new_from_stream (input_stream, NULL, &error);
+  frame = gdk_pixbuf_new_from_stream (input_stream, NULL, &error);
   if (error)
     {
       g_warning ("Couldn't load pixbuf: %s (%s)", error->message, media->url);
@@ -90,18 +89,12 @@ load_animation (GInputStream *input_stream,
       g_error_free (error);
       return;
     }
-  frame = gdk_pixbuf_animation_get_static_image (animation);
 
   if (g_cancellable_is_cancelled (cancellable))
     {
-      g_object_unref (animation);
+      g_object_unref (frame);
       return;
     }
-
-  if (!gdk_pixbuf_animation_is_static_image (animation))
-    media->animation = animation; /* Takes ref */
-  else
-    media->animation = NULL;
 
   media->texture = gdk_texture_new_for_pixbuf (frame);
   media->width   = gdk_pixbuf_get_width (frame);
@@ -109,8 +102,7 @@ load_animation (GInputStream *input_stream,
   media->loaded  = TRUE;
   media->invalid = FALSE;
 
-  if (media->animation == NULL)
-    g_object_unref (animation);
+  g_object_unref (frame);
 
   cb_media_loading_finished (media);
 }
