@@ -68,7 +68,6 @@ cb_text_entity_copy (const CbTextEntity *e1, CbTextEntity *e2)
   e2->tooltip_text = g_strdup (e1->tooltip_text);
   g_free (e2->target);
   e2->target = g_strdup (e1->target);
-  e2->info = e1->info;
 }
 
 

@@ -71,7 +71,6 @@ struct _CbTextEntity
 {
   guint  from;
   guint  to;
-  guint  info : 1;
   char  *display_text;
   char  *tooltip_text;
   char  *target;
