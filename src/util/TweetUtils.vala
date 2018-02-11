@@ -152,7 +152,7 @@ namespace TweetUtils {
     return avatar;
   }
 
-  public bool activate_link (string uri, MainWindow window) {
+  public bool activate_link (string uri, Cb.MainWindow window) {
     debug ("Activating '%s'", uri);
     uri = uri._strip ();
     string term = uri.substring (1);
@@ -257,11 +257,11 @@ namespace TweetUtils {
 #endif
 
 
-  public void handle_media_click (Cb.Tweet   t,
-                                  MainWindow window,
-                                  int        index,
-                                  double     px = 0.0,
-                                  double     py = 0.0) {
+  public void handle_media_click (Cb.Tweet      t,
+                                  Cb.MainWindow window,
+                                  int           index,
+                                  double        px = 0.0,
+                                  double        py = 0.0) {
     MediaDialog media_dialog = new MediaDialog (t, index, px, py);
     media_dialog.set_transient_for (window);
     media_dialog.set_modal (true);

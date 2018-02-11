@@ -20,6 +20,7 @@
 
 #include <gtk/gtk.h>
 #include "CbTweet.h"
+#include "CbMainWindow.h"
 
 struct _CbTweetRow
 {
@@ -52,7 +53,7 @@ typedef struct _CbTweetRow CbTweetRow;
 G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkListBoxRow);
 
 GtkWidget *  cb_tweet_row_new               (CbTweet         *tweet,
-                                             void            *main_window);
+                                             CbMainWindow    *main_window);
 void         cb_tweet_row_set_tweet         (CbTweetRow      *self,
                                              CbTweet         *tweet);
 void         cb_tweet_row_toggle_mode       (CbTweetRow      *self);

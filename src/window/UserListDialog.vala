@@ -28,15 +28,16 @@ struct TwitterList {
 
 class UserListDialog : Gtk.Dialog {
   private unowned Account account;
-  private unowned MainWindow main_window;
+  private unowned Cb.MainWindow main_window;
   private Gtk.ListBox list_list_box = new Gtk.ListBox ();
   private Gtk.Label placeholder_label;
   private int64 user_id;
 
-  public UserListDialog (MainWindow parent,
-                         Account    account,
-                         int64      user_id) {
+  public UserListDialog (Cb.MainWindow parent,
+                         Account       account,
+                         int64         user_id) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
+    IPage p; // XXX This is just here to fix a linking error. Remove later.
     this.title = _("Add to or Remove User From List");
     this.main_window = parent;
     this.user_id = user_id;

@@ -28,8 +28,8 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
       radio_button.show_badge = (this._unread_count > 0);
     }
   }
-  private unowned MainWindow _main_window;
-  public unowned MainWindow main_window {
+  private unowned Cb.MainWindow _main_window;
+  public unowned Cb.MainWindow main_window {
     set {
       _main_window = value;
     }
@@ -249,7 +249,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
   }
 
   private bool user_id_visible (int64 sender_id) {
-    return (_main_window.cur_page_id == Page.DM &&
+    return (_main_window.get_cur_page_id () == Page.DM &&
             ((DMPage)_main_window.get_page (Page.DM)).user_id == sender_id);
   }
 

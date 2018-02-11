@@ -141,10 +141,10 @@ link_activated_cb (GtkLabel   *label,
 
   toplevel = gtk_widget_get_toplevel ((GtkWidget *)self);
 
-  if (!IS_MAIN_WINDOW (toplevel))
+  if (!CB_IS_MAIN_WINDOW (toplevel))
     return FALSE;
 
-  return tweet_utils_activate_link (uri, (MainWindow *)toplevel);
+  return tweet_utils_activate_link (uri, (CbMainWindow *)toplevel);
 }
 
 static void
@@ -157,14 +157,14 @@ name_button_clicked_cb (GtkButton *source,
 
   toplevel = gtk_widget_get_toplevel ((GtkWidget *)self);
 
-  if (!IS_MAIN_WINDOW (toplevel))
+  if (!CB_IS_MAIN_WINDOW (toplevel))
     return;
 
   bundle = cb_bundle_new ();
   cb_bundle_put_int64 (bundle, PROFILE_PAGE_KEY_USER_ID, self->user_id);
   cb_bundle_put_string (bundle, PROFILE_PAGE_KEY_SCREEN_NAME, self->screen_name);
 
-  main_widget_switch_page (((MainWindow*)toplevel)->main_widget,
+  main_widget_switch_page (MAIN_WIDGET (((CbMainWindow*)toplevel)->main_widget),
                            PAGE_PROFILE,
                            bundle);
 }

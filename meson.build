@@ -78,7 +78,6 @@ corebird_lib_sources = files([
   'src/ListStatusesPage.vala',
   'src/ListsPage.vala',
   'src/MainWidget.vala',
-  'src/MainWindow.vala',
   'src/MentionsTimeline.vala',
   'src/NotificationManager.vala',
   'src/ProfilePage.vala',
@@ -172,6 +171,7 @@ corebird_lib_sources = files([
   'src/CbAspectImage.c',
   'src/CbTextButton.c',
   'src/CbTweetListBox.c',
+  'src/CbMainWindow.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',

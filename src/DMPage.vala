@@ -22,8 +22,8 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   public const int KEY_AVATAR_URL  = 3;
 
   public int unread_count                   { get { return 0; } }
-  private unowned MainWindow _main_window;
-  public unowned MainWindow main_window {
+  private unowned Cb.MainWindow _main_window;
+  public unowned Cb.MainWindow main_window {
     set {
       _main_window = value;
     }

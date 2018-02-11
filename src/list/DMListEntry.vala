@@ -45,7 +45,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   public int64 timestamp;
   public int64 id;
   public int64 user_id;
-  public unowned MainWindow main_window;
+  public unowned Cb.MainWindow main_window;
 
   public DMListEntry () {
     this.set_activatable (false);

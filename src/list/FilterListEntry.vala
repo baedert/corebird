@@ -46,11 +46,11 @@ class FilterListEntry : Gtk.ListBoxRow {
     }
   }
   private unowned Account account;
-  private unowned MainWindow main_window;
+  private unowned Cb.MainWindow main_window;
 
-  public FilterListEntry (Cb.Filter  f,
-                          Account    account,
-                          MainWindow main_window) {
+  public FilterListEntry (Cb.Filter     f,
+                          Account       account,
+                          Cb.MainWindow main_window) {
     this.filter = f;
     this.account = account;
     this.main_window = main_window;

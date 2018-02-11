@@ -28,14 +28,14 @@ class ModifyFilterDialog : Gtk.Dialog {
   private GLib.Regex regex;
   private unowned Account account;
   private unowned Cb.Filter filter;
-  private unowned MainWindow main_window;
+  private unowned Cb.MainWindow main_window;
 
   /** created will be true if the filter has just been created by the user(i.e. not modified) */
   public signal void filter_added (Cb.Filter filter, bool created);
 
-  public ModifyFilterDialog (MainWindow parent,
-                             Account    account,
-                             Cb.Filter? filter = null) {
+  public ModifyFilterDialog (Cb.MainWindow parent,
+                             Account       account,
+                             Cb.Filter?    filter = null) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
     this.set_transient_for (parent);
     this.application = parent.get_application ();

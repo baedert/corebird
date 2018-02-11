@@ -22,7 +22,7 @@ public class Corebird : Gtk.Application {
   public static Cb.SnippetManager snippet_manager;
   public signal void account_added (Account acc);
   public signal void account_removed (Account acc);
-  public signal void account_window_changed (int64? old_id, int64 new_id);
+  public signal void account_window_changed (int64 old_id, int64 new_id);
 
   private SettingsDialog? settings_dialog = null;
   private GLib.GenericArray<Account> active_accounts;
@@ -309,7 +309,7 @@ public class Corebird : Gtk.Application {
       if (n_accounts == 1) {
         add_window_for_screen_name (Account.get_nth (0).screen_name);
       } else if (n_accounts == 0) {
-        var window = new MainWindow (this, null);
+        var window = new Cb.MainWindow (null);
         add_window (window);
         window.show ();
       } else {
@@ -342,11 +342,11 @@ public class Corebird : Gtk.Application {
           }
         }
         foreach (Gtk.Window w in this.get_windows ())
-          if (((MainWindow)w).account.screen_name == Account.DUMMY) {
+          if (((Cb.MainWindow)w).account.screen_name == Account.DUMMY) {
             return;
           }
 
-        var m = new MainWindow (this, null);
+        var m = new Cb.MainWindow (null);
         add_window (m);
         m.show ();
       }
@@ -376,7 +376,7 @@ public class Corebird : Gtk.Application {
   }
 
   public void add_window_for_account (Account account) {
-    var window = new MainWindow (this, account);
+    var window = new Cb.MainWindow (account);
     this.add_window (window);
     window.show ();
   }
@@ -392,12 +392,12 @@ public class Corebird : Gtk.Application {
    *         screen name is open, FALSE otherwise.
    */
   public bool is_window_open_for_screen_name (string screen_name,
-                                              out MainWindow? window = null) {
+                                              out Cb.MainWindow? window = null) {
     unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
     foreach (Gtk.Window win in windows) {
-      if (win is MainWindow) {
-        if (((MainWindow)win).account.screen_name == screen_name) {
-          window = (MainWindow)win;
+      if (win is Cb.MainWindow) {
+        if (((Cb.MainWindow)win).account.screen_name == screen_name) {
+          window = (Cb.MainWindow)win;
           return true;
         }
       }
@@ -407,12 +407,12 @@ public class Corebird : Gtk.Application {
   }
 
   public bool is_window_open_for_user_id (int64 user_id,
-                                          out MainWindow? window = null) {
+                                          out Cb.MainWindow? window = null) {
     unowned GLib.List<weak Gtk.Window> windows = this.get_windows ();
     foreach (Gtk.Window win in windows) {
-      if (win is MainWindow) {
-        if (((MainWindow)win).account.id == user_id) {
-          window = (MainWindow)win;
+      if (win is Cb.MainWindow) {
+        if (((Cb.MainWindow)win).account.id == user_id) {
+          window = (Cb.MainWindow)win;
           return true;
         }
       }
@@ -439,9 +439,9 @@ public class Corebird : Gtk.Application {
     string[] account_names = new string[windows.length ()];
     int index = 0;
     foreach (var win in windows) {
-      if (!(win is MainWindow))
+      if (!(win is Cb.MainWindow))
         continue;
-      var mw = (MainWindow)win;
+      var mw = (Cb.MainWindow)win;
       string screen_name = mw.account.screen_name;
       mw.save_geometry ();
       account_names[index] = screen_name;
@@ -502,7 +502,7 @@ public class Corebird : Gtk.Application {
     // Values: Account id, sender_id
     int64 account_id = value.get_child_value (0).get_int64 ();
     int64 sender_id  = value.get_child_value (1).get_int64 ();
-    MainWindow main_window;
+    Cb.MainWindow main_window;
     if (is_window_open_for_user_id (account_id, out main_window)) {
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (DMPage.KEY_SENDER_ID, sender_id);
@@ -515,7 +515,7 @@ public class Corebird : Gtk.Application {
         critical ("No account with id %s found", account_id.to_string ());
         return;
       }
-      main_window = new MainWindow (this, account);
+      main_window = new Cb.MainWindow (account);
       this.add_window (main_window);
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (DMPage.KEY_SENDER_ID, sender_id);
@@ -527,7 +527,7 @@ public class Corebird : Gtk.Application {
 
   private void show_window (GLib.SimpleAction a, GLib.Variant? value) {
     int64 user_id = value.get_int64 ();
-    MainWindow main_window;
+    Cb.MainWindow main_window;
     if (is_window_open_for_user_id (user_id, out main_window)) {
       main_window.present ();
     } else {
@@ -537,7 +537,7 @@ public class Corebird : Gtk.Application {
         critical ("No account with id %s found", user_id.to_string ());
         return;
       }
-      main_window = new MainWindow (this, account);
+      main_window = new Cb.MainWindow (account);
       this.add_window (main_window);
       main_window.show ();
     }
@@ -546,7 +546,7 @@ public class Corebird : Gtk.Application {
   private void mark_read_activated (GLib.SimpleAction a, GLib.Variant? v) {
     int64 account_id = v.get_child_value (0).get_int64 ();
     int64 tweet_id   = v.get_child_value (1).get_int64 ();
-    MainWindow main_window;
+    Cb.MainWindow main_window;
 
     if (is_window_open_for_user_id (account_id, out main_window)) {
       main_window.mark_tweet_as_read (tweet_id);
@@ -556,7 +556,7 @@ public class Corebird : Gtk.Application {
   private void reply_to_tweet_activated (GLib.SimpleAction a, GLib.Variant? v) {
     int64 account_id = v.get_child_value (0).get_int64 ();
     int64 tweet_id   = v.get_child_value (1).get_int64 ();
-    MainWindow main_window;
+    Cb.MainWindow main_window;
 
     if (is_window_open_for_user_id (account_id, out main_window)) {
       main_window.reply_to_tweet (tweet_id);

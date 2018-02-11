@@ -62,10 +62,10 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Cb.ComposeJob compose_job;
 
 
-  public ComposeTweetWindow (MainWindow? parent,
-                             Account     acc,
-                             Cb.Tweet?   reply_to = null,
-                             Mode        mode = Mode.NORMAL) {
+  public ComposeTweetWindow (Cb.MainWindow? parent,
+                             Account        acc,
+                             Cb.Tweet?      reply_to = null,
+                             Mode           mode = Mode.NORMAL) {
 #if DEBUG
     this.set_focus.connect ((w) => {
       debug ("Focus widget now: %s %p", w != null ? __class_name (w) : "(null)", w);

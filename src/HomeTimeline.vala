@@ -99,7 +99,7 @@ public class HomeTimeline : Cb.MessageReceiver, DefaultTimeline {
     t.set_seen (t.source_tweet.author.id == account.id ||
                 (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
                 (this.scrolled_up  &&
-                 _main_window.cur_page_id == this.id &&
+                 _main_window.get_cur_page_id () == this.id &&
                  auto_scroll));
 
     bool focused = tweet_list.get_first_visible_row () != null &&

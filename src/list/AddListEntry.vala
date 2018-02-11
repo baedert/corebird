@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AddListEntry : Gtk.ListBoxRow {
+public class AddListEntry : Gtk.ListBoxRow {
   public AddListEntry (string label) {
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 5);
     var img = new Gtk.Image.from_icon_name ("list-add-symbolic");

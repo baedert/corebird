@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/account-create-widget.ui")]
-class AccountCreateWidget : Gtk.Box {
+public class AccountCreateWidget : Gtk.Box {
   [GtkChild]
   private Gtk.Entry pin_entry;
   [GtkChild]
@@ -31,10 +31,10 @@ class AccountCreateWidget : Gtk.Box {
   private Gtk.Stack content_stack;
   private unowned Account acc;
   private unowned Corebird corebird;
-  private unowned MainWindow main_window;
+  private unowned Cb.MainWindow main_window;
   public signal void result_received (bool result, Account acc);
 
-  public AccountCreateWidget (Account acc, Corebird corebird, MainWindow main_window) {
+  public AccountCreateWidget (Account acc, Corebird corebird, Cb.MainWindow main_window) {
     this.acc = acc;
     this.corebird = corebird;
     this.main_window = main_window;

@@ -32,9 +32,7 @@ public class MainWidget : Gtk.Box {
     }
   }
 
-
-
-  public MainWidget (Account account, MainWindow parent, Corebird app) {
+  public MainWidget (Account account, Cb.MainWindow parent, Corebird app) {
     this.account = account;
     app.start_account (account);
 
@@ -172,11 +170,11 @@ public class MainWidget : Gtk.Box {
        so e.g. GtkStack transitions inside the page aren't animated */
     page.on_join (page_id, args);
     stack.set_visible_child (pages[page_id]);
-    ((MainWindow)this.parent).set_window_title (page.get_title (), stack.transition_type);
+    ((Cb.MainWindow)this.parent).set_window_title (page.get_title (), stack.transition_type);
 
     page_switch_lock = false;
 
-    ((MainWindow)this.parent).back_button.sensitive = !history.at_start ();
+    ((Cb.MainWindow)this.parent).back_button.sensitive = !history.at_start ();
   }
 
   public void remove_current_page () {

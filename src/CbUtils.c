@@ -792,3 +792,26 @@ cb_utils_get_tweet_debug_info (CbTweet *tweet)
 
   return g_string_free (s, FALSE);
 }
+
+
+void
+cb_default_header_func (GtkListBoxRow *row,
+                        GtkListBoxRow *row_before,
+                        gpointer       user_data)
+{
+  GtkWidget *header;
+
+  if (row_before == NULL)
+    {
+      gtk_list_box_row_set_header (row, NULL);
+      return;
+    }
+
+  header = gtk_list_box_row_get_header (row);
+  if (header != NULL)
+    return;
+
+
+  header = gtk_separator_new (GTK_ORIENTATION_HORIZONTAL);
+  gtk_list_box_row_set_header (row, header);
+}

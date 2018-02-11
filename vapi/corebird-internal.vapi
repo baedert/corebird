@@ -475,4 +475,22 @@ namespace Cb {
     public unowned Gtk.Widget get_placeholder ();
     public void remove_all ();
   }
+
+  [CCode (cprefix = "CbMainWindow_", lower_case_cprefix = "cb_main_window_", cheader_filename =
+          "CbMainWindow.h")]
+  public class MainWindow: Gtk.ApplicationWindow {
+    public MainWidget main_widget;
+    public Account? account;
+    public Gtk.Button back_button;
+
+    public MainWindow (Account? account);
+    public void mark_tweet_as_read (int64 id);
+    public void rerun_filters ();
+    public void save_geometry ();
+    public void reply_to_tweet (int64 id);
+    public void set_window_title (string s, Gtk.StackTransitionType tt);
+    public int get_cur_page_id ();
+    public IPage get_page (int page_id);
+    public void change_account (Account? a);
+  }
 }

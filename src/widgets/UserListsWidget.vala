@@ -38,7 +38,7 @@ class UserListsWidget : Gtk.Box {
   [GtkChild]
   private Gtk.ListBox new_list_box;
 
-  public unowned MainWindow main_window { get; set; }
+  public unowned Cb.MainWindow main_window { get; set; }
   public unowned Account account        { get; set; }
   private bool show_create_entry = true;
 

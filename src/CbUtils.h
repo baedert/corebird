@@ -89,6 +89,10 @@ void   cb_utils_load_custom_css (void);
 
 char * cb_utils_get_tweet_debug_info (CbTweet *tweet);
 
+void cb_default_header_func (GtkListBoxRow *row,
+                             GtkListBoxRow *row_before,
+                             gpointer       user_data);
+
 static inline void
 cb_clear_source (guint *id)
 {

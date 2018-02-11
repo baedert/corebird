@@ -35,7 +35,8 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
   public int unread_count { get {return 0;} }
   public int id           { get; set; }
-  public unowned MainWindow main_window {
+  private unowned Cb.MainWindow _main_window;
+  public unowned Cb.MainWindow main_window {
     set {
       _main_window = value;
     }
@@ -46,7 +47,6 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   private bool values_set = false;
   private Cb.Tweet tweet;
   private GLib.SimpleActionGroup actions;
-  private unowned MainWindow _main_window;
   private GLib.Cancellable? cancellable = null;
 
   [GtkChild]
@@ -585,15 +585,15 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
 
   private void quote_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow (_main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.QUOTE);
-    ctw.show ();
+    //ComposeTweetWindow ctw = new ComposeTweetWindow (_main_window, this.account, this.tweet,
+                                                     //ComposeTweetWindow.Mode.QUOTE);
+    //ctw.show ();
   }
 
   private void reply_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow (_main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY);
-    ctw.show ();
+    //ComposeTweetWindow ctw = new ComposeTweetWindow (_main_window, this.account, this.tweet,
+                                                     //ComposeTweetWindow.Mode.REPLY);
+    //ctw.show ();
   }
 
   private void favorite_activated () {
@@ -676,7 +676,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       int64 tweet_id = root.get_object ().get_object_member ("delete")
                                          .get_object_member ("status")
                                          .get_int_member ("id");
-      if (tweet_id == this.tweet_id && _main_window.cur_page_id == this.id) {
+      if (tweet_id == this.tweet_id && _main_window.get_cur_page_id () == this.id) {
         /* TODO: We should probably remove this page with this bundle form the
                  history, even if it's not the currently visible page */
         debug ("Current tweet with id %s deleted!", tweet_id.to_string ());

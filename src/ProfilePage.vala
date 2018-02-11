@@ -30,8 +30,8 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     get { return 0; }
   }
 
-  private unowned MainWindow _main_window;
-  public unowned MainWindow main_window {
+  private unowned Cb.MainWindow _main_window;
+  public unowned Cb.MainWindow main_window {
     set {
       _main_window = value;
       user_lists.main_window = value;

@@ -37,7 +37,7 @@ tweet_row_create_func (gpointer item,
   g_assert (CB_IS_TWEET (item));
 
   return cb_tweet_row_new (CB_TWEET (item),
-                           MAIN_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (user_data))));
+                           CB_MAIN_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (user_data))));
 }
 
 static void
@@ -114,7 +114,7 @@ cb_tweet_list_box_event (GtkWidget *widget,
 
               if (focus_row)
                 {
-                  MainWindow *main_window = MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
+                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
 
                   ComposeTweetWindow *window = compose_tweet_window_new (main_window,
                                                                          self->account,
@@ -137,7 +137,7 @@ cb_tweet_list_box_event (GtkWidget *widget,
 
               if (focus_row)
                 {
-                  MainWindow *main_window = MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
+                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
 
                   ComposeTweetWindow *window = compose_tweet_window_new (main_window,
                                                                          self->account,

@@ -31,8 +31,8 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       return this._unread_count;
     }
   }
-  protected unowned MainWindow _main_window;
-  public unowned MainWindow main_window {
+  protected unowned Cb.MainWindow _main_window;
+  public unowned Cb.MainWindow main_window {
     set {
       _main_window = value;
     }
@@ -297,7 +297,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
     if (this.scrolled_up && (t.get_user_id () == account.id || auto_scroll)) {
       this.scroll_up_next (true,
-                           _main_window.cur_page_id != this.id);
+                           _main_window.get_cur_page_id () != this.id);
       return true;
     }
 

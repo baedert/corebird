@@ -337,7 +337,7 @@ name_button_clicked_cb (GtkButton *source,
   cb_bundle_put_int64 (bundle, PROFILE_PAGE_KEY_USER_ID, user_id);
   cb_bundle_put_string (bundle, PROFILE_PAGE_KEY_SCREEN_NAME, screen_name);
 
-  main_widget_switch_page (((MainWindow*)self->main_window)->main_widget,
+  main_widget_switch_page (MAIN_WIDGET (((CbMainWindow*)self->main_window)->main_widget),
                            PAGE_PROFILE,
                            bundle);
 }
@@ -409,8 +409,8 @@ create_ui (CbTweetRow *self)
 }
 
 GtkWidget *
-cb_tweet_row_new (CbTweet    *tweet,
-                  void       *main_window)
+cb_tweet_row_new (CbTweet      *tweet,
+                  CbMainWindow *main_window)
                   /*Account    *account)*/
 {
   CbTweetRow *self  = (CbTweetRow *)g_object_new (CB_TYPE_TWEET_ROW, NULL);

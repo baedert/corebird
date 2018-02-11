@@ -279,9 +279,9 @@ public class AccountDialog : Gtk.Window {
     Gtk.Window? account_window = null;
     int n_main_windows = 0;
     foreach (Gtk.Window win in windows) {
-      if (win is MainWindow) {
+      if (win is Cb.MainWindow) {
         n_main_windows ++;
-        if (((MainWindow)win).account.id == this.account.id) {
+        if (((Cb.MainWindow)win).account.id == this.account.id) {
           account_window = win;
         }
       }
@@ -292,7 +292,7 @@ public class AccountDialog : Gtk.Window {
       if (n_main_windows > 1)
         account_window.destroy ();
       else
-        ((MainWindow)account_window).change_account (null);
+        ((Cb.MainWindow)account_window).change_account (null);
     }
 
 

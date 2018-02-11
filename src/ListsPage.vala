@@ -23,8 +23,8 @@ class ListsPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
   private BadgeRadioButton radio_button;
   public int unread_count                   { get; set; }
-  private unowned MainWindow _main_window;
-  public unowned MainWindow main_window {
+  private unowned Cb.MainWindow _main_window;
+  public unowned Cb.MainWindow main_window {
     set {
       _main_window = value;
       user_lists_widget.main_window = value;

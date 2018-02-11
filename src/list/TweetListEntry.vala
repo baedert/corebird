@@ -90,7 +90,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
     }
   }
   private unowned Account account;
-  private unowned MainWindow main_window;
+  private unowned Cb.MainWindow main_window;
   public Cb.Tweet tweet;
   private bool values_set = false;
   private bool delete_first_activated = false;
@@ -107,7 +107,7 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   private signal void quote_tweet ();
 
   public TweetListEntry (Cb.Tweet    tweet,
-                         MainWindow? main_window,
+                         Cb.MainWindow? main_window,
                          Account     account,
                          bool        restrict_height = false) {
     this.account = account;
@@ -411,11 +411,11 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
 
   [GtkCallback]
   private void reply_button_clicked_cb () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY);
-    ctw.show ();
-    if (shows_actions)
-      toggle_mode ();
+    //ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
+                                                     //ComposeTweetWindow.Mode.REPLY);
+    //ctw.show ();
+    //if (shows_actions)
+      //toggle_mode ();
   }
 
   private void show_media_clicked_cb () {
@@ -423,18 +423,18 @@ public class TweetListEntry : Cb.TwitterItem, Gtk.ListBoxRow {
   }
 
   private void quote_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.QUOTE);
-    ctw.show ();
+    //ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
+                                                     //ComposeTweetWindow.Mode.QUOTE);
+    //ctw.show ();
 
-    if (shows_actions)
-      toggle_mode ();
+    //if (shows_actions)
+      //toggle_mode ();
   }
 
   private void reply_tweet_activated () {
-    ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
-                                                     ComposeTweetWindow.Mode.REPLY);
-    ctw.show ();
+    //ComposeTweetWindow ctw = new ComposeTweetWindow (this.main_window, this.account, this.tweet,
+                                                     //ComposeTweetWindow.Mode.REPLY);
+    //ctw.show ();
   }
 
   private void delete_activated () {

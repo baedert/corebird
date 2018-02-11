@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/user-list-entry.ui")]
-class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
+public class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   [GtkChild]
   private Gtk.Label name_label;
   [GtkChild]
@@ -94,13 +94,13 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     });
     var cb = (Corebird) GLib.Application.get_default ();
     cb.window_added.connect ((window) => {
-      if (window is MainWindow) {
+      if (window is Cb.MainWindow) {
         update_window_button_sensitivity (window, false);
       }
     });
 
     cb.window_removed.connect ((window) => {
-      if (window is MainWindow) {
+      if (window is Cb.MainWindow) {
         update_window_button_sensitivity (window, true);
       }
     });
@@ -139,7 +139,7 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   }
 
   private void update_window_button_sensitivity (Gtk.Window window, bool new_value) {
-    if (((MainWindow)window).account.screen_name == this.account.screen_name) {
+    if (((Cb.MainWindow)window).account.screen_name == this.account.screen_name) {
       new_window_button.sensitive = new_value;
     }
   }
@@ -157,7 +157,7 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   [GtkCallback]
   private void new_window_button_clicked_cb () {
     var cb = (Corebird) GLib.Application.get_default ();
-    var window = new MainWindow (cb, this.account);
+    var window = new Cb.MainWindow (this.account);
     cb.add_window (window);
     window.show ();
     action_clicked ();
@@ -167,8 +167,8 @@ class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
   private void profile_button_clicked_cb () {
     action_clicked ();
     var active_window = ((Gtk.Application)GLib.Application.get_default ()).active_window;
-    if (active_window is MainWindow) {
-      var mw = (MainWindow) active_window;
+    if (active_window is Cb.MainWindow) {
+      var mw = (Cb.MainWindow) active_window;
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (ProfilePage.KEY_USER_ID, this.user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, this.screen_name);
