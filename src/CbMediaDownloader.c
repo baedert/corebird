@@ -245,10 +245,12 @@ update_media_progress (SoupMessage *msg,
                        gpointer     user_data)
 {
   CbMedia *media = user_data;
+  double chunk_percent;
 
-  if (msg->response_headers == NULL) return;
+  if (msg->response_headers == NULL)
+    return;
 
-  double chunk_percent = chunk->length / (double)soup_message_headers_get_content_length (msg->response_headers);
+  chunk_percent = chunk->length / (double)soup_message_headers_get_content_length (msg->response_headers);
 
   cb_media_update_progress (media, media->percent_loaded + chunk_percent);
 }
