@@ -26,6 +26,8 @@ struct _CbTweetRow
 {
   GtkListBoxRow parent_instance;
 
+  gulong tweet_state_changed_id;
+
   CbTweet *tweet;
   void    *main_window; // TODO: Make this an actual typed pointer
 

@@ -441,9 +441,16 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
   if (tweet == self->tweet)
     return;
 
-  g_signal_handlers_disconnect_by_func (self->tweet, tweet_state_changed_cb, self);
+  if (self->tweet != NULL)
+    {
+      g_assert (self->tweet_state_changed_id != 0);
+      g_signal_handler_disconnect (self->tweet, self->tweet_state_changed_id);
+    }
   g_set_object (&self->tweet, tweet);
-  g_signal_connect (tweet, "state-changed", G_CALLBACK (tweet_state_changed_cb), self);
+  self->tweet_state_changed_id = g_signal_connect (tweet,
+                                                   "state-changed",
+                                                   G_CALLBACK (tweet_state_changed_cb),
+                                                   self);
 
 
   /* First, set the values on all the widgets that always exist */
