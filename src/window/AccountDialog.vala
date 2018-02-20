@@ -361,6 +361,7 @@ public class AccountDialog : Gtk.Window {
         image = new Gdk.Pixbuf.from_file (selected_file);
       } catch (GLib.Error e) {
         warning (e.message);
+        content_stack.visible_child = info_box;
         return;
       }
 
