@@ -402,7 +402,7 @@ out:
   g_variant_unref (win_geom);
 }
 
-static void
+static gboolean
 headerbar_key_press_event_cb (GtkWidget   *widget,
                               GdkEventKey *event,
                               gpointer     user_data)
@@ -417,7 +417,11 @@ headerbar_key_press_event_cb (GtkWidget   *widget,
       IPage *cur_page = cb_main_window_get_page (self, cb_main_window_get_cur_page_id (self));
 
       gtk_widget_child_focus (GTK_WIDGET (cur_page), GTK_DIR_RIGHT);
+
+      return GDK_EVENT_STOP;
     }
+
+  return GDK_EVENT_PROPAGATE;
 }
 
 static void
