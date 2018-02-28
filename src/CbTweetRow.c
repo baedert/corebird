@@ -194,7 +194,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
       gtk_widget_size_allocate (self->reply_label, &child_alloc, -1, &child_clip);
     }
 
-  child_alloc.y += nat_height;
+  child_alloc.y += min_height;
   gtk_widget_measure (self->text_label, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width, NULL, NULL);
   child_alloc.width = MAX (allocation->width - avatar_width, min_width);
   gtk_widget_measure (self->text_label, GTK_ORIENTATION_VERTICAL, child_alloc.width,
