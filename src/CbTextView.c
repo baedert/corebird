@@ -254,6 +254,9 @@ create_completion_row_func (gpointer item,
   GtkWidget *l1 = gtk_label_new (id->user_name);
   GtkWidget *l2 = gtk_label_new (NULL);
 
+  /* Ellipsize name label */
+  gtk_label_set_ellipsize (GTK_LABEL (l1), PANGO_ELLIPSIZE_END);
+
   screen_name = g_strdup_printf ("@%s", id->screen_name);
   gtk_label_set_label (GTK_LABEL (l2), screen_name);
   g_free (screen_name);
