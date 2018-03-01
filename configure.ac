@@ -1,4 +1,4 @@
-AC_INIT([corebird],[1.7.3],[mail@baedert.org])
+AC_INIT([corebird],[1.7.4],[mail@baedert.org])
 
 AC_PREREQ([2.65])
 

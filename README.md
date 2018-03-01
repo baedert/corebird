@@ -1,4 +1,4 @@
-# Corebird 1.7.3
+# Corebird 1.7.4
 
 **Until further notice, all development is happening in the `next2` branch**
 
