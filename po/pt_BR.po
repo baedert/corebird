@@ -9,14 +9,15 @@
 # Mauro Pereira Junior <mauropereirajr@gmail.com>, 2015
 # Ricardo Borges Jr. <ricardoborges.jr@gmail.com>, 2015-2017
 # Salomão Carneiro de Brito <salomaocar@gmail.com>, 2015
+# Vanderlei Ventura <vanderleiventura82@gmail.com>, 2018
 # x_root <anonimo1w@hotmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-22 10:08+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2018-01-02 18:35+0000\n"
+"Last-Translator: Vanderlei Ventura <vanderleiventura82@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/corebird/corebird/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -431,7 +432,7 @@ msgstr "Corresponde"
 
 #: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn’t match"
-msgstr ""
+msgstr "Não Corresponde"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"

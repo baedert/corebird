@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# Iris Ilexiris <iris.ilexiris@gmail.com>, 2017
+# Iris Ilexiris <iris.ilexiris@gmail.com>, 2017-2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-28 11:40+0000\n"
+"PO-Revision-Date: 2018-02-06 18:45+0000\n"
 "Last-Translator: Iris Ilexiris <iris.ilexiris@gmail.com>\n"
 "Language-Team: Esperanto (http://www.transifex.com/corebird/corebird/language/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -205,7 +205,7 @@ msgstr "Ŝargi pli"
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
-msgstr "Nepovus montri tviton"
+msgstr "Ne povis montri tviton"
 
 #: src/TweetInfoPage.vala:566
 msgid "Retweets"
@@ -282,7 +282,7 @@ msgstr "Vi ne estas rajtigitan. Plejparto, ĉi tiu signifas eraro kun la Tvitero
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
 msgid "Could not open %s"
-msgstr "Nepovus malfermi %s"
+msgstr "Ne povis malfermi %s"
 
 #: src/widgets/AccountCreateWidget.vala:98
 msgid "Wrong PIN"
@@ -298,7 +298,7 @@ msgstr "Uzantojn netrovitajn"
 
 #: src/widgets/FavImageView.vala:153 src/window/ComposeTweetWindow.vala:299
 msgid "Select Image"
-msgstr "Selekti bildon"
+msgstr "Elekti bildon"
 
 #: src/widgets/FavImageView.vala:156 src/window/AccountDialog.vala:347
 #: src/window/ComposeTweetWindow.vala:302
@@ -326,11 +326,11 @@ msgstr "Malpostiri"
 
 #: src/widgets/MediaButton.vala:48
 msgid "Copy URL"
-msgstr "Kopii URL"
+msgstr "Kopii URL-on"
 
 #: src/widgets/MediaButton.vala:105
 msgid "Save as…"
-msgstr "Konservi kiel..."
+msgstr "Konservi kiel…"
 
 #: src/widgets/MediaButton.vala:268
 msgid "Save Video"
@@ -361,7 +361,7 @@ msgstr "Reprovi"
 
 #: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
-msgstr "Selekti gazetkapon"
+msgstr "Elekti gazetkapon"
 
 #: src/window/AccountDialog.vala:380
 msgid "Image does not meet minimum size requirements:"
@@ -383,7 +383,7 @@ msgstr[1] "Minimuma alto: %d bilderoj"
 
 #: src/window/AccountDialog.vala:404 src/window/AccountDialog.vala:417
 msgid "Pick"
-msgstr "Selekti"
+msgstr "Elekti"
 
 #: src/window/ComposeTweetWindow.vala:138
 msgid "Quote tweet"
@@ -405,7 +405,7 @@ msgstr "Reiri"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr "La selektis bildon estas tro granda. La maksimuma dosierlargo po imagoj estas %'d MB."
+msgstr "La elektita bildon estas tro granda. La maksimuma dosierlargo por imagoj estas %'d MB."
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
@@ -433,15 +433,15 @@ msgstr "Redakti kodaĵon"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
-msgstr "Kodaĵo ne povi malplenantan"
+msgstr "Kodaĵo ne povas esti malplena"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can’t be empty"
-msgstr "Anstataŭtigo nepovas esti malplena"
+msgstr "Anstataŭtigo ne povas esti malplena"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr "Kodaĵo ne povi enhavi blankspacon"
+msgstr "Kodaĵo ne povas enhavi blankspacon"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
@@ -451,11 +451,11 @@ msgstr "Kodaĵo ekzistas jam"
 msgid ""
 "Hey, check out this new #Corebird version! \\ (•◡•) / #cool "
 "#newisalwaysbetter"
-msgstr "Saluton! Vidu ĉi tiun novan version de #Corebird! \\ (•◡•) / #mojose #novaestasĉiamplibona"
+msgstr "Saluton! Vidu ĉi tiun novan version de #Corebird! \\ (•◡•) / #mojose #novaĉiamplibonas"
 
 #: src/window/UserListDialog.vala:40
 msgid "Add to or Remove User From List"
-msgstr "Aldoni/forigi ozanton el la listo"
+msgstr "Aldoni/forigi uzanton el la listo"
 
 #: src/window/UserListDialog.vala:69
 msgid "You have no lists."
@@ -473,7 +473,7 @@ msgstr "Nova konto"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr "Por verigi Corebird-on, vi bezonas PIN el twitter.com por la konto vi deziros aldoni."
+msgstr "Por verigi Corebird-on, vi bezonas PIN-on el twitter.com por la konto vi deziras aldoni."
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -481,7 +481,7 @@ msgstr "Peti PIN-on"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr "Entajpi PIN-on el twitter.com malsuper:"
+msgstr "Entajpi PIN-on el twitter.com malsupre:"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
@@ -509,12 +509,12 @@ msgstr "Aŭtomata komenci"
 
 #: ui/account-dialog.ui:244
 msgid "Do you really want to delete this account?"
-msgstr "Ĉu vi vere volas forigi ĉi tiu konto?"
+msgstr "Ĉu vi vere volas forigi ĉi tiun konton?"
 
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr "Miensimbolo kaj homoj"
+msgstr "Miensimboloj kaj homoj"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
@@ -602,7 +602,7 @@ msgstr "Verkanto:"
 
 #: ui/list-statuses-page.ui:84
 msgid "Created at:"
-msgstr "Kreis je:"
+msgstr "Kreita je:"
 
 #: ui/list-statuses-page.ui:119
 msgid "Edit"
@@ -714,15 +714,15 @@ msgstr "Montri ĉiam"
 
 #: ui/settings-dialog.ui:79
 msgid "Always hide"
-msgstr "Malmontri ĉiam"
+msgstr "Kaŝi ĉiam"
 
 #: ui/settings-dialog.ui:80
 msgid "Hide in timeline"
-msgstr "Malmontri en kronologio"
+msgstr "Kaŝi en kronologio"
 
 #: ui/settings-dialog.ui:101
 msgid "Auto scroll on new tweets"
-msgstr "Rulumi automatan je novajn tvitojn"
+msgstr "Rulumi automatan je novaj tvitoj"
 
 #: ui/settings-dialog.ui:131
 msgid "Double-click activation"
@@ -790,7 +790,7 @@ msgstr "Forigi retligojn por aŭdvidaĵoj"
 
 #: ui/settings-dialog.ui:394
 msgid "Hide inappropriate content"
-msgstr "Malmontri malkonvenan enhavon"
+msgstr "Kaŝi malkonvenan enhavon"
 
 #: ui/settings-dialog.ui:441
 msgid "No snippets configured."
@@ -798,7 +798,7 @@ msgstr "Nenio kodaĵoj agordis."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr "Puŝi taba klavo ekspansii kodaĵojn."
+msgstr "Vi povas puŝu la taban klavon ekspansii kodaĵojn."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
@@ -827,7 +827,7 @@ msgstr "Montri ŝvebajn kontojn konsilojn"
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
-msgstr "Montri programagordoj"
+msgstr "Montri programagordojn"
 
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
@@ -847,7 +847,7 @@ msgstr "Antaŭiri"
 #: ui/shortcuts-window.ui:66
 msgctxt "shortcuts window"
 msgid "Go to nth page"
-msgstr "Iri al la n-an paĝon"
+msgstr "Iri al la n-a paĝo"
 
 #: ui/shortcuts-window.ui:74
 msgctxt "shortcuts window"
@@ -891,7 +891,7 @@ msgstr "Skribi"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr "Montri miensimbolilo"
+msgstr "Montri miensimbolilon"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
@@ -951,7 +951,7 @@ msgstr "Eniri al karakterizo"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
-msgstr "Kreis"
+msgstr "Kreita"
 
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"

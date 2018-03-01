@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-23 17:45+0000\n"
+"PO-Revision-Date: 2017-11-19 08:34+0000\n"
 "Last-Translator: Марко М. Костић (Marko M. Kostić) <marko.m.kostic@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/corebird/corebird/language/sr/)\n"
 "MIME-Version: 1.0\n"
@@ -174,7 +174,7 @@ msgstr "Додај нови налог"
 #: src/MentionsTimeline.vala:93 src/UserEventReceiver.vala:115
 #, c-format
 msgid "%s mentioned %s"
-msgstr "%s је споменуо/ла %s"
+msgstr "%s спомену %s"
 
 #: src/MentionsTimeline.vala:111 src/MentionsTimeline.vala:115
 msgid "Mentions"
@@ -506,7 +506,7 @@ msgstr "Име"
 
 #: ui/account-dialog.ui:117
 msgid "Website"
-msgstr "Вебсајт"
+msgstr "Веб сајт"
 
 #: ui/account-dialog.ui:181
 msgid "Autostart"
@@ -956,7 +956,7 @@ msgstr "Иди на профил"
 
 #: ui/user-lists-widget.ui:14
 msgid "Created"
-msgstr "Направио/ла"
+msgstr "Направи"
 
 #: ui/user-lists-widget.ui:86
 msgid "Subscribed to"

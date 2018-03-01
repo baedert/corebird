@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-11-09 04:38+0000\n"
+"PO-Revision-Date: 2018-01-09 20:56+0000\n"
 "Last-Translator: Xuacu Saturio <xuacusk8@gmail.com>\n"
 "Language-Team: Asturian (http://www.transifex.com/corebird/corebird/language/ast/)\n"
 "MIME-Version: 1.0\n"
@@ -279,7 +279,7 @@ msgstr "Crea una"
 msgid ""
 "Unauthorized. Most of the time, this means that there’s something wrong with"
 " the Twitter servers and you should try again later"
-msgstr ""
+msgstr "Nun autorizáu. La mayor parte de les veces, esto significa que daqué funciona mal nos sirvidores de Twitter y tendríes de tentar sero"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -363,29 +363,29 @@ msgstr "Reintentar"
 
 #: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
-msgstr ""
+msgstr "Seleiciona la imaxe del cartel"
 
 #: src/window/AccountDialog.vala:380
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "La imaxe nun tien el tamañu mínimu riquíu:"
 
 #: src/window/AccountDialog.vala:381
 #, c-format
 msgid "Minimum width: %d pixel"
 msgid_plural "Minimum width: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Anchor mínimu: %d pixel"
+msgstr[1] "Anchor mínimu: %d pixels"
 
 #: src/window/AccountDialog.vala:383
 #, c-format
 msgid "Minimum height: %d pixel"
 msgid_plural "Minimum height: %d pixels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Altor mínimu: %d pixel"
+msgstr[1] "Altor mínimu: %d pixels"
 
 #: src/window/AccountDialog.vala:404 src/window/AccountDialog.vala:417
 msgid "Pick"
-msgstr ""
+msgstr "Escoyer"
 
 #: src/window/ComposeTweetWindow.vala:138
 msgid "Quote tweet"
@@ -393,7 +393,7 @@ msgstr "Citar tuit"
 
 #: src/window/ComposeTweetWindow.vala:331
 msgid "Selected file is not an image."
-msgstr ""
+msgstr "El ficheru seleicionáu nun ye una imaxe"
 
 #: src/window/ComposeTweetWindow.vala:332
 #: src/window/ComposeTweetWindow.vala:338
@@ -407,7 +407,7 @@ msgstr "Atrás"
 #, c-format
 msgid ""
 "The selected image is too big. The maximum file size per image is %'d MB"
-msgstr ""
+msgstr "La imaxe seleicionada ye demasiao grande. El tamañu máximu per imaxe ye de %'d MB"
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
@@ -415,7 +415,7 @@ msgstr "Sólo se permite un ficheru GIF por tweet"
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
-msgstr ""
+msgstr "Inxertar Emoji"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -427,27 +427,27 @@ msgstr "Coincidencies"
 
 #: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn’t match"
-msgstr ""
+msgstr "Nun casa"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Editar fragmentu"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
-msgstr ""
+msgstr "El fragmentu nun puede tar vaciu"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can’t be empty"
-msgstr ""
+msgstr "El reemplazu nun puede tar vaciu"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "El fragmentu nun puede contener espacios en blancu"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "El fragmentu yá existe"
 
 #: src/window/SettingsDialog.vala:85
 msgid ""
@@ -475,7 +475,7 @@ msgstr "Cuenta nueva"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "P'autenticar Corebird,necesites un PIN de twitter.com cola cuenta que quiés añadir"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -483,7 +483,7 @@ msgstr "Pidir PIN"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Escribe abaxo'l PIN de twitter.com:"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
@@ -516,55 +516,55 @@ msgstr "¿De xuru que quies desaniciar esta cuenta?"
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr ""
+msgstr "Fustaxes y xente"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
 msgid "Body & Clothing"
-msgstr ""
+msgstr "Cuerpu y vistíos"
 
 #: ui/cb-emoji-chooser.ui:67
 msgctxt "emoji category"
 msgid "Animals & Nature"
-msgstr ""
+msgstr "Animales y natura"
 
 #: ui/cb-emoji-chooser.ui:80
 msgctxt "emoji category"
 msgid "Food & Drink"
-msgstr ""
+msgstr "Comida y bébora"
 
 #: ui/cb-emoji-chooser.ui:93
 msgctxt "emoji category"
 msgid "Travel & Places"
-msgstr ""
+msgstr "Viaxes y llugares"
 
 #: ui/cb-emoji-chooser.ui:106
 msgctxt "emoji category"
 msgid "Activities"
-msgstr ""
+msgstr "Actividaes"
 
 #: ui/cb-emoji-chooser.ui:119
 msgctxt "emoji category"
 msgid "Objects"
-msgstr ""
+msgstr "Oxetos"
 
 #: ui/cb-emoji-chooser.ui:132
 msgctxt "emoji category"
 msgid "Symbols"
-msgstr ""
+msgstr "Símbolos"
 
 #: ui/cb-emoji-chooser.ui:145
 msgctxt "emoji category"
 msgid "Flags"
-msgstr ""
+msgstr "Banderes"
 
 #: ui/cb-emoji-chooser.ui:272
 msgid "No Results Found"
-msgstr ""
+msgstr "Nun s'alcontraron resultaos"
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
-msgstr ""
+msgstr "Tenta una gueta distinta"
 
 #: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
@@ -576,7 +576,7 @@ msgstr "Amestar imaxe"
 
 #: ui/compose-window.ui:185
 msgid "Show favorite images"
-msgstr ""
+msgstr "Ver imaxes favorites"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -648,7 +648,7 @@ msgstr "Amestar filtru nuevu"
 
 #: ui/modify-snippet-dialog.ui:6
 msgid "Add New Snippet"
-msgstr ""
+msgstr "Añadir fragmentu nuevu"
 
 #: ui/modify-snippet-dialog.ui:46
 msgid "Keyword"
@@ -684,7 +684,7 @@ msgstr "Bloquiáu"
 
 #: ui/profile-page.ui:24
 msgid "Muted"
-msgstr ""
+msgstr "Slienciáu"
 
 #: ui/profile-page.ui:28
 msgid "Retweets disabled"
@@ -708,7 +708,7 @@ msgstr "Siguiendo"
 
 #: ui/settings-dialog.ui:59
 msgid "Show inline media"
-msgstr ""
+msgstr "Ver multimedia en llinia"
 
 #: ui/settings-dialog.ui:78
 msgid "Always show"
@@ -796,15 +796,15 @@ msgstr "Anubrir conteníu inapropiáu"
 
 #: ui/settings-dialog.ui:441
 msgid "No snippets configured."
-msgstr ""
+msgstr "Nun hai fragmentos configuraos."
 
 #: ui/settings-dialog.ui:480
 msgid "You can activate snippets by writing the keyword and pressing TAB."
-msgstr ""
+msgstr "Puedes activar los fragmentos escribiendo la clave y primiendo TAB."
 
 #: ui/settings-dialog.ui:494
 msgid "Snippets"
-msgstr ""
+msgstr "Fragmentos"
 
 #: ui/shortcuts-window.ui:12
 msgctxt "shortcuts window"
@@ -819,17 +819,17 @@ msgstr "Componer tuit"
 #: ui/shortcuts-window.ui:24
 msgctxt "shortcuts window"
 msgid "Show Account settings"
-msgstr ""
+msgstr "Ver les preferencies de la cuenta"
 
 #: ui/shortcuts-window.ui:31
 msgctxt "shortcuts window"
 msgid "Show Accounts Popover"
-msgstr ""
+msgstr "Ver la ventana de cuentes"
 
 #: ui/shortcuts-window.ui:38
 msgctxt "shortcuts window"
 msgid "Show Application Settings"
-msgstr ""
+msgstr "Ver les preferencies de la aplicación"
 
 #: ui/shortcuts-window.ui:45
 msgctxt "shortcuts window"
@@ -889,11 +889,11 @@ msgstr "Desaniciar"
 #: ui/shortcuts-window.ui:122
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr ""
+msgstr "Componer"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr ""
+msgstr "Ver selector d'emoji"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"

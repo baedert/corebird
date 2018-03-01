@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the corebird package.
 #
 # Translators:
-# antiparvos <marcoslansgarza@gmail.com>, 2016-2017
+# antiparvos, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-22 10:08+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2017-12-22 02:49+0000\n"
+"Last-Translator: antiparvos\n"
 "Language-Team: Galician (http://www.transifex.com/corebird/corebird/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -180,7 +180,7 @@ msgstr "Mencións"
 
 #: src/ProfilePage.vala:218
 msgid "Suspended Account"
-msgstr ""
+msgstr "Conta suspendida"
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -193,7 +193,7 @@ msgstr "Chiar a @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
 msgid "Protected Profile"
-msgstr ""
+msgstr "Perfil protexido"
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
@@ -201,7 +201,7 @@ msgstr "Buscar"
 
 #: src/SearchPage.vala:401
 msgid "Load More"
-msgstr ""
+msgstr "Cargar máis"
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -391,7 +391,7 @@ msgstr "Citar chío"
 
 #: src/window/ComposeTweetWindow.vala:331
 msgid "Selected file is not an image."
-msgstr ""
+msgstr "O ficheiro seleccionado non é unha imaxe."
 
 #: src/window/ComposeTweetWindow.vala:332
 #: src/window/ComposeTweetWindow.vala:338
@@ -413,7 +413,7 @@ msgstr "Só se permite un ficheiro GIF por chío."
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
-msgstr ""
+msgstr "Inserir emoji"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -514,55 +514,55 @@ msgstr "Confirma a eliminación desta conta?"
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr ""
+msgstr "Emoticonos e persoas"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
 msgid "Body & Clothing"
-msgstr ""
+msgstr "Corpo e roupa"
 
 #: ui/cb-emoji-chooser.ui:67
 msgctxt "emoji category"
 msgid "Animals & Nature"
-msgstr ""
+msgstr "Animais e natureza"
 
 #: ui/cb-emoji-chooser.ui:80
 msgctxt "emoji category"
 msgid "Food & Drink"
-msgstr ""
+msgstr "Comida e bebida"
 
 #: ui/cb-emoji-chooser.ui:93
 msgctxt "emoji category"
 msgid "Travel & Places"
-msgstr ""
+msgstr "Viaxar e lugares"
 
 #: ui/cb-emoji-chooser.ui:106
 msgctxt "emoji category"
 msgid "Activities"
-msgstr ""
+msgstr "Actividades"
 
 #: ui/cb-emoji-chooser.ui:119
 msgctxt "emoji category"
 msgid "Objects"
-msgstr ""
+msgstr "Obxectos"
 
 #: ui/cb-emoji-chooser.ui:132
 msgctxt "emoji category"
 msgid "Symbols"
-msgstr ""
+msgstr "Símbolos"
 
 #: ui/cb-emoji-chooser.ui:145
 msgctxt "emoji category"
 msgid "Flags"
-msgstr ""
+msgstr "Bandeiras"
 
 #: ui/cb-emoji-chooser.ui:272
 msgid "No Results Found"
-msgstr ""
+msgstr "Sen resultados"
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
-msgstr ""
+msgstr "Tente unha busca diferente"
 
 #: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
@@ -887,11 +887,11 @@ msgstr "Eliminar"
 #: ui/shortcuts-window.ui:122
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr ""
+msgstr "Escribir"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr ""
+msgstr "Mostrar o selector de emojis"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"

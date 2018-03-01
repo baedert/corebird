@@ -4,6 +4,7 @@
 #
 # Translators:
 # Daniele Napolitano <dnax88@gmail.com>, 2014
+# Emanuele Rocco Petrone <emaeleptrn@gmail.com>, 2018
 # Matteo Castelli <Mtt.Castelli@gmail.com>, 2016
 # Nicola Stanislao Vitale <nivit@rocketmail.com>, 2015
 # Tassoman, 2017
@@ -12,8 +13,8 @@ msgstr ""
 "Project-Id-Version: Corebird\n"
 "Report-Msgid-Bugs-To: https://github.com/baedert/corebird/issues/new\n"
 "POT-Creation-Date: 2017-10-22 12:02+0200\n"
-"PO-Revision-Date: 2017-10-22 10:08+0000\n"
-"Last-Translator: baedert <mail@baedert.org>\n"
+"PO-Revision-Date: 2018-02-20 19:25+0000\n"
+"Last-Translator: Emanuele Rocco Petrone <emaeleptrn@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/corebird/corebird/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,23 +42,23 @@ msgstr "Corebird è un client twitter nativo GTK+ che fornisce funzioni vitali c
 msgid ""
 "Additional features include local viewing of videos, multiple inline images,"
 " Lists, Filters, multiple accounts, etc."
-msgstr ""
+msgstr "Funzionalità aggiuntive includono riproduzione locale dei video, più immagini in una riga, liste, filtri, account multipli ecc."
 
 #: data/org.baedert.corebird.appdata.xml.in:21
 msgid "Generic timeline view when using Corebird"
-msgstr ""
+msgstr "Vista generica della timeline quando usi Corebird"
 
 #: data/org.baedert.corebird.appdata.xml.in:25
 msgid "Typical Twitter profile"
-msgstr ""
+msgstr "Tipico profilo twitter"
 
 #: data/org.baedert.corebird.appdata.xml.in:29
 msgid "Account settings can be configured"
-msgstr ""
+msgstr "Le impostazioni dell'account possono essere configurate"
 
 #: data/org.baedert.corebird.appdata.xml.in:41
 msgid "Timm Bäder"
-msgstr ""
+msgstr "Timm Bäder"
 
 #: data/org.baedert.corebird.desktop.in:5
 msgid "Use Twitter from within a normal desktop application"
@@ -78,21 +79,21 @@ msgstr "corebird"
 #. TRANSLATORS: This is the start of a "Replying to" line in a tweet
 #: src/CbUtils.c:177 src/TweetInfoPage.vala:525
 msgid "Replying to"
-msgstr ""
+msgstr "Rispondendo a"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet. Example: "Replying to Foo and Bar" where
 #. * "and Bar" comes from this string.
 #: src/CbUtils.c:188 src/TweetInfoPage.vala:537
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #. TRANSLATORS: This gets appended to the "replying to" line
 #. * in a tweet
 #: src/CbUtils.c:197
 #, c-format
 msgid "and %d others"
-msgstr ""
+msgstr "e %d altri"
 
 #: src/DMPage.vala:344
 msgid "Direct Conversation"
@@ -183,7 +184,7 @@ msgstr "Menzioni"
 
 #: src/ProfilePage.vala:218
 msgid "Suspended Account"
-msgstr ""
+msgstr "Account sospeso"
 
 #: src/ProfilePage.vala:272
 msgid "Protected profile"
@@ -196,7 +197,7 @@ msgstr "Twitta a @%s"
 
 #: src/ProfilePage.vala:507 src/ProfilePage.vala:551
 msgid "Protected Profile"
-msgstr ""
+msgstr "Profilo protetto"
 
 #: src/SearchPage.vala:371 src/SearchPage.vala:380 ui/search-page.ui:24
 msgid "Search"
@@ -204,7 +205,7 @@ msgstr "Cerca"
 
 #: src/SearchPage.vala:401
 msgid "Load More"
-msgstr ""
+msgstr "Mostra altri"
 
 #: src/TweetInfoPage.vala:345
 msgid "Could not show tweet"
@@ -270,7 +271,7 @@ msgstr "%dh"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Don’t have a Twitter account yet?"
-msgstr ""
+msgstr "Non hai ancora un account Twitter?"
 
 #: src/widgets/AccountCreateWidget.vala:42
 msgid "Create one"
@@ -280,7 +281,7 @@ msgstr "Creane uno"
 msgid ""
 "Unauthorized. Most of the time, this means that there’s something wrong with"
 " the Twitter servers and you should try again later"
-msgstr ""
+msgstr "Non autorizzato. La maggior parte delle volte questo significa che c'è qualche problema con i server di Twitter e che dovresti provare di nuovo più tardi"
 
 #: src/widgets/AccountCreateWidget.vala:69
 #, c-format
@@ -333,15 +334,15 @@ msgstr "Copia URL"
 
 #: src/widgets/MediaButton.vala:105
 msgid "Save as…"
-msgstr ""
+msgstr "Salva come..."
 
 #: src/widgets/MediaButton.vala:268
 msgid "Save Video"
-msgstr ""
+msgstr "Salva Video"
 
 #: src/widgets/MediaButton.vala:270
 msgid "Save Image"
-msgstr ""
+msgstr "Salva immagine"
 
 #: src/widgets/MediaButton.vala:275 src/window/AccountDialog.vala:429
 #: src/window/AccountDialog.vala:450 src/window/UserListDialog.vala:48
@@ -352,7 +353,7 @@ msgstr "Salva"
 
 #: src/widgets/TweetListBox.vala:123
 msgid "Loading…"
-msgstr ""
+msgstr "Caricamento..."
 
 #: src/widgets/TweetListBox.vala:126 src/widgets/TweetListBox.vala:177
 msgid "No entries found"
@@ -364,11 +365,11 @@ msgstr "Riprova"
 
 #: src/window/AccountDialog.vala:344
 msgid "Select Banner Image"
-msgstr ""
+msgstr "Seleziona l'immagine banner"
 
 #: src/window/AccountDialog.vala:380
 msgid "Image does not meet minimum size requirements:"
-msgstr ""
+msgstr "L'immagine non rispetta le dimensioni minime richieste"
 
 #: src/window/AccountDialog.vala:381
 #, c-format
@@ -386,7 +387,7 @@ msgstr[1] ""
 
 #: src/window/AccountDialog.vala:404 src/window/AccountDialog.vala:417
 msgid "Pick"
-msgstr ""
+msgstr "Seleziona"
 
 #: src/window/ComposeTweetWindow.vala:138
 msgid "Quote tweet"
@@ -394,7 +395,7 @@ msgstr "Cita il tweet"
 
 #: src/window/ComposeTweetWindow.vala:331
 msgid "Selected file is not an image."
-msgstr ""
+msgstr "Il file selezionato non è un'immagine"
 
 #: src/window/ComposeTweetWindow.vala:332
 #: src/window/ComposeTweetWindow.vala:338
@@ -412,11 +413,11 @@ msgstr "L'immagine selezionata è troppo grossa. La dimensione massima consentit
 
 #: src/window/ComposeTweetWindow.vala:343
 msgid "Only one GIF file per tweet is allowed."
-msgstr ""
+msgstr "È consentita solo una gif per tweet."
 
 #: src/window/ComposeTweetWindow.vala:392
 msgid "Insert Emoji"
-msgstr ""
+msgstr "Inserisci emoji"
 
 #: src/window/ModifyFilterDialog.vala:45
 msgid "Modify Filter"
@@ -428,27 +429,27 @@ msgstr "Corrispondenze"
 
 #: src/window/ModifyFilterDialog.vala:78
 msgid "Doesn’t match"
-msgstr ""
+msgstr "Non corrisponde"
 
 #: src/window/ModifySnippetDialog.vala:44
 msgid "Modify Snippet"
-msgstr ""
+msgstr "Modifica Snippet"
 
 #: src/window/ModifySnippetDialog.vala:63
 msgid "Snippet can’t be empty"
-msgstr ""
+msgstr "Lo snippet non può essere vuoto"
 
 #: src/window/ModifySnippetDialog.vala:70
 msgid "Replacement can’t be empty"
-msgstr ""
+msgstr "Il sostituto non può essere vuoto"
 
 #: src/window/ModifySnippetDialog.vala:78
 msgid "Snippet may not contain whitespace"
-msgstr ""
+msgstr "Lo snippat non può contenere spazi"
 
 #: src/window/ModifySnippetDialog.vala:86
 msgid "Snippet already exists"
-msgstr ""
+msgstr "Lo snippet esiste già"
 
 #: src/window/SettingsDialog.vala:85
 msgid ""
@@ -476,7 +477,7 @@ msgstr "Nuovo account"
 msgid ""
 "To authenticate Corebird, you need a PIN from twitter.com with the account "
 "you wish to add"
-msgstr ""
+msgstr "Per autenticarti su Corebird hai bisogno di un PIN da twitter.com dell'account che desideri aggiungere"
 
 #: ui/account-create-widget.ui:58
 msgid "Request PIN"
@@ -484,11 +485,11 @@ msgstr "Richiedi PIN"
 
 #: ui/account-create-widget.ui:88
 msgid "Enter PIN from twitter.com below:"
-msgstr ""
+msgstr "Inserisci il pin da Twitter.com qui sotto"
 
 #: ui/account-create-widget.ui:106
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: ui/account-create-widget.ui:132 ui/list-statuses-page.ui:358
 msgid "Confirm"
@@ -517,55 +518,55 @@ msgstr "Vuoi davvero rimuovere questo account?"
 #: ui/cb-emoji-chooser.ui:41
 msgctxt "emoji category"
 msgid "Smileys & People"
-msgstr ""
+msgstr "Smiles e Persone"
 
 #: ui/cb-emoji-chooser.ui:54
 msgctxt "emoji category"
 msgid "Body & Clothing"
-msgstr ""
+msgstr "Corpo e vestiti"
 
 #: ui/cb-emoji-chooser.ui:67
 msgctxt "emoji category"
 msgid "Animals & Nature"
-msgstr ""
+msgstr "Animali e natura"
 
 #: ui/cb-emoji-chooser.ui:80
 msgctxt "emoji category"
 msgid "Food & Drink"
-msgstr ""
+msgstr "Cibo e bevande"
 
 #: ui/cb-emoji-chooser.ui:93
 msgctxt "emoji category"
 msgid "Travel & Places"
-msgstr ""
+msgstr "Viaggi e posti"
 
 #: ui/cb-emoji-chooser.ui:106
 msgctxt "emoji category"
 msgid "Activities"
-msgstr ""
+msgstr "Attività"
 
 #: ui/cb-emoji-chooser.ui:119
 msgctxt "emoji category"
 msgid "Objects"
-msgstr ""
+msgstr "Oggetti"
 
 #: ui/cb-emoji-chooser.ui:132
 msgctxt "emoji category"
 msgid "Symbols"
-msgstr ""
+msgstr "Simboli"
 
 #: ui/cb-emoji-chooser.ui:145
 msgctxt "emoji category"
 msgid "Flags"
-msgstr ""
+msgstr "Bandiere"
 
 #: ui/cb-emoji-chooser.ui:272
 msgid "No Results Found"
-msgstr ""
+msgstr "Nessun risultato trovato"
 
 #: ui/cb-emoji-chooser.ui:285
 msgid "Try a different search"
-msgstr ""
+msgstr "Prova una ricerca differente"
 
 #: ui/compose-window.ui:48 ui/dm-page.ui:51 ui/shortcuts-window.ui:127
 msgid "Send"
@@ -577,7 +578,7 @@ msgstr "Aggiungi immagine"
 
 #: ui/compose-window.ui:185
 msgid "Show favorite images"
-msgstr ""
+msgstr "Mostra le immagini preferite"
 
 #: ui/filter-page.ui:71 ui/search-page.ui:86
 msgid "Users"
@@ -693,7 +694,7 @@ msgstr "Retweet disabilitati"
 
 #: ui/profile-page.ui:166
 msgid "Follows you"
-msgstr "Ti seguono"
+msgstr "Ti segue"
 
 #: ui/profile-page.ui:242 ui/search-page.ui:74 ui/settings-dialog.ui:420
 msgid "Tweets"
@@ -890,11 +891,11 @@ msgstr "Elimina"
 #: ui/shortcuts-window.ui:122
 msgctxt "shortcuts window"
 msgid "Compose"
-msgstr ""
+msgstr "Componi"
 
 #: ui/shortcuts-window.ui:141
 msgid "Show Emoji Chooser"
-msgstr ""
+msgstr "Mostra emoji picker"
 
 #: ui/start-conversation-entry.ui:29
 msgid "Start new conversation"
