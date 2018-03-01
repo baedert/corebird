@@ -176,15 +176,15 @@ private class MediaButton : Gtk.Widget {
       return;
     }
 
-    width  = this.get_allocated_width ();
-    height = this.get_allocated_height ();
-    double scale_x = (double)width / this._media.width;
-    double scale_y = (double)height / this._media.height;
+    width = int.min (this._media.width, this.get_allocated_width ());
+    scale = this.get_allocated_width () / (double) this._media.width;
 
-    scale = double.min (double.min (scale_x, scale_y), 1.0);
-
-    width  = (int)(this._media.width  * scale);
-    height = (int)(this._media.height * scale);
+    if (scale > 1) {
+      height = int.min (this._media.height, (int) Math.floor ((this.get_allocated_width () / 4.0) * 3));
+      scale = 1;
+    } else {
+      height = (int) Math.floor (double.min (this._media.height * scale, (this._media.width * scale / 4.0) * 3));
+    }
   }
 
   public override bool draw (Cairo.Context ct) {
@@ -205,7 +205,8 @@ private class MediaButton : Gtk.Widget {
       ct.save ();
       ct.rectangle (0, 0, widget_width, widget_height);
       ct.scale (scale, scale);
-      ct.set_source_surface (media.surface, draw_x / scale, 0);
+      double draw_y = -(((media.height * scale) - draw_height) / 2);
+      ct.set_source_surface (media.surface, draw_x / scale, draw_y / scale);
       ct.paint_with_alpha (this.media_alpha);
       ct.restore ();
       ct.new_path ();
@@ -321,7 +322,7 @@ private class MediaButton : Gtk.Widget {
                                                        out int natural) {
     int media_width;
     int media_height;
-
+    
     if (this._media == null || this._media.width == -1 || this._media.height == -1) {
       media_width = MIN_WIDTH;
       media_height = MAX_HEIGHT;
@@ -330,15 +331,19 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    double width_ratio = (double)width / (double) media_width;
-    int height = int.min (media_height, (int)(media_height * width_ratio));
+    double scale = width / (double) media_width;
+    
+    int height = 0;
+
     if (restrict_height) {
-      minimum = int.min (media_height, MAX_HEIGHT);
-      natural = minimum;
+      height = int.min (media_height, MAX_HEIGHT);
+    } else if (scale > 1) {
+      height = int.min (media_height, (int) Math.floor ((width / 4.0) * 3));
     } else {
-      minimum = height;
-      natural = height;
+      height = (int) Math.floor (double.min (media_height * scale, (media_width * scale / 4.0) * 3));
     }
+
+    minimum = natural = height;
   }
 
   public override void get_preferred_width_for_height (int height,
@@ -355,8 +360,8 @@ private class MediaButton : Gtk.Widget {
       media_height = this._media.height;
     }
 
-    double height_ratio = (double)height / (double)media_height;
-    int width = int.min (media_width, (int)(media_width * height_ratio));
+    int max_width = (int) Math.floor ((height / 3.0) * 4);
+    int width = int.min (media_width, max_width);
     minimum = int.min (media_width, MIN_WIDTH);
     natural = width;
   }
