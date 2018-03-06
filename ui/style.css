@@ -262,6 +262,17 @@ progressbar.horizontal.embedded-progress>trough>progress {
   padding: 1em;
 }
 
+
+/* Use this if box shadows don't work out */
+/*row.tweet {*/
+  /*border-bottom: 1px solid alpha(grey, 0.3);*/
+  /*padding: 1em;*/
+/*}*/
+
+list.tweets {
+  background-color: #eee;
+}
+
 row.tweet {
   background-color: #fff;
   padding: 1em;
@@ -322,10 +333,6 @@ row.tweet>box.quote>quotetweet>box.header {
 
 row.tweet>box.quote>multimedia {
   margin-top: 0.5em;
-}
-
-list.tweets {
-  background-color: #eee;
 }
 
 textview.view.fancy {
