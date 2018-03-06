@@ -95,11 +95,9 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   public TweetInfoPage (int id, Account account) {
     this.id = id;
     this.account = account;
-    //this.top_list_box.account = account;
-    //this.bottom_list_box.account = account;
 
     scroll_controller = new Gtk.EventControllerScroll (this, Gtk.EventControllerScrollFlags.VERTICAL);
-    scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
+    scroll_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
       if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
         int inc = (int)(vadjustment.step_increment * (- delta_y));
