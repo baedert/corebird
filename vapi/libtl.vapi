@@ -15,11 +15,15 @@ namespace Tl {
     size_t start_character_index;
     size_t length_in_characters;
     size_t length_in_bytes;
+    size_t length_in_weighted_characters;
   }
 
 
   [CCode (cprefix = "tl_", lower_case_cprefix = "tl_", cheader_filename = "libtl/libtweetlength.h")]
   size_t count_characters (string input);
+
+  [CCode (cprefix = "tl_", lower_case_cprefix = "tl_", cheader_filename = "libtl/libtweetlength.h")]
+  size_t count_weighted_characters (string input);
 
   [CCode (cprefix = "tl_", lower_case_cprefix = "tl_", cheader_filename = "libtl/libtweetlength.h",
           array_length_pos = 1)]
