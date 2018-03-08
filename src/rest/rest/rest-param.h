@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef _REST_PARAM
-#define _REST_PARAM
+#ifndef __REST_PARAM_H__
+#define __REST_PARAM_H__
 
 #include <glib-object.h>
 
@@ -46,41 +46,34 @@ typedef enum {
   REST_MEMORY_COPY,
 } RestMemoryUse;
 
-
 typedef struct _RestParam RestParam;
 
-GType rest_param_get_type (void) G_GNUC_CONST;
 
-RestParam *rest_param_new_string (const char    *name,
-                                  RestMemoryUse  use,
-                                  const char    *string);
-
-RestParam *rest_param_new_full (const char     *name,
-                                RestMemoryUse   use,
-                                gconstpointer   data,
-                                gsize           length,
-                                const char     *content_type,
-                                const char     *filename);
-
-RestParam *rest_param_new_with_owner (const char     *name,
-                                      gconstpointer   data,
-                                      gsize           length,
-                                      const char     *content_type,
-                                      const char     *filename,
-                                      gpointer        owner,
-                                      GDestroyNotify  owner_dnotify);
-
-
-gboolean rest_param_is_string (RestParam *param);
-
-const char *rest_param_get_name (RestParam *param);
-const char *rest_param_get_content_type (RestParam *param);
-const char *rest_param_get_file_name (RestParam *param);
-gconstpointer rest_param_get_content (RestParam *param);
-gsize rest_param_get_content_length (RestParam *param);
-
-RestParam *rest_param_ref (RestParam *param);
-void rest_param_unref (RestParam *param);
+GType         rest_param_get_type           (void) G_GNUC_CONST;
+RestParam *   rest_param_new_string         (const char     *name,
+                                             RestMemoryUse   use,
+                                             const char     *string);
+RestParam *   rest_param_new_full           (const char     *name,
+                                             RestMemoryUse   use,
+                                             gconstpointer   data,
+                                             gsize           length,
+                                             const char     *content_type,
+                                             const char     *filename);
+RestParam *   rest_param_new_with_owner     (const char     *name,
+                                             gconstpointer   data,
+                                             gsize           length,
+                                             const char     *content_type,
+                                             const char     *filename,
+                                             gpointer        owner,
+                                             GDestroyNotify  owner_dnotify);
+gboolean      rest_param_is_string          (RestParam      *param);
+const char *  rest_param_get_name           (RestParam      *param);
+const char *  rest_param_get_content_type   (RestParam      *param);
+const char *  rest_param_get_file_name      (RestParam      *param);
+gconstpointer rest_param_get_content        (RestParam      *param);
+gsize         rest_param_get_content_length (RestParam      *param);
+RestParam *   rest_param_ref                (RestParam      *param);
+void          rest_param_unref              (RestParam      *param);
 
 G_END_DECLS
 
