@@ -54,7 +54,6 @@ typedef void (*RestProxyCallUploadCallback)     (RestProxyCall *call,
  * RestProxyCallClass:
  * @prepare: Virtual function called before making the request, This allows the
  * call to be modified, for example to add a signature.
- * @serialize_params: Virtual function allowing custom serialization of the
  * parameters, for example when the API doesn't expect standard form content.
  *
  * Class structure for #RestProxyCall for subclasses to implement specialised
@@ -65,11 +64,6 @@ struct _RestProxyCallClass {
   GObjectClass parent_class;
   /*< public >*/
   gboolean (*prepare)(RestProxyCall *call, GError **error);
-  gboolean (*serialize_params) (RestProxyCall *call,
-                                gchar **content_type,
-                                gchar **content,
-                                gsize *content_len,
-                                GError **error);
 };
 
 #define REST_PROXY_CALL_ERROR rest_proxy_call_error_quark ()
@@ -134,18 +128,15 @@ gboolean      rest_proxy_call_upload                 (RestProxyCall             
                                                       GCancellable                 *cancellable,
                                                       gpointer                      userdata,
                                                       GError                      **error);
-gboolean      rest_proxy_call_cancel                 (RestProxyCall *call);
-const char *  rest_proxy_call_lookup_response_header (RestProxyCall *call,
-                                                     const gchar   *header);
-GHashTable *  rest_proxy_call_get_response_headers   (RestProxyCall *call);
-goffset       rest_proxy_call_get_payload_length     (RestProxyCall *call);
-const char *  rest_proxy_call_get_payload            (RestProxyCall *call);
-char *        rest_proxy_call_take_payload           (RestProxyCall *call);
-gboolean      rest_proxy_call_serialize_params       (RestProxyCall   *call,
-                                                      char          **content_type,
-                                                      char          **content,
-                                                      gsize           *content_len,
-                                                      GError         **error);
+gboolean      rest_proxy_call_cancel                 (RestProxyCall   *call);
+const char *  rest_proxy_call_lookup_response_header (RestProxyCall   *call,
+                                                     const gchar      *header);
+GHashTable *  rest_proxy_call_get_response_headers   (RestProxyCall   *call);
+goffset       rest_proxy_call_get_payload_length     (RestProxyCall   *call);
+const char *  rest_proxy_call_get_payload            (RestProxyCall   *call);
+char *        rest_proxy_call_take_payload           (RestProxyCall   *call);
+void          rest_proxy_call_set_content            (RestProxyCall   *call,
+                                                      const char      *content);
 
 
 G_END_DECLS

@@ -69,6 +69,8 @@ struct _RestProxyCallPrivate {
   /* The real URL we're about to invoke */
   gchar *url;
 
+  char *content;
+
   GHashTable *response_headers;
   goffset length;
   gchar *payload;
@@ -157,10 +159,9 @@ rest_proxy_call_finalize (GObject *object)
 
   g_free (priv->method);
   g_free (priv->function);
-
   g_free (priv->payload);
-
   g_free (priv->url);
+  g_free (priv->content);
 
   G_OBJECT_CLASS (rest_proxy_call_parent_class)->finalize (object);
 }
@@ -663,47 +664,7 @@ prepare_message (RestProxyCall *call, GError **error_out)
     }
   }
 
-  if (call_class->serialize_params) {
-    gchar *content;
-    gchar *content_type;
-    gsize content_len;
-
-    if (!call_class->serialize_params (call, &content_type,
-                                       &content, &content_len, &error))
-    {
-      g_propagate_error (error_out, error);
-      return NULL;
-    }
-
-    /* Reset priv->url as the serialize_params vcall may have called
-     * rest_proxy_call_set_function()
-     */
-    if (!set_url (call))
-    {
-        g_free (content);
-        g_free (content_type);
-        g_set_error_literal (error_out,
-                             REST_PROXY_ERROR,
-                             REST_PROXY_ERROR_BINDING_REQUIRED,
-                             "URL is unbound");
-        return NULL;
-    }
-
-    message = soup_message_new (priv->method, priv->url);
-    if (message == NULL) {
-        g_free (content);
-        g_free (content_type);
-        g_set_error_literal (error_out,
-                             REST_PROXY_ERROR,
-                             REST_PROXY_ERROR_FAILED,
-                             "Could not parse URI");
-        return NULL;
-    }
-    soup_message_set_request (message, content_type,
-                              SOUP_MEMORY_TAKE, content, content_len);
-
-    g_free (content_type);
-  } else if (rest_params_are_strings (priv->params)) {
+  if (rest_params_are_strings (priv->params)) {
     GHashTable *hash;
 
     if (!set_url (call))
@@ -777,8 +738,24 @@ prepare_message (RestProxyCall *call, GError **error_out)
     soup_multipart_free (mp);
   }
 
+  g_assert (message != NULL);
+
   /* Set the headers */
   g_hash_table_foreach (priv->headers, set_header, message->request_headers);
+
+  /* Set the content, if we have one */
+  if (priv->content != NULL)
+    {
+      gsize len = strlen (priv->content);
+      /* TODO: Add a content_type parameter to set_content? */
+      soup_message_set_request (message,
+                                "multipart/form-data",
+                                SOUP_MEMORY_TAKE,
+                                g_steal_pointer (&priv->content),
+                                len);
+
+      g_assert (priv->content == NULL);
+    }
 
   return message;
 }
@@ -1177,9 +1154,9 @@ rest_proxy_call_get_response_headers (RestProxyCall *call)
   g_return_val_if_fail (REST_IS_PROXY_CALL (call), NULL);
 
   if (!priv->response_headers)
-  {
-    return NULL;
-  }
+    {
+      return NULL;
+    }
 
   return g_hash_table_ref (priv->response_headers);
 }
@@ -1223,37 +1200,16 @@ rest_proxy_call_take_payload (RestProxyCall *call)
   return g_steal_pointer (&GET_PRIVATE (call)->payload);
 }
 
-/**
- * rest_proxy_call_serialize_params:
- * @call: The #RestProxyCall
- * @content_type: (out): Content type of the payload
- * @content: (out): The payload
- * @content_len: (out): Length of the payload data
- * @error: a #GError, or %NULL
- *
- * Invoker for a virtual method to serialize the parameters for this
- * #RestProxyCall.
- *
- * Returns: TRUE if the serialization was successful, FALSE otherwise.
- */
-gboolean
-rest_proxy_call_serialize_params (RestProxyCall *call,
-                                  gchar **content_type,
-                                  gchar **content,
-                                  gsize *content_len,
-                                  GError **error)
+void
+rest_proxy_call_set_content (RestProxyCall *call,
+                             const char    *content)
 {
-  RestProxyCallClass *call_class;
+  RestProxyCallPrivate *priv = rest_proxy_call_get_instance_private (call);
 
-  call_class = REST_PROXY_CALL_GET_CLASS (call);
+  g_return_if_fail (REST_IS_PROXY_CALL (call));
+  g_return_if_fail (content != NULL);
 
-  if (call_class->serialize_params)
-  {
-    return call_class->serialize_params (call, content_type,
-                                         content, content_len, error);
-  }
-
-  return FALSE;
+  priv->content = g_strdup (content);
 }
 
 G_GNUC_INTERNAL const char *

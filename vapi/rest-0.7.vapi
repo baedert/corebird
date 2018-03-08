@@ -128,6 +128,7 @@ namespace Rest {
 	public class ProxyCall : GLib.Object {
 		[CCode (has_construct_function = false)]
 		protected ProxyCall ();
+		public void set_content (string content);
 		public void add_header (string header, string value);
 		public void add_headers (...);
 		public void add_param (string name, string value);
