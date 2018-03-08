@@ -20,14 +20,16 @@
  *
  */
 
-#ifndef _REST_PROXY
-#define _REST_PROXY
+#ifndef __REST_PROXY_H__
+#define __REST_PROXY_H__
 
 #include <glib-object.h>
 #include <libsoup/soup-session-feature.h>
 #include "rest-proxy-call.h"
 
 G_BEGIN_DECLS
+
+typedef struct _RestProxyCall RestProxyCall;
 
 #define REST_TYPE_PROXY rest_proxy_get_type()
 G_DECLARE_DERIVABLE_TYPE (RestProxy, rest_proxy, REST, PROXY, GObject)
@@ -146,17 +148,14 @@ typedef enum {
 
 GQuark rest_proxy_error_quark (void);
 
-GType rest_proxy_get_type (void);
-
-RestProxy *rest_proxy_new (const gchar *url_format,
-                           gboolean     binding_required);
-
-void rest_proxy_add_soup_feature (RestProxy *proxy,
-                                  SoupSessionFeature *feature);
-
-RestProxyCall *rest_proxy_new_call (RestProxy *proxy);
+GType           rest_proxy_get_type         (void);
+RestProxy *     rest_proxy_new              (const char         *url_format,
+                                             gboolean            binding_required);
+void            rest_proxy_add_soup_feature (RestProxy          *proxy,
+                                             SoupSessionFeature *feature);
+RestProxyCall * rest_proxy_new_call         (RestProxy          *proxy);
 
 G_END_DECLS
 
-#endif /* _REST_PROXY */
+#endif
 
