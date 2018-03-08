@@ -32,6 +32,24 @@ G_BEGIN_DECLS
 #define REST_TYPE_PROXY_CALL rest_proxy_call_get_type()
 G_DECLARE_DERIVABLE_TYPE (RestProxyCall, rest_proxy_call, REST, PROXY_CALL, GObject)
 
+typedef void (*RestProxyCallAsyncCallback)      (RestProxyCall *call,
+                                                 const GError  *error,
+                                                 GObject       *weak_object,
+                                                 gpointer       user_data);
+typedef void (*RestProxyCallContinuousCallback) (RestProxyCall *call,
+                                                 const gchar   *buf,
+                                                 gsize          len,
+                                                 const GError  *error,
+                                                 GObject       *weak_object,
+                                                 gpointer       user_data);
+typedef void (*RestProxyCallUploadCallback)     (RestProxyCall *call,
+                                                 gsize          total,
+                                                 gsize          uploaded,
+                                                 const GError  *error,
+                                                 GObject       *weak_object,
+                                                 gpointer       user_data);
+
+
 /**
  * RestProxyCallClass:
  * @prepare: Virtual function called before making the request, This allows the
@@ -68,111 +86,66 @@ typedef enum {
 
 GQuark rest_proxy_call_error_quark (void);
 
-GType rest_proxy_call_get_type (void);
-
-/* Functions for dealing with request */
-void rest_proxy_call_set_method (RestProxyCall *call,
-                                 const gchar   *method);
-
-const char * rest_proxy_call_get_method (RestProxyCall *call);
-
-void rest_proxy_call_set_function (RestProxyCall *call,
-                                   const gchar   *function);
-
-const char * rest_proxy_call_get_function (RestProxyCall *call);
-
-void rest_proxy_call_add_header (RestProxyCall *call,
-                                 const gchar   *header,
-                                 const gchar   *value);
-
-void rest_proxy_call_take_header (RestProxyCall *call,
-                                  const gchar   *header,
-                                  gchar         *value);
-
-
-const gchar *rest_proxy_call_lookup_header (RestProxyCall *call,
-                                            const gchar   *header);
-
-void rest_proxy_call_remove_header (RestProxyCall *call,
-                                    const gchar   *header);
-
-void rest_proxy_call_add_param (RestProxyCall *call,
-                                const gchar   *name,
-                                const gchar   *value);
-
-void rest_proxy_call_take_param (RestProxyCall *call,
-                                 const gchar   *name,
-                                 gchar         *value);
-
-void rest_proxy_call_add_param_full (RestProxyCall            *call,
-                                     RestParam                *param);
-
-RestParam *rest_proxy_call_lookup_param (RestProxyCall *call,
-                                           const gchar *name);
-
-void rest_proxy_call_remove_param (RestProxyCall *call,
-                                   const gchar   *name);
-
-RestParams *rest_proxy_call_get_params (RestProxyCall *call);
-
-typedef void (*RestProxyCallAsyncCallback)(RestProxyCall *call,
-                                           const GError  *error,
-                                           GObject       *weak_object,
-                                           gpointer       userdata);
-
-void rest_proxy_call_invoke_async (RestProxyCall       *call,
-                                   GCancellable        *cancellable,
-                                   GAsyncReadyCallback  callback,
-                                   gpointer             user_data);
-
-gboolean rest_proxy_call_invoke_finish (RestProxyCall *call,
-                                        GAsyncResult  *result,
-                                        GError       **error);
-
-typedef void (*RestProxyCallContinuousCallback) (RestProxyCall *call,
-                                                 const gchar   *buf,
-                                                 gsize          len,
-                                                 const GError  *error,
-                                                 GObject       *weak_object,
-                                                 gpointer       userdata);
-
-gboolean rest_proxy_call_continuous (RestProxyCall                    *call,
-                                     RestProxyCallContinuousCallback   callback,
-                                     GObject                          *weak_object,
-                                     gpointer                          userdata,
-                                     GError                          **error);
-
-typedef void (*RestProxyCallUploadCallback) (RestProxyCall *call,
-                                             gsize          total,
-                                             gsize          uploaded,
-                                             const GError  *error,
-                                             GObject       *weak_object,
-                                             gpointer       userdata);
-
-gboolean rest_proxy_call_upload (RestProxyCall                *call,
-                                 RestProxyCallUploadCallback   callback,
-                                 GObject                      *weak_object,
-                                 GCancellable                 *cancellable,
-                                 gpointer                      userdata,
-                                 GError                      **error);
-
-gboolean rest_proxy_call_cancel (RestProxyCall *call);
-
-/* Functions for dealing with responses */
-
-const gchar *rest_proxy_call_lookup_response_header (RestProxyCall *call,
+GType         rest_proxy_call_get_type               (void);
+void          rest_proxy_call_set_method             (RestProxyCall *call,
+                                                      const char    *method);
+const char *  rest_proxy_call_get_method             (RestProxyCall *call);
+void          rest_proxy_call_set_function           (RestProxyCall *call,
+                                                      const char    *function);
+const char *  rest_proxy_call_get_function           (RestProxyCall *call);
+void          rest_proxy_call_add_header             (RestProxyCall *call,
+                                                      const char    *header,
+                                                      const char    *value);
+void          rest_proxy_call_take_header            (RestProxyCall *call,
+                                                      const char    *header,
+                                                      char          *value);
+const char *  rest_proxy_call_lookup_header          (RestProxyCall *call,
+                                                      const char    *header);
+void          rest_proxy_call_remove_header          (RestProxyCall *call,
+                                                      const char    *header);
+void          rest_proxy_call_add_param              (RestProxyCall *call,
+                                                      const char    *name,
+                                                      const char    *value);
+void          rest_proxy_call_take_param             (RestProxyCall *call,
+                                                      const char    *name,
+                                                      char          *value);
+void          rest_proxy_call_add_param_full         (RestProxyCall *call,
+                                                      RestParam     *param);
+RestParam *   rest_proxy_call_lookup_param           (RestProxyCall *call,
+                                                      const char    *name);
+void          rest_proxy_call_remove_param           (RestProxyCall *call,
+                                                      const char    *name);
+RestParams *  rest_proxy_call_get_params             (RestProxyCall *call);
+void          rest_proxy_call_invoke_async           (RestProxyCall       *call,
+                                                      GCancellable        *cancellable,
+                                                      GAsyncReadyCallback  callback,
+                                                      gpointer             user_data);
+gboolean      rest_proxy_call_invoke_finish          (RestProxyCall *call,
+                                                      GAsyncResult  *result,
+                                                      GError       **error);
+gboolean      rest_proxy_call_continuous             (RestProxyCall                    *call,
+                                                      RestProxyCallContinuousCallback   callback,
+                                                      GObject                          *weak_object,
+                                                      gpointer                          userdata,
+                                                      GError                          **error);
+gboolean      rest_proxy_call_upload                 (RestProxyCall                *call,
+                                                      RestProxyCallUploadCallback   callback,
+                                                      GObject                      *weak_object,
+                                                      GCancellable                 *cancellable,
+                                                      gpointer                      userdata,
+                                                      GError                      **error);
+gboolean      rest_proxy_call_cancel                 (RestProxyCall *call);
+const char *  rest_proxy_call_lookup_response_header (RestProxyCall *call,
                                                      const gchar   *header);
-
-GHashTable *rest_proxy_call_get_response_headers (RestProxyCall *call);
-
-goffset rest_proxy_call_get_payload_length (RestProxyCall *call);
-const gchar *rest_proxy_call_get_payload (RestProxyCall *call);
-char *rest_proxy_call_take_payload (RestProxyCall *call);
-gboolean rest_proxy_call_serialize_params (RestProxyCall *call,
-                                           gchar        **content_type,
-                                           gchar        **content,
-                                           gsize         *content_len,
-                                           GError       **error);
+GHashTable *  rest_proxy_call_get_response_headers   (RestProxyCall *call);
+goffset       rest_proxy_call_get_payload_length     (RestProxyCall *call);
+const char *  rest_proxy_call_get_payload            (RestProxyCall *call);
+char *        rest_proxy_call_take_payload           (RestProxyCall *call);
+gboolean      rest_proxy_call_serialize_params       (RestProxyCall   *call,
+                                                      char          **content_type,
+                                                      char          **content,
+                                                      gsize           *content_len,
+                                                      GError         **error);
 
 
 G_END_DECLS
