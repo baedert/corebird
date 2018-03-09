@@ -816,13 +816,14 @@ rest_proxy_call_invoke_async (RestProxyCall      *call,
   if (message == NULL)
     {
       g_task_return_error (task, error);
+      g_object_unref (task);
       return;
     }
 
   if (cancellable != NULL)
     {
       priv->cancel_sig = g_signal_connect (cancellable, "cancelled",
-          G_CALLBACK (_call_message_call_cancelled_cb), call);
+                                           G_CALLBACK (_call_message_call_cancelled_cb), call);
       priv->cancellable = g_object_ref (cancellable);
     }
 
@@ -1210,6 +1211,28 @@ rest_proxy_call_set_content (RestProxyCall *call,
   g_return_if_fail (content != NULL);
 
   priv->content = g_strdup (content);
+}
+
+void
+rest_proxy_call_take_content (RestProxyCall *call,
+                              char          *content)
+{
+  RestProxyCallPrivate *priv = rest_proxy_call_get_instance_private (call);
+
+  g_return_if_fail (REST_IS_PROXY_CALL (call));
+  g_return_if_fail (content != NULL);
+
+  priv->content = content;
+}
+
+RestProxy *
+rest_proxy_call_get_proxy (RestProxyCall *call)
+{
+  RestProxyCallPrivate *priv = rest_proxy_call_get_instance_private (call);
+
+  g_return_val_if_fail (REST_IS_PROXY_CALL (call), NULL);
+
+  return priv->proxy;
 }
 
 G_GNUC_INTERNAL const char *

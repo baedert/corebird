@@ -284,6 +284,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       if (this.cancellable != null) {
         this.cancellable.cancel ();
       }
+      this.compose_job.abort_all_uploads ();
       this.save_last_tweet ();
       destroy ();
     }

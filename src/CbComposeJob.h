@@ -27,17 +27,32 @@ G_BEGIN_DECLS
 #define CB_TYPE_COMPOSE_JOB (cb_compose_job_get_type ())
 G_DECLARE_FINAL_TYPE (CbComposeJob, cb_compose_job, CB, COMPOSE_JOB, GObject);
 
+typedef struct _CbComposeJob CbComposeJob;
+
+typedef enum {
+  MEDIA_NONE = 0, /* Not fully uploaded yet */
+  MEDIA_UPLOADED, /* Uploaded and useable */
+  MEDIA_PENDING,  /* Uploaded but we need to poll until it's done */
+  MEDIA_FAILED,   /* Something has failed along the way. */
+} MediaStatus;
+
 typedef struct {
+  CbComposeJob *job; /* The compose job always outlives all of the uploads */
   GCancellable *cancellable;
   char *filename;
+  char *contents;
+  gsize contents_length;
+  guint n_segments;
+  guint n_uploaded_segments;
   gint64 id; /* 0 when not uploaded yet */
-} ImageUpload;
+  MediaStatus status;
+} MediaUpload;
 
 struct _CbComposeJob
 {
   GObject parent_instance;
 
-  ImageUpload image_uploads[4];
+  MediaUpload uploads[4];
   RestProxy *account_proxy;
   RestProxy *upload_proxy;
   gint64 reply_id;
@@ -48,7 +63,6 @@ struct _CbComposeJob
   RestProxyCall *send_call;
   GTask *send_task;
 };
-typedef struct _CbComposeJob CbComposeJob;
 
 
 CbComposeJob *cb_compose_job_new                (RestProxy            *account_proxy,
@@ -58,6 +72,7 @@ void          cb_compose_job_upload_image_async (CbComposeJob         *self,
                                                  const char           *image_path);
 void          cb_compose_job_abort_image_upload (CbComposeJob         *self,
                                                  const char           *image_path);
+void          cb_compose_job_abort_all_uploads  (CbComposeJob         *self);
 void          cb_compose_job_set_reply_id       (CbComposeJob         *self,
                                                  gint64                reply_id);
 void          cb_compose_job_set_quoted_tweet   (CbComposeJob         *self,

@@ -405,6 +405,7 @@ namespace Cb {
     public void set_text (string s);
     public void upload_image_async (string p);
     public void abort_image_upload (string s);
+    public void abort_all_uploads ();
     public async bool send_async (GLib.Cancellable c) throws GLib.Error;
   }
 

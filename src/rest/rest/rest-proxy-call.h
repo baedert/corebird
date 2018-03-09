@@ -20,14 +20,17 @@
  *
  */
 
-#ifndef _REST_PROXY_CALL
-#define _REST_PROXY_CALL
+#ifndef __REST_PROXY_CALL_H__
+#define __REST_PROXY_CALL_H__
 
 #include <glib-object.h>
 #include <gio/gio.h>
 #include "rest-params.h"
+#include "rest-proxy.h"
 
 G_BEGIN_DECLS
+
+typedef struct _RestProxy RestProxy;
 
 #define REST_TYPE_PROXY_CALL rest_proxy_call_get_type()
 G_DECLARE_DERIVABLE_TYPE (RestProxyCall, rest_proxy_call, REST, PROXY_CALL, GObject)
@@ -137,6 +140,10 @@ const char *  rest_proxy_call_get_payload            (RestProxyCall   *call);
 char *        rest_proxy_call_take_payload           (RestProxyCall   *call);
 void          rest_proxy_call_set_content            (RestProxyCall   *call,
                                                       const char      *content);
+void          rest_proxy_call_take_content           (RestProxyCall   *call,
+                                                      char            *content);
+RestProxy *   rest_proxy_call_get_proxy              (RestProxyCall   *call);
+
 
 
 G_END_DECLS

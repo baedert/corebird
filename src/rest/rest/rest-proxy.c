@@ -372,18 +372,18 @@ _rest_proxy_get_bound_url (RestProxy *proxy)
   g_return_val_if_fail (REST_IS_PROXY (proxy), NULL);
 
   if (!priv->url && !priv->binding_required)
-  {
-    priv->url = g_strdup (priv->url_format);
-  }
+    {
+      priv->url = g_strdup (priv->url_format);
+    }
 
   return priv->url;
 }
 
 void
-_rest_proxy_queue_message (RestProxy   *proxy,
-                           SoupMessage *message,
-                           SoupSessionCallback callback,
-                           gpointer user_data)
+_rest_proxy_queue_message (RestProxy           *proxy,
+                           SoupMessage         *message,
+                           SoupSessionCallback  callback,
+                           gpointer             user_data)
 {
   RestProxyPrivate *priv = GET_PRIVATE (proxy);
 
