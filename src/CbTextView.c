@@ -621,7 +621,7 @@ cb_text_view_init (CbTextView *self)
   g_signal_connect (buffer, "notify::cursor-position",
                     G_CALLBACK (text_buffer_cursor_position_changed_cb), self);
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (self->text_view), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->text_view), PANGO_WRAP_WORD_CHAR);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->text_view), GTK_WRAP_WORD_CHAR);
   gtk_container_add (GTK_CONTAINER (self->scrolled_window), self->text_view);
 
   get_link_color (self, &link_color);
