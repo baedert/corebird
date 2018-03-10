@@ -172,7 +172,7 @@ cb_utils_linkify_user_name (const CbUserIdentity *user,
   char *s1, *s2;
 
   /* ATTENTION: The usernames passed in here should already have
-   * escaped ampersand charactes. */
+   * escaped ampersand characters. */
 #ifdef DEBUG
   {
     const char *a = strchr (user->user_name, '&');
@@ -206,6 +206,9 @@ cb_utils_linkify_user_name (const CbUserIdentity *user,
   s2 = cb_utils_escape_quotes (s1);
 
   g_string_append (str, s2);
+  g_string_append (str, " – ");
+  g_string_append_c (str, '@');
+  g_string_append (str, user->screen_name);
 
   g_free (s1);
   g_free (s2);
