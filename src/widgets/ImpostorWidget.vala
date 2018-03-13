@@ -17,6 +17,7 @@
 
 class ImpostorWidget : Gtk.Image {
   private new Cairo.Surface? surface = null;
+  private Gsk.RenderNode? cloned_node = null;
 
 
   public ImpostorWidget () {
@@ -25,37 +26,14 @@ class ImpostorWidget : Gtk.Image {
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
-    warning ("ImpostorWidget is broken.");
-    return;
-
-
-    //if (this.surface == null)
-      //return;
-
-    //if (texture != null) {
-      //Graphene.Rect bounds = {};
-      //bounds.origin.x = 0;
-      //bounds.origin.y = 0;
-      //bounds.size.width = get_allocated_width ();
-      //bounds.size.height = get_allocated_height ();
-      //snapshot.append_texture (texture, bounds, "Clone Texture");
-    //} else {
-    //}
+    if (this.cloned_node != null) {
+      snapshot.append_node (this.cloned_node);
+    }
   }
 
   public void clone (Gtk.Widget widget) {
-    int widget_width  = widget.get_allocated_width ();
-    int widget_height = widget.get_allocated_height ();
-
-    if (widget_width == 0 || widget_height == 0) {
-      this.surface = null;
-      return;
-    }
-
-    this.surface = widget.get_window ().create_similar_surface (Cairo.Content.COLOR_ALPHA,
-                                                                widget_width,
-                                                                widget_height);
-    var ct = new Cairo.Context (surface);
-    widget.draw (ct);
+    var snapshot = new Gtk.Snapshot (null, false, null, "Clone of %s", widget.get_name ());
+    widget.snapshot (snapshot);
+    this.cloned_node = snapshot.to_node ();
   }
 }
