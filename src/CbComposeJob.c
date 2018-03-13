@@ -462,6 +462,7 @@ cb_compose_job_upload_image_async (CbComposeJob *self,
   char *contents;
   gsize contents_length;
   guint i;
+  GError *error = NULL;
 
   for (i = 0; i < MAX_UPLOADS; i ++)
     {
@@ -476,19 +477,35 @@ cb_compose_job_upload_image_async (CbComposeJob *self,
 
   g_assert (upload != NULL);
 
-  /*file = g_file_new_for_path ("/home/baedert/test.mp4");*/
-  file = g_file_new_for_path ("/home/baedert/test2.webm");
-  /*file = g_file_new_for_path ("/home/baedert/rollo.png");*/
-  /*file = g_file_new_for_path (image_path);*/
+  file = g_file_new_for_path (image_path);
   file_info = g_file_query_info (file,
-                                G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-                                G_FILE_QUERY_INFO_NONE,
-                                NULL, NULL);
-  /* TODO: Error checking? */
-  g_file_load_contents (file, NULL, &contents, &contents_length, NULL, NULL);
+                                 G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                                 G_FILE_QUERY_INFO_NONE,
+                                 NULL, &error);
+
+  /* Set these right here so the error reporting works. */
+  upload->job = g_object_ref (self); /* XXX Circular reference? */
+  upload->filename = g_strdup (image_path);
+
+  if (error != NULL)
+    {
+      g_critical (G_STRLOC ": %s", error->message);
+      fail_upload (upload, error);
+      return;
+    }
+
+  g_file_load_contents (file, NULL, &contents, &contents_length,
+                        NULL, &error);
+
+  if (error != NULL)
+    {
+      g_critical (G_STRLOC ": %s", error->message);
+      fail_upload (upload, error);
+      return;
+    }
+
   g_object_unref (file);
 
-  upload->job = g_object_ref (self); /* XXX Circular reference? */
   upload->filename = g_strdup (image_path);
   upload->cancellable = g_cancellable_new ();
   upload->contents = contents;
