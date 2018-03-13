@@ -93,6 +93,11 @@ public class ListListEntry : Gtk.ListBoxRow {
     } else {
       delete_button.hide ();
     }
+
+    this.notify["has-focus"].connect (() => {
+      if (!this.has_focus)
+        stack.visible_child_name = "default";
+    });
   }
 
   private string normalize_name (string name) {
@@ -176,10 +181,5 @@ public class ListListEntry : Gtk.ListBoxRow {
   private void cancel_button_clicked_cb () {
     stack.visible_child_name = "default";
     this.activatable = true;
-  }
-
-  private bool focus_out_cb () {
-    stack.visible_child_name = "default";
-    return false;
   }
 }
