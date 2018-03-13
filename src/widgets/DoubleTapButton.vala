@@ -15,9 +15,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
-class DoubleTapButton : Gtk.ToggleButton {
+public class DoubleTapButton : Gtk.ToggleButton {
   private bool first_step = false;
-
 
   public void reset () {
     first_step = false;
