@@ -104,7 +104,7 @@ cb_media_image_widget_new (CbMedia *media)
     g_warning ("Maybe remove the GIF handling support!");
     /*gtk_image_set_from_animation (GTK_IMAGE (self->image), media->animation);*/
   else
-    gtk_image_set_from_texture (GTK_IMAGE (self->image), media->texture);
+    gtk_image_set_from_paintable(GTK_IMAGE (self->image), GDK_PAINTABLE (media->texture));
 
   self->img_width  = gdk_texture_get_width (media->texture);
   self->img_height = gdk_texture_get_height (media->texture);
