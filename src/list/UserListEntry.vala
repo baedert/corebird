@@ -39,8 +39,13 @@ public class UserListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
       return screen_name_label.label.substring (1);
     }
   }
+
   public void set_screen_name (string sn) {
     screen_name_label.label = sn;
+  }
+
+  public unowned string get_screen_name_for_sorting () {
+    return screen_name_label.label;
   }
 
   public string avatar_url {

@@ -36,8 +36,8 @@ accounts_list_sort_func (GtkListBoxRow *row1,
   e1 = USER_LIST_ENTRY (row1);
   e2 = USER_LIST_ENTRY (row2);
 
-  return g_ascii_strcasecmp (user_list_entry_get_screen_name (e1),
-                             user_list_entry_get_screen_name (e2));
+  return g_ascii_strcasecmp (user_list_entry_get_screen_name_for_sorting (e1),
+                             user_list_entry_get_screen_name_for_sorting (e2));
 }
 
 static void
@@ -324,13 +324,16 @@ account_info_changed_cb (Account    *account,
   CbMainWindow *self = user_data;
   IPage *cur_page;
   char *title;
+  char *page_title;
 
   g_assert (CB_IS_MAIN_WINDOW (user_data));
 
   /* Just update title from the current page */
   cur_page = cb_main_window_get_page (self, cb_main_window_get_cur_page_id (self));
-  cb_main_window_set_window_title (self, ipage_get_title (cur_page),
+  page_title = ipage_get_title (cur_page);
+  cb_main_window_set_window_title (self, page_title,
                                    GTK_STACK_TRANSITION_TYPE_NONE);
+  g_free (page_title);
 
   title = g_strdup_printf ("Corebird - @%s", screen_name);
   gtk_window_set_title (GTK_WINDOW (self), title);
@@ -801,6 +804,7 @@ cb_main_window_change_account (CbMainWindow *self,
     {
       IPage *first_page;
       char *title;
+      char *page_title;
       gboolean shell_shows_app_menu;
 
       gtk_widget_show (self->header_box);
@@ -810,7 +814,10 @@ cb_main_window_change_account (CbMainWindow *self,
       main_widget_switch_page (MAIN_WIDGET (self->main_widget), 0, NULL);
 
       first_page = main_widget_get_page (MAIN_WIDGET (self->main_widget), 0);
-      cb_main_window_set_window_title (self, ipage_get_title (first_page), GTK_STACK_TRANSITION_TYPE_NONE);
+      page_title = ipage_get_title (first_page);
+      cb_main_window_set_window_title (self, page_title,
+                                       GTK_STACK_TRANSITION_TYPE_NONE);
+      g_free (page_title);
 
       avatar_widget_set_texture (AVATAR_WIDGET (self->avatar_widget),
                                  account_get_avatar_small (account));
