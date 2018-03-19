@@ -266,3 +266,17 @@ subdir('tests')
 if enable_examples
   subdir('examples')
 endif
+
+summary = [
+  '',
+  '----------',
+  ' Corebird @0@'.format(meson.project_version()),
+  '',
+  '   Debuggin enabled: @0@'.format(enable_debug),
+  '      Video enabled: @0@'.format(enable_video),
+  ' Spellcheck enabled: @0@'.format(enable_spellcheck),
+  '',
+  '----------',
+]
+
+message('\n'.join(summary))
