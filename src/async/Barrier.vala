@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class Collect : GLib.Object {
+public class Barrier : GLib.Object {
   private int cur = 0;
   private int max;
   private GLib.Error? error = null;
@@ -28,7 +28,7 @@ public class Collect : GLib.Object {
 
   public signal void finished (GLib.Error? error);
 
-  public Collect (int max)
+  public Barrier (int max)
   requires (max >= 0)
   {
     this.max = max;

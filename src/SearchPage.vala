@@ -52,7 +52,7 @@ class SearchPage : IPage, Gtk.Box {
   private int64 lowest_tweet_id = int64.MAX-1;
   private Gtk.Widget last_focus_widget;
   private int n_results = 0;
-  private Collect collect_obj;
+  private Barrier collect_obj;
   private uint remove_content_timeout = 0;
   private string last_search_query;
   private bool loading_tweets = false;
@@ -165,7 +165,7 @@ class SearchPage : IPage, Gtk.Box {
     this.user_page       = 1;
     this.lowest_tweet_id = int64.MAX-1;
 
-    collect_obj = new Collect (2);
+    collect_obj = new Barrier (2);
     collect_obj.finished.connect (show_entries);
 
     load_tweets ();

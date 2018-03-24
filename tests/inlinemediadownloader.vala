@@ -49,7 +49,7 @@ void double_download () {
   var media = new Cb.Media ();
   media.url = url;
 
-  var collect_obj = new Collect (5);
+  var collect_obj = new Barrier (5);
 
   Cb.MediaDownloader.get_default ().load_async.begin (media, () => {
     assert (!media.invalid);

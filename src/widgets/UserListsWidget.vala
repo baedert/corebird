@@ -83,7 +83,7 @@ class UserListsWidget : Gtk.Box {
     if (user_id == 0)
       user_id = account.id;
 
-    var collect_obj = new Collect (2);
+    var collect_obj = new Barrier (2);
 
     collect_obj.finished.connect (() => {
       load_lists.callback ();

@@ -80,7 +80,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
 
 
     users_loaded = true;
-    var collect_obj = new Collect (2);
+    var collect_obj = new Barrier (2);
     collect_obj.finished.connect (() => {
       if (user_list.get_children ().length () > 0) {
         user_list_frame.show ();

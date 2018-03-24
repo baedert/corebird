@@ -242,7 +242,7 @@ public class Account : GLib.Object {
   }
 
   public async void init_information () {
-    var collect_obj = new Collect (4);
+    var collect_obj = new Barrier (4);
     collect_obj.finished.connect (() => {
       init_information.callback ();
     });
@@ -276,7 +276,7 @@ public class Account : GLib.Object {
     yield;
   }
 
-  private async Json.Array? load_id_array (Collect collect_obj,
+  private async Json.Array? load_id_array (Barrier collect_obj,
                                            string  function,
                                            bool    direct) {
     var call = this.proxy.new_call ();

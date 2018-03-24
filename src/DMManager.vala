@@ -81,7 +81,7 @@ public class DMManager : GLib.Object {
   }
 
   public async void load_newest_dms () {
-    var collect_obj = new Collect (2);
+    var collect_obj = new Barrier (2);
     collect_obj.finished.connect (() => {
       load_newest_dms.callback ();
     });
