@@ -112,7 +112,7 @@ opacity_animation_func (CbAnimation *animation,
 static void
 cb_aspect_image_init (CbAspectImage *self)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
+  gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
 
   self->texture = NULL;
   self->opacity = 1.0;

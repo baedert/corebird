@@ -78,7 +78,7 @@ private class MediaButton : Gtk.Widget {
   }
 
   construct {
-    this.set_has_window (false);
+    this.set_has_surface (false);
     this.set_can_focus (true);
   }
 

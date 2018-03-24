@@ -605,7 +605,7 @@ cb_text_view_init (CbTextView *self)
   const GdkRGBA snippet_color = { 0.0, 0.65, 0.0627, 1.0};
   GdkRGBA link_color;
 
-  gtk_widget_set_has_window (GTK_WIDGET (self), FALSE);
+  gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 
   self->scrolled_window = gtk_scrolled_window_new (NULL, NULL);

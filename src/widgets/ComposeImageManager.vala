@@ -51,7 +51,7 @@ class ComposeImageManager : Gtk.Container {
     this.buttons = new GLib.GenericArray<AddImageButton> ();
     this.close_buttons = new GLib.GenericArray<Gtk.Button> ();
     this.progress_bars = new GLib.GenericArray<Gtk.ProgressBar> ();
-    this.set_has_window (false);
+    this.set_has_surface (false);
   }
 
   private void remove_clicked_cb (Gtk.Button source) {

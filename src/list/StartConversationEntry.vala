@@ -37,7 +37,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
   public StartConversationEntry (Account account) {
     this.account = account;
     completion_window = new Gtk.Window (Gtk.WindowType.POPUP);
-    completion_window.set_type_hint (Gdk.WindowTypeHint.COMBO);
+    completion_window.set_type_hint (Gdk.SurfaceTypeHint.COMBO);
     //completion_window.set_screen (name_entry.get_screen ());
     completion_window.destroy_with_parent = true;
     //completion_window.focus_out_event.connect (() => {
@@ -83,7 +83,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
     int x, y;
     Gtk.Allocation alloc;
     name_entry.get_allocation (out alloc);
-    name_entry.get_window ().get_origin (out x, out y);
+    name_entry.get_surface ().get_origin (out x, out y);
     x += alloc.x;
     y += alloc.y + alloc.height;
 

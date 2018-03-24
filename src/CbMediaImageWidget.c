@@ -169,7 +169,7 @@ cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
 void
 cb_media_image_widget_calc_size (CbMediaImageWidget *self)
 {
-  GdkWindow *window;
+  GdkSurface *surface;
   GdkMonitor *monitor;
   GdkRectangle workarea;
   int win_width;
@@ -180,11 +180,11 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
   /* :( */
   gtk_widget_realize (gtk_widget_get_toplevel (GTK_WIDGET (self)));
 
-  window = gtk_widget_get_window (gtk_widget_get_toplevel (GTK_WIDGET (self)));
-  g_assert_nonnull (window);
+  surface = gtk_widget_get_surface (gtk_widget_get_toplevel (GTK_WIDGET (self)));
+  g_assert_nonnull (surface);
 
-  monitor = gdk_display_get_monitor_at_window (gdk_display_get_default (),
-                                               window);
+  monitor = gdk_display_get_monitor_at_surface (gdk_display_get_default (),
+                                                surface);
 
   if (!monitor)
     {

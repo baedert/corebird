@@ -29,7 +29,7 @@ class AddImageButton : Gtk.Widget {
   private uint64 delete_transition_start;
 
   construct {
-    this.set_has_window (false);
+    this.set_has_surface (false);
   }
 
   public void get_draw_size (out int    width,

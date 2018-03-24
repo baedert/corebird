@@ -128,7 +128,7 @@ cb_quote_tweet_widget_class_init (CbQuoteTweetWidgetClass *klass)
 static void
 cb_quote_tweet_widget_init (CbQuoteTweetWidget *self)
 {
-  gtk_widget_set_has_window ((GtkWidget *)self, FALSE);
+  gtk_widget_set_has_surface ((GtkWidget *)self, FALSE);
 }
 
 static gboolean

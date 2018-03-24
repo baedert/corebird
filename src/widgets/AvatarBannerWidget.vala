@@ -33,7 +33,7 @@ public class AvatarBannerWidget : Gtk.Widget {
   public signal void banner_clicked ();
 
   construct {
-    this.set_has_window (false);
+    this.set_has_surface (false);
     get_style_context ().add_class ("avatar");
 
     /* set_banner_button */

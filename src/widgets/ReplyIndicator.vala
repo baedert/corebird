@@ -29,7 +29,7 @@ public class ReplyIndicator : Gtk.Widget {
   private double show_factor = 0.0;
 
   construct {
-    set_has_window (false);
+    set_has_surface (false);
   }
 
   static construct {
