@@ -636,6 +636,7 @@ cb_text_view_init (CbTextView *self)
   gtk_style_context_add_class (gtk_widget_get_style_context (self->box), "dim-label");
   gtk_style_context_add_class (gtk_widget_get_style_context (self->box), "extra");
   gtk_widget_set_parent (self->box, GTK_WIDGET (self));
+  gtk_widget_hide (self->box);
 
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "view");
   gtk_style_context_add_class (gtk_widget_get_style_context (GTK_WIDGET (self)), "fancy");
@@ -690,6 +691,7 @@ cb_text_view_add_widget (CbTextView *self,
                          GtkWidget  *widget)
 {
   gtk_container_add (GTK_CONTAINER (self->box), widget);
+  gtk_widget_show (self->box);
 }
 
 void
