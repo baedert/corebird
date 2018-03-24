@@ -232,8 +232,31 @@ cb_text_transform_text (const char         *text,
 
   g_free (end_str);
 
+  /* As a last step, make sure that removing trailing hashtags did not leave some
+   * trailing whitespace (esp. newlines) behind.
+   * Technically, that condition is too lax but it's good enough in practice and
+   * we actually *never* care about trailing whitespace and can alway safely
+   * remove it. */
+  if ((flags & CB_TEXT_TRANSFORM_REMOVE_TRAILING_HASHTAGS) > 0)
+    {
+      char *p = str->str + str->len;
+      gunichar c = g_utf8_get_char (p);
+
+      while (c == '\0' || g_unichar_isspace (c))
+        {
+          p = g_utf8_prev_char (p);
+
+          if (p == str->str)
+            break;
+
+          c = g_utf8_get_char (p);
+        }
+
+      // Go one forward again, since the current character is the first non-space one.
+      p = g_utf8_next_char (p);
+
+      g_string_truncate (str, p - str->str);
+    }
+
   return g_string_free (str, FALSE);
 }
-
-
-

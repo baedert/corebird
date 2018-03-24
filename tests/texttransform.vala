@@ -1,4 +1,24 @@
 
+void empty () {
+  var entities = new Cb.TextEntity[0];
+  string source_text = "";
+
+  string result = Cb.TextTransform.text (source_text,
+                                         entities,
+                                         0,
+                                         0,
+                                         0);
+
+  assert (result == source_text);
+
+  result = Cb.TextTransform.text (source_text,
+                                  entities,
+                                  Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS,
+                                  0,
+                                  0);
+  assert (result == source_text);
+}
+
 void normal () {
   var entities = new Cb.TextEntity[0];
   string source_text = "foo bar foo";
@@ -449,11 +469,71 @@ void bug1 () {
   assert (filter_text.length > 0);
 }
 
+void trailing_whitespace () {
+  var entities = new Cb.TextEntity[1];
+  entities[0] = Cb.TextEntity () {
+    from = 13,
+    to = 18,
+    display_text = "#blah",
+    target = "#blah"
+  };
+  string source_text = "foo bar foo\n\n#blah";
+
+  string result = Cb.TextTransform.text (source_text,
+                                         entities,
+                                         Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS,
+                                         0,
+                                         0);
+
+  // This is not strictly necessary, but we do it for clearity.
+  // Printing this for debugging is much better.
+  var p = result.replace("\n", "\\n");
+  assert (!p.contains ("#blah"));
+  assert (!p.contains ("\\n"));
+
+  entities = new Cb.TextEntity[0];
+
+  source_text = "foo á";
+  result = Cb.TextTransform.text (source_text,
+                                  entities,
+                                  Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS,
+                                  0,
+                                  0);
+
+  // Quick check that we aren't screwing up the result with a non-ascii character at the end...
+  assert (result.has_suffix ("á"));
+
+  source_text = "one two three\n\n#foo #bar";
+  entities = new Cb.TextEntity[2];
+  entities[0] = Cb.TextEntity () {
+    from = 15,
+    to = 19,
+    display_text = "#foo",
+    target = "#foo"
+  };
+  entities[1] = Cb.TextEntity () {
+    from = 20,
+    to = 24,
+    display_text = "#bar",
+    target = "#bar"
+  };
+
+  result = Cb.TextTransform.text (source_text,
+                                  entities,
+                                  Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS,
+                                  0,
+                                  0);
+
+  p = result.replace ("\n", "\\n");
+  assert (!p.contains ("\\n"));
+}
+
 int main (string[] args) {
   GLib.Environment.set_variable ("GSETTINGS_BACKEND", "memory", true);
   Intl.setlocale (LocaleCategory.ALL, "");
   GLib.Test.init (ref args);
   Settings.init ();
+  GLib.Test.add_func ("/tt/empty", empty);
   GLib.Test.add_func ("/tt/normal", normal);
   GLib.Test.add_func ("/tt/simple", simple);
   GLib.Test.add_func ("/tt/url-at-end", url_at_end);
@@ -468,6 +548,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tt/no-quoted-link", no_quoted_link);
   GLib.Test.add_func ("/tt/new-reply", new_reply);
   GLib.Test.add_func ("/tt/bug1", bug1);
+  GLib.Test.add_func ("/tt/trailing-whitespace", trailing_whitespace);
 
   return GLib.Test.run ();
 }
