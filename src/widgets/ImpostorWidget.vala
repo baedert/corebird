@@ -16,7 +16,6 @@
  */
 
 class ImpostorWidget : Gtk.Image {
-  private new Cairo.Surface? surface = null;
   private Gsk.RenderNode? cloned_node = null;
 
 
