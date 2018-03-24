@@ -84,6 +84,8 @@ void           cb_tweet_model_remove_last_n_visible        (CbTweetModel *self,
                                                             guint         amount);
 void           cb_tweet_model_remove_tweets_above          (CbTweetModel *self,
                                                             gint64        id);
+guint          cb_tweet_model_get_index_for_id             (CbTweetModel *self,
+                                                            gint64        id);
 
 
 #endif

@@ -277,6 +277,7 @@ namespace Cb {
     public void remove_tweets_above (int64 id);
     public void toggle_flag_on_user_tweets (int64 user_id, TweetState flag, bool active);
     public void toggle_flag_on_user_retweets (int64 user_id, TweetState flag, bool active);
+    public uint get_index_for_id (int64 id);
   }
 
   [CCode (cprefix = "CbTwitterItemInterface_", lower_case_cprefix = "cb_twitter_item_", cheader_filename =

@@ -739,3 +739,26 @@ cb_tweet_model_remove_tweets_above (CbTweetModel *self,
       remove_tweet_at_pos (self, 0);
     }
 }
+
+/**
+ * This shouldn't happen in practice, but just
+ * return 0 if we can't find @id in self->tweets at all.
+ * Even self->hidden_tweets is not OK.
+ */
+guint
+cb_tweet_model_get_index_for_id (CbTweetModel *self,
+                                 gint64        id)
+{
+  guint i, p;
+
+  for (i = 0, p = self->tweets->len; i < p; i ++)
+    {
+      CbTweet *t = g_ptr_array_index (self->tweets, i);
+
+      if (t->id == id)
+        return i;
+    }
+
+
+  return 0;
+}
