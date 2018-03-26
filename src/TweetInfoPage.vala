@@ -66,9 +66,9 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Label fav_label;
   [GtkChild]
-  private Cb.TweetListBox bottom_list_box;
+  private Cb.TweetListBox conversation_list_box;
   [GtkChild]
-  private Cb.TweetListBox top_list_box;
+  private Cb.TweetListBox reply_list_box;
   [GtkChild]
   private Gtk.ToggleButton favorite_button;
   [GtkChild]
@@ -106,14 +106,14 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     });
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
-    bottom_list_box.row_activated.connect ((row) => {
+    conversation_list_box.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (KEY_TWEET, ((Cb.TweetRow)row).tweet);
       bundle.put_bool (KEY_EXISTING, true);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
-    top_list_box.row_activated.connect ((row) => {
+    reply_list_box.row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (KEY_TWEET, ((Cb.TweetRow)row).tweet);
@@ -162,10 +162,10 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
       rearrange_tweets (tweet.id);
     } else {
-      bottom_list_box.model.clear ();
-      bottom_list_box.hide ();
-      top_list_box.model.clear ();
-      top_list_box.hide ();
+      conversation_list_box.model.clear ();
+      conversation_list_box.hide ();
+      reply_list_box.model.clear ();
+      reply_list_box.hide ();
     }
 
     if (mode == BY_INSTANCE) {
@@ -220,29 +220,27 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   private void rearrange_tweets (int64 new_id) {
     //assert (new_id != this.tweet_id);
 
-    if (top_list_box.model.contains_id (new_id)) {
-      // Move the current tweet down into bottom_list_box
-      bottom_list_box.model.add (this.tweet);
-      bottom_list_box.show ();
-      top_list_box.model.clear ();
-      top_list_box.hide ();
-    } else if (bottom_list_box.model.contains_id (new_id)) {
+    if (reply_list_box.model.contains_id (new_id)) {
+      // Move the current tweet down into conversation_list_box
+      conversation_list_box.model.add (this.tweet);
+      conversation_list_box.show ();
+      reply_list_box.model.clear ();
+      reply_list_box.hide ();
+    } else if (conversation_list_box.model.contains_id (new_id)) {
       // Remove all tweets above the new one from the bottom list box,
       // add the direct successor to the top_list
-      top_list_box.model.clear ();
-      top_list_box.show ();
-      var t = bottom_list_box.model.get_for_id (new_id, -1);
+      reply_list_box.model.clear ();
+      reply_list_box.show ();
+      var t = conversation_list_box.model.get_for_id (new_id, -1);
       if (t != null) {
-        top_list_box.model.add (t);
+        reply_list_box.model.add (t);
       } else {
-        top_list_box.model.add (this.tweet);
+        reply_list_box.model.add (this.tweet);
       }
 
-      reply_indicator.replies_available = true;
-
-      bottom_list_box.model.remove_tweets_above (new_id);
-      if (bottom_list_box.model.get_n_items () == 0)
-        bottom_list_box.hide ();
+      conversation_list_box.model.remove_tweets_above (new_id);
+      if (conversation_list_box.model.get_n_items () == 0)
+        conversation_list_box.hide ();
     }
     //else
       //error ("wtf");
@@ -398,9 +396,9 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
       var statuses_node = root.get_object ().get_array_member ("statuses");
       int64 previous_tweet_id = -1;
-      if (top_list_box.model.get_n_items () > 0) {
-        //assert (top_list_box.model.get_n_items () == 1);
-        previous_tweet_id = ((Cb.Tweet)(top_list_box.model.get_item (0))).id;
+      if (reply_list_box.model.get_n_items () > 0) {
+        //assert (reply_list_box.model.get_n_items () == 1);
+        previous_tweet_id = ((Cb.Tweet)(reply_list_box.model.get_item (0))).id;
       }
       int n_replies = 0;
       statuses_node.foreach_element ((arr, index, node) => {
@@ -419,19 +417,10 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         var t = new Cb.Tweet ();
         t.load_from_json (node, account.id, now);
         if (t.id != previous_tweet_id) {
-          top_list_box.model.add (t);
+          reply_list_box.model.add (t);
           n_replies ++;
         }
       });
-
-      if (n_replies > 0) {
-        top_list_box.show ();
-        reply_indicator.replies_available = true;
-      } else {
-        //top_list_box.hide ();
-        //reply_indicator.replies_available = false;
-      }
-
     });
 
   }
@@ -447,7 +436,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       return;
     }
 
-    bottom_list_box.show ();
+    conversation_list_box.show ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/show.json");
     call.set_method ("GET");
@@ -467,13 +456,13 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
         /* We may not count the listbox placeholder here */
         int n_children = 0;
-        foreach (Gtk.Widget w in bottom_list_box.get_children ()) {
+        foreach (Gtk.Widget w in conversation_list_box.get_children ()) {
           if (w is Gtk.ListBoxRow) {
             n_children ++;
           }
         }
 
-        bottom_list_box.visible = n_children > 0;
+        conversation_list_box.visible = n_children > 0;
         return;
       }
 
@@ -488,11 +477,14 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       /* If we get here, the tweet is not protected so we can just use it */
       var tweet = new Cb.Tweet ();
       tweet.load_from_json (parser.get_root (), account.id, new GLib.DateTime.now_local ());
-      bottom_list_box.model.add (tweet);
+      conversation_list_box.model.add (tweet);
       if (tweet.retweeted_tweet == null)
         load_replied_to_tweet (tweet.source_tweet.reply_id);
       else
         load_replied_to_tweet (tweet.retweeted_tweet.reply_id);
+
+      reply_indicator.show ();
+      reply_indicator.replies_available = true;
     });
   }
 
@@ -665,9 +657,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         if (reply_id == this.tweet_id) {
           var t = new Cb.Tweet ();
           t.load_from_json (root, account.id, new GLib.DateTime.now_local ());
-          top_list_box.model.add (t);
-          top_list_box.show ();
-          this.reply_indicator.replies_available = true;
+          reply_list_box.model.add (t);
         }
       }
     } else if (type == Cb.StreamMessageType.DELETE) {
