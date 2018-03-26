@@ -417,6 +417,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         var t = new Cb.Tweet ();
         t.load_from_json (node, account.id, now);
         if (t.id != previous_tweet_id) {
+          reply_list_box.show ();
           reply_list_box.model.add (t);
           n_replies ++;
         }
