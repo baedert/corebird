@@ -20,8 +20,10 @@ public class ReplyIndicator : Gtk.Widget {
   private bool replies = false;
   public bool replies_available {
     set {
-      this.replies = value;
-      this.on_replies_available ();
+      if (value != this.replies) {
+        this.replies = value;
+        this.on_replies_available ();
+      }
     }
     get { return replies; }
   }
