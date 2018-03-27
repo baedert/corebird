@@ -105,12 +105,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       }
     });
 
-    // XXX XXX XXX XXX XXX
-    // CbTweetListBox *always* sorts by id, but now that we switched the two listboxes,
-    // it needs to reverse the order...
-
     conversation_list_box.model.set_reverse_order ();
-    reply_list_box.model.set_reverse_order ();
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
     conversation_list_box.row_activated.connect ((row) => {
