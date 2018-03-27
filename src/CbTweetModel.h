@@ -31,7 +31,7 @@ typedef struct _CbTweetModelClass CbTweetModelClass;
 #define CB_TWEET_MODEL(obj)           (G_TYPE_CHECK_INSTANCE_CAST(obj, CB_TYPE_TWEET_MODEL, CbTweetModel))
 #define CB_TWEET_MODEL_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST(cls, CB_TYPE_TWEET_MODEL, CbTweetModelClass))
 #define CB_IS_TWEET_MODEL(obj)        (G_TYPE_CHECK_INSTANCE_TYPE(obj, CB_TYPE_TWEET_MODEL))
-#define CB_IS_TWEET_MODEL_CLASS(cls)   (G_TYPE_CHECK_CLASS_TYPE(cls, CB_TYPE_TWEET_MODEL))
+#define CB_IS_TWEET_MODEL_CLASS(cls)  (G_TYPE_CHECK_CLASS_TYPE(cls, CB_TYPE_TWEET_MODEL))
 #define CB_TWEET_MODEL_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS(obj, CB_TYPE_TWEET_MODEL, CbTweetModelClass))
 
 struct _CbTweetModel
