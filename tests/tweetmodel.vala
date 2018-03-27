@@ -51,6 +51,35 @@ void basic_tweet_order () {
   assert (((Cb.Tweet)tm.get_item (2)).id == 10);
 }
 
+void basic_tweet_order_reversed () {
+  Cb.TweetModel tm = new Cb.TweetModel ();
+  tm.set_reverse_order ();
+
+  Cb.Tweet t1 = new Cb.Tweet ();
+  t1.id = 10;
+
+  Cb.Tweet t2 = new Cb.Tweet ();
+  t2.id = 100;
+
+  Cb.Tweet t3 = new Cb.Tweet ();
+  t3.id = 1000;
+
+
+  tm.add (t3); // 1000
+  assert (tm.min_id == 1000);
+  assert (tm.max_id == 1000);
+  tm.add (t1); // 10
+  assert (tm.min_id == 10);
+  assert (tm.max_id == 1000);
+  tm.add (t2); // 100
+
+  assert (tm.get_n_items () == 3);
+
+  assert (((Cb.Tweet)tm.get_item (0)).id == 10);
+  assert (((Cb.Tweet)tm.get_item (1)).id == 100);
+  assert (((Cb.Tweet)tm.get_item (2)).id == 1000);
+}
+
 
 void tweet_removal () {
   var tm = new Cb.TweetModel ();
@@ -434,6 +463,7 @@ void same_id () {
 int main (string[] args) {
   GLib.Test.init (ref args);
   GLib.Test.add_func ("/tweetmodel/basic-tweet-order", basic_tweet_order);
+  GLib.Test.add_func ("/tweetmodel/basic-tweet-order-reversed", basic_tweet_order_reversed);
   GLib.Test.add_func ("/tweetmodel/tweet-removal", tweet_removal);
   GLib.Test.add_func ("/tweetmodel/clear", clear);
   GLib.Test.add_func ("/tweetmodel/clear2", clear2);

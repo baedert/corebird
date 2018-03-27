@@ -42,6 +42,8 @@ struct _CbTweetModel
   GPtrArray *hidden_tweets;
   gint64 min_id;
   gint64 max_id;
+
+  guint reverse_order: 1;
 };
 
 struct _CbTweetModelClass
@@ -86,6 +88,7 @@ void           cb_tweet_model_remove_tweets_above          (CbTweetModel *self,
                                                             gint64        id);
 guint          cb_tweet_model_get_index_for_id             (CbTweetModel *self,
                                                             gint64        id);
+void           cb_tweet_model_set_reverse_order            (CbTweetModel *self);
 
 
 #endif

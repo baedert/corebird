@@ -56,7 +56,4 @@ GtkWidget * cb_tweet_list_box_get_first_visible_row  (CbTweetListBox *self);
 GtkWidget * cb_tweet_list_box_get_placeholder        (CbTweetListBox *self);
 void        cb_tweet_list_box_remove_all             (CbTweetListBox *self);
 
-
-
-
 #endif

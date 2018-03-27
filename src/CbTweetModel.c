@@ -201,6 +201,35 @@ insert_sorted (CbTweetModel *self,
 {
   int insert_pos = -1;
 
+  if (self->reverse_order)
+    {
+      /* Special case. Just insert linearly here. We could improve this by doing the two special
+       * cases from below and/or doing a binary search for the insertion position of course. */
+      int i;
+
+      insert_pos = 0;
+      /* reverse_order means that the tweet with the highest ID is at the bottom,
+       * not the top of the model. I.e. the tweet with the lowest ID is at the
+       * beginning of the model... */
+      for (i = 0; i < (int)self->tweets->len - 1; i ++)
+        {
+          CbTweet *cur = g_ptr_array_index (self->tweets, i);
+          CbTweet *next = g_ptr_array_index (self->tweets, i + 1);
+
+          if (cur->id <= tweet->id && next->id >= tweet->id)
+            {
+              insert_pos = i + 1;
+              break;
+            }
+        }
+
+      g_object_ref (tweet);
+      g_ptr_array_insert (self->tweets, insert_pos, tweet);
+
+      emit_items_changed (self, insert_pos, 0, 1);
+      return;
+    }
+
   if (tweet->id > self->max_id)
     {
       insert_pos = 0;
@@ -209,13 +238,18 @@ insert_sorted (CbTweetModel *self,
     {
       insert_pos = self->tweets->len;
     }
+  else if (self->tweets->len == 0)
+    {
+      insert_pos = 0;
+    }
   else
     {
       /* This case should be relatively rare in real life since
        * we only ever add tweets at the top or bottom of a list */
-      guint i;
+      int i;
 
-      for (i = 0; i < self->tweets->len - 1; i ++)
+      /* int and not uint so empty lists are handled properly... */
+      for (i = 0; i < (int)self->tweets->len - 1; i ++)
         {
           CbTweet *cur = g_ptr_array_index (self->tweets, i);
           CbTweet *next = g_ptr_array_index (self->tweets, i + 1);
@@ -761,4 +795,11 @@ cb_tweet_model_get_index_for_id (CbTweetModel *self,
 
 
   return 0;
+}
+
+void
+cb_tweet_model_set_reverse_order (CbTweetModel *self)
+{
+  g_assert (self->tweets->len == 0);
+  self->reverse_order = TRUE;
 }
