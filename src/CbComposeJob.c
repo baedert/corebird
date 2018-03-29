@@ -423,7 +423,7 @@ media_upload_inited (GObject      *object,
     json_parser_load_from_data (parser, rest_proxy_call_get_payload (call), -1, &json_error);
     if (json_error != NULL)
       {
-        if (error->code != G_IO_ERROR_CANCELLED)
+        if (json_error->code != G_IO_ERROR_CANCELLED)
           g_warning ("%s: %s. Payload:\n%s", __FUNCTION__, json_error->message,
                      rest_proxy_call_get_payload (call));
 

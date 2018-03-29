@@ -479,14 +479,17 @@ cb_text_view_insert_completion (CbTextView    *self,
   GtkTextIter word_start_iter, word_end_iter;
   char *completion;
 
-  if (row == NULL)
+  if (cursor_word == NULL)
     return FALSE;
+
+  if (row == NULL)
+    {
+      g_free (cursor_word);
+      return FALSE;
+    }
 
   screen_name = g_object_get_data (G_OBJECT (row), "row-data");
   g_assert (screen_name != NULL);
-
-  if (cursor_word == NULL)
-    return FALSE;
 
   g_object_freeze_notify (G_OBJECT (buffer));
 
