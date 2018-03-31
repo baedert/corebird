@@ -7,7 +7,7 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="MaxSizeContainer" id="max_size_container">
+          <object class="CbMaxSizeContainer" id="max_size_container">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>

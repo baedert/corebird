@@ -203,6 +203,7 @@ public class Corebird : Gtk.Application {
     typeof (Cb.AspectImage).ensure ();
     typeof (Cb.TweetListBox).ensure ();
     typeof (Cb.ReplyIndicator).ensure ();
+    typeof (Cb.MaxSizeContainer).ensure ();
 
 #if DEBUG
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "corebird", true);

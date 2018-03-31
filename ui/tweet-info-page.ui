@@ -21,8 +21,7 @@
           <object class="GtkBox" id="main_box">
             <property name="orientation">vertical</property>
             <child>
-              <object class="MaxSizeContainer" id="max_size_container">
-                <property name="visible">1</property>
+              <object class="CbMaxSizeContainer" id="max_size_container">
                 <property name="can-focus">0</property>
                 <property name="hexpand">1</property>
                 <child>

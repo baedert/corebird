@@ -504,4 +504,11 @@ namespace Cb {
     public void set_replies_available (bool b);
     public signal void clicked ();
   }
+
+  [CCode (cprefix = "CbMaxSizeContainer_", lower_case_cprefix = "cb_max_size_container_", cheader_filename =
+          "CbMaxSizeContainer.h")]
+  public class MaxSizeContainer : Gtk.Bin {
+    public void set_max_size (int s);
+    public int get_max_size ();
+  }
 }

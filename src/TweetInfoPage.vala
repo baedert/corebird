@@ -78,7 +78,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Label source_label;
   [GtkChild]
-  private MaxSizeContainer max_size_container;
+  private Cb.MaxSizeContainer max_size_container;
   [GtkChild]
   private Cb.ReplyIndicator reply_indicator;
   [GtkChild]
@@ -101,7 +101,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
       if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.get_replies_available ()) {
         int inc = (int)(vadjustment.step_increment * (- delta_y));
-        max_size_container.max_size += inc;
+        max_size_container.set_max_size (max_size_container.get_max_size () + inc);
       }
     });
 
@@ -148,7 +148,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
     bool existing = args.get_bool (KEY_EXISTING);
 
-    max_size_container.max_size = 0;
+    max_size_container.set_max_size (0);
     main_stack.visible_child = main_box;
 
     /* If we have a tweet instance here already, we set the avatar now instead of in
