@@ -247,7 +247,7 @@ cb_dep = declare_dependency(
 # actual executable
 executable(
   'corebird',
-  'src/main.vala',
+  'src/main.c',
   cb_resources,
   dependencies: cb_dep,
   include_directories: srcdir,
