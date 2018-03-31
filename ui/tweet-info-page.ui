@@ -34,7 +34,7 @@
               </object>
             </child>
             <child>
-              <object class="ReplyIndicator" id="reply_indicator">
+              <object class="CbReplyIndicator" id="reply_indicator">
                 <property name="visible">1</property>
                 <property name="can-focus">0</property>
                 <property name="hexpand">1</property>

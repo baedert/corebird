@@ -496,4 +496,12 @@ namespace Cb {
     public IPage get_page (int page_id);
     public void change_account (Account? a);
   }
+
+  [CCode (cprefix = "CbReplyIndicator_", lower_case_cprefix = "cb_reply_indicator_", cheader_filename =
+          "CbReplyIndicator.h")]
+  public class ReplyIndicator : Gtk.Widget {
+    public bool get_replies_available ();
+    public void set_replies_available (bool b);
+    public signal void clicked ();
+  }
 }

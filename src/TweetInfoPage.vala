@@ -80,7 +80,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   [GtkChild]
   private MaxSizeContainer max_size_container;
   [GtkChild]
-  private ReplyIndicator reply_indicator;
+  private Cb.ReplyIndicator reply_indicator;
   [GtkChild]
   private Gtk.Stack main_stack;
   [GtkChild]
@@ -99,7 +99,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     scroll_controller = new Gtk.EventControllerScroll (this, Gtk.EventControllerScrollFlags.VERTICAL);
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
-      if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.replies_available) {
+      if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.get_replies_available ()) {
         int inc = (int)(vadjustment.step_increment * (- delta_y));
         max_size_container.max_size += inc;
       }
@@ -148,7 +148,6 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
     bool existing = args.get_bool (KEY_EXISTING);
 
-    reply_indicator.replies_available = false;
     max_size_container.max_size = 0;
     main_stack.visible_child = main_box;
 
@@ -487,7 +486,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         load_replied_to_tweet (tweet.retweeted_tweet.reply_id);
 
       reply_indicator.show ();
-      reply_indicator.replies_available = true;
+      reply_indicator.set_replies_available (true);
     });
   }
 
@@ -541,7 +540,11 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       }
 
       reply_label.label = buff.str;
+
+      // Since this is a reply to a tweet, we always need to show this
+      reply_indicator.set_replies_available (true);
     } else {
+      reply_indicator.set_replies_available (false);
       reply_box.hide ();
     }
 
