@@ -246,6 +246,8 @@ cb_main_window_close_request (GtkWindow *window)
     }
 
 out:
+  g_strfreev (startup_accounts);
+
   return GTK_WINDOW_CLASS (cb_main_window_parent_class)->close_request (window);
 }
 

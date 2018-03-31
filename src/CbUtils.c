@@ -553,12 +553,14 @@ parse_json_async (GTask        *task,
   json_parser_load_from_data (parser, payload, -1, &error);
   if (error)
     {
+      g_object_unref (parser);
       g_task_return_error (task, error);
       return;
     }
 
   if (g_cancellable_is_cancelled (cancellable))
     {
+      g_object_unref (parser);
       g_task_return_pointer (task, NULL, NULL);
       return;
     }
