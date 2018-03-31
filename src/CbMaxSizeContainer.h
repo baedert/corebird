@@ -16,18 +16,21 @@
  */
 
 #include <gtk/gtk.h>
+#include "CbAnimation.h"
 
 typedef struct _CbMaxSizeContainer      CbMaxSizeContainer;
 struct _CbMaxSizeContainer
 {
   GtkBin parent_instance;
 
-  int max_size;
+  double fraction;
+
+  CbAnimation open_animation;
 };
 
 #define CB_TYPE_MAX_SIZE_CONTAINER cb_max_size_container_get_type ()
 G_DECLARE_FINAL_TYPE (CbMaxSizeContainer, cb_max_size_container, CB, MAX_SIZE_CONTAINER, GtkBin);
 
-void          cb_max_size_container_set_max_size (CbMaxSizeContainer *self,
-                                                  int                 max_size);
-int           cb_max_size_container_get_max_size (CbMaxSizeContainer *self);
+void          cb_max_size_container_set_fraction (CbMaxSizeContainer *self,
+                                                  double              fraction);
+double        cb_max_size_container_get_fraction (CbMaxSizeContainer *self);

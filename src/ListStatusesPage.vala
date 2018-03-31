@@ -97,8 +97,8 @@ class ListStatusesPage : ScrollWidget, IPage {
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
       if (delta_y < 0 && this.vadjustment.value == 0) {
-        int inc = (int)(vadjustment.step_increment * (- delta_y));
-        max_size_container.set_max_size (max_size_container.get_max_size () + inc);
+        double inc = vadjustment.step_increment * (- delta_y);
+        max_size_container.set_fraction (max_size_container.get_fraction () + inc);
       }
     });
 
@@ -151,7 +151,7 @@ class ListStatusesPage : ScrollWidget, IPage {
       this.list_id = list_id;
       load_newer.begin ();
     } else {
-      max_size_container.set_max_size (0);
+      max_size_container.set_fraction (0.0);
       this.list_id = list_id;
       tweet_list.model.clear ();
       load_newest.begin ();

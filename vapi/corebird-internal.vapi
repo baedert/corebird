@@ -508,7 +508,8 @@ namespace Cb {
   [CCode (cprefix = "CbMaxSizeContainer_", lower_case_cprefix = "cb_max_size_container_", cheader_filename =
           "CbMaxSizeContainer.h")]
   public class MaxSizeContainer : Gtk.Bin {
-    public void set_max_size (int s);
-    public int get_max_size ();
+    public void set_fraction (double d);
+    public double get_fraction ();
+    public void animate_open ();
   }
 }

@@ -32,6 +32,7 @@ cb_max_size_container_measure (GtkWidget      *widget,
   CbMaxSizeContainer *self = CB_MAX_SIZE_CONTAINER (widget);
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   int min_height;
+  int nat_height;
 
   if (child == NULL)
     return;
@@ -43,10 +44,10 @@ cb_max_size_container_measure (GtkWidget      *widget,
       return;
     }
 
-  gtk_widget_measure (child, orientation, for_size, &min_height, NULL, NULL, NULL);
+  gtk_widget_measure (child, orientation, for_size, &min_height, &nat_height, NULL, NULL);
 
-  *minimum = MIN (min_height, self->max_size);
-  *natural = MIN (min_height, self->max_size);
+  *minimum = min_height * self->fraction;
+  *natural = nat_height * self->fraction;
 }
 
 static void
@@ -110,6 +111,13 @@ cb_max_size_container_pick (GtkWidget *widget,
 }
 
 static void
+open_animate_func (CbAnimation *self,
+                   double       t)
+{
+  cb_max_size_container_set_fraction (CB_MAX_SIZE_CONTAINER (self->owner), t);
+}
+
+static void
 cb_max_size_container_class_init (CbMaxSizeContainerClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
@@ -123,20 +131,46 @@ cb_max_size_container_class_init (CbMaxSizeContainerClass *klass)
 static void
 cb_max_size_container_init (CbMaxSizeContainer *self)
 {
-
+  cb_animation_init (&self->open_animation,
+                     GTK_WIDGET (self),
+                     open_animate_func);
 }
 
 void
-cb_max_size_container_set_max_size (CbMaxSizeContainer *self,
-                                    int                 max_size)
+cb_max_size_container_set_fraction (CbMaxSizeContainer *self,
+                                    double              fraction)
 {
-  self->max_size = max_size;
+  fraction = CLAMP (fraction, 0, 1);
 
-  gtk_widget_queue_resize (GTK_WIDGET (self));
+  if (fraction != self->fraction)
+    {
+      self->fraction = fraction;
+      gtk_widget_queue_resize (GTK_WIDGET (self));
+    }
 }
 
-int
-cb_max_size_container_get_max_size (CbMaxSizeContainer *self)
+double
+cb_max_size_container_get_fraction (CbMaxSizeContainer *self)
 {
-  return self->max_size;
+  return self->fraction;
+}
+
+void
+cb_max_size_container_animate_open (CbMaxSizeContainer *self)
+{
+  /* TODO: This is stupid and CbAnimation should have some set_reversed API. Probably. */
+  if (self->fraction > 0)
+    {
+      /*if (!cb_animation_is_reverse (&self->open_animation))*/
+        cb_animation_start_reverse (&self->open_animation);
+      /*else*/
+        /*cb_animation_start (&self->open_animation);*/
+    }
+  else
+    {
+      /*if (cb_animation_is_reverse (&self->open_animation))*/
+        /*cb_animation_start_reverse (&self->open_animation);*/
+      /*else*/
+        cb_animation_start (&self->open_animation);
+    }
 }
