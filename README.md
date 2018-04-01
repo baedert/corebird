@@ -58,17 +58,8 @@ If you pass `--disable-video` to the configure script, you don't need any gstrea
 
 ## Compiling
 
-### Autotools
-```
-./autogen.sh --prefix=/usr
-make
-make install
-```
-
-### Meson + Ninja
 ```
 meson ./build
-meson configure -Ddefault_library=static ./build
 ninja -C ./build
 ninja -C ./build install
 ```
