@@ -1,7 +1,4 @@
-# Corebird 1.7.4
-
-**Until further notice, all development is happening in the `next2` branch**
-
+# Corebird
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=baedert&url=http://github.com/baedert/corebird&title=corebird&language=vala&tags=github&category=software) [![Supprt Corebird on Patreon](https://baedert.org/patreon-donate-yellow.svg)](https://patreon.com/baedert)
 
@@ -41,14 +38,14 @@
 
 
 ## Dependencies
- - `gtk+-3.0 >= 3.20`
+ - **Latest development version of gtk+ 4.0**
  - `glib-2.0 >= 2.44`
  - `json-glib-1.0`
  - `sqlite3`
  - `libsoup-2.4`
  - `gettext >= 0.19.7`
  - `vala >= 0.28` (makedep)
- - `automake >= 1.14` (makedep)
+ - `meson` (makedep)
  - `gst-plugins-base-1.0` (for playbin, disable via --disable-video)
  - `gst-plugins-bad-1.0 >= 1.6` (disable via --disable-video, default enabled)
  - `gst-plugins-good-1.0` (disable via --disable-video, default enabled)
