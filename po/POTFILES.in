@@ -2,6 +2,9 @@
 # Please keep this file sorted alphabetically.
 data/org.baedert.corebird.appdata.xml.in
 data/org.baedert.corebird.desktop.in
+src/CbMainWindow.c
+src/CbReplyIndicator.c
+src/CbTweetListBox.c
 src/CbUtils.c
 src/DMPage.vala
 src/DMThreadsPage.vala
@@ -11,7 +14,6 @@ src/FilterPage.vala
 src/HomeTimeline.vala
 src/ListStatusesPage.vala
 src/ListsPage.vala
-src/MainWindow.vala
 src/MentionsTimeline.vala
 src/ProfilePage.vala
 src/SearchPage.vala
@@ -23,12 +25,10 @@ src/list/TweetListEntry.vala
 src/util/Utils.vala
 src/widgets/AccountCreateWidget.vala
 src/widgets/AvatarBannerWidget.vala
-src/widgets/CompletionTextView.vala
 src/widgets/FavImageView.vala
 src/widgets/FollowButton.vala
 src/widgets/MediaButton.vala
 src/widgets/PixbufButton.vala
-src/widgets/TweetListBox.vala
 src/window/AccountDialog.vala
 src/window/ComposeTweetWindow.vala
 src/window/ModifyFilterDialog.vala
@@ -40,7 +40,6 @@ ui/account-create-widget.ui
 ui/account-dialog.ui
 ui/cb-emoji-chooser.ui
 ui/compose-window.ui
-ui/dm-page.ui
 ui/filter-list-entry.ui
 ui/filter-page.ui
 ui/list-list-entry.ui
