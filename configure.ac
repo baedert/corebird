@@ -124,10 +124,12 @@ if test "$enable_spellcheck" != "no"; then
   CB_CFLAGS="$CB_CFLAGS -D SPELLCHECK"
 fi
 
-if test "$enable_gst_check" != "no"; then
+# XXX Disabled for now since it breaks apparently (https://github.com/baedert/corebird/issues/820)
+#     and this check is not present in master anyway.
+#if test "$enable_gst_check" != "no"; then
   # Check for gtksink
-  GST_ELEMENT_CHECK([gtksink], [1.0], [], [])
-fi
+#  GST_ELEMENT_CHECK([gtksink], [1.0], [], [])
+#fi
 
 
 # Gettext stuff
