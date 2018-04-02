@@ -237,7 +237,8 @@ cb_text_transform_text (const char         *text,
    * Technically, that condition is too lax but it's good enough in practice and
    * we actually *never* care about trailing whitespace and can alway safely
    * remove it. */
-  if ((flags & CB_TEXT_TRANSFORM_REMOVE_TRAILING_HASHTAGS) > 0)
+  if ((flags & CB_TEXT_TRANSFORM_REMOVE_TRAILING_HASHTAGS) > 0 &&
+      strlen (str->str) > 0)
     {
       char *p = str->str + str->len;
       gunichar c = g_utf8_get_char (p);
@@ -252,7 +253,7 @@ cb_text_transform_text (const char         *text,
           c = g_utf8_get_char (p);
         }
 
-      // Go one forward again, since the current character is the first non-space one.
+      /* Go one forward again, since the current character is the first non-space one. */
       p = g_utf8_next_char (p);
 
       g_string_truncate (str, p - str->str);

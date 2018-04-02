@@ -526,6 +526,22 @@ void trailing_whitespace () {
 
   p = result.replace ("\n", "\\n");
   assert (!p.contains ("\\n"));
+
+  source_text = "#foo";
+  entities = new Cb.TextEntity[1];
+  entities[0] = Cb.TextEntity () {
+    from = 0,
+    to = 4,
+    display_text = "#foo",
+    target = "#foo"
+  };
+  result = Cb.TextTransform.text (source_text,
+                                  entities,
+                                  Cb.TransformFlags.REMOVE_TRAILING_HASHTAGS,
+                                  0,
+                                  0);
+  // This is useless, we the above call just shouldn't cause any errors in valgrind
+  assert (result.length == 0);
 }
 
 int main (string[] args) {
