@@ -200,7 +200,7 @@ cb_main_window_close_request (GtkWindow *window)
 {
   CbMainWindow *self = CB_MAIN_WINDOW (window);
   GList *windows, *l;
-  char **startup_accounts;
+  char **startup_accounts = NULL;
   int n_startup_accounts;
   int n_main_windows = 0;
 
