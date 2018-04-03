@@ -34,3 +34,4 @@ G_DECLARE_FINAL_TYPE (CbMaxSizeContainer, cb_max_size_container, CB, MAX_SIZE_CO
 void          cb_max_size_container_set_fraction (CbMaxSizeContainer *self,
                                                   double              fraction);
 double        cb_max_size_container_get_fraction (CbMaxSizeContainer *self);
+void          cb_max_size_container_animate_open (CbMaxSizeContainer *self);
