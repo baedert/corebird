@@ -512,4 +512,17 @@ namespace Cb {
     public double get_fraction ();
     public void animate_open ();
   }
+
+  [CCode (cprefix = "CbComposeImages_", lower_case_cprefix = "cb_compose_images_", cheader_filename =
+          "CbComposeImages.h")]
+  public class ComposeImages : Gtk.Widget {
+    public void load_image (string path);
+    public void set_image_progress (string path, double d);
+    public void end_image_progress (string path, string? error);
+    public int get_n_images ();
+    public bool is_full ();
+    public bool has_gif ();
+    public void insensitivize_buttons ();
+    public signal void image_removed (string image_path);
+  }
 }

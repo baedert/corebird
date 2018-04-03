@@ -115,7 +115,6 @@ corebird_lib_sources = files([
   'src/widgets/AvatarBannerWidget.vala',
   'src/widgets/AvatarWidget.vala',
   'src/widgets/BadgeRadioButton.vala',
-  'src/widgets/ComposeImageManager.vala',
   'src/widgets/CropWidget.vala',
   'src/widgets/DMPlaceholderBox.vala',
   'src/widgets/DoubleTapButton.vala',
@@ -172,6 +171,7 @@ corebird_lib_sources = files([
   'src/CbMainWindow.c',
   'src/CbReplyIndicator.c',
   'src/CbMaxSizeContainer.c',
+  'src/CbComposeImages.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',

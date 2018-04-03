@@ -38,7 +38,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkChild]
   private Gtk.Stack title_stack;
   [GtkChild]
-  private ComposeImageManager compose_image_manager;
+  private Cb.ComposeImages compose_images;
   [GtkChild]
   private Gtk.Stack stack;
   [GtkChild]
@@ -91,11 +91,11 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
                                           this.cancellable);
 
     this.compose_job.image_upload_progress.connect ((path, progress) => {
-      this.compose_image_manager.set_image_progress (path, progress);
+      this.compose_images.set_image_progress (path, progress);
     });
     this.compose_job.image_upload_finished.connect ((path, error_msg) => {
       debug ("%s Finished!", path);
-      this.compose_image_manager.end_progress (path, error_msg);
+      this.compose_images.end_image_progress (path, error_msg);
     });
 
     if (this.mode == Mode.REPLY)
@@ -165,10 +165,11 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     this.add_accel_group (ag);
 
-    this.compose_image_manager.image_removed.connect ((path) => {
+    this.compose_images.image_removed.connect ((path) => {
+      message ("COMPOSE WINDOW IMAGE REMOVED: %s", path);
       this.compose_job.abort_image_upload (path);
 
-      if (!this.compose_image_manager.full) {
+      if (!this.compose_images.is_full ()) {
         this.add_image_button.sensitive = true;
         this.fav_image_button.sensitive = true;
       }
@@ -179,8 +180,8 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
         this.fav_image_button.sensitive = true;
       }
 
-      if (this.compose_image_manager.n_images == 0) {
-        this.compose_image_manager.hide ();
+      if (this.compose_images.get_n_images () == 0) {
+        this.compose_images.hide ();
         fav_image_view.set_gifs_enabled (true);
       }
 
@@ -220,7 +221,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     length_label.label = (Cb.Tweet.MAX_LENGTH - length).to_string ();
 
     if (length > 0 && length <= Cb.Tweet.MAX_LENGTH ||
-        (length == 0 && compose_image_manager.n_images > 0)) {
+        (length == 0 && compose_images.get_n_images () > 0)) {
       bool network_reachable = GLib.NetworkMonitor.get_default ().network_available;
       send_button.sensitive = network_reachable;
     } else {
@@ -239,7 +240,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     tweet_text.sensitive = false;
     fav_image_button.sensitive = false;
     add_image_button.sensitive = false;
-    compose_image_manager.insensitivize_buttons ();
+    compose_images.insensitivize_buttons ();
 
     this.compose_job.set_text (tweet_text.get_text ());
 
@@ -342,19 +343,19 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
         cancel_button.label = _("Back");
         send_button.sensitive = false;
       } else if (filename.has_suffix (".gif") &&
-                 this.compose_image_manager.n_images > 0) {
+                 this.compose_images.get_n_images () > 0) {
         stack.visible_child = image_error_grid;
         image_error_label.label = _("Only one GIF file per tweet is allowed.");
         cancel_button.label = _("Back");
         send_button.sensitive = false;
       } else {
-        this.compose_image_manager.show ();
-        this.compose_image_manager.load_image (filename, null);
+        this.compose_images.show ();
+        this.compose_images.load_image (filename);
         this.compose_job.upload_image_async (filename);
-        if (this.compose_image_manager.n_images > 0) {
+        if (this.compose_images.get_n_images () > 0) {
           fav_image_view.set_gifs_enabled (false);
         }
-        if (this.compose_image_manager.full) {
+        if (this.compose_images.is_full ()) {
           this.add_image_button.sensitive = false;
           this.fav_image_button.sensitive = false;
         }
@@ -373,15 +374,15 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   [GtkCallback]
   public void favorite_image_selected_cb (string path) {
     cancel_clicked ();
-    this.compose_image_manager.show ();
-    this.compose_image_manager.load_image (path, null);
+    this.compose_images.show ();
+    this.compose_images.load_image (path);
     this.compose_job.upload_image_async (path);
-    if (this.compose_image_manager.full) {
+    if (this.compose_images.is_full ()) {
       this.add_image_button.sensitive = false;
       this.fav_image_button.sensitive = false;
     }
 
-    if (this.compose_image_manager.n_images > 0)
+    if (this.compose_images.get_n_images () > 0)
       fav_image_view.set_gifs_enabled (false);
 
     update_send_button_sensitivity ();
