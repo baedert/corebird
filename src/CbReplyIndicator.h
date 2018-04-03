@@ -15,6 +15,9 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __CB_REPLY_INDICATOR_H__
+#define __CB_REPLY_INDICATOR_H__
+
 #include <gtk/gtk.h>
 
 typedef struct _CbReplyIndicator      CbReplyIndicator;
@@ -33,3 +36,5 @@ GType     cb_reply_indicator_get_type              (void) G_GNUC_CONST;
 void      cb_reply_indicator_set_replies_available (CbReplyIndicator *self,
                                                     gboolean          replies_available);
 gboolean  cb_reply_indicator_get_replies_available (CbReplyIndicator *self);
+
+#endif
