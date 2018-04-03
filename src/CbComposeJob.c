@@ -235,8 +235,9 @@ media_finalized (GObject      *object,
   rest_proxy_call_invoke_finish (call, result, &error);
   if (error != NULL)
     {
-      g_warning ("%s: %s. Payload:\n%s", __FUNCTION__, error->message,
-                 rest_proxy_call_get_payload (call));
+      if (error->code != G_IO_ERROR_CANCELLED)
+        g_warning ("%s: %s. Payload:\n%s", __FUNCTION__, error->message,
+                   rest_proxy_call_get_payload (call));
 
       fail_upload (upload, error);
       return;
