@@ -114,7 +114,8 @@ cb_text_view_get_cursor_word (CbTextView *self,
 
 static void
 completion_animate_func (CbAnimation *animation,
-                         double       t)
+                         double       t,
+                         gpointer     user_data)
 {
   CbTextView *self = (CbTextView *)animation->owner;
 
@@ -218,7 +219,7 @@ cb_text_view_start_completion (CbTextView *self,
   gtk_widget_show (self->completion_scroller);
   if (!cb_animation_is_running (&self->completion_show_animation) &&
       self->completion_show_factor < 1.0)
-    cb_animation_start (&self->completion_show_animation);
+    cb_animation_start (&self->completion_show_animation, NULL);
 
   if (g_list_model_get_n_items (G_LIST_MODEL (self->completion_model)) > 0)
     cb_text_view_select_completion_row (self, 0);

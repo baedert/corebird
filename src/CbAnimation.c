@@ -59,7 +59,7 @@ cb_animation_tick_cb (GtkWidget     *widget,
   if (self->reverse)
     progress = 1.0 - progress;
 
-  self->func (self, progress);
+  self->func (self, progress, self->user_data);
 
   if (t >= 1.0)
     {
@@ -79,6 +79,7 @@ cb_animation_init (CbAnimation   *self,
   self->duration = CB_TRANSITION_DURATION;
   self->tick_id = 0;
   self->func = func;
+  self->user_data = NULL;
   self->reverse = FALSE;
 }
 
@@ -92,24 +93,34 @@ cb_animation_stop (CbAnimation *self)
    * then stop updating. */
 
   if (self->reverse)
-    self->func (self, 0.0);
+    self->func (self, 0.0, self->user_data);
   else
-    self->func (self, 1.0);
+    self->func (self, 1.0, self->user_data);
 
   remove_tick_id (self);
 }
 
+/**
+ * cb_animation_start:
+ * @self: a #CbAnimation
+ * @user_data: (nullable): user data for this animation run
+ *
+ * Starts the given animation.
+ * @user_data will be passed to the animate func.
+ */
 void
-cb_animation_start (CbAnimation *self)
+cb_animation_start (CbAnimation *self,
+                    gpointer     user_data)
 {
   guint64 now;
 
   self->reverse = FALSE;
+  self->user_data = user_data;
 
   /* Before realized, just jump to the end... */
   if (!gtk_widget_get_realized (self->owner))
     {
-      self->func (self, 1.0);
+      self->func (self, 1.0, self->user_data);
       remove_tick_id (self);
       return;
     }
@@ -144,7 +155,7 @@ cb_animation_start_reverse (CbAnimation *self)
   /* Before realized, just jump to the end... */
   if (!gtk_widget_get_realized (self->owner))
     {
-      self->func (self, 0.0);
+      self->func (self, 0.0, self->user_data);
       remove_tick_id (self);
       return;
     }

@@ -101,7 +101,8 @@ cb_aspect_image_class_init (CbAspectImageClass *klass)
 
 static void
 opacity_animation_func (CbAnimation *animation,
-                        double       t)
+                        double       t,
+                        gpointer     user_data)
 {
   CbAspectImage *self = CB_ASPECT_IMAGE (animation->owner);
 
@@ -138,5 +139,5 @@ cb_aspect_image_set_pixbuf (CbAspectImage *self,
 
   g_set_object (&self->texture, texture);
   gtk_widget_queue_resize (GTK_WIDGET (self));
-  cb_animation_start (&self->opacity_animation);
+  cb_animation_start (&self->opacity_animation, NULL);
 }

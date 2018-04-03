@@ -26,9 +26,6 @@
 #include "rest/rest-proxy.h"
 
 
-#define CB_TRANSITION_DURATION (200 * 1000)
-
-
 
 typedef GtkWidget * (*CbUtilsCreateWidgetFunc) (gpointer  data, gpointer  user_data);
 

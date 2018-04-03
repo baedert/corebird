@@ -112,7 +112,8 @@ cb_max_size_container_pick (GtkWidget *widget,
 
 static void
 open_animate_func (CbAnimation *self,
-                   double       t)
+                   double       t,
+                   gpointer     user_data)
 {
   cb_max_size_container_set_fraction (CB_MAX_SIZE_CONTAINER (self->owner), t);
 }
@@ -171,6 +172,6 @@ cb_max_size_container_animate_open (CbMaxSizeContainer *self)
       /*if (cb_animation_is_reverse (&self->open_animation))*/
         /*cb_animation_start_reverse (&self->open_animation);*/
       /*else*/
-        cb_animation_start (&self->open_animation);
+        cb_animation_start (&self->open_animation, NULL);
     }
 }

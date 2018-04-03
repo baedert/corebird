@@ -20,10 +20,13 @@
 
 #include <gtk/gtk.h>
 
-typedef struct _CbAnimation CbAnimation;
+#define CB_TRANSITION_DURATION (200 * 1000)
 
+
+typedef struct _CbAnimation CbAnimation;
 typedef void (*CbAnimateFunc) (CbAnimation *self,
-                               double       t);
+                               double       t,
+                               gpointer     user_data);
 
 struct _CbAnimation
 {
@@ -35,12 +38,14 @@ struct _CbAnimation
 
   guint64 start_time;
   CbAnimateFunc func;
+  gpointer user_data;
 };
 
 void     cb_animation_init          (CbAnimation      *self,
                                      GtkWidget        *owner,
                                      CbAnimateFunc     func);
-void     cb_animation_start         (CbAnimation       *self);
+void     cb_animation_start         (CbAnimation       *self,
+                                     gpointer           user_data);
 void     cb_animation_start_reverse (CbAnimation       *self);
 void     cb_animation_stop          (CbAnimation       *self);
 gboolean cb_animation_is_running    (const CbAnimation *self);
