@@ -166,7 +166,6 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     this.add_accel_group (ag);
 
     this.compose_images.image_removed.connect ((path) => {
-      message ("COMPOSE WINDOW IMAGE REMOVED: %s", path);
       this.compose_job.abort_image_upload (path);
 
       if (!this.compose_images.is_full ()) {
