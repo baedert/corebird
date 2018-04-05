@@ -273,6 +273,9 @@ media_finalized (GObject      *object,
         upload->status = MEDIA_UPLOADED;
       }
 
+    g_signal_emit (upload->job, compose_job_signals[IMAGE_UPLOAD_FINISHED], 0,
+                   upload->filename, NULL);
+
     g_object_unref (parser);
   }
 
