@@ -566,6 +566,7 @@ cb_compose_job_abort_image_upload (CbComposeJob *self,
           g_cancellable_cancel (upload->cancellable);
           image_upload_free (upload);
           g_clear_object (&upload->job);
+          memset (&self->uploads, 0, sizeof (self->uploads));
           break;
         }
     }
@@ -587,6 +588,7 @@ cb_compose_job_abort_all_uploads (CbComposeJob *self)
           g_cancellable_cancel (upload->cancellable);
           image_upload_free (upload);
           g_clear_object (&upload->job);
+          memset (&self->uploads, 0, sizeof (self->uploads));
           break;
         }
     }
