@@ -336,6 +336,7 @@ continuous_cb (RestProxyCall *call,
     {
       if (self->restarting)
         {
+          g_debug (G_STRLOC ": Resuming...");
           g_signal_emit (self, user_stream_signals[RESUMED], 0);
           self->restarting = FALSE;
         }

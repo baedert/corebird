@@ -305,13 +305,11 @@ cb_text_view_measure (GtkWidget      *widget,
 static void
 cb_text_view_size_allocate (GtkWidget           *widget,
                             const GtkAllocation *allocation,
-                            int                  baseline,
-                            GtkAllocation       *out_clip)
+                            int                  baseline)
 {
   CbTextView *self = CB_TEXT_VIEW (widget);
   GtkAllocation child_alloc;
   int box_height;
-  GdkRectangle child_clip;
 
   gtk_widget_measure (self->box, GTK_ORIENTATION_VERTICAL, allocation->width,
                       &box_height, NULL, NULL, NULL);
@@ -320,13 +318,11 @@ cb_text_view_size_allocate (GtkWidget           *widget,
   child_alloc.y = allocation->height - box_height;
   child_alloc.width = allocation->width;
   child_alloc.height = box_height;
-  gtk_widget_size_allocate (self->box, &child_alloc, -1, out_clip);
+  gtk_widget_size_allocate (self->box, &child_alloc, -1);
 
   child_alloc.y = 0;
   child_alloc.height = allocation->height - box_height;
-  gtk_widget_size_allocate (self->scrolled_window, &child_alloc, -1, &child_clip);
-
-  gdk_rectangle_union (&child_clip, &child_clip, out_clip);
+  gtk_widget_size_allocate (self->scrolled_window, &child_alloc, -1);
 
   if (gtk_widget_get_visible (self->completion_scroller))
     {
@@ -338,7 +334,7 @@ cb_text_view_size_allocate (GtkWidget           *widget,
 
       child_alloc.height = MAX (min_height, allocation->height - child_alloc.y);
 
-      gtk_widget_size_allocate (self->completion_scroller, &child_alloc, -1, &child_clip);
+      gtk_widget_size_allocate (self->completion_scroller, &child_alloc, -1);
     }
 }
 

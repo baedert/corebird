@@ -363,11 +363,9 @@ class CropWidget : Gtk.DrawingArea {
   }
 
 
-  public override void size_allocate (Gtk.Allocation alloc, int baseline, out Gtk.Allocation out_clip) {
+  public override void size_allocate (Gtk.Allocation alloc, int baseline) {
     calculate_image_rect ();
     restrict_selection_size ();
-
-    out_clip = alloc;
   }
 
   private void calculate_image_rect () {

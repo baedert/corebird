@@ -53,8 +53,7 @@ cb_max_size_container_measure (GtkWidget      *widget,
 static void
 cb_max_size_container_size_allocate (GtkWidget           *widget,
                                      const GtkAllocation *allocation,
-                                     int                  baseline,
-                                     GtkAllocation       *out_clip)
+                                     int                  baseline)
 {
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   GtkAllocation child_alloc;
@@ -71,7 +70,7 @@ cb_max_size_container_size_allocate (GtkWidget           *widget,
   child_alloc.width = allocation->width;
   child_alloc.height = min_height;
 
-  gtk_widget_size_allocate (child, &child_alloc, baseline, out_clip);
+  gtk_widget_size_allocate (child, &child_alloc, baseline);
 }
 
 static void

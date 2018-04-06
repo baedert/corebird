@@ -69,12 +69,10 @@ cb_quote_tweet_widget_measure (GtkWidget      *widget,
 static void
 cb_quote_tweet_widget_size_allocate (GtkWidget           *widget,
                                      const GtkAllocation *allocation,
-                                     int                  baseline,
-                                     GtkAllocation       *out_clip)
+                                     int                  baseline)
 {
   CbQuoteTweetWidget *self = (CbQuoteTweetWidget *)widget;
   GtkAllocation child_allocation;
-  GdkRectangle child_clip;
   int min;
 
   child_allocation.x = 0;
@@ -84,12 +82,12 @@ cb_quote_tweet_widget_size_allocate (GtkWidget           *widget,
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_VERTICAL, child_allocation.width,
                       &min, NULL, NULL, NULL);
   child_allocation.height = min;
-  gtk_widget_size_allocate (self->top_row_box, &child_allocation, -1, &child_clip);
+  gtk_widget_size_allocate (self->top_row_box, &child_allocation, -1);
 
   /* Remainder of allocation */
   child_allocation.y = min;
   child_allocation.height = allocation->height - min;
-  gtk_widget_size_allocate (self->text_label, &child_allocation, -1, &child_clip);
+  gtk_widget_size_allocate (self->text_label, &child_allocation, -1);
 }
 
 static GtkSizeRequestMode

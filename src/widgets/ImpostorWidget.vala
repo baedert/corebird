@@ -31,7 +31,7 @@ class ImpostorWidget : Gtk.Image {
   }
 
   public void clone (Gtk.Widget widget) {
-    var snapshot = new Gtk.Snapshot (false, null, "Clone of %s", widget.get_name ());
+    var snapshot = new Gtk.Snapshot (false, "Clone of %s", widget.get_name ());
     widget.snapshot (snapshot);
     this.cloned_node = snapshot.to_node ();
   }

@@ -157,8 +157,7 @@ cb_compose_images_measure (GtkWidget      *widget,
 static void
 cb_compose_images_size_allocate (GtkWidget           *widget,
                                  const GtkAllocation *allocation,
-                                 int                  baseline,
-                                 GtkAllocation       *out_clip)
+                                 int                  baseline)
 {
   CbComposeImages *self = CB_COMPOSE_IMAGES (widget);
   const guint n_images = self->images->len;
@@ -201,12 +200,12 @@ cb_compose_images_size_allocate (GtkWidget           *widget,
                       ((allocation->height - button_alloc.height / 2) * image->fraction); /* Delete animation */
       image_alloc.width = child_width;
       image_alloc.height = MAX (MIN (nat_child_height, image_height), min_child_height);
-      gtk_widget_size_allocate (img, &image_alloc, baseline, out_clip);
+      gtk_widget_size_allocate (img, &image_alloc, baseline);
 
       /* Allocate delete button */
       button_alloc.x = image_alloc.x + image_alloc.width - (button_alloc.width / 2);
       button_alloc.y = 0;
-      gtk_widget_size_allocate (image->delete_button, &button_alloc, baseline, out_clip);
+      gtk_widget_size_allocate (image->delete_button, &button_alloc, baseline);
 
       /* Progressbar */
       if (gtk_widget_get_visible (image->progressbar))
@@ -222,7 +221,7 @@ cb_compose_images_size_allocate (GtkWidget           *widget,
 
           progress_alloc.y = image_alloc.y + image_alloc.height - progress_alloc.height - IMAGE_PADDING;
 
-          gtk_widget_size_allocate (image->progressbar, &progress_alloc, baseline, out_clip);
+          gtk_widget_size_allocate (image->progressbar, &progress_alloc, baseline);
         }
 
       image_alloc.x += (image_alloc.width + (button_alloc.width / 2) + IMAGE_SPACING) * (1.0 - image->fraction);
