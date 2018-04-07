@@ -16,6 +16,9 @@
  */
 
 #include "corebird.h"
+#ifdef VIDEO
+#include <gst/gst.h>
+#endif
 
 int
 main (int argc, char **argv)
