@@ -111,7 +111,6 @@ corebird_lib_sources = files([
   'src/util/UserUtils.vala',
   'src/util/Utils.vala',
   'src/widgets/AccountCreateWidget.vala',
-  'src/widgets/AddImageButton.vala',
   'src/widgets/AvatarBannerWidget.vala',
   'src/widgets/AvatarWidget.vala',
   'src/widgets/BadgeRadioButton.vala',
