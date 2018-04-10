@@ -52,7 +52,12 @@ main (int argc, char **argv)
       }
     g_list_free (toplevels);
   }
+
+#ifdef VIDEO
+  gst_deinit ();
 #endif
+
+#endif /* ifdef DEBUG */
 
   g_object_unref (app);
 
