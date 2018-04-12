@@ -67,14 +67,9 @@ public class Account : GLib.Object {
 
   /**
    * Initializes the RestProxy object.
-   *
-   * @param load_secrets If set to true, the token and token_secret will be loaded
-   *                     from the account's database.
-   * @param force        If set to true, we will simply force to create a new
-   *                     RestProxy object.
    */
-  public void init_proxy (bool load_secrets = true, bool force = false) {
-    if (proxy != null && !force)
+  public void init_proxy () {
+    if (proxy != null)
       return;
 
     this.proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
@@ -83,19 +78,18 @@ public class Account : GLib.Object {
                                       false);
     this.user_stream = new Cb.UserStream (this.screen_name, STRESSTEST);
     this.user_stream.register (this.event_receiver);
-    if (load_secrets) {
-      init_database ();
-      int n_rows = db.select ("common").cols ("token", "token_secret")
-                                       .run ((vals) => {
-        proxy.token = vals[0];
-        proxy.token_secret = vals[1];
-        user_stream.set_proxy_data (proxy.token, proxy.token_secret);
-        return false; //stop
-      });
 
-      if (n_rows < 1) {
-        critical ("Could not load token{_secret} for user %s", this.screen_name);
-      }
+    init_database ();
+    int n_rows = db.select ("common").cols ("token", "token_secret")
+                                     .run ((vals) => {
+      proxy.token = vals[0];
+      proxy.token_secret = vals[1];
+      user_stream.set_proxy_data (proxy.token, proxy.token_secret);
+      return false; //stop
+    });
+
+    if (n_rows < 1) {
+      critical ("Could not load token{_secret} for user %s", this.screen_name);
     }
   }
 
