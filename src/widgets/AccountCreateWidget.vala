@@ -32,6 +32,8 @@ public class AccountCreateWidget : Gtk.Box {
   private unowned Account acc;
   private unowned Corebird corebird;
   private unowned Cb.MainWindow main_window;
+  private bool request_pin_clicked = false;
+  private Rest.OAuthProxy local_proxy;
   public signal void result_received (bool result, Account acc);
 
   public AccountCreateWidget (Account acc, Corebird corebird, Cb.MainWindow main_window) {
@@ -45,11 +47,13 @@ public class AccountCreateWidget : Gtk.Box {
   }
 
   public void open_pin_request_site () {
-    acc.init_proxy (false, true);
-
-    acc.proxy.request_token_async.begin ("oauth/request_token", "oob", null, (obj, res) => {
+    local_proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
+                                       Settings.get_consumer_secret (),
+                                       "https://api.twitter.com/",
+                                       false);
+    local_proxy.request_token_async.begin ("oauth/request_token", "oob", null, (obj, res) => {
       try {
-        acc.proxy.request_token_async.end (res);
+        local_proxy.request_token_async.end (res);
       } catch (GLib.Error e) {
         if (e.message.down() == "unauthorized") {
           Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there’s something wrong with the Twitter servers and you should try again later"), this.main_window);
@@ -60,7 +64,7 @@ public class AccountCreateWidget : Gtk.Box {
         return;
       }
 
-      string uri = "http://twitter.com/oauth/authorize?oauth_token=" + acc.proxy.get_token();
+      string uri = "http://twitter.com/oauth/authorize?oauth_token=" + local_proxy.get_token();
       debug ("Trying to open %s", uri);
 
       try {
@@ -72,6 +76,8 @@ public class AccountCreateWidget : Gtk.Box {
         critical (e.message);
       }
     });
+
+    request_pin_clicked = true;
   }
 
   [GtkCallback]
@@ -90,8 +96,9 @@ public class AccountCreateWidget : Gtk.Box {
   }
 
   private async void do_confirm () {
+    assert (local_proxy != null);
     try {
-      yield acc.proxy.access_token_async ("oauth/access_token", pin_entry.get_text (), null);
+      yield local_proxy.access_token_async ("oauth/access_token", pin_entry.get_text (), null);
     } catch (GLib.Error e) {
       critical (e.message);
       // We just assume that it was the wrong code
@@ -102,7 +109,7 @@ public class AccountCreateWidget : Gtk.Box {
       return;
     }
 
-    var call = acc.proxy.new_call ();
+    var call = local_proxy.new_call ();
     call.set_function ("1.1/account/settings.json");
     call.set_method ("GET");
 
@@ -128,15 +135,35 @@ public class AccountCreateWidget : Gtk.Box {
       return;
     }
 
-    yield acc.query_user_info_by_screen_name (screen_name);
+    var info_call = local_proxy.new_call ();
+    info_call.set_method ("GET");
+    info_call.set_function ("1.1/users/show.json");
+    info_call.add_param ("screen_name", screen_name);
+    info_call.add_param ("skip_status", "true");
+
+    try {
+      yield info_call.invoke_async (null);
+    } catch (GLib.Error e) {
+      warning (e.message);
+      return;
+    }
+
+    Json.Parser parser = new Json.Parser ();
+    try {
+      parser.load_from_data (info_call.get_payload ());
+    } catch (GLib.Error e) {
+      warning ("JSON error: %s.\nData:\n%s", e.message, info_call.get_payload ());
+    }
+
+    yield acc.set_info_from_json (parser.get_root ().get_object ());
     debug ("user info call");
     acc.init_database ();
     acc.save_info();
     acc.db.insert ("common")
-          .val ("token", acc.proxy.token)
-          .val ("token_secret", acc.proxy.token_secret)
+          .val ("token", local_proxy.token)
+          .val ("token_secret", local_proxy.token_secret)
           .run ();
-    acc.init_proxy (true, true);
+    acc.init_proxy ();
     corebird.account_added (acc);
     result_received (true, acc);
   }
@@ -148,8 +175,9 @@ public class AccountCreateWidget : Gtk.Box {
   }
 
   private void pin_changed_cb () {
+    message ("Pin changed");
     string text = pin_entry.get_text ();
-    bool confirm_possible = text.length > 0 && acc.proxy != null;
+    bool confirm_possible = text.length > 0 && request_pin_clicked;
     confirm_button.sensitive = confirm_possible;
   }
 

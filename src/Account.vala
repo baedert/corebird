@@ -182,9 +182,13 @@ public class Account : GLib.Object {
       return;
     }
 
+    var root = root_node.get_object ();
+    yield this.set_info_from_json (root);
+  }
+
+  public async void set_info_from_json (Json.Object root) {
     bool values_changed = false;
 
-    var root = root_node.get_object ();
     this.id = root.get_int_member ("id");
     if (this.name != root.get_string_member ("name")) {
       this.name = root.get_string_member ("name");
@@ -239,6 +243,7 @@ public class Account : GLib.Object {
                     this.avatar_small,
                     this.avatar);
     }
+
   }
 
   public async void init_information () {
