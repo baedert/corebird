@@ -61,6 +61,9 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Cb.TweetListBox? reply_list = null;
   private Cb.ComposeJob compose_job;
 
+  // XXX Remove this once gtk4 uses that other even controller scheme
+  private Gtk.EventControllerKey close_event_controller;
+
 
   public ComposeTweetWindow (Cb.MainWindow? parent,
                              Account        acc,
@@ -154,17 +157,6 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     /* Let the text view immediately grab the keyboard focus */
     tweet_text.grab_focus ();
 
-    warning ("ESCAPE to close the compose window is broken atm; sort this out once the key event controller stuff lands in gtk+.");
-
-    Gtk.AccelGroup ag = new Gtk.AccelGroup ();
-    //ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
-    ag.connect (Gdk.Key.Return, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
-        () => {start_send_tweet (); return true;});
-    ag.connect (Gdk.Key.E, Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.LOCKED,
-        () => {show_emoji_chooser (); return true;});
-
-    this.add_accel_group (ag);
-
     this.compose_images.image_removed.connect ((path) => {
       this.compose_job.abort_image_upload (path);
 
@@ -209,6 +201,21 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       // Ignore, just don't show the emoji chooser
     }
 
+    this.close_event_controller = new Gtk.EventControllerKey (this);
+    close_event_controller.key_released.connect ((keyval, keycode, state) => {
+      if ((state & Gdk.ModifierType.CONTROL_MASK) > 0) {
+        if (keyval == Gdk.Key.e) {
+          show_emoji_chooser ();
+        } else if (keyval == Gdk.Key.Return) {
+          start_send_tweet ();
+        }
+      } else {
+        if (keyval == Gdk.Key.Escape) {
+          this.cancel_clicked ();
+        }
+      }
+    });
+    close_event_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
 
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
@@ -288,11 +295,6 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.save_last_tweet ();
       destroy ();
     }
-  }
-
-  private bool escape_pressed_cb () {
-    this.cancel_clicked ();
-    return Gdk.EVENT_STOP;
   }
 
   public void set_text (string text) {
