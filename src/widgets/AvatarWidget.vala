@@ -28,7 +28,6 @@ public class AvatarWidget : Gtk.Widget {
       container_widget.verified = value;
       this.queue_draw ();
     }
-    default = false;
   }
   private Gdk.Texture _texture;
   public Gdk.Texture texture {
@@ -66,7 +65,6 @@ public class AvatarWidget : Gtk.Widget {
       container_widget.size = value;
       this.queue_resize ();
     }
-    default = 48;
   }
 
   private int64 start_time;
