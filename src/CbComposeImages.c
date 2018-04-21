@@ -297,7 +297,6 @@ delete_animation_func (CbAnimation *self,
             break;
         }
 
-      g_assert (index >= 0);
       g_assert (index < n_images);
 
       /* Now remove the image from our actual list */
