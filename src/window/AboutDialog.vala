@@ -15,7 +15,6 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 [GtkTemplate (ui = "/org/baedert/corebird/ui/about-dialog.ui")]
 class AboutDialog : Gtk.AboutDialog {
   [GtkCallback]
