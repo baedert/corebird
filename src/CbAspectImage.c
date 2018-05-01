@@ -59,19 +59,19 @@ cb_aspect_image_snapshot (GtkWidget   *widget,
   texture_width = gdk_texture_get_width (self->texture);
   x = (width - texture_width) / 2;
 
-  gtk_snapshot_push_opacity (snapshot, self->opacity, "AspectImage opacity");
+  gtk_snapshot_push_opacity (snapshot, self->opacity);
 
-  gtk_snapshot_push_clip (snapshot, &GRAPHENE_RECT_INIT (0, 0, width, height), "AspectImage Clip");
+  gtk_snapshot_push_clip (snapshot, &GRAPHENE_RECT_INIT (0, 0, width, height));
 
   if (x > 0) {
-    gtk_snapshot_push_blur (snapshot, 10, "AspectImage blur");
+    gtk_snapshot_push_blur (snapshot, 10);
     gtk_snapshot_append_texture (snapshot, self->texture,
-                                 &GRAPHENE_RECT_INIT (0, 0, width, height), "AspectImage texture");
+                                 &GRAPHENE_RECT_INIT (0, 0, width, height));
     gtk_snapshot_pop (snapshot); /* Blur */
   }
 
   gtk_snapshot_append_texture (snapshot, self->texture,
-                               &GRAPHENE_RECT_INIT (x, 0, texture_width, height), "AspectImage texture");
+                               &GRAPHENE_RECT_INIT (x, 0, texture_width, height));
 
   gtk_snapshot_pop (snapshot); /* Clip */
   gtk_snapshot_pop (snapshot); /* Opacity */

@@ -238,8 +238,7 @@ cb_compose_images_snapshot (GtkWidget   *widget,
   /* This is only relevant when an image gets transitioned to being deleted,
    * but we just always push a clip node here, for simplicity. */
   gtk_snapshot_push_clip (snapshot,
-                          &GRAPHENE_RECT_INIT (0, 0, width, height),
-                          "ComposeImagesClip");
+                          &GRAPHENE_RECT_INIT (0, 0, width, height));
 
   GTK_WIDGET_CLASS (cb_compose_images_parent_class)->snapshot (widget, snapshot);
 

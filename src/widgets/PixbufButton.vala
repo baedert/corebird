@@ -55,10 +55,10 @@ class PixbufButton : Gtk.Button {
     if (_round) {
       Gsk.RoundedRect round_clip = {};
       round_clip.init_from_rect (bounds, widget_width); // radius = width => round.
-      snapshot.push_rounded_clip (round_clip, "Avatar clip");
+      snapshot.push_rounded_clip (round_clip);
     }
 
-    snapshot.append_texture (this.bg, bounds, "Avatar Image");
+    snapshot.append_texture (this.bg, bounds);
 
     if (_round) {
       snapshot.pop ();

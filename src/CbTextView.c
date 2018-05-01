@@ -345,8 +345,7 @@ cb_text_view_snapshot (GtkWidget   *widget,
   gtk_snapshot_push_clip (snapshot,
                           &GRAPHENE_RECT_INIT(
                             0, 0,
-                            gtk_widget_get_width (widget), gtk_widget_get_height (widget)),
-                          "CbTextView");
+                            gtk_widget_get_width (widget), gtk_widget_get_height (widget)));
 
   GTK_WIDGET_CLASS (cb_text_view_parent_class)->snapshot (widget, snapshot);
 

@@ -87,8 +87,7 @@ cb_max_size_container_snapshot (GtkWidget   *widget,
                             0, 0,
                             gtk_widget_get_width (widget),
                             gtk_widget_get_height (widget)
-                          ),
-                          "MaxSizeContainer clip");
+                          ));
 
   gtk_widget_snapshot_child (widget, child, snapshot);
 

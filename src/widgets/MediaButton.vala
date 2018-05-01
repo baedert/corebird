@@ -198,14 +198,14 @@ private class MediaButton : Gtk.Widget {
       int draw_x = (widget_width / 2) - (draw_width / 2);
 
       if (media_alpha < 1.0)
-        snapshot.push_opacity (media_alpha, "Media Opacity");
+        snapshot.push_opacity (media_alpha);
 
       texture_bounds.origin.x = draw_x;
       texture_bounds.origin.y = 0;
       texture_bounds.size.width = draw_width;
       texture_bounds.size.height = draw_height;
 
-      snapshot.append_texture (media.texture, texture_bounds, "Media");
+      snapshot.append_texture (media.texture, texture_bounds);
 
       /* Draw play indicator */
       if (_media.is_video ()) {
@@ -217,7 +217,7 @@ private class MediaButton : Gtk.Widget {
         icon_bounds.size.width = PLAY_ICON_SIZE;
         icon_bounds.size.height = PLAY_ICON_SIZE;
 
-        snapshot.append_texture (icon_texture, icon_bounds, "Media Play Icon");
+        snapshot.append_texture (icon_texture, icon_bounds);
       }
 
       if (media_alpha < 1.0)

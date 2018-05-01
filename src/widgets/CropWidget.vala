@@ -265,7 +265,7 @@ class CropWidget : Gtk.DrawingArea {
 
     /* Draw dark background */
     Gdk.RGBA bg_color = {0.3, 0.3, 0.3, 1.0};
-    snapshot.append_color (bg_color, bounds, "Background Color");
+    snapshot.append_color (bg_color, bounds);
 
     /* Draw image */
     Graphene.Rect image_bounds = {};
@@ -273,7 +273,7 @@ class CropWidget : Gtk.DrawingArea {
     image_bounds.origin.y = image_rect.y;
     image_bounds.size.width = image_rect.width;
     image_bounds.size.height = image_rect.height;
-    snapshot.append_texture (this.texture, image_bounds, "Crop Texture");
+    snapshot.append_texture (this.texture, image_bounds);
 
     /* Draw half-transparent dark over the non-selected part of the image */
     Graphene.Rect dark_bounds = {};
@@ -284,28 +284,28 @@ class CropWidget : Gtk.DrawingArea {
     dark_bounds.origin.y = image_rect.y;
     dark_bounds.size.width = selection_rect.x - image_rect.x;
     dark_bounds.size.height = image_rect.height;
-    snapshot.append_color (dark, dark_bounds, "Dark Left");
+    snapshot.append_color (dark, dark_bounds);
 
     /* Top */
     dark_bounds.origin.x = selection_rect.x;
     dark_bounds.origin.y = image_rect.y;
     dark_bounds.size.width = selection_rect.width;
     dark_bounds.size.height = selection_rect.y - image_rect.y;
-    snapshot.append_color (dark, dark_bounds, "Dark Top");
+    snapshot.append_color (dark, dark_bounds);
 
     /* Right */
     dark_bounds.origin.x = selection_rect.x + selection_rect.width;
     dark_bounds.origin.y = image_rect.y;
     dark_bounds.size.width = image_rect.x + image_rect.width - (selection_rect.x + selection_rect.width);
     dark_bounds.size.height = image_rect.height;
-    snapshot.append_color (dark, dark_bounds, "Dark Right");
+    snapshot.append_color (dark, dark_bounds);
 
     /* Bottom */
     dark_bounds.origin.x = selection_rect.x;
     dark_bounds.origin.y = selection_rect.y + selection_rect.height;
     dark_bounds.size.width = selection_rect.width;
     dark_bounds.size.height = image_rect.y + image_rect.height - (selection_rect.y + selection_rect.height);
-    snapshot.append_color (dark, dark_bounds, "Dark Bottom");
+    snapshot.append_color (dark, dark_bounds);
 
 
 
@@ -319,28 +319,28 @@ class CropWidget : Gtk.DrawingArea {
     selection_bounds.origin.y = selection_rect.y;
     selection_bounds.size.width = stroke_width;
     selection_bounds.size.height = selection_rect.height;
-    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Left");
+    snapshot.append_color (selection_color, selection_bounds);
 
     /* Top */
     selection_bounds.origin.x = selection_rect.x;
     selection_bounds.origin.y = selection_rect.y;
     selection_bounds.size.width = selection_rect.width;
     selection_bounds.size.height = stroke_width;
-    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Top");
+    snapshot.append_color (selection_color, selection_bounds);
 
     /* Right */
     selection_bounds.origin.x = selection_rect.x + selection_rect.width - stroke_width;
     selection_bounds.origin.y = selection_rect.y;
     selection_bounds.size.width = stroke_width;
     selection_bounds.size.height = selection_rect.height;
-    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Right");
+    snapshot.append_color (selection_color, selection_bounds);
 
     /* Bottom */
     selection_bounds.origin.x = selection_rect.x;
     selection_bounds.origin.y = selection_rect.y + selection_rect.height - stroke_width;
     selection_bounds.size.width = selection_rect.width;
     selection_bounds.size.height = stroke_width;
-    snapshot.append_color (selection_color, selection_bounds, "Selection Rect Bottom");
+    snapshot.append_color (selection_color, selection_bounds);
 
     /* Resize quad */
     Gdk.RGBA quad_color = {0.0, 0.0, 0.6, 0.7};
@@ -352,7 +352,7 @@ class CropWidget : Gtk.DrawingArea {
     quad_bounds.size.width = quad_size;
     quad_bounds.size.height = quad_size;
 
-    snapshot.append_color (quad_color, quad_bounds, "Resize quad");
+    snapshot.append_color (quad_color, quad_bounds);
   }
 
   private bool cursor_in_selection (double x, double y) {

@@ -235,10 +235,10 @@ public class AvatarContainer : Gtk.Widget {
     if (_round) {
       Gsk.RoundedRect round_clip = {};
       round_clip.init_from_rect (bounds, width); // radius = width => round.
-      snapshot.push_rounded_clip (round_clip, "Avatar clip");
+      snapshot.push_rounded_clip (round_clip);
     }
 
-    snapshot.append_texture (this.texture, bounds, "Avatar Image");
+    snapshot.append_texture (this.texture, bounds);
 
     if (_round) {
       snapshot.pop ();
@@ -262,7 +262,7 @@ public class AvatarContainer : Gtk.Widget {
       verified_bounds.size.width = VERIFIED_SIZES[index] * verified_scale;
       verified_bounds.size.height = VERIFIED_SIZES[index] * verified_scale;
 
-      snapshot.append_texture (verified_texture, verified_bounds, "Avatar Verified Indicator");
+      snapshot.append_texture (verified_texture, verified_bounds);
     }
   }
 
