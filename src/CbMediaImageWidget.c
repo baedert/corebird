@@ -19,17 +19,6 @@
 G_DEFINE_TYPE (CbMediaImageWidget, cb_media_image_widget, GTK_TYPE_SCROLLED_WINDOW)
 
 static void
-cb_media_image_widget_finalize (GObject *object)
-{
-  CbMediaImageWidget *self = CB_MEDIA_IMAGE_WIDGET (object);
-
-  g_clear_object (&self->drag_gesture);
-
-  G_OBJECT_CLASS (cb_media_image_widget_parent_class)->finalize (object);
-}
-
-
-static void
 drag_begin_cb (GtkGestureDrag *gesture,
                double          start_x,
                double          start_y,
@@ -68,25 +57,25 @@ drag_update_cb (GtkGestureDrag *gesture,
 static void
 cb_media_image_widget_class_init (CbMediaImageWidgetClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  object_class->finalize = cb_media_image_widget_finalize;
 }
 
 static void
 cb_media_image_widget_init (CbMediaImageWidget *self)
 {
+  GtkGesture *drag_gesture;
+
   self->image = gtk_image_new ();
   gtk_container_add (GTK_CONTAINER (self), self->image);
 
   self->initial_scroll_x = 0.5;
   self->initial_scroll_y = 0.5;
 
-  self->drag_gesture = gtk_gesture_drag_new (GTK_WIDGET (self));
-  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->drag_gesture), GDK_BUTTON_MIDDLE);
-  gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (self->drag_gesture), GTK_PHASE_CAPTURE);
-  g_signal_connect (self->drag_gesture, "drag-begin", G_CALLBACK (drag_begin_cb), self);
-  g_signal_connect (self->drag_gesture, "drag-update", G_CALLBACK (drag_update_cb), self);
+  drag_gesture = gtk_gesture_drag_new ();
+  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (drag_gesture), GDK_BUTTON_MIDDLE);
+  gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (drag_gesture), GTK_PHASE_CAPTURE);
+  g_signal_connect (drag_gesture, "drag-begin", G_CALLBACK (drag_begin_cb), self);
+  g_signal_connect (drag_gesture, "drag-update", G_CALLBACK (drag_update_cb), self);
+  gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drag_gesture));
 }
 
 GtkWidget *

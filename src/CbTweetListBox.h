@@ -31,7 +31,6 @@ struct _CbTweetListBox
 
   CbTweetModel *model;
   CbDeltaUpdater *delta_updater;
-  GtkGesture *multipress_gesture;
   GtkWidget *placeholder;
   GtkWidget *error_label;
   GtkWidget *no_entries_label;

@@ -61,9 +61,6 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   private Cb.TweetListBox? reply_list = null;
   private Cb.ComposeJob compose_job;
 
-  // XXX Remove this once gtk4 uses that other even controller scheme
-  private Gtk.EventControllerKey close_event_controller;
-
 
   public ComposeTweetWindow (Cb.MainWindow? parent,
                              Account        acc,
@@ -201,7 +198,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       // Ignore, just don't show the emoji chooser
     }
 
-    this.close_event_controller = new Gtk.EventControllerKey (this);
+    var close_event_controller = new Gtk.EventControllerKey ();
     close_event_controller.key_released.connect ((keyval, keycode, state) => {
       if ((state & Gdk.ModifierType.CONTROL_MASK) > 0) {
         if (keyval == Gdk.Key.e) {
@@ -216,6 +213,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       }
     });
     close_event_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
+    this.add_controller (close_event_controller);
 
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }

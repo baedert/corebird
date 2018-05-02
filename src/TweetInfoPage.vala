@@ -90,8 +90,6 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Box reply_box;
 
-  private Gtk.EventControllerScroll scroll_controller;
-
   public TweetInfoPage (int id, Account account) {
     this.id = id;
     this.account = account;
@@ -100,7 +98,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       max_size_container.animate_open ();
     });
 
-    scroll_controller = new Gtk.EventControllerScroll (this, Gtk.EventControllerScrollFlags.VERTICAL);
+    var scroll_controller = new Gtk.EventControllerScroll (Gtk.EventControllerScrollFlags.VERTICAL);
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
       if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.get_replies_available ()) {
@@ -108,6 +106,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         max_size_container.set_fraction (max_size_container.get_fraction () + inc);
       }
     });
+    this.add_controller (scroll_controller);
 
     conversation_list_box.model.set_reverse_order ();
 

@@ -101,12 +101,13 @@ private class MediaButton : Gtk.Widget {
     menu_model.append (_("Save as…"), "media.save-as");
 
     this.layout = this.create_pango_layout ("0%");
-    this.press_gesture = new Gtk.GestureMultiPress (this);
+    this.press_gesture = new Gtk.GestureMultiPress ();
     this.press_gesture.set_exclusive (true);
     this.press_gesture.set_button (0);
     this.press_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     this.press_gesture.released.connect (gesture_released_cb);
     this.press_gesture.pressed.connect (gesture_pressed_cb);
+    this.add_controller (this.press_gesture);
   }
 
   private void media_progress_cb () {

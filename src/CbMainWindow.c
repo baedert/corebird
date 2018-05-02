@@ -41,16 +41,6 @@ accounts_list_sort_func (GtkListBoxRow *row1,
 }
 
 static void
-cb_main_window_finalize (GObject *object)
-{
-  CbMainWindow *self = CB_MAIN_WINDOW (object);
-
-  g_clear_object (&self->thumb_button_gesture);
-
-  G_OBJECT_CLASS (cb_main_window_parent_class)->finalize (object);
-}
-
-static void
 accounts_row_action_clicked_cb (UserListEntry *entry,
                                 gpointer       user_data)
 {
@@ -560,6 +550,7 @@ cb_main_window_init (CbMainWindow *self)
   Corebird *cb;
   GtkWidget *accounts_frame;
   GtkWidget *add_entry;
+  GtkGesture *thumb_button_gesture;
   guint i;
 
   gtk_window_set_default_size ((GtkWindow *)self, 530, 700);
@@ -643,10 +634,11 @@ cb_main_window_init (CbMainWindow *self)
 
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->headerbar), self->header_box);
 
-  self->thumb_button_gesture = gtk_gesture_multi_press_new (GTK_WIDGET (self));
-  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (self->thumb_button_gesture), 0);
-  gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (self->thumb_button_gesture), GTK_PHASE_CAPTURE);
-  g_signal_connect (self->thumb_button_gesture, "pressed", G_CALLBACK (thumb_button_gesture_pressed_cb), self);
+  thumb_button_gesture = gtk_gesture_multi_press_new ();
+  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (thumb_button_gesture), 0);
+  gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (thumb_button_gesture), GTK_PHASE_CAPTURE);
+  g_signal_connect (thumb_button_gesture, "pressed", G_CALLBACK (thumb_button_gesture_pressed_cb), self);
+  gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)thumb_button_gesture);
 
   cb = COREBIRD (g_application_get_default ());
   g_signal_connect (cb, "account-added", G_CALLBACK (app_account_added_cb), self);
@@ -656,10 +648,7 @@ cb_main_window_init (CbMainWindow *self)
 static void
 cb_main_window_class_init (CbMainWindowClass *klass)
 {
-  GObjectClass   *object_class = G_OBJECT_CLASS (klass);
   GtkWindowClass *window_class = GTK_WINDOW_CLASS (klass);
-
-  object_class->finalize = cb_main_window_finalize;
 
   window_class->close_request = cb_main_window_close_request;
 }

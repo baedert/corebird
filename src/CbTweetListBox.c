@@ -188,7 +188,6 @@ cb_tweet_list_box_finalize (GObject *obj)
   CbTweetListBox *self = (CbTweetListBox *)obj;
 
   g_object_unref (self->delta_updater);
-  g_object_unref (self->multipress_gesture);
   g_object_unref (self->model);
 
   G_OBJECT_CLASS (cb_tweet_list_box_parent_class)->finalize (obj);
@@ -217,6 +216,8 @@ cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
 static void
 cb_tweet_list_box_init (CbTweetListBox *self)
 {
+  GtkGesture *multipress_gesture;
+
   gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self), "tweets");
   gtk_list_box_set_selection_mode ((GtkListBox *)self, GTK_SELECTION_NONE);
   gtk_list_box_set_activate_on_single_click ((GtkListBox *)self,
@@ -225,11 +226,12 @@ cb_tweet_list_box_init (CbTweetListBox *self)
 
   self->model = cb_tweet_model_new ();
   self->delta_updater = cb_delta_updater_new ((GtkWidget *)self);
-  self->multipress_gesture = gtk_gesture_multi_press_new ((GtkWidget *)self);
-  gtk_gesture_single_set_button ((GtkGestureSingle *)self->multipress_gesture, 0);
-  gtk_event_controller_set_propagation_phase ((GtkEventController *)self->multipress_gesture,
+  multipress_gesture = gtk_gesture_multi_press_new ();
+  gtk_gesture_single_set_button ((GtkGestureSingle *)multipress_gesture, 0);
+  gtk_event_controller_set_propagation_phase ((GtkEventController *)multipress_gesture,
                                               GTK_PHASE_BUBBLE);
-  g_signal_connect (self->multipress_gesture, "pressed", G_CALLBACK (gesture_pressed_cb), self);
+  g_signal_connect (multipress_gesture, "pressed", G_CALLBACK (gesture_pressed_cb), self);
+  gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)multipress_gesture);
 
   g_signal_connect (settings_get (), "changed::double-click-activation",
                     G_CALLBACK (double_click_activation_setting_changed_cb), self);

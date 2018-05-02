@@ -41,8 +41,6 @@ struct _CbMainWindow
 
   GtkWidget *compose_window;
 
-  GtkGesture *thumb_button_gesture;
-
   void *account; /* XXX should be Account instance */
 };
 

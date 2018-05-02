@@ -18,7 +18,6 @@
 class CropWidget : Gtk.DrawingArea {
   private const int MIN_SIZE = 48;
 
-  private Gtk.GestureDrag drag_gesture;
   private Gdk.Pixbuf? image;
   private Gdk.Texture? texture;
   private Gdk.Rectangle selection_rect;
@@ -37,7 +36,6 @@ class CropWidget : Gtk.DrawingArea {
   private int min_width  = MIN_SIZE;
   private double drag_start_x;
   private double drag_start_y;
-  private Gtk.EventControllerMotion motion_controller;
   /**
    * Ratio of the width to the height, i.e. (width/height)
    * => values >1.0 for landscape pictures
@@ -54,14 +52,16 @@ class CropWidget : Gtk.DrawingArea {
     this.image_rect = Gdk.Rectangle ();
     this.selection_rect = Gdk.Rectangle ();
 
-    this.drag_gesture = new Gtk.GestureDrag (this);
-    this.drag_gesture.set_button (Gdk.BUTTON_PRIMARY);
-    this.drag_gesture.drag_begin.connect (drag_gesture_begin_cb);
-    this.drag_gesture.drag_end.connect (drag_gesture_end_cb);
-    this.drag_gesture.drag_update.connect (drag_gesture_update_cb);
+    var drag_gesture = new Gtk.GestureDrag ();
+    drag_gesture.set_button (Gdk.BUTTON_PRIMARY);
+    drag_gesture.drag_begin.connect (drag_gesture_begin_cb);
+    drag_gesture.drag_end.connect (drag_gesture_end_cb);
+    drag_gesture.drag_update.connect (drag_gesture_update_cb);
+    this.add_controller (drag_gesture);
 
-    this.motion_controller = new Gtk.EventControllerMotion (this);
+    var motion_controller = new Gtk.EventControllerMotion ();
     motion_controller.motion.connect (mouse_motion_cb);
+    this.add_controller (motion_controller);
   }
 
   private void mouse_motion_cb (Gtk.EventControllerMotion controller,

@@ -29,7 +29,6 @@ struct _CbMediaImageWidget
   GtkScrolledWindow parent_instance;
 
   GtkWidget *image;
-  GtkGesture *drag_gesture;
 
   double drag_start_hvalue;
   double drag_start_vvalue;

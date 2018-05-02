@@ -44,7 +44,7 @@ class FavImageRow : Gtk.FlowBoxChild {
 
     this.set_valign (Gtk.Align.START);
 
-    gesture = new Gtk.GestureMultiPress (this);
+    gesture = new Gtk.GestureMultiPress ();
     gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     gesture.set_button (0);
     gesture.pressed.connect (() => {
@@ -94,6 +94,7 @@ class FavImageRow : Gtk.FlowBoxChild {
         }
       }
     });
+    this.add_controller (gesture);
 
     this.get_style_context ().add_class ("fav-image-item");
     load_image.begin ();
