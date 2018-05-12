@@ -281,34 +281,34 @@ progressbar.horizontal.embedded-progress>trough>progress {
 
 
 /* Use this if box shadows don't work out */
-/*row.tweet {*/
-  /*border-bottom: 1px solid alpha(grey, 0.3);*/
-  /*padding: 1em;*/
+row.tweet {
+  border-bottom: 1px solid alpha(grey, 0.3);
+  padding: 1em;
+}
+
+/*list.tweets {*/
+  /*background-color: #eee;*/
 /*}*/
 
-list.tweets {
-  background-color: #eee;
-}
+/*row.tweet {*/
+  /*background-color: #fff;*/
+  /*padding: 1em;*/
+  /*margin: 0 1em 1em 1em;*/
+  /*box-shadow: 0 1px 3px rgba(0,0,0,0.12),*/
+              /*0 1px 2px rgba(0,0,0,0.24);*/
+/*}*/
 
-row.tweet {
-  background-color: #fff;
-  padding: 1em;
-  margin: 0 1em 1em 1em;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12),
-              0 1px 2px rgba(0,0,0,0.24);
-}
+/*row.tweet:backdrop {*/
+  /*box-shadow: none;*/
+/*}*/
 
-row.tweet:backdrop {
-  box-shadow: none;
-}
+/*row.tweet:active {*/
+  /*box-shadow: inset 0px 1px 2px #888;*/
+/*}*/
 
-row.tweet:active {
-  box-shadow: inset 0px 1px 2px #888;
-}
-
-row.tweet:first-child {
-  margin-top: 1em;
-}
+/*row.tweet:first-child {*/
+  /*margin-top: 1em;*/
+/*}*/
 
 row.tweet avatar {
   margin-right: 1em;
