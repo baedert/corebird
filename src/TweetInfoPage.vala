@@ -204,7 +204,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     else
       avatar_url = url.replace ("_normal", "_200x200");
 
-    TweetUtils.download_avatar.begin (avatar_url, 73 * scale, cancellable, (obj, res) => {
+    TweetUtils.download_avatar.begin (avatar_url, avatar_image.size * scale, cancellable, (obj, res) => {
       Gdk.Texture texture;
       try {
         var pixbuf = TweetUtils.download_avatar.end (res);
