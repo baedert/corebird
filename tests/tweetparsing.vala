@@ -2115,6 +2115,475 @@ const string TD10 = """
 }
 """;
 
+
+const string TD11 =
+"""
+{
+  "created_at" : "Sat Apr 01 16:28:13 +0000 2017",
+  "id" : 848210402995556353,
+  "id_str" : "848210402995556353",
+  "full_text" : "RT @wurst_hw: SOME TWEET https://t.co/ySiXE2r1dV",
+  "truncated" : false,
+  "display_text_range" : [
+    0,
+    72
+  ],
+   "quoted_status_permalink":{
+      "url":"https:\/\/t.co\/UenF8rZZfQ",
+      "expanded":"https:\/\/twitter.com\/f1\/status\/993078922454577152",
+      "display":"twitter.com\/f1\/status\/9930\u2026"
+   },
+  "entities" : {
+    "hashtags" : [
+    ],
+    "symbols" : [
+    ],
+    "user_mentions" : [
+      {
+        "screen_name" : "wurst_hw",
+        "name" : "Hans Wurst",
+        "id" : 1469297089,
+        "id_str" : "1469297089",
+        "indices" : [
+          3,
+          12
+        ]
+      }
+    ],
+    "urls" : [
+    ],
+    "media" : [
+      {
+        "id" : 848210277820747776,
+        "id_str" : "848210277820747776",
+        "indices" : [
+          49,
+          72
+        ],
+        "media_url" : "http://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+        "media_url_https" : "https://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+        "url" : "https://t.co/k8Wlmh67nf",
+        "display_url" : "pic.twitter.com/k8Wlmh67nf",
+        "expanded_url" : "https://twitter.com/wurst_hw/status/848210293465468928/photo/1",
+        "type" : "photo",
+        "sizes" : {
+          "medium" : {
+            "w" : 1200,
+            "h" : 675,
+            "resize" : "fit"
+          },
+          "large" : {
+            "w" : 1920,
+            "h" : 1080,
+            "resize" : "fit"
+          },
+          "small" : {
+            "w" : 680,
+            "h" : 383,
+            "resize" : "fit"
+          },
+          "thumb" : {
+            "w" : 150,
+            "h" : 150,
+            "resize" : "crop"
+          }
+        },
+        "source_status_id" : 848210293465468928,
+        "source_status_id_str" : "848210293465468928",
+        "source_user_id" : 1469297089,
+        "source_user_id_str" : "1469297089"
+      }
+    ]
+  },
+  "extended_entities" : {
+    "media" : [
+      {
+        "id" : 848210277820747776,
+        "id_str" : "848210277820747776",
+        "indices" : [
+          49,
+          72
+        ],
+        "media_url" : "http://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+        "media_url_https" : "https://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+        "url" : "https://t.co/k8Wlmh67nf",
+        "display_url" : "pic.twitter.com/k8Wlmh67nf",
+        "expanded_url" : "https://twitter.com/wurst_hw/status/848210293465468928/photo/1",
+        "type" : "photo",
+        "sizes" : {
+          "medium" : {
+            "w" : 1200,
+            "h" : 675,
+            "resize" : "fit"
+          },
+          "large" : {
+            "w" : 1920,
+            "h" : 1080,
+            "resize" : "fit"
+          },
+          "small" : {
+            "w" : 680,
+            "h" : 383,
+            "resize" : "fit"
+          },
+          "thumb" : {
+            "w" : 150,
+            "h" : 150,
+            "resize" : "crop"
+          }
+        },
+        "source_status_id" : 848210293465468928,
+        "source_status_id_str" : "848210293465468928",
+        "source_user_id" : 1469297089,
+        "source_user_id_str" : "1469297089"
+      }
+    ]
+  },
+  "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "in_reply_to_status_id" : null,
+  "in_reply_to_status_id_str" : null,
+  "in_reply_to_user_id" : null,
+  "in_reply_to_user_id_str" : null,
+  "in_reply_to_screen_name" : null,
+  "user" : {
+    "id" : 993713617,
+    "id_str" : "993713617",
+    "name" : "Z??!@*(&*²³¤²³¤",
+    "screen_name" : "corebirdgtk",
+    "location" : "",
+    "description" : "&lt;asdf",
+    "url" : null,
+    "entities" : {
+      "description" : {
+        "urls" : [
+        ]
+      }
+    },
+    "protected" : true,
+    "followers_count" : 3,
+    "friends_count" : 4,
+    "listed_count" : 0,
+    "created_at" : "Thu Dec 06 19:47:16 +0000 2012",
+    "favourites_count" : 9,
+    "utc_offset" : 7200,
+    "time_zone" : "Amsterdam",
+    "geo_enabled" : false,
+    "verified" : false,
+    "statuses_count" : 865,
+    "lang" : "en",
+    "contributors_enabled" : false,
+    "is_translator" : false,
+    "is_translation_enabled" : true,
+    "profile_background_color" : "C0DEED",
+    "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile" : false,
+    "profile_image_url" : "http://pbs.twimg.com/profile_images/655270693341417472/h6BbZKJy_normal.png",
+    "profile_image_url_https" : "https://pbs.twimg.com/profile_images/655270693341417472/h6BbZKJy_normal.png",
+    "profile_banner_url" : "https://pbs.twimg.com/profile_banners/993713617/1413106147",
+    "profile_link_color" : "1DA1F2",
+    "profile_sidebar_border_color" : "C0DEED",
+    "profile_sidebar_fill_color" : "DDEEF6",
+    "profile_text_color" : "333333",
+    "profile_use_background_image" : true,
+    "has_extended_profile" : false,
+    "default_profile" : true,
+    "default_profile_image" : false,
+    "following" : true,
+    "follow_request_sent" : false,
+    "notifications" : false,
+    "translator_type" : "none"
+  },
+  "geo" : null,
+  "coordinates" : null,
+  "place" : null,
+  "contributors" : null,
+  "retweeted_status" : {
+    "created_at" : "Sat Apr 01 16:27:47 +0000 2017",
+    "id" : 848210293465468928,
+    "id_str" : "848210293465468928",
+    "full_text" : "SOME TWEET https://t.co/ySiXE2r1dV https://t.co/k8Wlmh67nf",
+    "truncated" : false,
+    "display_text_range" : [
+      0,
+      34
+    ],
+    "entities" : {
+      "hashtags" : [
+      ],
+      "symbols" : [
+      ],
+      "user_mentions" : [
+      ],
+      "urls" : [
+        {
+          "url" : "https://t.co/ySiXE2r1dV",
+          "expanded_url" : "https://twitter.com/baedert/status/847671175081676801",
+          "display_url" : "twitter.com/baedert/status…",
+          "indices" : [
+            11,
+            34
+          ]
+        }
+      ],
+      "media" : [
+        {
+          "id" : 848210277820747776,
+          "id_str" : "848210277820747776",
+          "indices" : [
+            35,
+            58
+          ],
+          "media_url" : "http://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+          "media_url_https" : "https://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+          "url" : "https://t.co/k8Wlmh67nf",
+          "display_url" : "pic.twitter.com/k8Wlmh67nf",
+          "expanded_url" : "https://twitter.com/wurst_hw/status/848210293465468928/photo/1",
+          "type" : "photo",
+          "sizes" : {
+            "medium" : {
+              "w" : 1200,
+              "h" : 675,
+              "resize" : "fit"
+            },
+            "large" : {
+              "w" : 1920,
+              "h" : 1080,
+              "resize" : "fit"
+            },
+            "small" : {
+              "w" : 680,
+              "h" : 383,
+              "resize" : "fit"
+            },
+            "thumb" : {
+              "w" : 150,
+              "h" : 150,
+              "resize" : "crop"
+            }
+          }
+        }
+      ]
+    },
+    "extended_entities" : {
+      "media" : [
+        {
+          "id" : 848210277820747776,
+          "id_str" : "848210277820747776",
+          "indices" : [
+            35,
+            58
+          ],
+          "media_url" : "http://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+          "media_url_https" : "https://pbs.twimg.com/media/C8VywPBXUAAgOkn.jpg",
+          "url" : "https://t.co/k8Wlmh67nf",
+          "display_url" : "pic.twitter.com/k8Wlmh67nf",
+          "expanded_url" : "https://twitter.com/wurst_hw/status/848210293465468928/photo/1",
+          "type" : "photo",
+          "sizes" : {
+            "medium" : {
+              "w" : 1200,
+              "h" : 675,
+              "resize" : "fit"
+            },
+            "large" : {
+              "w" : 1920,
+              "h" : 1080,
+              "resize" : "fit"
+            },
+            "small" : {
+              "w" : 680,
+              "h" : 383,
+              "resize" : "fit"
+            },
+            "thumb" : {
+              "w" : 150,
+              "h" : 150,
+              "resize" : "crop"
+            }
+          }
+        }
+      ]
+    },
+    "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+    "in_reply_to_status_id" : null,
+    "in_reply_to_status_id_str" : null,
+    "in_reply_to_user_id" : null,
+    "in_reply_to_user_id_str" : null,
+    "in_reply_to_screen_name" : null,
+    "user" : {
+      "id" : 1469297089,
+      "id_str" : "1469297089",
+      "name" : "Hans Wurst",
+      "screen_name" : "wurst_hw",
+      "location" : "",
+      "description" : "",
+      "url" : null,
+      "entities" : {
+        "description" : {
+          "urls" : [
+          ]
+        }
+      },
+      "protected" : false,
+      "followers_count" : 1,
+      "friends_count" : 2,
+      "listed_count" : 0,
+      "created_at" : "Thu May 30 08:47:22 +0000 2013",
+      "favourites_count" : 0,
+      "utc_offset" : null,
+      "time_zone" : null,
+      "geo_enabled" : false,
+      "verified" : false,
+      "statuses_count" : 31,
+      "lang" : "en",
+      "contributors_enabled" : false,
+      "is_translator" : false,
+      "is_translation_enabled" : false,
+      "profile_background_color" : "C0DEED",
+      "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_tile" : false,
+      "profile_image_url" : "http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+      "profile_image_url_https" : "https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+      "profile_link_color" : "1DA1F2",
+      "profile_sidebar_border_color" : "C0DEED",
+      "profile_sidebar_fill_color" : "DDEEF6",
+      "profile_text_color" : "333333",
+      "profile_use_background_image" : true,
+      "has_extended_profile" : false,
+      "default_profile" : true,
+      "default_profile_image" : true,
+      "following" : false,
+      "follow_request_sent" : false,
+      "notifications" : false,
+      "translator_type" : "none"
+    },
+    "geo" : null,
+    "coordinates" : null,
+    "place" : null,
+    "contributors" : null,
+    "is_quote_status" : true,
+    "quoted_status_id" : 847671175081676801,
+    "quoted_status_id_str" : "847671175081676801",
+    "quoted_status" : {
+      "created_at" : "Fri Mar 31 04:45:31 +0000 2017",
+      "id" : 847671175081676801,
+      "id_str" : "847671175081676801",
+      "full_text" : "Haha yeah. The Reply Madness of 2017. Very funny. It'll ruin my weekend but let's laugh first.",
+      "truncated" : false,
+      "display_text_range" : [
+        0,
+        94
+      ],
+      "entities" : {
+        "hashtags" : [
+        ],
+        "symbols" : [
+        ],
+        "user_mentions" : [
+        ],
+        "urls" : [
+        ]
+      },
+      "source" : "<a href=\"https://github.com/TwidereProject/Twidere-Android/\" rel=\"nofollow\">Twidere for Android #5</a>",
+      "in_reply_to_status_id" : null,
+      "in_reply_to_status_id_str" : null,
+      "in_reply_to_user_id" : null,
+      "in_reply_to_user_id_str" : null,
+      "in_reply_to_screen_name" : null,
+      "user" : {
+        "id" : 118055879,
+        "id_str" : "118055879",
+        "name" : "Schupp & Wupp",
+        "screen_name" : "baedert",
+        "location" : "",
+        "description" : "Corebird developer by night, silently judging people on the train by day.",
+        "url" : "https://t.co/yGvX7Nf6i3",
+        "entities" : {
+          "url" : {
+            "urls" : [
+              {
+                "url" : "https://t.co/yGvX7Nf6i3",
+                "expanded_url" : "http://corebird.baedert.org",
+                "display_url" : "corebird.baedert.org",
+                "indices" : [
+                  0,
+                  23
+                ]
+              }
+            ]
+          },
+          "description" : {
+            "urls" : [
+            ]
+          }
+        },
+        "protected" : false,
+        "followers_count" : 193,
+        "friends_count" : 73,
+        "listed_count" : 4,
+        "created_at" : "Sat Feb 27 13:13:34 +0000 2010",
+        "favourites_count" : 152,
+        "utc_offset" : 7200,
+        "time_zone" : "Bern",
+        "geo_enabled" : false,
+        "verified" : false,
+        "statuses_count" : 2079,
+        "lang" : "en",
+        "contributors_enabled" : false,
+        "is_translator" : false,
+        "is_translation_enabled" : false,
+        "profile_background_color" : "C6E2EE",
+        "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme2/bg.gif",
+        "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme2/bg.gif",
+        "profile_background_tile" : false,
+        "profile_image_url" : "http://pbs.twimg.com/profile_images/810507927941476352/cSydClet_normal.jpg",
+        "profile_image_url_https" : "https://pbs.twimg.com/profile_images/810507927941476352/cSydClet_normal.jpg",
+        "profile_banner_url" : "https://pbs.twimg.com/profile_banners/118055879/1488791887",
+        "profile_link_color" : "1F98C7",
+        "profile_sidebar_border_color" : "C6E2EE",
+        "profile_sidebar_fill_color" : "DAECF4",
+        "profile_text_color" : "663B12",
+        "profile_use_background_image" : true,
+        "has_extended_profile" : false,
+        "default_profile" : false,
+        "default_profile_image" : false,
+        "following" : false,
+        "follow_request_sent" : false,
+        "notifications" : false,
+        "translator_type" : "none"
+      },
+      "geo" : null,
+      "coordinates" : null,
+      "place" : null,
+      "contributors" : null,
+      "is_quote_status" : false,
+      "retweet_count" : 1,
+      "favorite_count" : 2,
+      "favorited" : false,
+      "retweeted" : false,
+      "lang" : "en"
+    },
+    "retweet_count" : 1,
+    "favorite_count" : 0,
+    "favorited" : false,
+    "retweeted" : false,
+    "possibly_sensitive" : false,
+    "lang" : "en"
+  },
+  "is_quote_status" : true,
+  "quoted_status_id" : 847671175081676801,
+  "quoted_status_id_str" : "847671175081676801",
+  "retweet_count" : 1,
+  "favorite_count" : 0,
+  "favorited" : false,
+  "retweeted" : false,
+  "possibly_sensitive" : true,
+  "lang" : "en"
+}
+""";
+
 // """
 // }}}
 
@@ -2346,7 +2815,22 @@ void reply_id () {
   assert (t.source_tweet.entities[0].display_text == "@archillect");
 }
 
+void new_quotes () {
+  var now = new GLib.DateTime.now_local ();
+  var t = new Cb.Tweet ();
 
+  var parser = new Json.Parser ();
+  try {
+    parser.load_from_data (TD11);
+  } catch (GLib.Error e) {
+    critical (e.message);
+  }
+  var root = parser.get_root ();
+  t.load_from_json (root, 0, now);
+  /*
+    https://twittercommunity.com/t/updating-how-urls-are-rendered-in-the-quote-tweet-payload/105473/1
+   */
+}
 
 int main (string[] args) {
   GLib.Test.init (ref args);
@@ -2366,6 +2850,7 @@ int main (string[] args) {
   GLib.Test.add_func ("/tweet-parsing/rt-reply", rt_reply);
   GLib.Test.add_func ("/tweet-parsing/entity-count", entity_count);
   GLib.Test.add_func ("/tweet-parsing/reply-id", reply_id);
+  GLib.Test.add_func ("/tweet-parsing/new-quotes", new_quotes);
 
   return GLib.Test.run ();
 }
