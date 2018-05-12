@@ -791,8 +791,10 @@ cb_utils_get_tweet_debug_info (CbTweet *tweet)
 {
   GString *s = g_string_new (NULL);
 
+#ifdef DEBUG
   g_assert (tweet->json_data);
   g_string_append (s, tweet->json_data);
+#endif
   g_string_append_c (s, '\n');
 
   return g_string_free (s, FALSE);
