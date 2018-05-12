@@ -65,6 +65,9 @@ public class AvatarWidget : Gtk.Widget {
       container_widget.size = value;
       this.queue_resize ();
     }
+    get {
+      return _size;
+    }
   }
 
   private int64 start_time;
