@@ -55,7 +55,7 @@ public class AvatarWidget : Gtk.Widget {
       }
 
       container_widget.texture = this._texture;
-      this.queue_draw ();
+      container_widget.queue_draw ();
     }
   }
   private int _size = 48;
