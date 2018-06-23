@@ -1,5 +1,9 @@
 # Corebird
 
+**Corebird will stop working mid-August: https://www.patreon.com/posts/corebirds-future-18921328**
+
+
+
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=baedert&url=http://github.com/baedert/corebird&title=corebird&language=vala&tags=github&category=software) [![Supprt Corebird on Patreon](https://baedert.org/patreon-donate-yellow.svg)](https://patreon.com/baedert)
 
 ## Shortcuts
@@ -39,6 +43,7 @@
 
 ## Dependencies
  - **Latest development version of gtk+ 4.0**
+ - **Latest development version of vala**
  - `glib-2.0 >= 2.44`
  - `json-glib-1.0`
  - `sqlite3`
