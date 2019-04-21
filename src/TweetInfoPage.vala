@@ -105,6 +105,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         double inc = (- delta_y) * 0.2;
         max_size_container.set_fraction (max_size_container.get_fraction () + inc);
       }
+      return true;
     });
     this.add_controller (scroll_controller);
 

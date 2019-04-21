@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="NewListEntry" parent="GtkListBoxRow">
-    <property name="visible">1</property>
     <property name="can-focus">1</property>
     <child>
       <object class="GtkBox">
@@ -25,9 +24,6 @@
                 <property name="hexpand">1</property>
                 <property name="label" translatable="yes">Create New List</property>
               </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
         </child>
@@ -51,9 +47,6 @@
                     <property name="hexpand">1</property>
                     <signal name="activate" handler="create_list_button_clicked_cb" swapped="no"/>
                   </object>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="create_list_button">
@@ -68,16 +61,10 @@
                     </style>
                     <signal name="clicked" handler="create_list_button_clicked_cb" swapped="no"/>
                   </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
                 </child>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
     </child>

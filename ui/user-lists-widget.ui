@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="UserListsWidget" parent="GtkBox">
-    <property name="visible">1</property>
-    <property name="can-focus">0</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkLabel" id="user_list_label">
@@ -13,9 +11,6 @@
         <property name="margin-bottom">6</property>
         <property name="label" translatable="yes">Created</property>
       </object>
-      <packing>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkFrame" id="user_list_frame">
@@ -46,8 +41,7 @@
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkSeparator" id="upper_separator">
-                      </object>
+                      <object class="GtkSeparator" id="upper_separator"/>
                     </child>
                     <child>
                       <object class="GtkListBox" id="user_list_box">
@@ -63,9 +57,6 @@
           </object>
         </child>
       </object>
-      <packing>
-        <property name="position">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkLabel" id="subscribed_list_label">
@@ -77,9 +68,6 @@
         <property name="label" translatable="yes">Subscribed to</property>
         <property name="ellipsize">end</property>
       </object>
-      <packing>
-        <property name="position">2</property>
-      </packing>
     </child>
     <child>
       <object class="GtkFrame" id="subscribed_list_frame">
@@ -95,9 +83,6 @@
           </object>
         </child>
       </object>
-      <packing>
-        <property name="position">3</property>
-      </packing>
     </child>
   </template>
 </interface>

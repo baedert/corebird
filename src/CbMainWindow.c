@@ -178,9 +178,10 @@ accounts_list_row_activated_cb (GtkListBox    *list,
 }
 
 static void
-focus_set_cb (GtkWindow *window,
-              GtkWidget *widget,
-              gpointer   user_data)
+focus_set_cb (GObject    *widget,
+              GParamSpec *pspec,
+              gpointer    data)
+
 {
   g_message ("Focus widget now: %s %p", widget ? G_OBJECT_TYPE_NAME (widget) : "NULL", widget);
 }
@@ -388,10 +389,7 @@ load_geometry (CbMainWindow *self)
     }
 
   if (w > 0 && h > 0)
-    {
-      gtk_window_set_default_size (GTK_WINDOW (self), w, h);
-      gtk_window_move (GTK_WINDOW (self), x, y);
-    }
+    gtk_window_set_default_size (GTK_WINDOW (self), w, h);
 
 out:
   g_variant_unref (win_geom);
@@ -558,7 +556,7 @@ cb_main_window_init (CbMainWindow *self)
   g_action_map_add_action_entries (G_ACTION_MAP (self), win_entries, G_N_ELEMENTS (win_entries), self);
 
 #ifdef DEBUG
-  g_signal_connect (self, "set-focus", G_CALLBACK (focus_set_cb), NULL);
+  g_signal_connect (self, "notify::focus-widget", G_CALLBACK (focus_set_cb), NULL);
 #endif
 
   /* Create UI */

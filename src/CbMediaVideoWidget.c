@@ -323,7 +323,7 @@ cb_media_video_widget_class_init (CbMediaVideoWidgetClass *klass)
   object_class->finalize = cb_media_video_widget_finalize;
 
   widget_class->destroy = cb_media_video_widget_destroy;
-  widget_class->key_press_event = cb_media_video_widget_key_press_event;
+  /*widget_class->key_press_event = cb_media_video_widget_key_press_event;*/
 }
 
 CbMediaVideoWidget *

@@ -99,6 +99,7 @@ class ListStatusesPage : ScrollWidget, IPage {
         double inc = vadjustment.step_increment * (- delta_y);
         max_size_container.set_fraction (max_size_container.get_fraction () + inc);
       }
+      return true;
     });
     this.add_controller (scroll_controller);
 

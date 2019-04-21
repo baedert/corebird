@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="SearchPage" parent="GtkBox">
-    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox">
@@ -11,9 +10,6 @@
             <property name="margin-start">6</property>
             <property name="margin-top">6</property>
             <property name="hexpand">1</property>
-            <property name="primary-icon-name">edit-find-symbolic</property>
-            <property name="primary-icon-activatable">0</property>
-            <property name="primary-icon-sensitive">0</property>
             <signal name="activate" handler="search_entry_activate_cb" swapped="no"/>
           </object>
         </child>
@@ -29,14 +25,8 @@
               <class name="suggested-action"/>
             </style>
           </object>
-          <packing>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
-      <packing>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
       <object class="ScrollWidget" id="scroll_widget">
@@ -53,9 +43,6 @@
           </object>
         </child>
       </object>
-      <packing>
-        <property name="position">1</property>
-      </packing>
     </child>
   </template>
   <object class="GtkLabel" id="tweets_header">
@@ -65,8 +52,8 @@
     <property name="xalign">0</property>
     <property name="label" translatable="yes">Tweets</property>
     <attributes>
-      <attribute name="weight" value="bold"/>
-      <attribute name="scale" value="1.2"/>
+      <attribute name="weight" value="bold"></attribute>
+      <attribute name="scale" value="1.2"></attribute>
     </attributes>
   </object>
   <object class="GtkLabel" id="users_header">
@@ -76,8 +63,8 @@
     <property name="xalign">0</property>
     <property name="label" translatable="yes">Users</property>
     <attributes>
-      <attribute name="weight" value="bold"/>
-      <attribute name="scale" value="1.2"/>
+      <attribute name="weight" value="bold"></attribute>
+      <attribute name="scale" value="1.2"></attribute>
     </attributes>
   </object>
 </interface>

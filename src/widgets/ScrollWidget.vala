@@ -155,7 +155,7 @@ public class ScrollWidget : Gtk.ScrolledWindow {
     if (this.scroll_down_id != 0)
       return;
 
-    scroll_down_id = this.size_allocate.connect (() => {
+    scroll_down_id = this.vadjustment.notify["upper"].connect (() => {
       if (Gtk.Settings.get_default ().gtk_enable_animations && animate) {
         this.start_time = this.get_frame_clock ().get_frame_time ();
         this.end_time = start_time + TRANSITION_DURATION;

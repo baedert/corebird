@@ -54,13 +54,15 @@ cb_reply_indicator_measure (GtkWidget      *widget,
 }
 
 static void
-cb_reply_indicator_size_allocate (GtkWidget           *widget,
-                                  const GtkAllocation *allocation,
-                                  int                  baseline)
+cb_reply_indicator_size_allocate (GtkWidget *widget,
+                                  int        width,
+                                  int        height,
+                                  int        baseline)
 {
   CbReplyIndicator *self = CB_REPLY_INDICATOR (widget);
 
-  gtk_widget_size_allocate (self->revealer, allocation, baseline);
+  gtk_widget_size_allocate (self->revealer,
+                            &(GtkAllocation) { 0, 0, width, height }, baseline);
 }
 
 static void

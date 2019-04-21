@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="StartConversationEntry" parent="GtkListBoxRow">
-    <property name="visible">True</property>
-    <property name="can-focus">True</property>
+    <property name="can-focus">1</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -24,9 +23,6 @@
                 <property name="hexpand">1</property>
                 <property name="label" translatable="yes">Start new conversation</property>
               </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
         </child>
@@ -52,9 +48,6 @@
                     <property name="placeholder-text">@screen_name</property>
                     <signal name="activate" handler="go_button_clicked_cb" swapped="no"/>
                   </object>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkStack" id="go_stack">
@@ -63,43 +56,40 @@
                     <property name="visible-child">go_button</property>
                     <property name="transition-type">slide-up-down</property>
                     <child>
-                      <object class="GtkButton" id="go_button">
-                        <property name="label" translatable="yes">Go</property>
-                        <property name="can-focus">1</property>
-                        <property name="receives-default">1</property>
-                        <property name="halign">start</property>
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
-                        <signal name="clicked" handler="go_button_clicked_cb" swapped="no"/>
-                      </object>
-                      <packing>
+                      <object class="GtkStackPage">
                         <property name="name">button</property>
-                      </packing>
+                        <property name="child">
+                          <object class="GtkButton" id="go_button">
+                            <property name="label" translatable="yes">Go</property>
+                            <property name="can-focus">1</property>
+                            <property name="receives-default">1</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
+                            <signal name="clicked" handler="go_button_clicked_cb" swapped="no"/>
+                          </object>
+                        </property>
+                      </object>
                     </child>
                     <child>
-                      <object class="GtkSpinner" id="go_spinner">
-                        <property name="valign">center</property>
-                        <property name="halign">center</property>
-                        <property name="width-request">16</property>
-                        <property name="height-request">16</property>
-                      </object>
-                      <packing>
+                      <object class="GtkStackPage">
                         <property name="name">spinner</property>
-                        <property name="position">1</property>
-                      </packing>
+                        <property name="child">
+                          <object class="GtkSpinner" id="go_spinner">
+                            <property name="valign">center</property>
+                            <property name="halign">center</property>
+                            <property name="width-request">16</property>
+                            <property name="height-request">16</property>
+                          </object>
+                        </property>
+                      </object>
                     </child>
                   </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
                 </child>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
     </child>

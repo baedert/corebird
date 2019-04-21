@@ -14,7 +14,7 @@ restdir = include_directories('src/rest/')
 min_glib_version = '2.44'
 
 glib_dep = dependency('glib-2.0', version: '>=' + min_glib_version)
-gtk_dep  = dependency('gtk+-4.0', version: '>=3.89')
+gtk_dep  = dependency('gtk4', version: '>=3.89')
 json_dep = dependency('json-glib-1.0')
 sql_dep  = dependency('sqlite3')
 soup_dep = dependency('libsoup-2.4')
@@ -95,7 +95,6 @@ corebird_lib_sources = files([
   'src/list/NewListEntry.vala',
   'src/list/SnippetListEntry.vala',
   'src/list/StartConversationEntry.vala',
-  'src/list/TweetListEntry.vala',
   'src/list/UserFilterEntry.vala',
   'src/list/UserListEntry.vala',
   'src/list/FavImageRow.vala',

@@ -322,5 +322,5 @@ cb_bundle_init (CbBundle *self)
 {
   self->keys   = g_array_new (FALSE, FALSE, sizeof (int));
   self->values = g_array_new (FALSE, TRUE, sizeof (GValue));
-  g_array_set_clear_func (self->values, (GDestroyNotify)g_value_reset);
+  g_array_set_clear_func (self->values, g_value_reset);
 }

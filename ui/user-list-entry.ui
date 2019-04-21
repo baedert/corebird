@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="UserListEntry" parent="GtkListBoxRow">
-    <property name="visible">1</property>
     <property name="can-focus">1</property>
     <child>
       <object class="GtkGrid" id="grid">
@@ -14,12 +13,12 @@
             <property name="can-focus">False</property>
             <property name="valign">center</property>
             <property name="margin-end">8</property>
+            <layout>
+              <property name="left-attach">0</property>
+              <property name="top-attach">0</property>
+              <property name="row-span">2</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">0</property>
-            <property name="height">2</property>
-          </packing>
         </child>
         <child>
           <object class="GtkLabel" id="name_label">
@@ -31,13 +30,13 @@
             <property name="ellipsize">end</property>
             <property name="max-width-chars">40</property>
             <attributes>
-              <attribute name="weight" value="bold"/>
+              <attribute name="weight" value="bold"></attribute>
             </attributes>
+            <layout>
+              <property name="left-attach">1</property>
+              <property name="top-attach">0</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">1</property>
-            <property name="top-attach">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkLabel" id="screen_name_label">
@@ -48,11 +47,11 @@
             <style>
               <class name="dim-label"/>
             </style>
+            <layout>
+              <property name="left-attach">1</property>
+              <property name="top-attach">1</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">1</property>
-            <property name="top-attach">1</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="settings_button">
@@ -64,12 +63,12 @@
             <property name="tooltip-text" translatable="yes">Show settings of this account</property>
             <property name="icon-name">emblem-system-symbolic</property>
             <signal name="clicked" handler="settings_button_clicked_cb"/>
+            <layout>
+              <property name="left-attach">2</property>
+              <property name="top-attach">0</property>
+              <property name="row-span">2</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">2</property>
-            <property name="top-attach">0</property>
-            <property name="height">2</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="new_window_button">
@@ -80,12 +79,12 @@
             <property name="tooltip-text" translatable="yes">Open in new window</property>
             <property name="icon-name">corebird-new-window-symbolic</property>
             <signal name="clicked" handler="new_window_button_clicked_cb"/>
+            <layout>
+              <property name="left-attach">3</property>
+              <property name="top-attach">0</property>
+              <property name="row-span">2</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">3</property>
-            <property name="top-attach">0</property>
-            <property name="height">2</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="profile_button">
@@ -95,12 +94,12 @@
             <property name="tooltip-text" translatable="yes">Go to profile</property>
             <property name="icon-name">corebird-profile-symbolic</property>
             <signal name="clicked" handler="profile_button_clicked_cb"/>
+            <layout>
+              <property name="left-attach">4</property>
+              <property name="top-attach">0</property>
+              <property name="row-span">2</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">4</property>
-            <property name="top-attach">0</property>
-            <property name="height">2</property>
-          </packing>
         </child>
       </object>
     </child>

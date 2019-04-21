@@ -7,7 +7,6 @@
     </widgets>
   </object>
   <template class="UserFilterEntry" parent="GtkListBoxRow">
-    <property name="visible">1</property>
     <property name="can-focus">1</property>
     <property name="activatable">0</property>
     <child>
@@ -31,12 +30,12 @@
                     <property name="margin-start">3</property>
                     <property name="margin-top">3</property>
                     <property name="margin-bottom">3</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">0</property>
+                      <property name="row-span">2</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                    <property name="height">2</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="name_label">
@@ -47,13 +46,13 @@
                     <property name="yalign">1</property>
                     <property name="hexpand">1</property>
                     <attributes>
-                      <attribute name="weight" value="bold"/>
+                      <attribute name="weight" value="bold"></attribute>
                     </attributes>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="screen_name_label">
@@ -64,11 +63,11 @@
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="menu_button">
@@ -79,12 +78,12 @@
                     <property name="tooltip-text" translatable="Yes">Remove this Filter</property>
                     <property name="icon-name">list-remove-symbolic</property>
                     <signal name="clicked" handler="menu_button_clicked_cb"/>
+                    <layout>
+                      <property name="left-attach">2</property>
+                      <property name="top-attach">0</property>
+                      <property name="row-span">2</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">0</property>
-                    <property name="height">2</property>
-                  </packing>
                 </child>
               </object>
             </child>

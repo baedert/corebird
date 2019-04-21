@@ -200,7 +200,7 @@ cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
   GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
   /* vfuncs */
-  widget_class->event = cb_tweet_list_box_event;
+  /*widget_class->event = cb_tweet_list_box_event;*/
 
   object_class->finalize = cb_tweet_list_box_finalize;
 

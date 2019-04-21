@@ -13,7 +13,7 @@
     <property name="default-width">500</property>
     <property name="default-height">300</property>
     <property name="title" translatable="yes">Settings</property>
-    <signal name="close-request" handler="window_close_cb" />
+    <signal name="close-request" handler="window_close_cb"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="title" translatable="yes">Settings</property>
@@ -23,380 +23,416 @@
     </child>
     <child>
       <object class="GtkStack" id="main_stack">
-        <!-- Interface page -->
         <child>
-          <object class="GtkGrid" id="interface_grid">
-            <property name="margin">10</property>
-            <property name="row-spacing">6</property>
-            <property name="column-spacing">12</property>
-            <property name="column-homogeneous">1</property>
-            <child>
-              <object class="GtkLabel" id="timeline_category_label">
-                <property name="label" translatable="Yes">Timelines</property>
-                <property name="halign">start</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-                <property name="width">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="media_visibility_label">
-                <property name="halign">end</property>
-                <property name="hexpand">1</property>
-                <property name="label" translatable="yes">Show inline media</property>
-                <accessibility>
-                  <relation type="label-for" target="media_visibility_combobox"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="media_visibility_combobox">
-                <property name="halign">start</property>
-                <!-- The IDs here should match the gsettings enum values -->
-                <items>
-                  <item id="Show" translatable="yes">Always show</item>
-                  <item id="Hide" translatable="yes">Always hide</item>
-                  <item id="Hide in Timeline" translatable="yes">Hide in timeline</item>
-                </items>
-                <accessibility>
-                  <relation type="labelled-by" target="media_visibility_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">3</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="auto_scroll_label">
-                <property name="halign">end</property>
-                <property name="hexpand">1</property>
-                <property name="label" translatable="yes">Auto scroll on new tweets</property>
-                <accessibility>
-                  <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">4</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="auto_scroll_on_new_tweets_switch">
-                <property name="can-focus">1</property>
-                <property name="halign">start</property>
-                <property name="hexpand">1</property>
-                <accessibility>
-                  <relation type="labelled-by" target="auto_scroll_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">4</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="double_click_activation_label">
-                <property name="label" translatable="yes">Double-click activation</property>
-                <property name="halign">end</property>
-                <property name="hexpand">1</property>
-                <accessibility>
-                  <relation type="label-for" target="double_click_activation_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">5</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="double_click_activation_switch">
-                <property name="can-focus">1</property>
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="labelled-by" target="double_click_activation_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">5</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
+          <object class="GtkStackPage">
             <property name="title" translatable="yes">Interface</property>
             <property name="name">interface</property>
-          </packing>
-        </child>
-        <!-- Notification page -->
-        <child>
-          <object class="GtkGrid" id="notification_grid">
-            <property name="margin">10</property>
-            <property name="row-spacing">6</property>
-            <property name="column-spacing">12</property>
-            <property name="column-homogeneous">1</property>
-            <child>
-              <object class="GtkLabel" id="label6">
-                <property name="halign">end</property>
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Tweets</property>
-                <accessibility>
-                  <relation type="label-for" target="on_new_tweets_combobox"/>
-                </accessibility>
+            <property name="child">
+              <object class="GtkGrid" id="interface_grid">
+                <property name="margin">10</property>
+                <property name="row-spacing">6</property>
+                <property name="column-spacing">12</property>
+                <property name="column-homogeneous">1</property>
+                <child>
+                  <object class="GtkLabel" id="timeline_category_label">
+                    <property name="label" translatable="Yes">Timelines</property>
+                    <property name="halign">start</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"></attribute>
+                    </attributes>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">2</property>
+                      <property name="column-span">4</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="media_visibility_label">
+                    <property name="halign">end</property>
+                    <property name="hexpand">1</property>
+                    <property name="label" translatable="yes">Show inline media</property>
+                    <accessibility>
+                      <relation type="label-for" target="media_visibility_combobox"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">3</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="media_visibility_combobox">
+                    <property name="halign">start</property>
+                    <items>
+                      <item id="Show" translatable="yes">Always show</item>
+                      <item id="Hide" translatable="yes">Always hide</item>
+                      <item id="Hide in Timeline" translatable="yes">Hide in timeline</item>
+                    </items>
+                    <accessibility>
+                      <relation type="labelled-by" target="media_visibility_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">2</property>
+                      <property name="top-attach">3</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="auto_scroll_label">
+                    <property name="halign">end</property>
+                    <property name="hexpand">1</property>
+                    <property name="label" translatable="yes">Auto scroll on new tweets</property>
+                    <accessibility>
+                      <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">4</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="auto_scroll_on_new_tweets_switch">
+                    <property name="can-focus">1</property>
+                    <property name="halign">start</property>
+                    <property name="hexpand">1</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="auto_scroll_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">2</property>
+                      <property name="top-attach">4</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="double_click_activation_label">
+                    <property name="label" translatable="yes">Double-click activation</property>
+                    <property name="halign">end</property>
+                    <property name="hexpand">1</property>
+                    <accessibility>
+                      <relation type="label-for" target="double_click_activation_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">5</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="double_click_activation_switch">
+                    <property name="can-focus">1</property>
+                    <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="double_click_activation_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">2</property>
+                      <property name="top-attach">5</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
               </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Actions</property>
-                <attributes>
-                  <attribute name="weight" value="bold"/>
-                </attributes>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label14">
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Mentions</property>
-                <accessibility>
-                  <relation type="label-for" target="on_new_mentions_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label15">
-                <property name="xalign">1</property>
-                <property name="label" translatable="yes">On New Messages</property>
-                <accessibility>
-                  <relation type="label-for" target="on_new_dms_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="on_new_mentions_switch">
-                <property name="can-focus">1</property>
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="labelled-by" target="label14"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="on_new_dms_switch">
-                <property name="can-focus">1</property>
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="labelled-by" target="label15"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkComboBoxText" id="on_new_tweets_combobox">
-                <property name="halign">start</property>
-                <property name="active">0</property>
-                <items>
-                  <item id="Never" translatable="yes">Never</item>
-                  <item id="Every" translatable="yes">Every</item>
-                  <item id="Stack 5" translatable="yes">Stack 5</item>
-                  <item id="Stack 10" translatable="yes">Stack 10</item>
-                  <item id="Stack 25" translatable="yes">Stack 25</item>
-                  <item id="Stack 50" translatable="yes">Stack 50</item>
-                </items>
-                <accessibility>
-                  <relation type="labelled-by" target="label6"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
+            </property>
           </object>
-          <packing>
+        </child>
+        <child>
+          <object class="GtkStackPage">
             <property name="title" translatable="yes">Notifications</property>
             <property name="name">notifications</property>
-          </packing>
-        </child>
-        <!-- Tweets page -->
-        <child>
-          <object class="GtkGrid">
-            <property name="column-homogeneous">1</property>
-            <property name="column-spacing">12</property>
-            <property name="row-spacing">6</property>
-            <property name="margin-bottom">18</property>
-            <child>
-              <object class="GtkListBox" id="sample_tweet_list">
-                <property name="selection-mode">none</property>
-                <property name="margin-bottom">12</property>
+            <property name="child">
+              <object class="GtkGrid" id="notification_grid">
+                <property name="margin">10</property>
+                <property name="row-spacing">6</property>
+                <property name="column-spacing">12</property>
+                <property name="column-homogeneous">1</property>
+                <child>
+                  <object class="GtkLabel" id="label6">
+                    <property name="halign">end</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Tweets</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_tweets_combobox"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">1</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Actions</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"></attribute>
+                    </attributes>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">0</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label14">
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Mentions</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_mentions_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label15">
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">On New Messages</property>
+                    <accessibility>
+                      <relation type="label-for" target="on_new_dms_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">3</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="on_new_mentions_switch">
+                    <property name="can-focus">1</property>
+                    <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label14"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="on_new_dms_switch">
+                    <property name="can-focus">1</property>
+                    <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="label15"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">3</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="on_new_tweets_combobox">
+                    <property name="halign">start</property>
+                    <property name="active">0</property>
+                    <items>
+                      <item id="Never" translatable="yes">Never</item>
+                      <item id="Every" translatable="yes">Every</item>
+                      <item id="Stack 5" translatable="yes">Stack 5</item>
+                      <item id="Stack 10" translatable="yes">Stack 10</item>
+                      <item id="Stack 25" translatable="yes">Stack 25</item>
+                      <item id="Stack 50" translatable="yes">Stack 50</item>
+                    </items>
+                    <accessibility>
+                      <relation type="labelled-by" target="label6"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">1</property>
+                    </layout>
+                  </object>
+                </child>
               </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-                <property name="width">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="round_avatar_label">
-                <property name="label" translatable="yes">Round avatars</property>
-                <property name="halign">end</property>
-                <accessibility>
-                  <relation type="label-for" target="round_avatar_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="round_avatar_switch">
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="labelled-by" target="round_avatar_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="remove_trailing_hashtags_label">
-                <property name="label" translatable="yes">Remove trailing hashtags</property>
-                <property name="halign">end</property>
-                <accessibility>
-                  <relation type="label-for" target="remove_trailing_hashtags_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="remove_trailing_hashtags_switch">
-                <property name="halign">start</property>
-                <signal name="notify::active" handler="remove_trailing_hashtags_cb"/>
-                <accessibility>
-                  <relation type="labelled-by" target="remove_trailing_hashtags_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="remove_media_links_label">
-                <property name="label" translatable="yes">Remove media links</property>
-                <property name="halign">end</property>
-                <accessibility>
-                  <relation type="label-for" target="remove_media_links_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="remove_media_links_switch">
-                <property name="halign">start</property>
-                <signal name="notify::active" handler="remove_media_links_cb"/>
-                <accessibility>
-                  <relation type="labelled-by" target="remove_media_links_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="hide_nsfw_content_label">
-                <property name="label" translatable="yes">Hide inappropriate content</property>
-                <property name="halign">end</property>
-                <accessibility>
-                  <relation type="label-for" target="hide_nsfw_content_switch"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSwitch" id="hide_nsfw_content_switch">
-                <property name="halign">start</property>
-                <accessibility>
-                  <relation type="labelled-by" target="hide_nsfw_content_label"/>
-                </accessibility>
-              </object>
-              <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">4</property>
-              </packing>
-            </child>
+            </property>
           </object>
-          <packing>
+        </child>
+        <child>
+          <object class="GtkStackPage">
             <property name="title" translatable="yes">Tweets</property>
             <property name="name">tweet</property>
-          </packing>
+            <property name="child">
+              <object class="GtkGrid">
+                <property name="column-homogeneous">1</property>
+                <property name="column-spacing">12</property>
+                <property name="row-spacing">6</property>
+                <property name="margin-bottom">18</property>
+                <child>
+                  <object class="GtkListBox" id="sample_tweet_list">
+                    <property name="selection-mode">none</property>
+                    <property name="margin-bottom">12</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">0</property>
+                      <property name="column-span">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="round_avatar_label">
+                    <property name="label" translatable="yes">Round avatars</property>
+                    <property name="halign">end</property>
+                    <accessibility>
+                      <relation type="label-for" target="round_avatar_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">1</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="round_avatar_switch">
+                    <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="round_avatar_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">1</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="remove_trailing_hashtags_label">
+                    <property name="label" translatable="yes">Remove trailing hashtags</property>
+                    <property name="halign">end</property>
+                    <accessibility>
+                      <relation type="label-for" target="remove_trailing_hashtags_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="remove_trailing_hashtags_switch">
+                    <property name="halign">start</property>
+                    <signal name="notify::active" handler="remove_trailing_hashtags_cb"/>
+                    <accessibility>
+                      <relation type="labelled-by" target="remove_trailing_hashtags_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">2</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="remove_media_links_label">
+                    <property name="label" translatable="yes">Remove media links</property>
+                    <property name="halign">end</property>
+                    <accessibility>
+                      <relation type="label-for" target="remove_media_links_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">3</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="remove_media_links_switch">
+                    <property name="halign">start</property>
+                    <signal name="notify::active" handler="remove_media_links_cb"/>
+                    <accessibility>
+                      <relation type="labelled-by" target="remove_media_links_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">3</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="hide_nsfw_content_label">
+                    <property name="label" translatable="yes">Hide inappropriate content</property>
+                    <property name="halign">end</property>
+                    <accessibility>
+                      <relation type="label-for" target="hide_nsfw_content_switch"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">4</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSwitch" id="hide_nsfw_content_switch">
+                    <property name="halign">start</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="hide_nsfw_content_label"/>
+                    </accessibility>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">4</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </property>
+          </object>
         </child>
         <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkScrolledWindow">
-                <property name="vexpand">1</property>
-                <property name="hexpand">1</property>
+          <object class="GtkStackPage">
+            <property name="title" translatable="yes">Snippets</property>
+            <property name="name">snippets</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkListBox" id="snippet_list_box">
-                    <property name="selection-mode">none</property>
-                    <signal name="row-activated" handler="snippet_entry_activated_cb"/>
-                    <child type="placeholder">
+                  <object class="GtkScrolledWindow">
+                    <property name="vexpand">1</property>
+                    <property name="hexpand">1</property>
+                    <child>
+                      <object class="GtkListBox" id="snippet_list_box">
+                        <property name="selection-mode">none</property>
+                        <signal name="row-activated" handler="snippet_entry_activated_cb"/>
+                        <child type="placeholder">
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">No snippets configured.</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSeparator"/>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkButton">
+                        <property name="relief">none</property>
+                        <property name="valign">center</property>
+                        <property name="margin">6</property>
+                        <property name="icon-name">list-add-symbolic</property>
+                        <signal name="clicked" handler="add_snippet_button_clicked_cb"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkLabel">
-                        <property name="label" translatable="yes">No snippets configured.</property>
+                        <property name="label" translatable="yes">You can activate snippets by writing the keyword and pressing TAB.</property>
+                        <property name="halign">center</property>
+                        <property name="hexpand">1</property>
+                        <property name="wrap">1</property>
+                        <property name="justify">center</property>
                         <style>
                           <class name="dim-label"/>
                         </style>
@@ -405,41 +441,8 @@
                   </object>
                 </child>
               </object>
-            </child>
-            <child>
-              <object class="GtkSeparator">
-              </object>
-            </child>
-            <child>
-              <object class="GtkBox">
-                <child>
-                  <object class="GtkButton">
-                    <property name="relief">none</property>
-                    <property name="valign">center</property>
-                    <property name="margin">6</property>
-                    <property name="icon-name">list-add-symbolic</property>
-                    <signal name="clicked" handler="add_snippet_button_clicked_cb"/>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">You can activate snippets by writing the keyword and pressing TAB.</property>
-                    <property name="halign">center</property>
-                    <property name="hexpand">1</property>
-                    <property name="wrap">1</property>
-                    <property name="justify">center</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
+            </property>
           </object>
-          <packing>
-            <property name="title" translatable="yes">Snippets</property>
-            <property name="name">snippets</property>
-          </packing>
         </child>
       </object>
     </child>

@@ -21,83 +21,83 @@
                     <property name="halign">end</property>
                     <property name="valign">baseline</property>
                     <property name="label" translatable="yes">Subscribers:</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">3</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">3</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="subscribers_label">
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">3</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">3</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="halign">end</property>
                     <property name="valign">baseline</property>
                     <property name="label" translatable="yes">Members:</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">2</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="members_label">
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">2</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">2</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="halign">end</property>
                     <property name="valign">baseline</property>
                     <property name="label" translatable="yes">Creator:</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="halign">end</property>
                     <property name="valign">baseline</property>
                     <property name="label" translatable="yes">Created at:</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="created_at_label">
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="creator_label">
                     <property name="halign">start</property>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkStack" id="edit_stack">
@@ -106,32 +106,32 @@
                     <child>
                       <object class="GtkButton" id="edit_button">
                         <property name="label" translatable="yes">Edit</property>
-                        <property name="can-focus">0</property>
                         <property name="receives-default">1</property>
                         <property name="halign">start</property>
                         <signal name="clicked" handler="edit_button_clicked_cb" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkButton" id="save_button">
-                        <property name="label" translatable="yes">Save</property>
-                        <property name="can-focus">1</property>
-                        <property name="receives-default">1</property>
-                        <property name="halign">start</property>
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
-                        <signal name="clicked" handler="save_button_clicked_cb" swapped="no"/>
+                      <object class="GtkStackPage">
+                        <property name="child">
+                          <object class="GtkButton" id="save_button">
+                            <property name="label" translatable="yes">Save</property>
+                            <property name="can-focus">1</property>
+                            <property name="receives-default">1</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
+                            <signal name="clicked" handler="save_button_clicked_cb" swapped="no"/>
+                          </object>
+                        </property>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">5</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">5</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkStack" id="delete_stack">
@@ -139,7 +139,6 @@
                     <property name="transition-type">slide-up-down</property>
                     <child>
                       <object class="GtkMenuButton" id="delete_button">
-                        <property name="can-focus">0</property>
                         <property name="popup">delete_menu</property>
                         <style>
                           <class name="destructive-action"/>
@@ -152,32 +151,32 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkButton" id="cancel_button">
-                        <property name="label" translatable="yes">Cancel</property>
-                        <property name="can-focus">0</property>
-                        <property name="receives-default">1</property>
-                        <property name="halign">end</property>
-                        <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no"/>
+                      <object class="GtkStackPage">
+                        <property name="child">
+                          <object class="GtkButton" id="cancel_button">
+                            <property name="label" translatable="yes">Cancel</property>
+                            <property name="receives-default">1</property>
+                            <property name="halign">end</property>
+                            <signal name="clicked" handler="cancel_button_clicked_cb" swapped="no"/>
+                          </object>
+                        </property>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">5</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">5</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Mode:</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">4</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">4</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkStack" id="mode_stack">
@@ -189,22 +188,23 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="mode_combo_box">
-                        <property name="halign">start</property>
-                        <items>
-                          <item id="Private" translatable="yes">Private</item>
-                          <item id="Public" translatable="yes">Public</item>
-                        </items>
+                      <object class="GtkStackPage">
+                        <property name="child">
+                          <object class="GtkComboBoxText" id="mode_combo_box">
+                            <property name="halign">start</property>
+                            <items>
+                              <item id="Private" translatable="yes">Private</item>
+                              <item id="Public" translatable="yes">Public</item>
+                            </items>
+                          </object>
+                        </property>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
+                    <layout>
+                      <property name="left-attach">1</property>
+                      <property name="top-attach">4</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">4</property>
-                  </packing>
                 </child>
               </object>
             </child>
@@ -228,24 +228,22 @@
                         <property name="halign">start</property>
                         <property name="margin-start">6</property>
                         <attributes>
-                          <attribute name="weight" value="bold"/>
+                          <attribute name="weight" value="bold"></attribute>
                         </attributes>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="name_entry">
-                        <property name="width-request">200</property>
-                        <property name="can-focus">1</property>
-                        <property name="halign">start</property>
+                      <object class="GtkStackPage">
+                        <property name="child">
+                          <object class="GtkEntry" id="name_entry">
+                            <property name="width-request">200</property>
+                            <property name="can-focus">1</property>
+                            <property name="halign">start</property>
+                          </object>
+                        </property>
                       </object>
-                      <packing>
-                        <property name="position">2</property>
-                      </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkStack" id="description_stack">
@@ -258,24 +256,22 @@
                         <property name="wrap">1</property>
                         <property name="wrap-mode">word-char</property>
                         <attributes>
-                          <attribute name="scale" value="1.1"/>
+                          <attribute name="scale" value="1.1"></attribute>
                         </attributes>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="description_entry">
-                        <property name="can-focus">1</property>
-                        <property name="max-length">110</property>
-                        <property name="placeholder-text" translatable="yes">Description</property>
+                      <object class="GtkStackPage">
+                        <property name="child">
+                          <object class="GtkEntry" id="description_entry">
+                            <property name="can-focus">1</property>
+                            <property name="max-length">110</property>
+                            <property name="placeholder-text" translatable="yes">Description</property>
+                          </object>
+                        </property>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
                 </child>
               </object>
             </child>
@@ -288,14 +284,8 @@
                 <property name="icon-name">view-refresh-symbolic</property>
                 <signal name="clicked" handler="refresh_button_clicked_cb" swapped="false"/>
               </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="position">3</property>
-          </packing>
         </child>
         <child>
           <object class="CbTweetListBox" id="tweet_list">
@@ -305,9 +295,6 @@
             <property name="selection-mode">none</property>
             <signal name="row_activated" handler="tweet_activated_cb"/>
           </object>
-          <packing>
-            <property name="position">3</property>
-          </packing>
         </child>
       </object>
     </child>

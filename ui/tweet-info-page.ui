@@ -71,7 +71,7 @@
                                 <property name="valign">baseline</property>
                                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
                                 <style>
-                                  <class name="user-name" />
+                                  <class name="user-name"/>
                                 </style>
                                 <child>
                                   <object class="GtkLabel">
@@ -127,12 +127,12 @@
                         </child>
                       </object>
                     </child>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">2</property>
+                      <property name="column-span">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
-                    <property name="width">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkBox" id="reply_box">
@@ -162,12 +162,12 @@
                         </style>
                       </object>
                     </child>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">4</property>
+                      <property name="column-span">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">4</property>
-                    <property name="width">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="text_label">
@@ -183,25 +183,25 @@
                     <property name="track-visited-links">0</property>
                     <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                     <attributes>
-                      <attribute name="scale" value="1.5"/>
+                      <attribute name="scale" value="1.5"></attribute>
                     </attributes>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">5</property>
+                      <property name="column-span">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">5</property>
-                    <property name="width">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="MultiMediaWidget" id="mm_widget">
                     <property name="visible">true</property>
                     <property name="margin-bottom">12</property>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">6</property>
+                      <property name="column-span">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">6</property>
-                    <property name="width">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="rt_label">
@@ -212,12 +212,12 @@
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">0</property>
+                      <property name="top-attach">8</property>
+                      <property name="column-span">3</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">8</property>
-                    <property name="width">3</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="fav_label">
@@ -228,11 +228,11 @@
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">3</property>
+                      <property name="top-attach">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">3</property>
-                    <property name="top-attach">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="retweet_button">
@@ -245,11 +245,11 @@
                       <class name="retweet-button"/>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">4</property>
+                      <property name="top-attach">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">4</property>
-                    <property name="top-attach">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkToggleButton" id="favorite_button">
@@ -262,11 +262,11 @@
                       <class name="favorite-button"/>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">5</property>
+                      <property name="top-attach">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">5</property>
-                    <property name="top-attach">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="reply_button">
@@ -279,11 +279,11 @@
                       <class name="reply-button"/>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">6</property>
+                      <property name="top-attach">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">6</property>
-                    <property name="top-attach">8</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkMenuButton">
@@ -299,11 +299,11 @@
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left-attach">7</property>
+                      <property name="top-attach">8</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">7</property>
-                    <property name="top-attach">8</property>
-                  </packing>
                 </child>
               </object>
             </child>

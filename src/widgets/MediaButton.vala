@@ -363,7 +363,7 @@ private class MediaButton : Gtk.Widget {
         this.menu.attach_to_widget (this, null);
       }
       menu.show ();
-      menu.popup (null, null, null, button, Gtk.get_current_event_time ());
+      //menu.popup (null, null, null, button, Gtk.get_current_event_time ());
     }
   }
 
@@ -385,15 +385,15 @@ private class MediaButton : Gtk.Widget {
     }
   }
 
-  public override bool key_press_event (Gdk.Event event) {
-    uint keyval;
-    event.get_keyval (out keyval);
-    if (keyval == Gdk.Key.Return ||
-        keyval == Gdk.Key.KP_Enter) {
-      this.clicked (this, 0.5, 0.5);
-      return Gdk.EVENT_STOP;
-    }
+  //public override bool key_press_event (Gdk.Event event) {
+    //uint keyval;
+    //event.get_keyval (out keyval);
+    //if (keyval == Gdk.Key.Return ||
+        //keyval == Gdk.Key.KP_Enter) {
+      //this.clicked (this, 0.5, 0.5);
+      //return Gdk.EVENT_STOP;
+    //}
 
-    return Gdk.EVENT_PROPAGATE;
-  }
+    //return Gdk.EVENT_PROPAGATE;
+  //}
 }

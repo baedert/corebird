@@ -115,44 +115,6 @@ class FavImageView : Gtk.Box {
     this.image_selected (child.get_image_path ());
   }
 
-  private void fav_image_list_drag_data_received_cb (Gdk.DragContext   context,
-                                                     int               x,
-                                                     int               y,
-                                                     Gtk.SelectionData selection_data,
-                                                     uint              info,
-                                                     uint              time) {
-    if (info == 0) {
-      /* Text */
-      string?text = selection_data.get_text ().strip ();
-      if (text.has_prefix ("file://")) {
-        var file = GLib.File.new_for_uri (text);
-        if (!file.query_exists ()) {
-          debug ("File '%s' does not exist.", text);
-          return;
-        }
-
-        try {
-          var file_info = file.query_info ("standard::content-type", GLib.FileQueryInfoFlags.NONE);
-          var row = new FavImageRow (GLib.File.new_for_uri (text).get_path ());
-
-          if (file_info.get_content_type () == "image/gif") {
-            row.is_gif = true;
-            row.set_sensitive (gifs_enabled);
-          }
-
-          row.show ();
-          fav_image_list.add (row);
-        } catch (GLib.Error e) {
-          warning (e.message);
-        }
-      } else {
-        debug ("Can't handle '%s'", text);
-      }
-    } else {
-      warning ("Unknown drag data info %u", info);
-    }
-  }
-
   private void new_fav_image_button_clicked_cb () {
     var filechooser = new Gtk.FileChooserNative (_("Select Image"),
                                                  this.get_toplevel () as Gtk.Window,

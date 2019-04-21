@@ -155,9 +155,10 @@ cb_compose_images_measure (GtkWidget      *widget,
 }
 
 static void
-cb_compose_images_size_allocate (GtkWidget           *widget,
-                                 const GtkAllocation *allocation,
-                                 int                  baseline)
+cb_compose_images_size_allocate (GtkWidget *widget,
+                                 int        width,
+                                 int        height,
+                                 int       baseline)
 {
   CbComposeImages *self = CB_COMPOSE_IMAGES (widget);
   const guint n_images = self->images->len;
@@ -168,10 +169,10 @@ cb_compose_images_size_allocate (GtkWidget           *widget,
   if (n_images == 0)
     return;
 
-  max_image_width = (allocation->width / MAX_MEDIA_PER_UPLOAD) - IMAGE_SPACING;
+  max_image_width = (width / MAX_MEDIA_PER_UPLOAD) - IMAGE_SPACING;
   image_alloc.x = 0;
   image_alloc.y = 0;
-  image_alloc.height = allocation->height;
+  image_alloc.height = height;
 
   for (i = 0; i < n_images; i ++)
     {
@@ -186,7 +187,7 @@ cb_compose_images_size_allocate (GtkWidget           *widget,
                           &button_alloc.width, NULL, NULL, NULL);
       gtk_widget_measure (image->delete_button, GTK_ORIENTATION_VERTICAL, button_alloc.width,
                           &button_alloc.height, NULL, NULL, NULL);
-      image_height = allocation->height - (button_alloc.height / 2);
+      image_height = height - (button_alloc.height / 2);
 
       gtk_widget_measure (img, GTK_ORIENTATION_HORIZONTAL, MAX (image_height, -1),
                           NULL, &child_width, NULL, NULL);
@@ -197,7 +198,7 @@ cb_compose_images_size_allocate (GtkWidget           *widget,
                           &min_child_height, &nat_child_height, NULL, NULL);
 
       image_alloc.y = (button_alloc.height / 2) +
-                      ((allocation->height - button_alloc.height / 2) * image->fraction); /* Delete animation */
+                      ((height - button_alloc.height / 2) * image->fraction); /* Delete animation */
       image_alloc.width = child_width;
       image_alloc.height = MAX (MIN (nat_child_height, image_height), min_child_height);
       gtk_widget_size_allocate (img, &image_alloc, baseline);
@@ -404,7 +405,7 @@ cb_compose_images_load_image (CbComposeImages *self,
   image->deleted = FALSE;
 
   image->image = gtk_image_new_from_paintable (GDK_PAINTABLE (g_steal_pointer (&texture)));
-  gtk_image_set_can_shrink (GTK_IMAGE (image->image), TRUE);
+  /*gtk_image_set_can_shrink (GTK_IMAGE (image->image), TRUE);*/
   gtk_widget_set_size_request (image->image, -1, MIN_IMAGE_HEIGHT);
   gtk_widget_set_parent (image->image, GTK_WIDGET (self));
 

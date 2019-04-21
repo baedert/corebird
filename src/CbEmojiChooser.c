@@ -336,7 +336,7 @@ filter_func (GtkFlowBoxChild *child,
   res = TRUE;
 
   chooser = CB_EMOJI_CHOOSER (gtk_widget_get_ancestor (GTK_WIDGET (child), CB_TYPE_EMOJI_CHOOSER));
-  text = gtk_entry_get_text (GTK_ENTRY (chooser->search_entry));
+  text = gtk_editable_get_text (GTK_EDITABLE (chooser->search_entry));
   emoji_data = (GVariant *) g_object_get_data (G_OBJECT (child), "emoji-data");
 
   if (text[0] == 0)

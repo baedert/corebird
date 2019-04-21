@@ -72,11 +72,11 @@ class FavImageRow : Gtk.FlowBoxChild {
         menu.add (delete_item);
         menu.attach_to_widget (this, null);
         menu.show ();
-        menu.popup (null,
-                    null,
-                    null,
-                    gesture.get_current_button (),
-                    event.get_time ());
+        //menu.popup (null,
+                    //null,
+                    //null,
+                    //gesture.get_current_button (),
+                    //event.get_time ());
       } else {
         this.set_state_flags (this.get_state_flags () | Gtk.StateFlags.ACTIVE, true);
       }

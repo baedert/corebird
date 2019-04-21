@@ -224,7 +224,6 @@ class SettingsDialog : Gtk.Window {
     if (w == 0 || h == 0)
       return;
 
-    this.move (x, y);
     this.set_default_size (w, h);
   }
 
@@ -234,7 +233,6 @@ class SettingsDialog : Gtk.Window {
         y = 0,
         w = 0,
         h = 0;
-    this.get_position (out x, out y);
     this.get_size (out w, out h);
     builder.add_value (new GLib.Variant.int32(x));
     builder.add_value (new GLib.Variant.int32(y));

@@ -51,9 +51,10 @@ cb_max_size_container_measure (GtkWidget      *widget,
 }
 
 static void
-cb_max_size_container_size_allocate (GtkWidget           *widget,
-                                     const GtkAllocation *allocation,
-                                     int                  baseline)
+cb_max_size_container_size_allocate (GtkWidget *widget,
+                                     int        width,
+                                     int        height,
+                                     int        baseline)
 {
   GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   GtkAllocation child_alloc;
@@ -62,12 +63,12 @@ cb_max_size_container_size_allocate (GtkWidget           *widget,
   if (child == NULL)
     return;
 
-  gtk_widget_measure (child, GTK_ORIENTATION_VERTICAL, allocation->width,
+  gtk_widget_measure (child, GTK_ORIENTATION_VERTICAL, width,
                       &min_height, NULL, NULL, NULL);
 
   child_alloc.x = 0;
   child_alloc.y = 0;
-  child_alloc.width = allocation->width;
+  child_alloc.width = width;
   child_alloc.height = min_height;
 
   gtk_widget_size_allocate (child, &child_alloc, baseline);
@@ -94,20 +95,6 @@ cb_max_size_container_snapshot (GtkWidget   *widget,
   gtk_snapshot_pop (snapshot);
 }
 
-static GtkWidget *
-cb_max_size_container_pick (GtkWidget *widget,
-                            double     x,
-                            double     y)
-{
-  if (x >= 0 && x < gtk_widget_get_width (widget) &&
-      y >= 0 && y < gtk_widget_get_height (widget))
-    return GTK_WIDGET_CLASS (cb_max_size_container_parent_class)->pick (widget, x, y);
-  else if (gtk_widget_contains (widget, x, y))
-    return widget;
-
-  return NULL;
-}
-
 static void
 open_animate_func (CbAnimation *self,
                    double       t,
@@ -121,7 +108,6 @@ cb_max_size_container_class_init (CbMaxSizeContainerClass *klass)
 {
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
-  widget_class->pick = cb_max_size_container_pick;
   widget_class->measure = cb_max_size_container_measure;
   widget_class->size_allocate = cb_max_size_container_size_allocate;
   widget_class->snapshot = cb_max_size_container_snapshot;
@@ -130,6 +116,8 @@ cb_max_size_container_class_init (CbMaxSizeContainerClass *klass)
 static void
 cb_max_size_container_init (CbMaxSizeContainer *self)
 {
+  gtk_widget_set_overflow (GTK_WIDGET (self), GTK_OVERFLOW_HIDDEN);
+
   cb_animation_init (&self->open_animation,
                      GTK_WIDGET (self),
                      open_animate_func);

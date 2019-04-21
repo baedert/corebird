@@ -152,9 +152,10 @@ cb_tweet_row_measure (GtkWidget      *widget,
 }
 
 static void
-cb_tweet_row_size_allocate (GtkWidget           *widget,
-                            const GtkAllocation *allocation,
-                            int                  baseline)
+cb_tweet_row_size_allocate (GtkWidget *widget,
+                            int        width,
+                            int        height,
+                            int        baseline)
 {
   CbTweetRow *self = (CbTweetRow *)widget;
   GtkAllocation child_alloc;
@@ -175,7 +176,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width, NULL, NULL);
   gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_VERTICAL, -1, &min_height, &nat_height, NULL, NULL);
   child_alloc.x += child_alloc.width;
-  child_alloc.width = MAX (allocation->width - child_alloc.width, min_width);
+  child_alloc.width = MAX (width - child_alloc.width, min_width);
   child_alloc.height = min_height;
   gtk_widget_size_allocate (self->top_row_box, &child_alloc, -1);
   top_row_height = min_height;
@@ -184,7 +185,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
     {
       gtk_widget_measure (self->reply_label, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
-      child_alloc.width = MAX (min_width, allocation->width - avatar_width);
+      child_alloc.width = MAX (min_width, width - avatar_width);
       gtk_widget_measure (self->reply_label, GTK_ORIENTATION_VERTICAL, child_alloc.width,
                           &min_height, &nat_height, NULL, NULL);
       child_alloc.height = nat_height;
@@ -194,7 +195,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
 
   child_alloc.y += min_height;
   gtk_widget_measure (self->text_label, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width, NULL, NULL);
-  child_alloc.width = MAX (allocation->width - avatar_width, min_width);
+  child_alloc.width = MAX (width - avatar_width, min_width);
   gtk_widget_measure (self->text_label, GTK_ORIENTATION_VERTICAL, child_alloc.width,
                       &min_height, &nat_height, NULL, NULL);
   child_alloc.x = avatar_width;
@@ -205,7 +206,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
     {
       gtk_widget_measure (self->quote_box, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
-      child_alloc.width = MAX (allocation->width - avatar_width, min_width);
+      child_alloc.width = MAX (width - avatar_width, min_width);
       gtk_widget_measure (self->quote_box, GTK_ORIENTATION_VERTICAL, child_alloc.width,
                           &min_height, &nat_height, NULL, NULL);
       child_alloc.x = avatar_width;
@@ -235,7 +236,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
       gtk_widget_measure (self->rt_label, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
       child_alloc.x += child_alloc.width;
-      child_alloc.width = MAX (allocation->width - avatar_width, min_width);
+      child_alloc.width = MAX (width - avatar_width, min_width);
       gtk_widget_size_allocate (self->rt_label, &child_alloc, -1);
     }
 
@@ -244,7 +245,7 @@ cb_tweet_row_size_allocate (GtkWidget           *widget,
     {
       gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_HORIZONTAL, -1, &min_width, &nat_width,
                           NULL, NULL);
-      child_alloc.width = MAX (allocation->width - avatar_width, min_width);
+      child_alloc.width = MAX (width - avatar_width, min_width);
       gtk_widget_measure (self->mm_widget, GTK_ORIENTATION_VERTICAL, child_alloc.width,
                           &min_height, &nat_height, NULL, NULL);
       child_alloc.x = avatar_width;

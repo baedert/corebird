@@ -72,7 +72,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
       completion_list.add (l);
     });
 
-    name_entry.key_press_event.connect (name_entry_key_pressed);
+    //name_entry.key_press_event.connect (name_entry_key_pressed);
 //    activate.connect (() => {
 //      go_stack.visible_child_name = "spinner";
 //      go_spinner.start ();
@@ -87,7 +87,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
     x += alloc.x;
     y += alloc.y + alloc.height;
 
-    completion_window.move (x, y);
+    //completion_window.move (x, y);
     completion_window.resize (alloc.width, 50);
   }
 

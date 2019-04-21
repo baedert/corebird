@@ -303,36 +303,37 @@ cb_text_view_measure (GtkWidget      *widget,
 }
 
 static void
-cb_text_view_size_allocate (GtkWidget           *widget,
-                            const GtkAllocation *allocation,
-                            int                  baseline)
+cb_text_view_size_allocate (GtkWidget *widget,
+                            int        width,
+                            int        height,
+                            int        baseline)
 {
   CbTextView *self = CB_TEXT_VIEW (widget);
   GtkAllocation child_alloc;
   int box_height;
 
-  gtk_widget_measure (self->box, GTK_ORIENTATION_VERTICAL, allocation->width,
+  gtk_widget_measure (self->box, GTK_ORIENTATION_VERTICAL, width,
                       &box_height, NULL, NULL, NULL);
 
   child_alloc.x = 0;
-  child_alloc.y = allocation->height - box_height;
-  child_alloc.width = allocation->width;
+  child_alloc.y = height - box_height;
+  child_alloc.width = width;
   child_alloc.height = box_height;
   gtk_widget_size_allocate (self->box, &child_alloc, -1);
 
   child_alloc.y = 0;
-  child_alloc.height = allocation->height - box_height;
+  child_alloc.height = height - box_height;
   gtk_widget_size_allocate (self->scrolled_window, &child_alloc, -1);
 
   if (gtk_widget_get_visible (self->completion_scroller))
     {
       int min_height;
 
-      child_alloc.y = allocation->height - (allocation->height - 50) * self->completion_show_factor;
+      child_alloc.y = height - (height - 50) * self->completion_show_factor;
       gtk_widget_measure (self->completion_scroller, GTK_ORIENTATION_VERTICAL, -1,
                           &min_height, NULL, NULL, NULL);
 
-      child_alloc.height = MAX (min_height, allocation->height - child_alloc.y);
+      child_alloc.height = MAX (min_height, height - child_alloc.y);
 
       gtk_widget_size_allocate (self->completion_scroller, &child_alloc, -1);
     }
@@ -510,22 +511,17 @@ cb_text_view_insert_completion (CbTextView    *self,
 }
 
 static gboolean
-cb_text_view_key_press_event_cb (GtkWidget   *widget,
-                                 GdkEventKey *event,
-                                 gpointer     user_data)
+cb_text_view_key_press_event_cb (GtkEventControllerKey *controller,
+                                 guint                  keyval,
+                                 guint                  keycode,
+                                 guint                  modifiers,
+                                 gpointer               user_data)
 {
   CbTextView *self = user_data;
-  guint keyval;
-  GdkModifierType state;
-
-  if (!gdk_event_get_keyval ((GdkEvent *)event, &keyval))
-    return GDK_EVENT_PROPAGATE;
-
-  gdk_event_get_state ((GdkEvent *)event, &state);
 
   /* Control + Return is send for us */
   if (keyval == GDK_KEY_Return &&
-      (state & GDK_CONTROL_MASK) > 0)
+      (modifiers & GDK_CONTROL_MASK) > 0)
     {
       g_signal_emit (self, text_view_signals[SIGNAL_SEND], 0);
       return GDK_EVENT_STOP;
@@ -603,6 +599,7 @@ cb_text_view_init (CbTextView *self)
   GtkTextBuffer *buffer;
   const GdkRGBA snippet_color = { 0.0, 0.65, 0.0627, 1.0};
   GdkRGBA link_color;
+  GtkEventController *controller;
 
   gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
@@ -613,8 +610,11 @@ cb_text_view_init (CbTextView *self)
 
   self->text_view = gtk_text_view_new ();
   gtk_text_view_set_input_hints (GTK_TEXT_VIEW (self->text_view), GTK_INPUT_HINT_NO_EMOJI);
-  g_signal_connect (self->text_view, "key-press-event",
+  controller = gtk_event_controller_key_new ();
+  g_signal_connect (controller, "key-pressed",
                     G_CALLBACK (cb_text_view_key_press_event_cb), self);
+  gtk_widget_add_controller (self->text_view, controller);
+
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->text_view));
   g_signal_connect (buffer, "changed", G_CALLBACK (text_buffer_changed_cb), self);
   g_signal_connect (buffer, "notify::cursor-position",

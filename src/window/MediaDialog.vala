@@ -122,7 +122,6 @@ class MediaDialog : Gtk.Window {
     }
   }
 
-  [GtkCallback]
   private bool key_press_event_cb (Gdk.Event evt) {
     uint keyval;
     evt.get_keyval (out keyval);

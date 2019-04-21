@@ -118,17 +118,17 @@ public class AvatarWidget : Gtk.Widget {
     nat_baseline = -1;
   }
 
-  public override void size_allocate (Gtk.Allocation alloc, int baseline) {
-    Gtk.Allocation child_alloc = alloc;
+  public override void size_allocate (int width, int height, int baseline) {
+    Gtk.Allocation child_alloc = {0, 0, width, height};
     if (overlap) {
-      int height;
-      container_widget.measure (Gtk.Orientation.VERTICAL, -1, out height, null, null, null);
+      int child_height;
+      container_widget.measure (Gtk.Orientation.VERTICAL, -1, out child_height, null, null, null);
 
       child_alloc.y -= OVERLAP_DIST;
-      child_alloc.height = height;
+      child_alloc.height = child_height;
     }
 
-    container_widget.size_allocate (child_alloc, -1);
+    container_widget.size_allocate_emit (child_alloc, -1);
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
