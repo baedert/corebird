@@ -63,12 +63,14 @@ cb_aspect_image_snapshot (GtkWidget   *widget,
 
   gtk_snapshot_push_clip (snapshot, &GRAPHENE_RECT_INIT (0, 0, width, height));
 
+#if 0
   if (x > 0) {
     gtk_snapshot_push_blur (snapshot, 10);
     gtk_snapshot_append_texture (snapshot, self->texture,
                                  &GRAPHENE_RECT_INIT (0, 0, width, height));
     gtk_snapshot_pop (snapshot); /* Blur */
   }
+#endif
 
   gtk_snapshot_append_texture (snapshot, self->texture,
                                &GRAPHENE_RECT_INIT (x, 0, texture_width, height));
