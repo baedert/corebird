@@ -563,7 +563,7 @@ cb_main_window_init (CbMainWindow *self)
   self->headerbar = gtk_header_bar_new ();
   gtk_header_bar_set_title (GTK_HEADER_BAR (self->headerbar), "Corebird");
   gtk_header_bar_set_show_title_buttons (GTK_HEADER_BAR (self->headerbar), TRUE);
-  g_signal_connect (self->headerbar, "key-press-event", G_CALLBACK (headerbar_key_press_event_cb), self);
+  /*g_signal_connect (self->headerbar, "key-press-event", G_CALLBACK (headerbar_key_press_event_cb), self);*/
   gtk_window_set_titlebar ((GtkWindow *)self, self->headerbar);
 
   self->title_stack = gtk_stack_new ();
