@@ -259,7 +259,7 @@ namespace Utils {
                                                          GLib.g_free);
         result = new Gdk.Pixbuf.from_stream (in_stream, cancellable);
       } catch (GLib.Error e) {
-        warning (e.message);
+        warning ("%s: %s", e.message, url);
       } finally {
         cb ();
       }
