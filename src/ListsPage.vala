@@ -131,7 +131,7 @@ class ListsPage : IPage, ScrollWidget, Cb.MessageReceiver {
     return _("Lists");
   }
 
-  public Gtk.RadioButton? get_radio_button () {
+  public BadgeRadioButton? get_radio_button () {
     return radio_button;
   }
 

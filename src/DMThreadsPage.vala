@@ -53,7 +53,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     this.manager.thread_changed.connect (thread_changed_cb);
 
     /* Create UI */
-    this.hscrollbar_policy = Gtk.PolicyType.NEVER;
+    this.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     var frame = new Gtk.Frame (null);
     frame.margin = 25;
     frame.set_valign (Gtk.Align.START);
@@ -244,7 +244,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
     radio_button = new BadgeRadioButton(group, "corebird-dms-symbolic", _("Direct Messages"));
   }
 
-  public Gtk.RadioButton? get_radio_button() {
+  public BadgeRadioButton? get_radio_button() {
     return radio_button;
   }
 

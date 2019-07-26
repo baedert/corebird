@@ -34,12 +34,12 @@
         <property name="can-focus">True</property>
         <property name="vexpand">True</property>
         <property name="margin-top">5</property>
-        <property name="hscrollbar-policy">never</property>
+        <!--<property name="hscrollbar-policy">never</property>-->
         <child>
           <object class="CbTweetListBox" id="tweet_list">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="selection-mode">none</property>
+            <!--<property name="selection-mode">none</property>-->
           </object>
         </child>
       </object>

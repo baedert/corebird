@@ -601,7 +601,6 @@ cb_text_view_init (CbTextView *self)
   GdkRGBA link_color;
   GtkEventController *controller;
 
-  gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
 
   self->scrolled_window = gtk_scrolled_window_new (NULL, NULL);

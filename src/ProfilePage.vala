@@ -108,28 +108,28 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     //this.tweet_list.account = account;
 
     this.scrolled_to_end.connect (() => {
-      if (user_stack.visible_child == tweet_list) {
+      if (user_stack.visible_child == tweet_list.get_widget ()) {
         this.load_older_tweets.begin ();
-      } else if (user_stack.visible_child == followers_list) {
+      } else if (user_stack.visible_child == followers_list.get_widget ()) {
         this.load_followers.begin ();
-      } else if (user_stack.visible_child == following_list) {
+      } else if (user_stack.visible_child == following_list.get_widget ()) {
         this.load_following.begin ();
       }
     });
 
-    tweet_list.row_activated.connect ((row) => {
+    tweet_list.get_widget ().row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
-    followers_list.row_activated.connect ((row) => {
+    followers_list.get_widget ().row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
       _main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
-    following_list.row_activated.connect ((row) => {
+    following_list.get_widget ().row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int64 (ProfilePage.KEY_USER_ID, ((UserListEntry)row).user_id);
       bundle.put_string (ProfilePage.KEY_SCREEN_NAME, ((UserListEntry)row).screen_name);
@@ -458,7 +458,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     if (tweets_loading)
       return;
 
-    if (user_stack.visible_child != tweet_list)
+    if (user_stack.visible_child != tweet_list.get_widget ())
       return;
 
     tweets_loading = true;
@@ -526,8 +526,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("border-bottom");
-      entry.show ();
-      this.followers_list.add (entry);
+      this.followers_list.get_widget ().add (entry);
     });
 
     this.followers_loading = false;
@@ -570,7 +569,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
       entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("border-bottom");
       entry.show ();
-      this.following_list.add (entry);
+      this.following_list.get_widget ().add (entry);
 
     });
 
@@ -706,7 +705,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
     return "@" + screen_name;
   }
 
-  public Gtk.RadioButton? get_radio_button(){
+  public BadgeRadioButton? get_radio_button(){
     return null;
   }
 
@@ -864,7 +863,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
   private void tweets_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
       this.balance_next_upper_change (BOTTOM);
-      user_stack.visible_child = tweet_list;
+      user_stack.visible_child = tweet_list.get_widget ();
     }
   }
   [GtkCallback]
@@ -874,7 +873,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
         this.load_followers.begin ();
       }
       this.balance_next_upper_change (BOTTOM);
-      user_stack.visible_child = followers_list;
+      user_stack.visible_child = followers_list.get_widget ();
     }
   }
 
@@ -885,7 +884,7 @@ public class ProfilePage : ScrollWidget, IPage, Cb.MessageReceiver {
         this.load_following.begin ();
       }
       this.balance_next_upper_change (BOTTOM);
-      user_stack.visible_child = following_list;
+      user_stack.visible_child = following_list.get_widget ();
     }
   }
 

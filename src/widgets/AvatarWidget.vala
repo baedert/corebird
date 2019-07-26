@@ -78,8 +78,6 @@ public class AvatarWidget : Gtk.Widget {
   }
 
   construct {
-    this.set_has_surface (false);
-
     container_widget = new AvatarContainer ();
     container_widget.set_parent (this);
     container_widget.set_opacity (0.0);
@@ -210,7 +208,6 @@ public class AvatarContainer : Gtk.Widget {
   }
 
   construct {
-    this.set_has_surface (false);
     Settings.get ().bind ("round-avatars", this, "make_round",
                           GLib.SettingsBindFlags.DEFAULT);
     this.get_style_context ().add_class ("avatar-round"); // default is TRUE

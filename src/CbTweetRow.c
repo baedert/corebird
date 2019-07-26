@@ -308,6 +308,7 @@ link_activated_cb (GtkLabel   *label,
   CbTweetRow *self = user_data;
 
   gtk_widget_grab_focus (GTK_WIDGET (self));
+  g_message (__FUNCTION__);
 
   return tweet_utils_activate_link (uri, self->main_window);
 }

@@ -58,7 +58,7 @@ private class MediaButton : Gtk.Widget {
     {"save-as",         save_as_activated},
   };
   private Pango.Layout layout;
-  private Gtk.GestureMultiPress press_gesture;
+  private Gtk.GestureClick press_gesture;
   private bool restrict_height = false;
   private int64 fade_start_time;
   private double media_alpha = 0.0;
@@ -78,7 +78,6 @@ private class MediaButton : Gtk.Widget {
   }
 
   construct {
-    this.set_has_surface (false);
     this.set_can_focus (true);
   }
 
@@ -101,7 +100,7 @@ private class MediaButton : Gtk.Widget {
     menu_model.append (_("Save as…"), "media.save-as");
 
     this.layout = this.create_pango_layout ("0%");
-    this.press_gesture = new Gtk.GestureMultiPress ();
+    this.press_gesture = new Gtk.GestureClick ();
     this.press_gesture.set_exclusive (true);
     this.press_gesture.set_button (0);
     this.press_gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);

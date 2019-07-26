@@ -80,8 +80,6 @@ cb_reply_indicator_init (CbReplyIndicator *self)
   GtkWidget *box;
   GtkWidget *w;
 
-  gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
-
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
   w = gtk_image_new_from_icon_name ("go-up-symbolic");

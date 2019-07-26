@@ -120,7 +120,6 @@ cb_surface_progress_finalize (GObject *object)
 static void
 cb_surface_progress_init (CbSurfaceProgress *self)
 {
-  gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
 }
 
 static void

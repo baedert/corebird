@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
-class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
+class FilterPage : ScrollWidget, IPage, Cb.MessageReceiver {
   public int id { get; set; }
   private unowned Cb.MainWindow _main_window;
   public unowned Cb.MainWindow main_window {
@@ -317,7 +317,7 @@ class FilterPage : Gtk.ScrolledWindow, IPage, Cb.MessageReceiver {
     radio_button = new BadgeRadioButton(group, "corebird-filter-symbolic", _("Filters"));
   }
 
-  public Gtk.RadioButton? get_radio_button() { return radio_button; }
+  public BadgeRadioButton? get_radio_button() { return radio_button; }
 
   public string get_title () {
     return _("Filters");

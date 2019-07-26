@@ -375,4 +375,17 @@ namespace Utils {
     });
     yield;
   }
+
+
+  public void show_about_dialog (Gtk.Window? parent) {
+    var dialog = new Gtk.AboutDialog ();
+    dialog.set_title(_("About Corebird"));
+    // TODO: Re-add other stuff
+
+    dialog.modal = true;
+    dialog.set_transient_for (parent);
+    dialog.show ();
+  }
+
 }
+

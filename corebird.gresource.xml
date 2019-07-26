@@ -6,7 +6,6 @@
     <file preprocess="xml-stripblanks">ui/compose-window.ui</file>
     <file preprocess="xml-stripblanks">ui/tweet-list-entry.ui</file>
     <file preprocess="xml-stripblanks">ui/tweet-info-page.ui</file>
-    <file preprocess="xml-stripblanks">ui/about-dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/dm-thread-entry.ui</file>
     <file preprocess="xml-stripblanks">ui/profile-page.ui</file>
     <file preprocess="xml-stripblanks">ui/search-page.ui</file>

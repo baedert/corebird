@@ -21,7 +21,7 @@
 #include "CbUtils.h"
 #include "corebird.h"
 
-G_DEFINE_TYPE (CbTweetListBox, cb_tweet_list_box, GTK_TYPE_LIST_BOX);
+G_DEFINE_TYPE (CbTweetListBox, cb_tweet_list_box, GTK_TYPE_WIDGET);
 
 enum {
   RETRY_BUTTON_CLICKED,
@@ -37,11 +37,11 @@ tweet_row_create_func (gpointer item,
   g_assert (CB_IS_TWEET (item));
 
   return cb_tweet_row_new (CB_TWEET (item),
-                           CB_MAIN_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (user_data))));
+                           CB_MAIN_WINDOW (gtk_widget_get_root (GTK_WIDGET (user_data))));
 }
 
 static void
-gesture_pressed_cb (GtkGestureMultiPress *gesture,
+gesture_pressed_cb (GtkGestureClick *gesture,
                     int                   n_press,
                     double                x,
                     double                y,
@@ -60,8 +60,9 @@ double_click_activation_setting_changed_cb (GObject    *obj,
   CbTweetListBox *self = user_data;
   GSettings *settings = G_SETTINGS (obj);
 
-  gtk_list_box_set_activate_on_single_click ((GtkListBox *)self,
-                                             !g_settings_get_boolean (settings, "double-click-activation"));
+  /*gtk_list_box_set_activate_on_single_click ((GtkListBox *)self->widget,*/
+                                             /*FALSE);*/
+                                             /*!g_settings_get_boolean (settings, "double-click-activation"));*/
 }
 
 static void
@@ -74,7 +75,7 @@ retry_button_clicked_cb (GtkButton *source,
 static GtkWidget *
 get_focused_row (CbTweetListBox *self)
 {
-  GtkWidget *toplevel = gtk_widget_get_toplevel ((GtkWidget *)self);
+  GtkWidget *toplevel = gtk_widget_get_root ((GtkWidget *)self);
   GtkWidget *focus_widget;
 
   if (!GTK_IS_WINDOW (toplevel))
@@ -114,7 +115,7 @@ cb_tweet_list_box_event (GtkWidget *widget,
 
               if (focus_row)
                 {
-                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
+                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_root ((GtkWidget *)self));
 
                   ComposeTweetWindow *window = compose_tweet_window_new (main_window,
                                                                          self->account,
@@ -137,7 +138,7 @@ cb_tweet_list_box_event (GtkWidget *widget,
 
               if (focus_row)
                 {
-                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_toplevel ((GtkWidget *)self));
+                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_root ((GtkWidget *)self));
 
                   ComposeTweetWindow *window = compose_tweet_window_new (main_window,
                                                                          self->account,
@@ -218,25 +219,28 @@ cb_tweet_list_box_init (CbTweetListBox *self)
 {
   GtkGesture *multipress_gesture;
 
-  gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self), "tweets");
-  gtk_list_box_set_selection_mode ((GtkListBox *)self, GTK_SELECTION_NONE);
-  gtk_list_box_set_activate_on_single_click ((GtkListBox *)self,
-                                             !g_settings_get_boolean ((GSettings *)settings_get (),
-                                                                      "double-click-activation"));
+  self->widget = gtk_list_box_new ();
+
+  gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self->widget), "tweets");
+  gtk_list_box_set_selection_mode ((GtkListBox *)self->widget, GTK_SELECTION_NONE);
+  /*gtk_list_box_set_activate_on_single_click ((GtkListBox *)self->widget,*/
+                                             /*FALSE);*/
+                                             /*!g_settings_get_boolean ((GSettings *)settings_get (),*/
+                                                                      /*"double-click-activation"));*/
 
   self->model = cb_tweet_model_new ();
   self->delta_updater = cb_delta_updater_new ((GtkWidget *)self);
-  multipress_gesture = gtk_gesture_multi_press_new ();
+  multipress_gesture = gtk_gesture_click_new ();
   gtk_gesture_single_set_button ((GtkGestureSingle *)multipress_gesture, 0);
   gtk_event_controller_set_propagation_phase ((GtkEventController *)multipress_gesture,
                                               GTK_PHASE_BUBBLE);
   g_signal_connect (multipress_gesture, "pressed", G_CALLBACK (gesture_pressed_cb), self);
-  gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)multipress_gesture);
+  /*gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)multipress_gesture);*/
 
   g_signal_connect (settings_get (), "changed::double-click-activation",
                     G_CALLBACK (double_click_activation_setting_changed_cb), self);
 
-  gtk_list_box_bind_model ((GtkListBox *)self,
+  gtk_list_box_bind_model ((GtkListBox *)self->widget,
                            (GListModel *)self->model,
                            tweet_row_create_func,
                            self,
@@ -279,14 +283,20 @@ cb_tweet_list_box_init (CbTweetListBox *self)
     gtk_stack_set_visible_child_name ((GtkStack *)self->placeholder, "spinner");
     gtk_widget_set_halign (self->placeholder, GTK_ALIGN_CENTER);
     gtk_widget_set_valign (self->placeholder, GTK_ALIGN_CENTER);
-    gtk_list_box_set_placeholder ((GtkListBox *)self, self->placeholder);
+    gtk_list_box_set_placeholder ((GtkListBox *)self->widget, self->placeholder);
   }
 }
 
-GtkWidget *
+CbTweetListBox *
 cb_tweet_list_box_new (void)
 {
   return (GtkWidget *)g_object_new (CB_TYPE_TWEET_LIST_BOX, NULL);
+}
+
+GtkWidget *
+cb_tweet_list_box_get_widget (CbTweetListBox *self)
+{
+  return self->widget;
 }
 
 void
@@ -337,7 +347,7 @@ cb_tweet_list_box_get_first_visible_row (CbTweetListBox *self)
   /* This is more a historical function. These days, we only have visible rows
    * in the listbox, so we can always return the first one. */
 
-  return (GtkWidget*)gtk_list_box_get_row_at_index ((GtkListBox *)self, 0);
+  return (GtkWidget*)gtk_list_box_get_row_at_index ((GtkListBox *)self->widget, 0);
 }
 
 GtkWidget *

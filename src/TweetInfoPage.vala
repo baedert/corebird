@@ -112,14 +112,14 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     conversation_list_box.model.set_reverse_order ();
 
     mm_widget.media_clicked.connect ((m, i) => TweetUtils.handle_media_click (tweet, _main_window, i));
-    conversation_list_box.row_activated.connect ((row) => {
+    conversation_list_box.get_widget ().row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (KEY_TWEET, ((Cb.TweetRow)row).tweet);
       bundle.put_bool (KEY_EXISTING, true);
       _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
     });
-    reply_list_box.row_activated.connect ((row) => {
+    reply_list_box.get_widget ().row_activated.connect ((row) => {
       var bundle = new Cb.Bundle ();
       bundle.put_int (KEY_MODE, TweetInfoPage.BY_INSTANCE);
       bundle.put_object (KEY_TWEET, ((Cb.TweetRow)row).tweet);
@@ -168,9 +168,9 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       rearrange_tweets (tweet.id);
     } else {
       conversation_list_box.model.clear ();
-      conversation_list_box.hide ();
+      conversation_list_box.get_widget ().hide ();
       reply_list_box.model.clear ();
-      reply_list_box.hide ();
+      reply_list_box.get_widget ().hide ();
     }
 
     if (mode == BY_INSTANCE) {
@@ -228,14 +228,14 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     if (reply_list_box.model.contains_id (new_id)) {
       // Move the current tweet down into conversation_list_box
       conversation_list_box.model.add (this.tweet);
-      conversation_list_box.show ();
+      conversation_list_box.get_widget ().show ();
       reply_list_box.model.clear ();
-      reply_list_box.hide ();
+      reply_list_box.get_widget ().hide ();
     } else if (conversation_list_box.model.contains_id (new_id)) {
       // Remove all tweets above the new one from the bottom list box,
       // add the direct successor to the top_list
       reply_list_box.model.clear ();
-      reply_list_box.show ();
+      reply_list_box.get_widget ().show ();
       var t = conversation_list_box.model.get_for_id (new_id, -1);
       if (t != null) {
         reply_list_box.model.add (t);
@@ -245,7 +245,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
       conversation_list_box.model.remove_tweets_above (new_id);
       if (conversation_list_box.model.get_n_items () == 0)
-        conversation_list_box.hide ();
+        conversation_list_box.get_widget ().hide ();
     }
     //else
       //error ("wtf");
@@ -422,7 +422,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
         var t = new Cb.Tweet ();
         t.load_from_json (node, account.id, now);
         if (t.id != previous_tweet_id) {
-          reply_list_box.show ();
+          reply_list_box.get_widget ().show ();
           reply_list_box.model.add (t);
           n_replies ++;
         }
@@ -442,7 +442,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
       return;
     }
 
-    conversation_list_box.show ();
+    conversation_list_box.get_widget ().show ();
     var call = account.proxy.new_call ();
     call.set_function ("1.1/statuses/show.json");
     call.set_method ("GET");
@@ -462,13 +462,13 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
 
         /* We may not count the listbox placeholder here */
         int n_children = 0;
-        foreach (Gtk.Widget w in conversation_list_box.get_children ()) {
+        foreach (Gtk.Widget w in conversation_list_box.get_widget ().get_children ()) {
           if (w is Gtk.ListBoxRow) {
             n_children ++;
           }
         }
 
-        conversation_list_box.visible = n_children > 0;
+        conversation_list_box.get_widget ().visible = n_children > 0;
         return;
       }
 
@@ -653,7 +653,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_radio_button () {
+  public BadgeRadioButton? get_radio_button () {
     return null;
   }
 

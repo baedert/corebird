@@ -23,7 +23,7 @@ class FavImageRow : Gtk.FlowBoxChild {
 
   private Gtk.Image image;
   private string file_path;
-  private Gtk.GestureMultiPress gesture;
+  private Gtk.GestureClick gesture;
 
   public bool is_gif = false;
 
@@ -44,7 +44,7 @@ class FavImageRow : Gtk.FlowBoxChild {
 
     this.set_valign (Gtk.Align.START);
 
-    gesture = new Gtk.GestureMultiPress ();
+    gesture = new Gtk.GestureClick ();
     gesture.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     gesture.set_button (0);
     gesture.pressed.connect (() => {

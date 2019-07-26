@@ -22,12 +22,13 @@
 #include "CbMedia.h"
 
 #define CB_TYPE_MEDIA_IMAGE_WIDGET cb_media_image_widget_get_type ()
-G_DECLARE_FINAL_TYPE (CbMediaImageWidget, cb_media_image_widget, CB, MEDIA_IMAGE_WIDGET, GtkScrolledWindow);
+G_DECLARE_FINAL_TYPE (CbMediaImageWidget, cb_media_image_widget, CB, MEDIA_IMAGE_WIDGET, GtkWidget);
 
 struct _CbMediaImageWidget
 {
-  GtkScrolledWindow parent_instance;
+  GtkWidget parent_instance;
 
+  GtkWidget *scroller;
   GtkWidget *image;
 
   double drag_start_hvalue;

@@ -17,13 +17,13 @@
 
 #include "CbMediaVideoWidget.h"
 
-G_DEFINE_TYPE(CbMediaVideoWidget, cb_media_video_widget, GTK_TYPE_STACK)
+G_DEFINE_TYPE(CbMediaVideoWidget, cb_media_video_widget, GTK_TYPE_WIDGET)
 
 static void
 cb_media_video_widget_show_error (CbMediaVideoWidget *self,
                                   const char         *error_message)
 {
-  gtk_stack_set_visible_child (GTK_STACK (self), self->error_label);
+  gtk_stack_set_visible_child (GTK_STACK (self->stack), self->error_label);
   gtk_label_set_label (GTK_LABEL (self->error_label), error_message);
 }
 
@@ -182,7 +182,7 @@ watch_cb (GstBus     *bus,
       case GST_MESSAGE_ASYNC_DONE:
         {
           g_debug ("ASYNC DONE");
-          gtk_stack_set_visible_child_name (GTK_STACK (self), "video");
+          gtk_stack_set_visible_child_name (GTK_STACK (self->stack), "video");
           gst_element_set_state (self->src, GST_STATE_PLAYING);
           if (self->video_progress_id == 0)
             self->video_progress_id = g_timeout_add (50, video_progress_timeout_cb, self);
@@ -256,6 +256,10 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
   GtkWidget *box;
   guint flags;
 
+
+  self->stack = gtk_stack_new ();
+  gtk_widget_set_parent (self->stack, GTK_WIDGET (self));
+
   self->error_label = gtk_label_new ("");
   gtk_label_set_line_wrap (GTK_LABEL (self->error_label), TRUE);
   gtk_label_set_selectable (GTK_LABEL (self->error_label), TRUE);
@@ -267,13 +271,13 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
   self->surface_progress = cb_surface_progress_new ();
   gtk_widget_show (self->surface_progress);
 
-  gtk_container_add (GTK_CONTAINER (self), self->surface_progress);
-  gtk_container_add (GTK_CONTAINER (self), self->error_label);
+  gtk_container_add (GTK_CONTAINER (self->stack), self->surface_progress);
+  gtk_container_add (GTK_CONTAINER (self->stack), self->error_label);
 
   self->cancellable = g_cancellable_new ();
 
 
-  gtk_stack_set_visible_child (GTK_STACK (self),
+  gtk_stack_set_visible_child (GTK_STACK (self->stack),
                                self->surface_progress);
 
   /* Init gstreamer stuff */
@@ -310,7 +314,7 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
                                "embedded-progress");
   gtk_container_add (GTK_CONTAINER (box), self->video_progress);
 
-  gtk_stack_add_named (GTK_STACK (self), box, "video");
+  gtk_stack_add_named (GTK_STACK (self->stack), box, "video");
 #endif
 }
 
@@ -324,6 +328,8 @@ cb_media_video_widget_class_init (CbMediaVideoWidgetClass *klass)
 
   widget_class->destroy = cb_media_video_widget_destroy;
   /*widget_class->key_press_event = cb_media_video_widget_key_press_event;*/
+
+  gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
 
 CbMediaVideoWidget *

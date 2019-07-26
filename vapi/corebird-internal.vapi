@@ -463,9 +463,10 @@ namespace Cb {
 
   [CCode (cprefix = "CbTweetListBox_", lower_case_cprefix = "cb_tweet_list_box_", cheader_filename =
           "CbTweetListBox.h")]
-  public class TweetListBox : Gtk.ListBox {
+  public class TweetListBox : GLib.Object {
     public Cb.TweetModel model;
     public Cb.TweetRow action_entry;
+    public unowned Gtk.ListBox get_widget ();
     public TweetListBox ();
     public signal void retry_button_clicked ();
     public void set_account (Account a);

@@ -26,11 +26,12 @@
 #include "CbSurfaceProgress.h"
 
 #define CB_TYPE_MEDIA_VIDEO_WIDGET cb_media_video_widget_get_type ()
-G_DECLARE_FINAL_TYPE (CbMediaVideoWidget, cb_media_video_widget, CB, MEDIA_VIDEO_WIDGET, GtkStack);
+G_DECLARE_FINAL_TYPE (CbMediaVideoWidget, cb_media_video_widget, CB, MEDIA_VIDEO_WIDGET, GtkWidget);
 
 struct _CbMediaVideoWidget
 {
-  GtkStack parent_instance;
+  GtkWidget parent_instance;
+
 
 #ifdef VIDEO
   GstElement *src;
@@ -40,6 +41,7 @@ struct _CbMediaVideoWidget
   SoupSession *session;
   SoupMessage *message;
 
+  GtkWidget *stack;
   GtkWidget *area;
   GtkWidget *surface_progress;
   GtkWidget *video_progress;

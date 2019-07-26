@@ -15,7 +15,8 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class BadgeRadioButton : Gtk.RadioButton {
+public class BadgeRadioButton : Gtk.Widget {
+  private Gtk.RadioButton button;
   private const int BADGE_SIZE = 10;
   private bool _show_badge = false;
   public bool show_badge {
@@ -31,20 +32,31 @@ public class BadgeRadioButton : Gtk.RadioButton {
     }
   }
 
+  public bool active {
+    set { this.button.active = value; }
+    get { return this.button.active;  }
+  }
+
   public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text="") {
-    GLib.Object (group: group);
-    this.get_style_context ().add_class ("image-button");
+    this.button = new Gtk.RadioButton.from_widget (group);
+    this.button.set_parent (this);
+
+    this.button.get_style_context ().add_class ("image-button");
     var i = new Gtk.Image.from_icon_name (icon_name);
-    this.add (i);
+    this.button.add (i);
     this.focus_on_click = false;
     this.hexpand = true;
-    this.set_draw_indicator (false);
+    this.button.set_draw_indicator (false);
 
     if (text != "") {
       this.tooltip_text = text;
       Atk.Object accessible = this.get_accessible ();
       accessible.set_name (text);
     }
+  }
+
+  public Gtk.Widget get_child () {
+    return this.button.get_child ();
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {
@@ -71,5 +83,27 @@ public class BadgeRadioButton : Gtk.RadioButton {
       snapshot.render_frame      (context, bounds.origin.x, bounds.origin.y, BADGE_SIZE, BADGE_SIZE);
       context.restore ();
     }
+  }
+
+  public override void measure (Gtk.Orientation orientation, int for_size,
+                                out int minimum, out int natural,
+                                out int minimum_baseline, out int natural_baseline) {
+    int min, nat;
+
+    this.button.measure (orientation, for_size, out min, out nat, null, null);
+
+    minimum = min;
+    natural = nat;
+    minimum_baseline = -1;
+    natural_baseline = -1;
+  }
+
+  public override void size_allocate (int width, int height, int baseline) {
+    Gtk.Allocation a = {0, 0, width, height};
+    this.button.size_allocate_emit (a, baseline);
+  }
+
+  public Gtk.RadioButton get_radio_button () {
+    return this.button;
   }
 }

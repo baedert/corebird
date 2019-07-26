@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ImpostorWidget : Gtk.Image {
+class ImpostorWidget : Gtk.Widget {
   private Gsk.RenderNode? cloned_node = null;
 
 

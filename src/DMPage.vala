@@ -339,5 +339,5 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_radio_button() {return null;}
+  public BadgeRadioButton? get_radio_button() {return null;}
 }

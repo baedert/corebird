@@ -117,7 +117,7 @@ class FavImageView : Gtk.Box {
 
   private void new_fav_image_button_clicked_cb () {
     var filechooser = new Gtk.FileChooserNative (_("Select Image"),
-                                                 this.get_toplevel () as Gtk.Window,
+                                                 this.get_root () as Gtk.Window,
                                                  Gtk.FileChooserAction.OPEN,
                                                  _("Open"),
                                                  _("Cancel"));

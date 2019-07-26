@@ -140,9 +140,8 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       var reply_entry = new Cb.TweetRow (reply_to, parent);
       reply_entry.activatable = false;
       reply_entry.set_read_only ();
-      reply_list.add (reply_entry);
-      reply_list.show ();
-      content_grid.attach (reply_list, 0, 0, 2, 1);
+      reply_list.get_widget ().add (reply_entry);
+      content_grid.attach (reply_list.get_widget (), 0, 0, 2, 1);
     }
 
     if (mode == Mode.QUOTE) {
@@ -209,7 +208,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
         }
       } else {
         if (keyval == Gdk.Key.Escape) {
-          this.cancel_clicked ();
+          cancel_clicked ();
         }
       }
     });
@@ -392,7 +391,8 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (this.emoji_chooser == null)
       return;
 
-    this.emoji_button.clicked ();
+    critical ("Replace the gtk_button_clicked() usage");
+    //this.emoji_button.clicked ();
   }
 
   private void setup_emoji_chooser () {

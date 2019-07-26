@@ -2,7 +2,7 @@
 <interface>
   <template class="ListStatusesPage" parent="ScrollWidget">
     <property name="can-focus">1</property>
-    <property name="hscrollbar-policy">never</property>
+    <!--<property name="hscrollbar-policy">never</property>-->
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -292,8 +292,8 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="vexpand">True</property>
-            <property name="selection-mode">none</property>
-            <signal name="row_activated" handler="tweet_activated_cb"/>
+            <!--<property name="selection-mode">none</property>-->
+            <!--<signal name="row_activated" handler="tweet_activated_cb"/>-->
           </object>
         </child>
       </object>

@@ -44,7 +44,7 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private ScrollWidget scroll_widget;
-  private Gtk.RadioButton radio_button;
+  private BadgeRadioButton radio_button;
   private GLib.Cancellable? cancellable = null;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -64,10 +64,10 @@ class SearchPage : IPage, Gtk.Box {
     this.account = account;
 
     /* We are slightly abusing the TweetListBox here */
-    tweet_list.bind_model (null, null);
-    tweet_list.set_header_func (header_func);
-    tweet_list.set_sort_func (twitter_item_sort_func);
-    tweet_list.row_activated.connect (row_activated_cb);
+    tweet_list.get_widget ().bind_model (null, null);
+    tweet_list.get_widget ().set_header_func (header_func);
+    tweet_list.get_widget ().set_sort_func (twitter_item_sort_func);
+    tweet_list.get_widget ().row_activated.connect (row_activated_cb);
     tweet_list.retry_button_clicked.connect (retry_button_clicked_cb);
     search_button.clicked.connect (() => {
       search_for (search_entry.get_text());
@@ -78,7 +78,7 @@ class SearchPage : IPage, Gtk.Box {
     });
     scroll_widget.scrolled_to_end.connect (load_tweets);
     tweet_list.get_placeholder ().hide ();
-    tweet_list.set_adjustment (scroll_widget.get_vadjustment ());
+    tweet_list.get_widget ().set_adjustment (scroll_widget.vadjustment);
   }
 
   [GtkCallback]
@@ -264,12 +264,12 @@ class SearchPage : IPage, Gtk.Box {
         entry.show_settings = false;
         if (!collect_obj.done)
           entry.visible = false;
-        tweet_list.add (entry);
+        tweet_list.get_widget ().add (entry);
       });
       if (users.get_length () > USER_COUNT) {
         if (load_more_entry.parent == null) {
           load_more_entry.visible = false;
-          tweet_list.add (load_more_entry);
+          tweet_list.get_widget ().add (load_more_entry);
         }
       } else {
         load_more_entry.hide ();
@@ -340,7 +340,7 @@ class SearchPage : IPage, Gtk.Box {
         else
           entry.show ();
 
-        tweet_list.add (entry);
+        tweet_list.get_widget ().add (entry);
       });
 
       if (!collect_obj.done)
@@ -360,7 +360,7 @@ class SearchPage : IPage, Gtk.Box {
       return;
     }
 
-    tweet_list.@foreach ((w) => w.show());
+    tweet_list.get_widget ().@foreach ((w) => w.show());
     this.loading_tweets = false;
     this.loading_users = false;
     this.cancellable = null;
@@ -370,7 +370,7 @@ class SearchPage : IPage, Gtk.Box {
     radio_button = new BadgeRadioButton (group, "corebird-edit-find-symbolic", _("Search"));
   }
 
-  public Gtk.RadioButton? get_radio_button() {
+  public BadgeRadioButton? get_radio_button() {
     return radio_button;
   }
 

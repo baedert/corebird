@@ -80,7 +80,7 @@ public class MainWidget : Gtk.Box {
       stack.add (page);
       if (page.get_radio_button () != null) {
         top_box.add (page.get_radio_button ());
-        page.get_radio_button ().clicked.connect (() => {
+        page.get_radio_button ().get_radio_button ().clicked.connect (() => {
           if (page.get_radio_button ().active && !page_switch_lock) {
             switch_page (page.id);
           }
@@ -159,7 +159,7 @@ public class MainWidget : Gtk.Box {
        because setting the active property of the button will cause
        the clicked event to be emitted, which will call switch_page. */
     IPage page = pages[page_id];
-    Gtk.ToggleButton button = page.get_radio_button ();
+    BadgeRadioButton button = page.get_radio_button ();
     page_switch_lock = true;
     if (button != null)
       button.active = true;

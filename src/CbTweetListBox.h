@@ -25,7 +25,9 @@
 typedef struct _CbTweetListBox CbTweetListBox;
 struct _CbTweetListBox
 {
-  GtkListBox parent_instance;
+  GtkWidget parent_instance;
+
+  GtkWidget *widget;
 
   void *account;
 
@@ -39,20 +41,21 @@ struct _CbTweetListBox
 };
 
 #define CB_TYPE_TWEET_LIST_BOX cb_tweet_list_box_get_type ()
-G_DECLARE_FINAL_TYPE (CbTweetListBox, cb_tweet_list_box, CB, TWEET_LIST_BOX, GtkListBox);
+G_DECLARE_FINAL_TYPE (CbTweetListBox, cb_tweet_list_box, CB, TWEET_LIST_BOX, GtkWidget);
 
-GtkWidget * cb_tweet_list_box_new                    (void);
-void        cb_tweet_list_box_set_account            (CbTweetListBox *self,
-                                                      void           *account);
-void        cb_tweet_list_box_set_empty              (CbTweetListBox *self);
-void        cb_tweet_list_box_set_unempty            (CbTweetListBox *self);
-void        cb_tweet_list_box_set_error              (CbTweetListBox *self,
-                                                      const char     *error_message);
-void        cb_tweet_list_box_set_placeholder_text   (CbTweetListBox *self,
-                                                      const char     *placeholder_text);
-void        cb_tweet_list_box_reset_placeholder_text (CbTweetListBox *self);
-GtkWidget * cb_tweet_list_box_get_first_visible_row  (CbTweetListBox *self);
-GtkWidget * cb_tweet_list_box_get_placeholder        (CbTweetListBox *self);
-void        cb_tweet_list_box_remove_all             (CbTweetListBox *self);
+CbTweetListBox  * cb_tweet_list_box_new                    (void);
+GtkWidget *       cb_tweet_list_box_get_widget             (CbTweetListBox *self);
+void              cb_tweet_list_box_set_account            (CbTweetListBox *self,
+                                                            void           *account);
+void              cb_tweet_list_box_set_empty              (CbTweetListBox *self);
+void              cb_tweet_list_box_set_unempty            (CbTweetListBox *self);
+void              cb_tweet_list_box_set_error              (CbTweetListBox *self,
+                                                            const char     *error_message);
+void              cb_tweet_list_box_set_placeholder_text   (CbTweetListBox *self,
+                                                            const char     *placeholder_text);
+void              cb_tweet_list_box_reset_placeholder_text (CbTweetListBox *self);
+GtkWidget *       cb_tweet_list_box_get_first_visible_row  (CbTweetListBox *self);
+GtkWidget *       cb_tweet_list_box_get_placeholder        (CbTweetListBox *self);
+void              cb_tweet_list_box_remove_all             (CbTweetListBox *self);
 
 #endif

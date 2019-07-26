@@ -19,7 +19,8 @@ const int TOP    = 1;
 const int BOTTOM = 2;
 const int NONE   = 0;
 
-public class ScrollWidget : Gtk.ScrolledWindow {
+public class ScrollWidget : Gtk.Widget {
+  private Gtk.ScrolledWindow widget;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();
   private double upper_cache;
@@ -38,6 +39,15 @@ public class ScrollWidget : Gtk.ScrolledWindow {
       return vadjustment.value <= 5;
     }
   }
+  // Mirrored from GtkScrolledWindow
+  public Gtk.Adjustment hadjustment {
+    set { this.widget.hadjustment = value; }
+    get { return this.widget.hadjustment;  }
+  }
+  public Gtk.Adjustment vadjustment {
+    set { this.widget.vadjustment = value; }
+    get { return this.widget.vadjustment;  }
+  }
   //Transition times
   private int64 start_time;
   private int64 end_time;
@@ -45,6 +55,9 @@ public class ScrollWidget : Gtk.ScrolledWindow {
   private double transition_start_value;
 
   construct {
+    this.widget = new Gtk.ScrolledWindow (null, null);
+    this.widget.set_parent (this);
+
     vadjustment.notify["upper"].connect (keep_upper_func);
     vadjustment.notify["value"].connect (keep_value_func);
   }
@@ -195,5 +208,40 @@ public class ScrollWidget : Gtk.ScrolledWindow {
 
     return true;
   }
+
+  public void add (Gtk.Widget w) {
+    this.widget.add (w);
+  }
+
+  //public Gtk.Adjustment get_hadjustment  () {
+    //return widget.get_hadjustment ();
+  //}
+
+  //public Gtk.Adjustment get_vadjustment  () {
+    //return widget.get_vadjustment ();
+  //}
+
+  public void set_policy (Gtk.PolicyType h, Gtk.PolicyType v) {
+    this.widget.set_policy (h, v);
+  }
+
+  public override void measure (Gtk.Orientation orientation, int for_size,
+                                out int minimum, out int natural,
+                                out int minimum_baseline, out int natural_baseline) {
+    int min, nat;
+
+    this.widget.measure (orientation, for_size, out min, out nat, null, null);
+
+    minimum = min;
+    natural = nat;
+    minimum_baseline = -1;
+    natural_baseline = -1;
+  }
+
+  public override void size_allocate (int width, int height, int baseline) {
+    Gtk.Allocation a = {0, 0, width, height};
+    this.widget.size_allocate_emit (a, baseline);
+  }
+
 
 }

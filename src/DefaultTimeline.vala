@@ -53,7 +53,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   protected DefaultTimeline (int id) {
     this.id = id;
-    this.hscrollbar_policy = Gtk.PolicyType.NEVER;
+    this.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
     this.scrolled_to_end.connect (() => {
       if (!loading) {
@@ -64,9 +64,9 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
       mark_seen_on_scroll (vadjustment.value);
     });
 
-    this.add (tweet_list);
+    this.add (tweet_list.get_widget ());
 
-    tweet_list.row_activated.connect ((row) => {
+    tweet_list.get_widget ().row_activated.connect ((row) => {
       if (row is Cb.TweetRow || row is Cb.TweetRow) {
         var bundle = new Cb.Bundle ();
         bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
@@ -113,14 +113,14 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     if (last_focus_widget != null) {
       /* We might have a reference to a row that's been removed
          from the listbox */
-      if (last_focus_widget.parent == tweet_list)
+      if (last_focus_widget.parent == tweet_list.get_widget ())
         last_focus_widget.grab_focus ();
       else
         last_focus_widget = null;
     }
 #endif
 
-    this.get_vadjustment ().value = this.last_value;
+    this.vadjustment.value = this.last_value;
   }
 
   public virtual void on_leave () {
@@ -129,7 +129,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions ())
       tweet_list.action_entry.toggle_mode ();
 
-    last_value = this.get_vadjustment ().value;
+    last_value = this.vadjustment.value;
   }
 
   public bool handles_double_open () {
@@ -139,7 +139,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
   public void double_open () {
     if (!loading) {
       this.scroll_up_next (true, true);
-      tweet_list.get_row_at_index (0).grab_focus ();
+      tweet_list.get_widget ().get_row_at_index (0).grab_focus ();
     }
   }
 
@@ -174,7 +174,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   public virtual void create_radio_button(Gtk.RadioButton? group){}
 
-  public Gtk.RadioButton? get_radio_button() {
+  public BadgeRadioButton? get_radio_button() {
     return radio_button;
   }
 
@@ -275,7 +275,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   protected void mark_seen (int64 id) {
 #if !EXPERIMENTAL_LISTBOX
-    foreach (Gtk.Widget w in tweet_list.get_children ()) {
+    foreach (Gtk.Widget w in tweet_list.get_widget ().get_children ()) {
       if (w == null || !(w is Cb.TweetRow))
         continue;
 
@@ -440,7 +440,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
     // We HAVE to use widgets here.
 #if !EXPERIMENTAL_LISTBOX
-    tweet_list.forall ((w) => {
+    tweet_list.get_widget ().forall ((w) => {
       if (!(w is Cb.TweetRow))
         return;
 

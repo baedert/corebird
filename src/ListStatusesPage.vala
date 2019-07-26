@@ -90,7 +90,7 @@ class ListStatusesPage : ScrollWidget, IPage {
     this.tweet_list.set_account (account);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
-    tweet_list.set_adjustment (this.get_vadjustment ());
+    tweet_list.get_widget ().set_adjustment (this.vadjustment);
 
     var scroll_controller = new Gtk.EventControllerScroll (Gtk.EventControllerScrollFlags.VERTICAL);
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
@@ -314,16 +314,16 @@ class ListStatusesPage : ScrollWidget, IPage {
     });
   }
 
-  [GtkCallback]
-  private void tweet_activated_cb (Gtk.ListBoxRow row) {
-    if (row is Cb.TweetRow) {
-      var bundle = new Cb.Bundle ();
-      bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
-      bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
-      _main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
-    } else
-      warning ("row is of unknown type");
-  }
+  //[GtkCallback]
+  //private void tweet_activated_cb (Gtk.ListBoxRow row) {
+    //if (row is Cb.TweetRow) {
+      //var bundle = new Cb.Bundle ();
+      //bundle.put_int (TweetInfoPage.KEY_MODE, TweetInfoPage.BY_INSTANCE);
+      //bundle.put_object (TweetInfoPage.KEY_TWEET, ((Cb.TweetRow)row).tweet);
+      //_main_window.main_widget.switch_page (Page.TWEET_INFO, bundle);
+    //} else
+      //warning ("row is of unknown type");
+  //}
 
   private async void load_newer () {
     var call = account.proxy.new_call ();
@@ -381,5 +381,5 @@ class ListStatusesPage : ScrollWidget, IPage {
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}
-  public Gtk.RadioButton? get_radio_button () {return null;}
+  public BadgeRadioButton? get_radio_button () {return null;}
 }

@@ -127,7 +127,6 @@ cb_quote_tweet_widget_class_init (CbQuoteTweetWidgetClass *klass)
 static void
 cb_quote_tweet_widget_init (CbQuoteTweetWidget *self)
 {
-  gtk_widget_set_has_surface ((GtkWidget *)self, FALSE);
 }
 
 static gboolean
@@ -138,7 +137,7 @@ link_activated_cb (GtkLabel   *label,
   CbQuoteTweetWidget *self = user_data;
   GtkWidget *toplevel;
 
-  toplevel = gtk_widget_get_toplevel ((GtkWidget *)self);
+  toplevel = gtk_widget_get_root ((GtkWidget *)self);
 
   if (!CB_IS_MAIN_WINDOW (toplevel))
     return FALSE;
@@ -154,7 +153,7 @@ name_button_clicked_cb (GtkButton *source,
   CbBundle *bundle;
   GtkWidget *toplevel;
 
-  toplevel = gtk_widget_get_toplevel ((GtkWidget *)self);
+  toplevel = gtk_widget_get_root ((GtkWidget *)self);
 
   if (!CB_IS_MAIN_WINDOW (toplevel))
     return;

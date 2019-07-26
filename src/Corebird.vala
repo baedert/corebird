@@ -180,10 +180,7 @@ public class Corebird : Gtk.Application {
 
   private void about_activated () {
     var active_window = get_active_window ();
-    var ad = new AboutDialog ();
-    ad.modal = true;
-    ad.set_transient_for (active_window);
-    ad.show ();
+    Utils.show_about_dialog (active_window);
   }
 
   private void show_shortcuts_activated () {

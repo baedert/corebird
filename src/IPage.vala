@@ -22,7 +22,7 @@ public interface IPage : Gtk.Widget {
   public abstract void on_join(int page_id, Cb.Bundle? args);
   public abstract void on_leave ();
   public abstract void create_radio_button(Gtk.RadioButton? group);
-  public abstract Gtk.RadioButton? get_radio_button();
+  public abstract BadgeRadioButton? get_radio_button();
   public abstract string get_title ();
 
   public virtual bool handles_double_open () {

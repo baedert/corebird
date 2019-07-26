@@ -32,7 +32,7 @@
   </menu>
   <template class="ProfilePage" parent="ScrollWidget">
     <property name="can-focus">0</property>
-    <property name="hscrollbar-policy">never</property>
+    <!--<property name="hscrollbar-policy">never</property>-->
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -403,7 +403,7 @@
                 <property name="visible">1</property>
                 <property name="can-focus">False</property>
                 <property name="vexpand">True</property>
-                <property name="selection-mode">none</property>
+                <!--<property name="selection-mode">none</property>-->
               </object>
             </child>
             <child>
@@ -413,14 +413,14 @@
               <object class="CbTweetListBox" id="followers_list">
                 <property name="visible">1</property>
                 <property name="vexpand">true</property>
-                <property name="selection-mode">none</property>
+                <!--<property name="selection-mode">none</property>-->
               </object>
             </child>
             <child>
               <object class="CbTweetListBox" id="following_list">
                 <property name="visible">1</property>
                 <property name="vexpand">true</property>
-                <property name="selection-mode">none</property>
+                <!--<property name="selection-mode">none</property>-->
               </object>
             </child>
           </object>

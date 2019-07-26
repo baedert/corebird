@@ -329,8 +329,6 @@ cb_compose_images_class_init (CbComposeImagesClass *klass)
 static void
 cb_compose_images_init (CbComposeImages *self)
 {
-  gtk_widget_set_has_surface (GTK_WIDGET (self), FALSE);
-
   self->images = g_array_new (FALSE, TRUE, sizeof (Image));
 
   cb_animation_init (&self->delete_animation,

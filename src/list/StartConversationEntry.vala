@@ -61,7 +61,7 @@ class StartConversationEntry : Gtk.ListBoxRow {
     user_completion.connect_to (name_entry.buffer, "text");
     user_completion.start_completion.connect (() => {
       completion_window.set_attached_to (this.name_entry);
-      completion_window.set_transient_for ((Gtk.Window)this.get_toplevel ());
+      completion_window.set_transient_for ((Gtk.Window)this.get_root ());
       position_popup_window ();
       completion_window.show ();
       completion_list.foreach ((w) => { completion_list.remove (w); });
@@ -80,15 +80,16 @@ class StartConversationEntry : Gtk.ListBoxRow {
   }
 
   private void position_popup_window () {
-    int x, y;
-    Gtk.Allocation alloc;
-    name_entry.get_allocation (out alloc);
-    name_entry.get_surface ().get_origin (out x, out y);
-    x += alloc.x;
-    y += alloc.y + alloc.height;
+    warning ("IMPLEMENT");
+    //int x, y;
+    //Gtk.Allocation alloc;
+    //name_entry.get_allocation (out alloc);
+    //name_entry.get_surface ().get_origin (out x, out y);
+    //x += alloc.x;
+    //y += alloc.y + alloc.height;
 
     //completion_window.move (x, y);
-    completion_window.resize (alloc.width, 50);
+    //completion_window.resize (alloc.width, 50);
   }
 
   private bool name_entry_key_pressed (Gdk.Event evt) {

@@ -14,7 +14,7 @@
   </menu>
   <template class="TweetInfoPage" parent="ScrollWidget">
     <property name="can-focus">1</property>
-    <property name="hscrollbar-policy">never</property>
+    <!--<property name="hscrollbar-policy">never</property>-->
     <child>
       <object class="GtkStack" id="main_stack">
         <child>
@@ -27,7 +27,7 @@
                 <child>
                   <object class="CbTweetListBox" id="conversation_list_box">
                     <property name="can-focus">False</property>
-                    <property name="selection-mode">none</property>
+                    <!--<property name="selection-mode">none</property>-->
                   </object>
                 </child>
               </object>
@@ -288,7 +288,6 @@
                 <child>
                   <object class="GtkMenuButton">
                     <property name="valign">baseline</property>
-                    <property name="relief">none</property>
                     <property name="menu-model">actions_menu</property>
                     <property name="icon-name">go-down-symbolic</property>
                     <child internal-child="accessible">
@@ -310,7 +309,7 @@
             <child>
               <object class="CbTweetListBox" id="reply_list_box">
                 <property name="visible">1</property>
-                <property name="selection-mode">none</property>
+                <!--<property name="selection-mode">none</property>-->
                 <property name="hexpand">1</property>
               </object>
             </child>

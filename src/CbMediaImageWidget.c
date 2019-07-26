@@ -16,7 +16,7 @@
  */
 #include "CbMediaImageWidget.h"
 
-G_DEFINE_TYPE (CbMediaImageWidget, cb_media_image_widget, GTK_TYPE_SCROLLED_WINDOW)
+G_DEFINE_TYPE (CbMediaImageWidget, cb_media_image_widget, GTK_TYPE_WIDGET)
 
 static void
 drag_begin_cb (GtkGestureDrag *gesture,
@@ -57,6 +57,9 @@ drag_update_cb (GtkGestureDrag *gesture,
 static void
 cb_media_image_widget_class_init (CbMediaImageWidgetClass *klass)
 {
+  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
 
 static void
@@ -64,8 +67,11 @@ cb_media_image_widget_init (CbMediaImageWidget *self)
 {
   GtkGesture *drag_gesture;
 
+  self->scroller = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_set_parent (self->scroller, GTK_WIDGET (self));
+
   self->image = gtk_image_new ();
-  gtk_container_add (GTK_CONTAINER (self), self->image);
+  gtk_container_add (GTK_CONTAINER (self->scroller), self->image);
 
   self->initial_scroll_x = 0.5;
   self->initial_scroll_y = 0.5;
@@ -164,9 +170,11 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
   int win_width;
   int win_height;
 
-  g_assert (GTK_IS_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (self))));
+  g_assert (GTK_IS_WINDOW (gtk_widget_get_root (GTK_WIDGET (self))));
 
   /* :( */
+
+#if 0
   gtk_widget_realize (gtk_widget_get_toplevel (GTK_WIDGET (self)));
 
   surface = gtk_widget_get_surface (gtk_widget_get_toplevel (GTK_WIDGET (self)));
@@ -193,4 +201,5 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
     g_object_set ((GObject *)self, "vscrollbar-policy", GTK_POLICY_NEVER, NULL);
 
   gtk_widget_set_size_request ((GtkWidget *)self, win_width, win_height);
+#endif
 }

@@ -210,7 +210,7 @@ namespace TweetUtils {
       tweet.load_from_json (json_array.get_element (i), account.id, now);
       if (account.user_counter == null ||
           tweet_list == null ||
-          !(tweet_list.get_toplevel () is Gtk.Window))
+          !(tweet_list.get_widget ().get_root () is Gtk.Window))
         break;
 
       account.user_counter.id_seen (ref tweet.source_tweet.author);
@@ -241,7 +241,7 @@ namespace TweetUtils {
       tweet.load_from_json (json_array.get_element (i), account.id, now);
       if (account.user_counter == null ||
           tweet_list == null ||
-          !(tweet_list.get_toplevel () is Gtk.Window))
+          !(tweet_list.get_widget ().get_root () is Gtk.Window))
         break;
 
       account.user_counter.id_seen (ref tweet.source_tweet.author);

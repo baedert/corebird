@@ -25,7 +25,7 @@ class MediaDialog : Gtk.Window {
   private Gtk.Revealer previous_revealer;
   private unowned Cb.Tweet tweet;
   private int cur_index = 0;
-  private Gtk.GestureMultiPress button_gesture;
+  private Gtk.GestureClick button_gesture;
   private double initial_px;
   private double initial_py;
 
@@ -36,7 +36,7 @@ class MediaDialog : Gtk.Window {
     Cb.Media cur_media = tweet.get_medias()[start_media_index];
     this.tweet = tweet;
     this.cur_index = start_media_index;
-    this.button_gesture = new Gtk.GestureMultiPress ();
+    this.button_gesture = new Gtk.GestureClick ();
     this.button_gesture.set_button (0);
     this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     this.button_gesture.released.connect (button_released_cb);
