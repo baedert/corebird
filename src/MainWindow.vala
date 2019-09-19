@@ -435,7 +435,7 @@ public class MainWindow : Gtk.ApplicationWindow {
     if (account == null)
       return Gdk.EVENT_PROPAGATE;
 
-    unowned GLib.List<weak Gtk.Window> ws = this.application.get_windows ();
+    unowned GLib.List<Gtk.Window> ws = this.application.get_windows ();
     debug("Windows: %u", ws.length ());
 
     string[] startup_accounts = Settings.get ().get_strv ("startup-accounts");
