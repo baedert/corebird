@@ -34,10 +34,13 @@ static GtkWidget *
 tweet_row_create_func (gpointer item,
                        gpointer user_data)
 {
+  GtkRoot *root;
+
   g_assert (CB_IS_TWEET (item));
 
-  return cb_tweet_row_new (CB_TWEET (item),
-                           CB_MAIN_WINDOW (gtk_widget_get_root (GTK_WIDGET (user_data))));
+  root = gtk_widget_get_root (user_data);
+
+  return cb_tweet_row_new (CB_TWEET (item), CB_MAIN_WINDOW (root));
 }
 
 static void
@@ -75,7 +78,7 @@ retry_button_clicked_cb (GtkButton *source,
 static GtkWidget *
 get_focused_row (CbTweetListBox *self)
 {
-  GtkWidget *toplevel = gtk_widget_get_root ((GtkWidget *)self);
+  GtkRoot *toplevel = gtk_widget_get_root ((GtkWidget *)self);
   GtkWidget *focus_widget;
 
   if (!GTK_IS_WINDOW (toplevel))
@@ -212,6 +215,8 @@ cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
                                                                0,
                                                                NULL, NULL,
                                                                NULL, G_TYPE_NONE, 0);
+
+  gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
 
 static void
@@ -220,6 +225,7 @@ cb_tweet_list_box_init (CbTweetListBox *self)
   GtkGesture *multipress_gesture;
 
   self->widget = gtk_list_box_new ();
+  gtk_widget_set_parent (self->widget, (GtkWidget *)self);
 
   gtk_style_context_add_class (gtk_widget_get_style_context ((GtkWidget *)self->widget), "tweets");
   gtk_list_box_set_selection_mode ((GtkListBox *)self->widget, GTK_SELECTION_NONE);
@@ -261,14 +267,14 @@ cb_tweet_list_box_init (CbTweetListBox *self)
 
     self->no_entries_label = gtk_label_new (_("No entries found"));
     gtk_style_context_add_class (gtk_widget_get_style_context (self->no_entries_label), "dim-label");
-    gtk_label_set_line_wrap_mode ((GtkLabel *)self->no_entries_label, PANGO_WRAP_WORD_CHAR);
+    gtk_label_set_wrap_mode ((GtkLabel *)self->no_entries_label, PANGO_WRAP_WORD_CHAR);
     gtk_stack_add_named ((GtkStack *)self->placeholder, self->no_entries_label, "no-entries");
 
     error_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
     retry_button = gtk_button_new_with_label (_("Retry"));
     self->error_label = gtk_label_new ("");
     gtk_style_context_add_class (gtk_widget_get_style_context (self->error_label), "dim-label");
-    gtk_label_set_line_wrap_mode ((GtkLabel *)self->error_label, PANGO_WRAP_WORD_CHAR);
+    gtk_label_set_wrap_mode ((GtkLabel *)self->error_label, PANGO_WRAP_WORD_CHAR);
     gtk_widget_set_margin_top (self->error_label, 12);
     gtk_widget_set_margin_end (self->error_label, 12);
     gtk_widget_set_margin_bottom (self->error_label, 12);
@@ -290,7 +296,7 @@ cb_tweet_list_box_init (CbTweetListBox *self)
 CbTweetListBox *
 cb_tweet_list_box_new (void)
 {
-  return (GtkWidget *)g_object_new (CB_TYPE_TWEET_LIST_BOX, NULL);
+  return (CbTweetListBox *)g_object_new (CB_TYPE_TWEET_LIST_BOX, NULL);
 }
 
 GtkWidget *
@@ -359,7 +365,7 @@ cb_tweet_list_box_get_placeholder (CbTweetListBox *self)
 void
 cb_tweet_list_box_remove_all (CbTweetListBox *self)
 {
-  GList *children = gtk_container_get_children (GTK_CONTAINER (self));
+  GList *children = gtk_container_get_children (GTK_CONTAINER (self->widget));
   GList *l;
 
   for (l = children; l; l = l->next)

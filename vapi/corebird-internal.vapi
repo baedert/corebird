@@ -463,7 +463,7 @@ namespace Cb {
 
   [CCode (cprefix = "CbTweetListBox_", lower_case_cprefix = "cb_tweet_list_box_", cheader_filename =
           "CbTweetListBox.h")]
-  public class TweetListBox : GLib.Object {
+  public class TweetListBox : Gtk.Widget {
     public Cb.TweetModel model;
     public Cb.TweetRow action_entry;
     public unowned Gtk.ListBox get_widget ();
@@ -525,5 +525,22 @@ namespace Cb {
     public bool has_gif ();
     public void insensitivize_buttons ();
     public signal void image_removed (string image_path);
+  }
+
+  [CCode (cprefix = "CbScrollWidget_", lower_case_cprefix = "cb_scroll_widget_", cheader_filename =
+          "CbScrollWidget.h")]
+  public class ScrollWidget : Gtk.Widget {
+    [CCode (has_construct_function = false)]
+    public ScrollWidget ();
+    public signal void scrolled_to_start (double val);
+    public signal void scrolled_to_end ();
+    public void set_policy (Gtk.PolicyType h, Gtk.PolicyType v);
+    public bool scrolled_down ();
+    public bool scrolled_up ();
+    public void scroll_down_next (bool animate = true, bool force_wait = false);
+    public void scroll_up_next (bool animate = true, bool force_wait = false);
+    public void balance_next_upper_change (int p);
+    public unowned Gtk.Adjustment get_vadjustment ();
+    public void add (Gtk.Widget child);
   }
 }

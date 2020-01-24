@@ -43,7 +43,7 @@ class SearchPage : IPage, Gtk.Box {
   [GtkChild]
   private Gtk.Label tweets_header;
   [GtkChild]
-  private ScrollWidget scroll_widget;
+  private Cb.ScrollWidget scroll_widget;
   private BadgeRadioButton radio_button;
   private GLib.Cancellable? cancellable = null;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
@@ -78,7 +78,7 @@ class SearchPage : IPage, Gtk.Box {
     });
     scroll_widget.scrolled_to_end.connect (load_tweets);
     tweet_list.get_placeholder ().hide ();
-    tweet_list.get_widget ().set_adjustment (scroll_widget.vadjustment);
+    tweet_list.get_widget ().set_adjustment (scroll_widget.get_vadjustment ());
   }
 
   [GtkCallback]

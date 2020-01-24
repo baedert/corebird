@@ -136,6 +136,13 @@ public class Corebird : Gtk.Application {
   }
 
   public override void activate () {
+
+
+
+
+
+
+
     if (started_as_service) {
       this.hold ();
 
@@ -202,6 +209,14 @@ public class Corebird : Gtk.Application {
     typeof (Cb.ReplyIndicator).ensure ();
     typeof (Cb.MaxSizeContainer).ensure ();
     typeof (Cb.ComposeImages).ensure ();
+    typeof (Cb.ScrollWidget).ensure ();
+
+   var w = new Cb.ScrollWidget ();
+   //error("Z");
+   assert(w != null);
+   assert((w as Gtk.Widget) != null);
+
+
 
 #if DEBUG
     GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "corebird", true);

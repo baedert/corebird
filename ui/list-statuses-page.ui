@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="ListStatusesPage" parent="ScrollWidget">
+  <template class="ListStatusesPage" parent="CbScrollWidget">
     <property name="can-focus">1</property>
     <!--<property name="hscrollbar-policy">never</property>-->
     <child>
@@ -139,7 +139,7 @@
                     <property name="transition-type">slide-up-down</property>
                     <child>
                       <object class="GtkMenuButton" id="delete_button">
-                        <property name="popup">delete_menu</property>
+                        <property name="menu-model">delete_menu</property>
                         <style>
                           <class name="destructive-action"/>
                         </style>
@@ -299,15 +299,13 @@
       </object>
     </child>
   </template>
-  <object class="GtkMenu" id="delete_menu">
-    <child>
-      <object class="GtkMenuItem" id="delete_confirmation_item">
-        <property name="label" translatable="yes">Confirm</property>
-        <property name="use-underline">1</property>
-        <signal name="activate" handler="delete_confirmation_item_clicked_cb" swapped="no"/>
-      </object>
-    </child>
-  </object>
+  <menu id="delete_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Confirm</attribute>
+      </item>
+    </section>
+  </menu>
   <object class="GtkSizeGroup">
     <widgets>
       <widget name="edit_button"/>

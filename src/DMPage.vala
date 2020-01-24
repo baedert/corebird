@@ -33,7 +33,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
   private Gtk.Button send_button;
   private Cb.TextView text_view;
   private Gtk.ListBox messages_list;
-  private ScrollWidget scroll_widget;
+  private Cb.ScrollWidget scroll_widget;
   private DMPlaceholderBox placeholder_box;
 
   public int64 user_id;
@@ -46,7 +46,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     /* Set up UI */
     this.set_orientation (Gtk.Orientation.VERTICAL);
 
-    this.scroll_widget = new ScrollWidget ();
+    this.scroll_widget = new Cb.ScrollWidget ();
     scroll_widget.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     scroll_widget.set_vexpand (true);
     scroll_widget.scrolled_to_start.connect (load_older);
@@ -161,7 +161,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       new_msg.update_time_delta ();
       new_msg.load_avatar (sender.get_string_member ("profile_image_url"));
       messages_list.add (new_msg);
-      if (scroll_widget.scrolled_down)
+      if (scroll_widget.scrolled_down ())
         scroll_widget.scroll_down_next ();
     }
   }
@@ -324,7 +324,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     text_view.set_text ("");
 
     // Scroll down
-    if (scroll_widget.scrolled_down)
+    if (scroll_widget.scrolled_down ())
       scroll_widget.scroll_down_next ();
   }
 

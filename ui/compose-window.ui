@@ -9,7 +9,6 @@
   <template class="ComposeTweetWindow" parent="GtkApplicationWindow">
     <property name="can-focus">1</property>
     <property name="title" translatable="yes">Compose Tweet</property>
-    <property name="window-position">center-on-parent</property>
     <property name="destroy-with-parent">1</property>
     <property name="type-hint">dialog</property>
     <child type="titlebar">

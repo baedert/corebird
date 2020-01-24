@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/list-statuses-page.ui")]
-class ListStatusesPage : ScrollWidget, IPage {
+class ListStatusesPage : Cb.ScrollWidget, IPage {
   public const int KEY_USER_LIST     = 0;
   public const int KEY_NAME          = 1;
   public const int KEY_DESCRIPTION   = 2;
@@ -90,13 +90,13 @@ class ListStatusesPage : ScrollWidget, IPage {
     this.tweet_list.set_account (account);
     this.scrolled_to_end.connect (load_older);
     this.scrolled_to_start.connect (handle_scrolled_to_start);
-    tweet_list.get_widget ().set_adjustment (this.vadjustment);
+    tweet_list.get_widget ().set_adjustment (this.get_vadjustment ());
 
     var scroll_controller = new Gtk.EventControllerScroll (Gtk.EventControllerScrollFlags.VERTICAL);
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.CAPTURE);
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
-      if (delta_y < 0 && this.vadjustment.value == 0) {
-        double inc = vadjustment.step_increment * (- delta_y);
+      if (delta_y < 0 && this.get_vadjustment ().value == 0) {
+        double inc = this.get_vadjustment ().step_increment * (- delta_y);
         max_size_container.set_fraction (max_size_container.get_fraction () + inc);
       }
       return true;
@@ -285,26 +285,26 @@ class ListStatusesPage : ScrollWidget, IPage {
     return cur_name.substring (slash_index + 1);
   }
 
-  [GtkCallback]
-  private void delete_confirmation_item_clicked_cb () {
-    var call = account.proxy.new_call ();
-    call.set_function("1.1/lists/destroy.json");
-    call.add_param ("list_id", list_id.to_string ());
-    call.set_method ("POST");
-    call.invoke_async.begin (null, (o, res) => {
-      try {
-        call.invoke_async.end (res);
-      } catch (GLib.Error e) {
-        Utils.show_error_object (call.get_payload (), e.message,
-                                 GLib.Log.LINE, GLib.Log.FILE, this._main_window);
-      }
-    });
+  //[GtkCallback]
+  //private void delete_confirmation_item_clicked_cb () {
+    //var call = account.proxy.new_call ();
+    //call.set_function("1.1/lists/destroy.json");
+    //call.add_param ("list_id", list_id.to_string ());
+    //call.set_method ("POST");
+    //call.invoke_async.begin (null, (o, res) => {
+      //try {
+        //call.invoke_async.end (res);
+      //} catch (GLib.Error e) {
+        //Utils.show_error_object (call.get_payload (), e.message,
+                                 //GLib.Log.LINE, GLib.Log.FILE, this._main_window);
+      //}
+    //});
     // Go back to the ListsPage and tell it to remove this list
-    var bundle = new Cb.Bundle ();
-    bundle.put_int (ListsPage.KEY_MODE, ListsPage.MODE_DELETE);
-    bundle.put_int64 (ListsPage.KEY_LIST_ID, list_id);
-    _main_window.main_widget.switch_page (Page.LISTS, bundle);
-  }
+    //var bundle = new Cb.Bundle ();
+    //bundle.put_int (ListsPage.KEY_MODE, ListsPage.MODE_DELETE);
+    //bundle.put_int64 (ListsPage.KEY_LIST_ID, list_id);
+    //_main_window.main_widget.switch_page (Page.LISTS, bundle);
+  //}
 
   [GtkCallback]
   private void refresh_button_clicked_cb () {
@@ -361,7 +361,7 @@ class ListStatusesPage : ScrollWidget, IPage {
 
     if (tweet_list.model.get_n_items () > DefaultTimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
-        if (!scrolled_up) {
+        if (!this.scrolled_up ()) {
           tweet_remove_timeout = 0;
           return false;
         }

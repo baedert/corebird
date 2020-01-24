@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/tweet-info-page.ui")]
-public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
+public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
   public const int KEY_MODE        = 0;
   public const int KEY_TWEET       = 1;
   public const int KEY_EXISTING    = 2;
@@ -101,7 +101,7 @@ public class TweetInfoPage : IPage, ScrollWidget, Cb.MessageReceiver {
     var scroll_controller = new Gtk.EventControllerScroll (Gtk.EventControllerScrollFlags.VERTICAL);
     scroll_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
     scroll_controller.scroll.connect ((delta_x, delta_y) => {
-      if (delta_y < 0 && this.vadjustment.value == 0 && reply_indicator.get_replies_available ()) {
+      if (delta_y < 0 && this.get_vadjustment ().value == 0 && reply_indicator.get_replies_available ()) {
         double inc = (- delta_y) * 0.2;
         max_size_container.set_fraction (max_size_container.get_fraction () + inc);
       }

@@ -308,7 +308,6 @@ link_activated_cb (GtkLabel   *label,
   CbTweetRow *self = user_data;
 
   gtk_widget_grab_focus (GTK_WIDGET (self));
-  g_message (__FUNCTION__);
 
   return tweet_utils_activate_link (uri, self->main_window);
 }
@@ -399,8 +398,8 @@ create_ui (CbTweetRow *self)
   gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
   gtk_label_set_track_visited_links (GTK_LABEL (self->text_label), FALSE);
-  gtk_label_set_line_wrap (GTK_LABEL (self->text_label), TRUE);
-  gtk_label_set_line_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
+  gtk_label_set_wrap (GTK_LABEL (self->text_label), TRUE);
+  gtk_label_set_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->text_label), "text");
   gtk_widget_set_parent (self->text_label, (GtkWidget *)self);
   g_signal_connect (self->text_label, "activate-link", G_CALLBACK (link_activated_cb), self);
@@ -519,8 +518,8 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
           gtk_label_set_yalign (GTK_LABEL (self->reply_label), 0.0f);
           gtk_label_set_use_markup (GTK_LABEL (self->reply_label), TRUE);
           gtk_label_set_track_visited_links (GTK_LABEL (self->reply_label), FALSE);
-          gtk_label_set_line_wrap (GTK_LABEL (self->reply_label), TRUE);
-          gtk_label_set_line_wrap_mode (GTK_LABEL (self->reply_label), PANGO_WRAP_WORD_CHAR);
+          gtk_label_set_wrap (GTK_LABEL (self->reply_label), TRUE);
+          gtk_label_set_wrap_mode (GTK_LABEL (self->reply_label), PANGO_WRAP_WORD_CHAR);
           gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),
                                        "dim-label");
           gtk_style_context_add_class (gtk_widget_get_style_context (self->reply_label),

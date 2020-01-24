@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public abstract class DefaultTimeline : ScrollWidget, IPage {
+public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
   public const int REST = 25;
   protected bool initialized = false;
   public int id                          { get; set; }
@@ -60,11 +60,11 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
         load_older ();
       }
     });
-    this.vadjustment.notify["value"].connect (() => {
-      mark_seen_on_scroll (vadjustment.value);
+    this.get_vadjustment ().notify["value"].connect (() => {
+      mark_seen_on_scroll (this.get_vadjustment ().value);
     });
 
-    this.add (tweet_list.get_widget ());
+    this.add (tweet_list);
 
     tweet_list.get_widget ().row_activated.connect ((row) => {
       if (row is Cb.TweetRow || row is Cb.TweetRow) {
@@ -120,7 +120,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     }
 #endif
 
-    this.vadjustment.value = this.last_value;
+    this.get_vadjustment ().value = this.last_value;
   }
 
   public virtual void on_leave () {
@@ -129,7 +129,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
     if (tweet_list.action_entry != null && tweet_list.action_entry.shows_actions ())
       tweet_list.action_entry.toggle_mode ();
 
-    last_value = this.vadjustment.value;
+    last_value = this.get_vadjustment ().value;
   }
 
   public bool handles_double_open () {
@@ -188,7 +188,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
     if (tweet_list.model.get_n_items () > DefaultTimeline.REST) {
       tweet_remove_timeout = GLib.Timeout.add (500, () => {
-        if (!scrolled_up) {
+        if (!scrolled_up ()) {
           tweet_remove_timeout = 0;
           return GLib.Source.REMOVE;
         }
@@ -295,7 +295,7 @@ public abstract class DefaultTimeline : ScrollWidget, IPage {
 
   protected bool scroll_up (Cb.Tweet t) {
     bool auto_scroll = Settings.auto_scroll_on_new_tweets ();
-    if (this.scrolled_up && (t.get_user_id () == account.id || auto_scroll)) {
+    if (this.scrolled_up () && (t.get_user_id () == account.id || auto_scroll)) {
       this.scroll_up_next (true,
                            _main_window.get_cur_page_id () != this.id);
       return true;

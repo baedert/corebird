@@ -264,7 +264,7 @@ class CropWidget : Gtk.DrawingArea {
 
 
     /* Draw dark background */
-    Gdk.RGBA bg_color = {0.3, 0.3, 0.3, 1.0};
+    Gdk.RGBA bg_color = {0.3f, 0.3f, 0.3f, 1.0f};
     snapshot.append_color (bg_color, bounds);
 
     /* Draw image */
@@ -277,7 +277,7 @@ class CropWidget : Gtk.DrawingArea {
 
     /* Draw half-transparent dark over the non-selected part of the image */
     Graphene.Rect dark_bounds = {};
-    Gdk.RGBA dark = { 0.0, 0.0, 0.0, 0.5};
+    Gdk.RGBA dark = { 0.0f, 0.0f, 0.0f, 0.5f };
 
     /* Left */
     dark_bounds.origin.x = image_rect.x;
@@ -310,7 +310,7 @@ class CropWidget : Gtk.DrawingArea {
 
 
     /* Draw selection rectangle */
-    Gdk.RGBA selection_color = {1.0, 1.0, 1.0, 1.0};
+    Gdk.RGBA selection_color = { 1.0f, 1.0f, 1.0f, 1.0f };
     int stroke_width = 2;
     Graphene.Rect selection_bounds = {};
 
@@ -343,7 +343,7 @@ class CropWidget : Gtk.DrawingArea {
     snapshot.append_color (selection_color, selection_bounds);
 
     /* Resize quad */
-    Gdk.RGBA quad_color = {0.0, 0.0, 0.6, 0.7};
+    Gdk.RGBA quad_color = { 0.0f, 0.0f, 0.6f, 0.7f };
     int quad_size = 15;
     Graphene.Rect quad_bounds = {};
 

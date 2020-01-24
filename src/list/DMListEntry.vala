@@ -86,8 +86,8 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     text_label.set_hexpand (true);
     text_label.set_vexpand (true);
     text_label.set_xalign (0.0f);
-    text_label.set_line_wrap (true);
-    text_label.set_line_wrap_mode (Pango.WrapMode.WORD_CHAR);
+    text_label.set_wrap (true);
+    text_label.set_wrap_mode (Pango.WrapMode.WORD_CHAR);
     text_label.set_use_markup (true);
     text_label.set_selectable (true);
     text_label.set_valign (Gtk.Align.START);

@@ -12,7 +12,7 @@
       </item>
     </section>
   </menu>
-  <template class="TweetInfoPage" parent="ScrollWidget">
+  <template class="TweetInfoPage" parent="CbScrollWidget">
     <property name="can-focus">1</property>
     <!--<property name="hscrollbar-policy">never</property>-->
     <child>

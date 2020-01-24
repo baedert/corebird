@@ -50,7 +50,7 @@ private class MediaButton : Gtk.Widget {
   }
   public unowned Gtk.Window main_window;
   private GLib.Menu menu_model;
-  private Gtk.Menu? menu = null;
+  //private Gtk.Menu? menu = null;
   private GLib.SimpleActionGroup actions;
   private const GLib.ActionEntry[] action_entries = {
     {"copy-url",        copy_url_activated},
@@ -357,11 +357,11 @@ private class MediaButton : Gtk.Widget {
 
     this.press_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
     if (event.triggers_context_menu ()) {
-      if (this.menu == null) {
-        this.menu = new Gtk.Menu.from_model (menu_model);
-        this.menu.attach_to_widget (this, null);
-      }
-      menu.show ();
+      //if (this.menu == null) {
+        //this.menu = new Gtk.Menu.from_model (menu_model);
+        //this.menu.attach_to_widget (this, null);
+      //}
+      //menu.show ();
       //menu.popup (null, null, null, button, Gtk.get_current_event_time ());
     }
   }

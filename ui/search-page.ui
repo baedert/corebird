@@ -29,7 +29,7 @@
       </object>
     </child>
     <child>
-      <object class="ScrollWidget" id="scroll_widget">
+      <object class="CbScrollWidget" id="scroll_widget">
         <property name="visible">True</property>
         <property name="can-focus">True</property>
         <property name="vexpand">True</property>

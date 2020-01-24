@@ -261,7 +261,7 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
   gtk_widget_set_parent (self->stack, GTK_WIDGET (self));
 
   self->error_label = gtk_label_new ("");
-  gtk_label_set_line_wrap (GTK_LABEL (self->error_label), TRUE);
+  gtk_label_set_wrap (GTK_LABEL (self->error_label), TRUE);
   gtk_label_set_selectable (GTK_LABEL (self->error_label), TRUE);
   gtk_widget_set_halign (self->error_label, GTK_ALIGN_CENTER);
   gtk_widget_set_valign (self->error_label, GTK_ALIGN_CENTER);

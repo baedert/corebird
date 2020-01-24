@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class DMThreadsPage : IPage, Cb.MessageReceiver, ScrollWidget {
+class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
   private bool initialized = false;
   private int _unread_count = 0;
   public int unread_count {

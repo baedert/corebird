@@ -19,7 +19,7 @@ const int TOP    = 1;
 const int BOTTOM = 2;
 const int NONE   = 0;
 
-public class ScrollWidget : Gtk.Widget {
+public class ScrollWidget : Gtk.Bin {
   private Gtk.ScrolledWindow widget;
   public signal void scrolled_to_start(double value);
   public signal void scrolled_to_end();
@@ -55,6 +55,7 @@ public class ScrollWidget : Gtk.Widget {
   private double transition_start_value;
 
   construct {
+    message ("ZOMGGGGGGG: %p", this);
     this.widget = new Gtk.ScrolledWindow (null, null);
     this.widget.set_parent (this);
 
@@ -209,18 +210,6 @@ public class ScrollWidget : Gtk.Widget {
     return true;
   }
 
-  public void add (Gtk.Widget w) {
-    this.widget.add (w);
-  }
-
-  //public Gtk.Adjustment get_hadjustment  () {
-    //return widget.get_hadjustment ();
-  //}
-
-  //public Gtk.Adjustment get_vadjustment  () {
-    //return widget.get_vadjustment ();
-  //}
-
   public void set_policy (Gtk.PolicyType h, Gtk.PolicyType v) {
     this.widget.set_policy (h, v);
   }
@@ -243,5 +232,8 @@ public class ScrollWidget : Gtk.Widget {
     this.widget.size_allocate_emit (a, baseline);
   }
 
-
+  public override void add (Gtk.Widget child) {
+    message ("ADDDDDD: %p", this);
+    this.widget.add (child);
+  }
 }

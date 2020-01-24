@@ -98,14 +98,14 @@ public class HomeTimeline : Cb.MessageReceiver, DefaultTimeline {
 
     t.set_seen (t.source_tweet.author.id == account.id ||
                 (t.retweeted_tweet != null && t.retweeted_tweet.author.id == account.id) ||
-                (this.scrolled_up  &&
+                (this.scrolled_up () &&
                  _main_window.get_cur_page_id () == this.id &&
                  auto_scroll));
 
     bool focused = tweet_list.get_first_visible_row () != null &&
                    tweet_list.get_first_visible_row ().is_focus;
 
-    bool should_focus = (focused && this.scrolled_up);
+    bool should_focus = (focused && this.scrolled_up ());
 
     tweet_list.model.add (t);
 

@@ -26,6 +26,11 @@ main (int argc, char **argv)
   GtkApplication *app;
   int ret;
 
+
+  gtk_init();
+  GtkWidget *w = cb_scroll_widget_new();
+  g_assert (GTK_IS_WIDGET (w));
+
 #ifdef VIDEO
   gst_init (&argc, &argv);
 #endif

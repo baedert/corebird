@@ -16,7 +16,7 @@
  */
 
 [GtkTemplate (ui = "/org/baedert/corebird/ui/filter-page.ui")]
-class FilterPage : ScrollWidget, IPage, Cb.MessageReceiver {
+class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
   public int id { get; set; }
   private unowned Cb.MainWindow _main_window;
   public unowned Cb.MainWindow main_window {

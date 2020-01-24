@@ -15,7 +15,7 @@
  *  along with corebird.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ListsPage : IPage, ScrollWidget, Cb.MessageReceiver {
+class ListsPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
   public const int KEY_MODE = 0;
   public const int KEY_LIST_ID = 1;
 

@@ -52,26 +52,26 @@ class FavImageRow : Gtk.FlowBoxChild {
       Gdk.Event event = this.gesture.get_last_event (sequence);
 
       if (event.triggers_context_menu ()) {
-        var menu = new Gtk.Menu ();
-        var delete_item = new Gtk.MenuItem.with_label (_("Delete"));
-        delete_item.activate.connect (() => {
-          var flowbox = this.get_parent ();
-          if (!(flowbox is Gtk.FlowBox)) {
-            warning ("Parent is not a flowbox");
-            return;
-          }
+        //var menu = new Gtk.Menu ();
+        //var delete_item = new Gtk.MenuItem.with_label (_("Delete"));
+        //delete_item.activate.connect (() => {
+          //var flowbox = this.get_parent ();
+          //if (!(flowbox is Gtk.FlowBox)) {
+            //warning ("Parent is not a flowbox");
+            //return;
+          //}
 
-          try {
-            var file = GLib.File.new_for_path (this.file_path);
-            file.trash ();
-            ((Gtk.Container)flowbox).remove (this);
-          } catch (GLib.Error e) {
-            warning (e.message);
-          }
-        });
-        menu.add (delete_item);
-        menu.attach_to_widget (this, null);
-        menu.show ();
+          //try {
+            //var file = GLib.File.new_for_path (this.file_path);
+            //file.trash ();
+            //((Gtk.Container)flowbox).remove (this);
+          //} catch (GLib.Error e) {
+            //warning (e.message);
+          //}
+        //});
+        //menu.add (delete_item);
+        //menu.attach_to_widget (this, null);
+        //menu.show ();
         //menu.popup (null,
                     //null,
                     //null,

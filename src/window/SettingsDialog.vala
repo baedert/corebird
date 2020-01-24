@@ -87,7 +87,7 @@ class SettingsDialog : Gtk.Window {
     var icon_info = Gtk.IconTheme.get_default ().lookup_icon ("corebird",
                                                               48 * this.get_scale_factor (),
                                                               Gtk.IconLookupFlags.FORCE_SIZE);
-    avatar_texture = icon_info.load_texture ();
+    //avatar_texture = icon_info.load_texture ();
     sample_tweet.source_tweet.text = sample_text;
 
     try {
