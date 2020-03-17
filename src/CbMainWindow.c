@@ -657,10 +657,11 @@ GtkWidget *
 cb_main_window_new (void *account)
 {
   CbMainWindow *self;
-  g_assert (IS_ACCOUNT (account));
+  g_assert (!account || IS_ACCOUNT (account));
 
   self = CB_MAIN_WINDOW (g_object_new (CB_TYPE_MAIN_WINDOW, NULL));
   cb_main_window_change_account (self, ACCOUNT (account));
+
   load_geometry (self);
 
   gtk_application_window_set_show_menubar ((GtkApplicationWindow *)self, FALSE);
@@ -770,7 +771,8 @@ cb_main_window_change_account (CbMainWindow *self,
   Corebird *cb;
   gint64 old_user_id = 0;
 
-  g_assert (IS_ACCOUNT (acc));
+  if (acc)
+    g_assert (IS_ACCOUNT (acc));
 
   if (old_account != NULL)
     {

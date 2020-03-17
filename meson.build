@@ -264,5 +264,5 @@ if enable_examples
 endif
 
 summary('Debugging enabled', enable_debug)
-summary('Video enabled', enable_debug)
-summary('Spellchecking enabled', enable_debug)
+summary('Video enabled', enable_video)
+summary('Spellchecking enabled', enable_spellcheck)

@@ -46,7 +46,7 @@ public class AccountCreateWidget : Gtk.Box {
     pin_entry.buffer.inserted_text.connect (pin_changed_cb);
   }
 
-  public void open_pin_request_site () {
+  private void open_pin_request_site () {
     local_proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
                                        Settings.get_consumer_secret (),
                                        "https://api.twitter.com/",
