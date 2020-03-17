@@ -84,9 +84,9 @@ class SettingsDialog : Gtk.Window {
     };
     string sample_text = _("Hey, check out this new #Corebird version! \\ (•◡•) / #cool #newisalwaysbetter");
     Gdk.Texture? avatar_texture = null;
-    var icon_info = Gtk.IconTheme.get_default ().lookup_icon ("corebird",
-                                                              48 * this.get_scale_factor (),
-                                                              Gtk.IconLookupFlags.FORCE_SIZE);
+    //var icon_info = Gtk.IconTheme.get_default ().lookup_icon ("corebird",
+                                                              //48 * this.get_scale_factor (),
+                                                              //Gtk.IconLookupFlags.FORCE_SIZE);
     //avatar_texture = icon_info.load_texture ();
     sample_tweet.source_tweet.text = sample_text;
 

@@ -314,18 +314,16 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     filechooser.set_filter (filter);
 
     if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
-      var filename = filechooser.get_filename ();
-      debug ("Loading %s", filename);
-
       /* Get file size */
-      var file = GLib.File.new_for_path (filename);
+      var file = filechooser.get_file ();
+      debug ("Loading %s", file.get_uri ());
       GLib.FileInfo info;
       try {
         info = file.query_info (GLib.FileAttribute.STANDARD_TYPE + "," +
                                 GLib.FileAttribute.STANDARD_CONTENT_TYPE + "," +
                                 GLib.FileAttribute.STANDARD_SIZE, 0);
       } catch (GLib.Error e) {
-        warning ("%s (%s)", e.message, filename);
+        warning ("%s (%s)", e.message, file.get_uri ());
         // TODO: Proper error checking
         return;
       }
@@ -341,16 +339,17 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
                                   .printf (Twitter.MAX_BYTES_PER_IMAGE / 1024 / 1024);
         cancel_button.label = _("Back");
         send_button.sensitive = false;
-      } else if (filename.has_suffix (".gif") &&
-                 this.compose_images.get_n_images () > 0) {
-        stack.visible_child = image_error_grid;
-        image_error_label.label = _("Only one GIF file per tweet is allowed.");
-        cancel_button.label = _("Back");
-        send_button.sensitive = false;
+      //} else if (filename.has_suffix (".gif") &&
+                 //this.compose_images.get_n_images () > 0) {
+        //stack.visible_child = image_error_grid;
+        //image_error_label.label = _("Only one GIF file per tweet is allowed.");
+        //cancel_button.label = _("Back");
+        //send_button.sensitive = false;
       } else {
         this.compose_images.show ();
-        this.compose_images.load_image (filename);
-        this.compose_job.upload_image_async (filename);
+        warning ("filename -> file conversion missing");
+        //this.compose_images.load_image (filename);
+        //this.compose_job.upload_image_async (filename);
         if (this.compose_images.get_n_images () > 0) {
           fav_image_view.set_gifs_enabled (false);
         }

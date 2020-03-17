@@ -247,7 +247,10 @@
             <property name="valign">center</property>
             <property name="wrap">1</property>
             <property name="wrap-mode">word-char</property>
-            <property name="margin">24</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
           </object>
         </child>
       </object>

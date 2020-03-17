@@ -94,6 +94,7 @@ get_focused_row (CbTweetListBox *self)
   return NULL;
 }
 
+#if 0
 static gboolean
 cb_tweet_list_box_event (GtkWidget *widget,
                          GdkEvent  *event)
@@ -185,6 +186,7 @@ cb_tweet_list_box_event (GtkWidget *widget,
 
   return GDK_EVENT_PROPAGATE;
 }
+#endif
 
 static void
 cb_tweet_list_box_finalize (GObject *obj)

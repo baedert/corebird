@@ -36,8 +36,8 @@ class StartConversationEntry : Gtk.ListBoxRow {
 
   public StartConversationEntry (Account account) {
     this.account = account;
-    completion_window = new Gtk.Window (Gtk.WindowType.POPUP);
-    completion_window.set_type_hint (Gdk.SurfaceTypeHint.COMBO);
+    completion_window = new Gtk.Window ();
+    //completion_window.set_type_hint (Gdk.SurfaceTypeHint.COMBO);
     //completion_window.set_screen (name_entry.get_screen ());
     completion_window.destroy_with_parent = true;
     //completion_window.focus_out_event.connect (() => {
@@ -93,28 +93,28 @@ class StartConversationEntry : Gtk.ListBoxRow {
   }
 
   private bool name_entry_key_pressed (Gdk.Event evt) {
-    uint num_results = completion_list.get_children ().length ();
-    uint keyval;
+    //uint num_results = completion_list.get_children ().length ();
+    //uint keyval;
 
-    if (num_results == 0)
-      return Gdk.EVENT_PROPAGATE;
+    //if (num_results == 0)
+      //return Gdk.EVENT_PROPAGATE;
 
-    evt.get_keyval (out keyval);
+    //evt.get_keyval (out keyval);
 
-    if (keyval == Gdk.Key.Down) {
-      current_match = (current_match + 1) % (int)num_results;
-      var row = completion_list.get_row_at_index (current_match);
-      completion_list.select_row (row);
-      return Gdk.EVENT_STOP;
-    } else if (keyval == Gdk.Key.Up) {
-      current_match --;
-      if (current_match < 0) current_match = (int)num_results - 1;
-      var row = completion_list.get_row_at_index (current_match);
-      completion_list.select_row (row);
-      return Gdk.EVENT_STOP;
-    } else if (keyval == Gdk.Key.Return) {
+    //if (keyval == Gdk.Key.Down) {
+      //current_match = (current_match + 1) % (int)num_results;
+      //var row = completion_list.get_row_at_index (current_match);
+      //completion_list.select_row (row);
+      //return Gdk.EVENT_STOP;
+    //} else if (keyval == Gdk.Key.Up) {
+      //current_match --;
+      //if (current_match < 0) current_match = (int)num_results - 1;
+      //var row = completion_list.get_row_at_index (current_match);
+      //completion_list.select_row (row);
+      //return Gdk.EVENT_STOP;
+    //} else if (keyval == Gdk.Key.Return) {
 
-    }
+    //}
     return Gdk.EVENT_PROPAGATE;
   }
 

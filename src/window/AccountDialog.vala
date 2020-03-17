@@ -355,15 +355,16 @@ public class AccountDialog : Gtk.Window {
     filechooser.set_filter (filter);
 
     if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
-      string selected_file = filechooser.get_filename ();
+      warning ("avatar image selector stubbed out!");
+      var file = filechooser.get_file ();
       Gdk.Pixbuf? image = null;
-      try {
-        image = new Gdk.Pixbuf.from_file (selected_file);
-      } catch (GLib.Error e) {
-        warning (e.message);
-        content_stack.visible_child = info_box;
-        return;
-      }
+      //try {
+        //image = new Gdk.Pixbuf.from_file (selected_file);
+      //} catch (GLib.Error e) {
+        //warning (e.message);
+        //content_stack.visible_child = info_box;
+        //return;
+      //}
 
       /* Values for banner */
       int min_width = 200;

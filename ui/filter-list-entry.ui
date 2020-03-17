@@ -15,7 +15,10 @@
         <child>
           <object class="GtkStack" id="stack">
             <property name="transition-type">slide-up-down</property>
-            <property name="margin">3</property>
+            <property name="margin-start">3</property>
+            <property name="margin-end">3</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">3</property>
             <child>
               <object class="GtkGrid" id="normal_box">
                 <property name="column-spacing">6</property>
@@ -25,7 +28,10 @@
                     <property name="valign">center</property>
                     <property name="halign">start</property>
                     <property name="hexpand">1</property>
-                    <property name="margin">6</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                     <property name="ellipsize">end</property>
                     <property name="xalign">0</property>
                     <attributes>

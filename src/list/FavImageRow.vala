@@ -38,8 +38,7 @@ class FavImageRow : Gtk.FlowBoxChild {
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
     image.set_halign (Gtk.Align.CENTER);
     image.set_valign (Gtk.Align.CENTER);
-    image.margin = 3;
-    image.show ();
+    image.margin_start = image.margin_end = image.margin_top = image.margin_bottom = 3;
     this.add (image);
 
     this.set_valign (Gtk.Align.START);

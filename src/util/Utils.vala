@@ -276,9 +276,8 @@ namespace Utils {
     return back;
   }
 
-
   public void load_custom_icons () {
-    var icon_theme  = Gtk.IconTheme.get_default ();
+    var icon_theme  = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
     icon_theme.add_resource_path ("/org/baedert/corebird/data/");
   }
 

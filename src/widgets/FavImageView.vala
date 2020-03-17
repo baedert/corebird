@@ -130,7 +130,7 @@ class FavImageView : Gtk.Box {
     if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       try {
         // First, take the selected file and copy it into the image-favorites folder
-        var file = GLib.File.new_for_path (filechooser.get_filename ());
+        var file = filechooser.get_file ();
         var file_info = file.query_info ("standard::name,standard::content-type", GLib.FileQueryInfoFlags.NONE);
         var dest_dir = GLib.File.new_for_path (Dirs.config ("image-favorites"));
 

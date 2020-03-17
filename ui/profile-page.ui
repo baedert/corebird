@@ -388,7 +388,10 @@
             </child>
             <child>
               <object class="GtkLabel" id="loading_error_label">
-                <property name="margin">24</property>
+                <property name="margin-start">24</property>
+                <property name="margin-end">24</property>
+                <property name="margin-top">24</property>
+                <property name="margin-bottom">24</property>
                 <property name="wrap">1</property>
               </object>
             </child>

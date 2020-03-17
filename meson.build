@@ -42,8 +42,6 @@ add_project_arguments('-DG_LOG_DOMAIN="corebird"', language: 'c')
 add_project_arguments('--enable-deprecated', language: 'vala')
 
 if (enable_debug)
-  add_project_arguments('-g', language: 'c')
-  add_project_arguments('-g', language: 'vala')
   add_project_arguments('-DDEBUG', language: 'c')
   add_project_arguments('-D', 'DEBUG', language: 'vala')
   add_project_arguments('-DG_DISABLE_CAST_CHECKS', language: 'c')
@@ -265,16 +263,6 @@ if enable_examples
   subdir('examples')
 endif
 
-summary = [
-  '',
-  '----------',
-  ' Corebird @0@'.format(meson.project_version()),
-  '',
-  '  Debugging enabled: @0@'.format(enable_debug),
-  '      Video enabled: @0@'.format(enable_video),
-  ' Spellcheck enabled: @0@'.format(enable_spellcheck),
-  '',
-  '----------',
-]
-
-message('\n'.join(summary))
+summary('Debugging enabled', enable_debug)
+summary('Video enabled', enable_debug)
+summary('Spellchecking enabled', enable_debug)

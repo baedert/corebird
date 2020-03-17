@@ -122,19 +122,19 @@ class MediaDialog : Gtk.Window {
     }
   }
 
-  private bool key_press_event_cb (Gdk.Event evt) {
-    uint keyval;
-    evt.get_keyval (out keyval);
+  //private bool key_press_event_cb (Gdk.Event evt) {
+    //uint keyval;
+    //evt.get_keyval (out keyval);
 
-    if (keyval == Gdk.Key.Left)
-      previous_media ();
-    else if (keyval == Gdk.Key.Right)
-      next_media ();
-    else
-      this.destroy ();
+    //if (keyval == Gdk.Key.Left)
+      //previous_media ();
+    //else if (keyval == Gdk.Key.Right)
+      //next_media ();
+    //else
+      //this.destroy ();
 
-    return Gdk.EVENT_PROPAGATE;
-  }
+    //return Gdk.EVENT_PROPAGATE;
+  //}
 
   [GtkCallback]
   private void next_button_clicked_cb () {

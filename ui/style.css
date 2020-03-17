@@ -233,7 +233,6 @@ replyindicator>revealer>button>box>label {
 .close-button {
   padding: 3px;
   border-radius: 50%;
-  -gtk-outline-radius: 50%;
   min-height: 0px;
   min-width: 0px;
   box-shadow: none;

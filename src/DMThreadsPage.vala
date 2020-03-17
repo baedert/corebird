@@ -55,7 +55,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
     /* Create UI */
     this.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     var frame = new Gtk.Frame (null);
-    frame.margin = 25;
+    frame.margin_start = frame.margin_end = frame.margin_top = frame.margin_bottom = 25;
     frame.set_valign (Gtk.Align.START);
     frame.set_shadow_type (Gtk.ShadowType.IN);
     frame.show ();
@@ -185,7 +185,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
         this.progress_row = new Gtk.ListBoxRow ();
         var spinner = new Gtk.Spinner ();
         spinner.set_size_request (16, 16);
-        spinner.margin = 12;
+        spinner.margin_start = spinner.margin_end = spinner.margin_top = spinner.margin_bottom = 12;
         spinner.visible = true;
         spinner.start ();
         progress_row.add (spinner);

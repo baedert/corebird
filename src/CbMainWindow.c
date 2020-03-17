@@ -395,6 +395,7 @@ out:
   g_variant_unref (win_geom);
 }
 
+#if 0
 static gboolean
 headerbar_key_press_event_cb (GtkWidget   *widget,
                               GdkEventKey *event,
@@ -416,7 +417,7 @@ headerbar_key_press_event_cb (GtkWidget   *widget,
 
   return GDK_EVENT_PROPAGATE;
 }
-
+#endif
 static void
 toggle_compose_window (GSimpleAction *action,
                        GVariant      *parameter,
@@ -599,7 +600,7 @@ cb_main_window_init (CbMainWindow *self)
   g_signal_connect (self->back_button, "clicked", G_CALLBACK (back_button_clicked_cb), self);
   gtk_container_add (GTK_CONTAINER (self->header_box), self->back_button);
 
-  self->accounts_popover = gtk_popover_new (self->account_button);
+  self->accounts_popover = gtk_popover_new ();
   gtk_menu_button_set_popover (GTK_MENU_BUTTON (self->account_button), self->accounts_popover);
   g_signal_connect (self->accounts_popover, "closed", G_CALLBACK (accounts_popover_closed_cb), self);
   accounts_frame = gtk_frame_new (NULL);

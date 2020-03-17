@@ -15,7 +15,10 @@
         <child>
           <object class="GtkStack" id="stack">
             <property name="transition-type">slide-up-down</property>
-            <property name="margin">3</property>
+            <property name="margin-start">3</property>
+            <property name="margin-end">3</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">3</property>
             <child>
               <object class="GtkGrid" id="grid">
                 <child>

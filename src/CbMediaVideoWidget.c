@@ -218,6 +218,7 @@ cb_media_video_widget_destroy (GtkWidget *widget)
   GTK_WIDGET_CLASS (cb_media_video_widget_parent_class)->destroy (widget);
 }
 
+#if 0
 static gboolean
 cb_media_video_widget_key_press_event (GtkWidget   *widget,
                                        GdkEventKey *event)
@@ -228,7 +229,7 @@ cb_media_video_widget_key_press_event (GtkWidget   *widget,
 
   return GDK_EVENT_PROPAGATE;
 }
-
+#endif
 static void
 cb_media_video_widget_finalize (GObject *object)
 {

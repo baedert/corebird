@@ -29,7 +29,10 @@
             <property name="name">interface</property>
             <property name="child">
               <object class="GtkGrid" id="interface_grid">
-                <property name="margin">10</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <property name="column-homogeneous">1</property>
@@ -149,7 +152,10 @@
             <property name="name">notifications</property>
             <property name="child">
               <object class="GtkGrid" id="notification_grid">
-                <property name="margin">10</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
                 <property name="row-spacing">6</property>
                 <property name="column-spacing">12</property>
                 <property name="column-homogeneous">1</property>
@@ -421,7 +427,10 @@
                       <object class="GtkButton">
                         <property name="relief">none</property>
                         <property name="valign">center</property>
-                        <property name="margin">6</property>
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">6</property>
                         <property name="icon-name">list-add-symbolic</property>
                         <signal name="clicked" handler="add_snippet_button_clicked_cb"/>
                       </object>

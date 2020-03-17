@@ -40,7 +40,7 @@ class SnippetListEntry : Gtk.ListBoxRow {
     this.revealer = new Gtk.Revealer ();
     revealer.reveal_child = true;
     var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-    box.margin = 6;
+    box.margin_start = box.margin_end = box.margin_top = box.margin_bottom = 6;
     box.homogeneous = true;
 
     key_label = new Gtk.Label (key);

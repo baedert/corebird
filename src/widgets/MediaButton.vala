@@ -267,10 +267,10 @@ private class MediaButton : Gtk.Widget {
 
     filechooser.set_current_name (Utils.get_media_display_name (_media));
     if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
-      var file = GLib.File.new_for_path (filechooser.get_filename ());
+      var file = filechooser.get_file ();
       // Download the file
       string url = _media.target_url ?? _media.url;
-      debug ("Downloading %s to %s", url, filechooser.get_filename ());
+      debug ("Downloading %s to %s", url, file.get_uri ());
 
       GLib.OutputStream? out_stream = null;
       try {
