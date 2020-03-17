@@ -23,7 +23,46 @@ struct _CbScrollWidgetPrivate
 };
 typedef struct _CbScrollWidgetPrivate CbScrollWidgetPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (CbScrollWidget, cb_scroll_widget, GTK_TYPE_WIDGET);
+static GtkBuildableIface *parent_buildable_iface;
+static void cb_scroll_widget_buildable_init (GtkBuildableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (CbScrollWidget, cb_scroll_widget, GTK_TYPE_WIDGET,
+                         G_ADD_PRIVATE (CbScrollWidget)
+                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
+                                                cb_scroll_widget_buildable_init)
+                         );
+
+
+static void
+cb_scroll_widget_buildable_add_child (GtkBuildable  *buildable,
+                                      GtkBuilder    *builder,
+                                      GObject       *child,
+                                      const char    *type)
+{
+  CbScrollWidget *self = CB_SCROLL_WIDGET (buildable);
+  CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
+  if (GTK_IS_WIDGET (child) &&
+      gtk_widget_get_parent (GTK_WIDGET (child)) == NULL)
+    {
+      if (type)
+        GTK_BUILDER_WARN_INVALID_CHILD_TYPE (buildable, type);
+      else
+        gtk_container_add (GTK_CONTAINER (priv->scrolled_window), GTK_WIDGET (child));
+    }
+  else
+    {
+      parent_buildable_iface->add_child (buildable, builder, child, type);
+    }
+}
+
+
+
+static void
+cb_scroll_widget_buildable_init (GtkBuildableIface *iface)
+{
+  parent_buildable_iface = g_type_interface_peek_parent (iface);
+  iface->add_child = cb_scroll_widget_buildable_add_child;
+}
 
 static void
 cb_scroll_widget_finalize (GObject *object)
@@ -39,11 +78,8 @@ cb_scroll_widget_class_init (CbScrollWidgetClass *klass)
 {
   GObjectClass *object_class   = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
-  /*GtkContainerClass *container_class = GTK_CONTAINER_CLASS (klass);*/
 
   object_class->finalize = cb_scroll_widget_finalize;
-
-  /*container_class->add = cb_scroll_widget_add;*/
 
   gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
@@ -69,8 +105,8 @@ cb_scroll_widget_new (void)
 
 void
 cb_scroll_widget_set_policy (CbScrollWidget *self,
-                             GtkPolicyType    hscroll_policy,
-                             GtkPolicyType    vscroll_policy)
+                             GtkPolicyType   hscroll_policy,
+                             GtkPolicyType   vscroll_policy)
 {
   CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
 

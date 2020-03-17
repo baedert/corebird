@@ -25,7 +25,6 @@ G_DECLARE_DERIVABLE_TYPE (CbScrollWidget, cb_scroll_widget, CB, SCROLL_WIDGET, G
 
 struct _CbScrollWidgetClass
 {
-  //GtkContainerClass parent_class;
   GtkWidgetClass parent_class;
 };
 
