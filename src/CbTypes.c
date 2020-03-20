@@ -144,7 +144,7 @@ cb_mini_tweet_parse (CbMiniTweet *t,
   /*else*/
     /*extended_object = obj;*/
 
-  /*time = 0;//cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));*/
+  time = cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));
   t->text = g_strdup (json_object_get_string_member (obj, "content"));
   t->display_range_start = 0;
 
@@ -177,10 +177,10 @@ cb_mini_tweet_parse (CbMiniTweet *t,
       t->display_range_start= 0;
     }
 
+#endif
   t->created_at = g_date_time_to_unix (time);
 
   g_date_time_unref (time);
-#endif
 }
 
 static int

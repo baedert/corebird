@@ -366,8 +366,7 @@ cb_utils_escape_ampersands (const char *in)
 GDateTime *
 cb_utils_parse_date (const char *_in)
 {
-  char in[31];
-  const char *month_str;
+  char in[25];
   int year, month, hour, minute, day;
   GDateTime *result;
   GDateTime *result_local;
@@ -375,74 +374,29 @@ cb_utils_parse_date (const char *_in)
   GTimeZone *local_time_zone;
   double seconds;
 
-  /* The input string is ASCII, in the form  'Wed Jun 20 19:01:28 +0000 2012' */
+  /* The input string is ASCII, in the form  '2020-03-20T08:50:38.526Z' */
 
   if (!_in)
     return g_date_time_new_now_local ();
 
-  g_assert (strlen (_in) == 30);
-  memcpy (in, _in, 30);
+  // TODO: What's the time zone here?
+  g_assert (strlen (_in) == 24);
+  memcpy (in, _in, 24);
 
-  in[3]  = '\0';
+  in[4]  = '\0';
   in[7]  = '\0';
   in[10] = '\0';
   in[13] = '\0';
   in[16] = '\0';
-  in[19] = '\0';
-  in[25] = '\0';
-  in[30] = '\0';
 
-  year    = atoi (in + 26);
+  in[23] = '\0';
+
+  year    = atoi (in + 0);
+  month   = atoi (in + 5);
   day     = atoi (in + 8);
   hour    = atoi (in + 11);
   minute  = atoi (in + 14);
   seconds = atof (in + 17);
-
-  month_str = in + 4;
-  switch (month_str[0])
-    {
-      case 'J': /* January */
-        if (month_str[1] == 'u' && month_str[2] == 'n')
-          month = 6;
-        else if (month_str[1] == 'u' && month_str[2] == 'l')
-          month = 7;
-        else
-          month = 1;
-        break;
-      case 'F':
-        month = 2;
-        break;
-      case 'M':
-        if (month_str[1] == 'a' && month_str[2] == 'r')
-          month = 3;
-        else
-          month = 5;
-        break;
-      case 'A':
-        if (month_str[1] == 'p')
-          month = 4;
-        else
-          month = 8;
-        break;
-      case 'S':
-        month = 9;
-        break;
-      case 'O':
-        month = 10;
-        break;
-      case 'N':
-        month = 11;
-        break;
-      case 'D':
-        month = 12;
-        break;
-
-      default:
-        month = 0;
-        g_warn_if_reached ();
-        break;
-    }
-
 
   time_zone = g_time_zone_new (in + 20);
 
