@@ -24,7 +24,9 @@
               </object>
             </child>
             <child>
-              <object class="GtkSpinner" id="title_spinner"/>
+              <object class="GtkSpinner" id="title_spinner">
+                <property name="valign">center</property>
+              </object>
             </child>
           </object>
         </child>

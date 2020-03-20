@@ -33,7 +33,8 @@ cb_text_transform_tweet (const CbMiniTweet *tweet,
                                  flags,
                                  tweet->n_medias,
                                  quote_id,
-                                 tweet->display_range_start);
+                                 0);
+  /* TODO: Remove display_range_start parameter from transform_text */
 }
 
 const int TRAILING = 1 << 0;
@@ -257,6 +258,71 @@ cb_text_transform_text (const char         *text,
       p = g_utf8_next_char (p);
 
       g_string_truncate (str, p - str->str);
+    }
+
+  return g_string_free (str, FALSE);
+}
+
+char *
+cb_text_transform_raw (const char *input)
+{
+  GString *str = g_string_new (NULL);
+  const char *p;
+  gunichar c;
+
+  p = input;
+  c = g_utf8_get_char (input);
+  while (1)
+    {
+      if (c == '<')
+        {
+          const char *tag_start = p + 1; /* Skip < */
+          gsize len;
+
+          while (c != '>' && c != '\0')
+            {
+              p = g_utf8_next_char (p);
+              c = g_utf8_get_char (p);
+            }
+
+          len = p - tag_start;
+          if (strncmp (tag_start, "br", len) == 0 ||
+              strncmp (tag_start, "br/", len) == 0 ||
+              strncmp (tag_start, "br /", len) == 0)
+            g_string_append_c (str, '\n');
+          else if (strncmp (tag_start, "/p", len) == 0)
+            {
+              /* End of paragraph -> double newline */
+              g_string_append_c (str, '\n');
+              g_string_append_c (str, '\n');
+            }
+
+          /* Skip to next one */
+          goto next;
+        }
+
+      g_string_append_unichar (str, c);
+
+next:
+      /* Next char */
+      p = g_utf8_next_char (p);
+      c = g_utf8_get_char (p);
+
+      if (c == '\0')
+        break;
+    }
+
+  /* Remove trailing whitespace here. */
+  p = g_utf8_prev_char (str->str + str->len);
+  c = g_utf8_get_char (p);
+  if (g_unichar_isspace (c))
+    {
+      while (g_unichar_isspace (c))
+        {
+          p = g_utf8_prev_char (p);
+          c = g_utf8_get_char (p);
+        }
+      g_string_set_size (str, g_utf8_next_char (p) - str->str);
     }
 
   return g_string_free (str, FALSE);

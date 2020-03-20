@@ -17,6 +17,7 @@
 
 #include "CbTypes.h"
 #include "CbMediaDownloader.h"
+#include "CbTextTransform.h"
 #include "CbUtils.h"
 #include <string.h>
 #include <stdlib.h>
@@ -140,14 +141,19 @@ cb_mini_tweet_parse (CbMiniTweet *t,
   GDateTime *time;
 
   t->id = atol (json_object_get_string_member (obj, "id"));
-  time = cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));
 
+  time = cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));
   t->created_at = g_date_time_to_unix (time);
-  t->text = g_strdup (json_object_get_string_member (obj, "content"));
-  t->display_range_start = 0;
+  g_date_time_unref (time);
+
+  t->text = cb_text_transform_raw (json_object_get_string_member (obj, "content"));
+
+
+  /*if (strstr (t->text, "#cat") != NULL)*/
+    g_message ("######### %s", json_object_get_string_member (obj, "content"));
+
 
   cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "account"));
-  g_date_time_unref (time);
 }
 
 static int

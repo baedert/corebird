@@ -83,7 +83,6 @@ struct _CbMiniTweet
 {
   gint64 id;
   gint64 created_at;
-  guint display_range_start;
   CbUserIdentity author;
   char *text;
   gint64 reply_id;

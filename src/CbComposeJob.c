@@ -18,6 +18,7 @@
 #include <string.h>
 #include "CbComposeJob.h"
 #include "CbUtils.h"
+#include "rest/oauth2-proxy.h"
 
 G_DEFINE_TYPE (CbComposeJob, cb_compose_job, G_TYPE_OBJECT);
 
@@ -673,18 +674,22 @@ cb_compose_job_send_async (CbComposeJob        *self,
 {
   GTask *task;
   RestProxyCall *call;
+  char *c;
 
   g_assert (self->send_task == NULL);
 
   task = g_task_new (self, cancellable, callback, user_data);
 
   call = rest_proxy_new_call (self->account_proxy);
-  rest_proxy_call_set_function (call, "1.1/statuses/update.json");
+  rest_proxy_call_set_function (call, "api/v1/statuses");
   rest_proxy_call_set_method (call, "POST");
-  rest_proxy_call_add_param (call, "auto_populate_reply_metadata", "true");
+  c = g_strdup_printf ("Bearer %s", oauth2_proxy_get_access_token (OAUTH2_PROXY (self->account_proxy)));
+  rest_proxy_call_add_header (call, "Authorization", c);
+  g_free (c);
 
   if (self->reply_id != 0)
     {
+      g_assert (FALSE);
       char *id_str = g_strdup_printf ("%" G_GINT64_FORMAT, self->reply_id);
 
       g_assert (self->quoted_tweet == NULL);
@@ -693,6 +698,7 @@ cb_compose_job_send_async (CbComposeJob        *self,
     }
   else if (self->quoted_tweet != NULL)
     {
+      g_assert (FALSE);
       const CbMiniTweet *mt = self->quoted_tweet->retweeted_tweet != NULL ?
                               self->quoted_tweet->retweeted_tweet :
                               &self->quoted_tweet->source_tweet;

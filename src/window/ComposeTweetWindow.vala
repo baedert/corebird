@@ -82,9 +82,9 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
 
     this.cancellable = new GLib.Cancellable ();
     var upload_proxy = new Rest.OAuth2Proxy (Settings.get_consumer_key (),
-                                            Settings.get_consumer_secret (),
-                                            "https://upload.twitter.com/",
-                                            false);
+                                             Settings.get_consumer_secret (),
+                                             "https://upload.twitter.com/",
+                                             false);
     //upload_proxy.token = account.proxy.token;
     //upload_proxy.token_secret = account.proxy.token_secret;
     this.compose_job = new Cb.ComposeJob (account.proxy,
@@ -390,8 +390,10 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     if (this.emoji_chooser == null)
       return;
 
-    critical ("Replace the gtk_button_clicked() usage");
-    //this.emoji_button.clicked ();
+    // Possible code duplication with clicked() handler below.
+    this.emoji_chooser.populate ();
+    this.stack.visible_child = this.emoji_chooser;
+    cancel_button.label = _("Back");
   }
 
   private void setup_emoji_chooser () {
