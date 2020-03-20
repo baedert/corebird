@@ -612,26 +612,26 @@ set_url (RestProxyCall *call)
   bound_url =_rest_proxy_get_bound_url (priv->proxy);
 
   if (_rest_proxy_get_binding_required (priv->proxy) && !bound_url)
-  {
-    g_critical (G_STRLOC ": URL requires binding and is unbound");
-    return FALSE;
-  }
+    {
+      g_critical (G_STRLOC ": URL requires binding and is unbound");
+      return FALSE;
+    }
 
   g_free (priv->url);
 
   /* FIXME: Perhaps excessive memory duplication */
   if (priv->function)
-  {
-    if (g_str_has_suffix (bound_url, "/")
-          || g_str_has_prefix (priv->function, "/"))
     {
-      priv->url = g_strdup_printf ("%s%s", bound_url, priv->function);
-    } else {
-      priv->url = g_strdup_printf ("%s/%s", bound_url, priv->function);
+      if (g_str_has_suffix (bound_url, "/") ||
+          g_str_has_prefix (priv->function, "/"))
+        priv->url = g_strdup_printf ("%s%s", bound_url, priv->function);
+      else
+        priv->url = g_strdup_printf ("%s/%s", bound_url, priv->function);
     }
-  } else {
-    priv->url = g_strdup (bound_url);
-  }
+  else
+    {
+      priv->url = g_strdup (bound_url);
+    }
 
   return TRUE;
 }
@@ -648,33 +648,31 @@ prepare_message (RestProxyCall *call, GError **error_out)
 
   /* Emit a warning if the caller is re-using RestProxyCall objects */
   if (priv->url)
-  {
     g_warning (G_STRLOC ": re-use of RestProxyCall %p, don't do this", call);
-  }
 
   /* Allow an overrideable prepare function that is called before every
    * invocation so subclasses can do magic
    */
   if (call_class->prepare)
-  {
-    if (!call_class->prepare (call, &error))
     {
-      g_propagate_error (error_out, error);
-      return NULL;
+      if (!call_class->prepare (call, &error))
+      {
+        g_propagate_error (error_out, error);
+        return NULL;
+      }
     }
-  }
 
   if (rest_params_are_strings (priv->params)) {
     GHashTable *hash;
 
     if (!set_url (call))
-    {
+      {
         g_set_error_literal (error_out,
                              REST_PROXY_ERROR,
                              REST_PROXY_ERROR_BINDING_REQUIRED,
                              "URL is unbound");
         return NULL;
-    }
+      }
 
     hash = rest_params_as_string_hash_table (priv->params);
 
@@ -684,14 +682,15 @@ prepare_message (RestProxyCall *call, GError **error_out)
 
     g_hash_table_unref (hash);
 
-    if (!message) {
+    if (!message)
+      {
         g_set_error (error_out,
                      REST_PROXY_ERROR,
                      REST_PROXY_ERROR_URL_INVALID,
                      "URL '%s' is not valid",
                      priv->url);
         return NULL;
-    }
+      }
 
   } else {
     SoupMultipart *mp;
@@ -703,40 +702,44 @@ prepare_message (RestProxyCall *call, GError **error_out)
 
     rest_params_iter_init (&iter, priv->params);
 
-    while (rest_params_iter_next (&iter, &name, &param)) {
-      if (rest_param_is_string (param)) {
-        soup_multipart_append_form_string (mp, name, rest_param_get_content (param));
-      } else {
-        SoupBuffer *sb;
+    while (rest_params_iter_next (&iter, &name, &param))
+      {
+        if (rest_param_is_string (param))
+          {
+            soup_multipart_append_form_string (mp, name, rest_param_get_content (param));
+          }
+        else
+          {
+            SoupBuffer *sb;
 
-        sb = soup_buffer_new_with_owner (rest_param_get_content (param),
-                                         rest_param_get_content_length (param),
-                                         rest_param_ref (param),
-                                         (GDestroyNotify)rest_param_unref);
+            sb = soup_buffer_new_with_owner (rest_param_get_content (param),
+                                             rest_param_get_content_length (param),
+                                             rest_param_ref (param),
+                                             (GDestroyNotify)rest_param_unref);
 
-        soup_multipart_append_form_file (mp, name,
-                                         rest_param_get_file_name (param),
-                                         rest_param_get_content_type (param),
-                                         sb);
+            soup_multipart_append_form_file (mp, name,
+                                             rest_param_get_file_name (param),
+                                             rest_param_get_content_type (param),
+                                             sb);
 
-        soup_buffer_free (sb);
+            soup_buffer_free (sb);
+          }
       }
+
+      if (!set_url (call))
+        {
+          soup_multipart_free (mp);
+          g_set_error_literal (error_out,
+                               REST_PROXY_ERROR,
+                               REST_PROXY_ERROR_BINDING_REQUIRED,
+                               "URL is unbound");
+          return NULL;
+        }
+
+      message = soup_form_request_new_from_multipart (priv->url, mp);
+
+      soup_multipart_free (mp);
     }
-
-    if (!set_url (call))
-    {
-        soup_multipart_free (mp);
-        g_set_error_literal (error_out,
-                             REST_PROXY_ERROR,
-                             REST_PROXY_ERROR_BINDING_REQUIRED,
-                             "URL is unbound");
-        return NULL;
-    }
-
-    message = soup_form_request_new_from_multipart (priv->url, mp);
-
-    soup_multipart_free (mp);
-  }
 
   g_assert (message != NULL);
 

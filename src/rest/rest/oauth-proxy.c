@@ -295,6 +295,7 @@ request_token_cb (GObject      *source_object,
     g_task_return_error (task, error);
   } else {
     oauth_proxy_call_parse_token_response (OAUTH_PROXY_CALL (call));
+    g_message ("\n%s\n", rest_proxy_call_get_payload (call));
     g_task_return_boolean (task, call_status);
   }
 
@@ -335,7 +336,12 @@ oauth_proxy_request_token_async (OAuthProxy          *proxy,
   rest_proxy_call_set_method (call, "POST");
 
   if (callback_uri)
-    rest_proxy_call_add_param (call, "oauth_callback", callback_uri);
+    rest_proxy_call_add_param (call, "redirect_uri", callback_uri);
+    /*rest_proxy_call_add_param (call, "oauth_callback", callback_uri);*/
+
+  rest_proxy_call_add_param (call, "client_id", "dwXiVHshU5TbO07YQPhz5obGm2Lph_V4mR2-5ICuB6k");
+  rest_proxy_call_add_param (call, "client_secret", "J_p20BxW8bss9F5WseVSEi8LLYTPHdZwaVz57ocNvBQ");
+  rest_proxy_call_add_param (call, "grant_type", "client_credentials");
 
   task = g_task_new (proxy, cancellable, callback, user_data);
 

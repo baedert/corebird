@@ -60,25 +60,26 @@ encode_params (GHashTable *hash)
   keys = g_hash_table_get_keys (hash);
   keys = g_list_sort (keys, (GCompareFunc)strcmp);
 
-  for (l = keys; l; l = l->next) {
-    const char *key;
-    const char *value;
-    char *k, *v;
+  for (l = keys; l; l = l->next)
+    {
+      const char *key;
+      const char *value;
+      char *k, *v;
 
-    key = l->data;
-    value = g_hash_table_lookup (hash, key);
+      key = l->data;
+      value = g_hash_table_lookup (hash, key);
 
-    k = OAUTH_ENCODE_STRING (key);
-    v = OAUTH_ENCODE_STRING (value);
+      k = OAUTH_ENCODE_STRING (key);
+      v = OAUTH_ENCODE_STRING (value);
 
-    if (s->len)
-      g_string_append (s, "&");
+      if (s->len)
+        g_string_append (s, "&");
 
-    g_string_append_printf (s, "%s=%s", k, v);
+      g_string_append_printf (s, "%s=%s", k, v);
 
-    g_free (k);
-    g_free (v);
-  }
+      g_free (k);
+      g_free (v);
+    }
 
   g_list_free (keys);
 
@@ -95,9 +96,10 @@ merge_hashes (GHashTable *hash, GHashTable *from)
   gpointer key, value;
 
   g_hash_table_iter_init (&iter, from);
-  while (g_hash_table_iter_next (&iter, &key, &value)) {
-    g_hash_table_insert (hash, key, value);
-  }
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      g_hash_table_insert (hash, key, value);
+    }
 }
 
 static void
@@ -108,10 +110,11 @@ merge_params (GHashTable *hash, RestParams *params)
   RestParam *param;
 
   rest_params_iter_init (&iter, params);
-  while (rest_params_iter_next (&iter, &name, &param)) {
-    if (rest_param_is_string (param))
-      g_hash_table_insert (hash, (gpointer)name, (gpointer)rest_param_get_content (param));
-  }
+  while (rest_params_iter_next (&iter, &name, &param))
+    {
+      if (rest_param_is_string (param))
+        g_hash_table_insert (hash, (gpointer)name, (gpointer)rest_param_get_content (param));
+    }
 }
 
 static char *
@@ -120,7 +123,6 @@ sign_hmac (OAuthProxy *proxy, RestProxyCall *call, GHashTable *oauth_params)
   OAuthProxyPrivate *priv;
   const char *url_str;
   char *key, *signature, *ep, *eep;
-  const char *content_type;
   GString *text;
   GHashTable *all_params;
   RestParamsIter params_iter;
@@ -133,46 +135,47 @@ sign_hmac (OAuthProxy *proxy, RestProxyCall *call, GHashTable *oauth_params)
   text = g_string_new (NULL);
   g_string_append (text, rest_proxy_call_get_method (call));
   g_string_append_c (text, '&');
-  if (priv->oauth_echo) {
-    g_string_append_uri_escaped (text, priv->service_url, NULL, FALSE);
-  } else if (priv->signature_host != NULL) {
-    SoupURI *url = soup_uri_new (url_str);
-    gchar *signing_url;
+  if (priv->oauth_echo)
+    {
+      g_string_append_uri_escaped (text, priv->service_url, NULL, FALSE);
+    }
+  else if (priv->signature_host != NULL)
+    {
+      SoupURI *url = soup_uri_new (url_str);
+      gchar *signing_url;
 
-    soup_uri_set_host (url, priv->signature_host);
-    signing_url = soup_uri_to_string (url, FALSE);
+      soup_uri_set_host (url, priv->signature_host);
+      signing_url = soup_uri_to_string (url, FALSE);
 
-    g_string_append_uri_escaped (text, signing_url, NULL, FALSE);
+      g_string_append_uri_escaped (text, signing_url, NULL, FALSE);
 
-    soup_uri_free (url);
-    g_free (signing_url);
-  } else {
-    g_string_append_uri_escaped (text, url_str, NULL, FALSE);
-  }
+      soup_uri_free (url);
+      g_free (signing_url);
+    }
+  else
+    {
+      g_string_append_uri_escaped (text, url_str, NULL, FALSE);
+    }
   g_string_append_c (text, '&');
-
-
 
   /* If one of the call's parameters is a multipart/form-data parameter, the
      signature base string must be generated with only the oauth parameters */
   rest_params_iter_init(&params_iter, rest_proxy_call_get_params (call));
-  while(rest_params_iter_next(&params_iter, (gpointer)&key, (gpointer)&param)) {
-    content_type = rest_param_get_content_type(param);
-    if (strcmp(content_type, "multipart/form-data") == 0){
-      encode_query_params = FALSE;
-      break;
+  while(rest_params_iter_next (&params_iter, (gpointer)&key, (gpointer)&param))
+    {
+      const char *content_type = rest_param_get_content_type (param);
+      if (strcmp (content_type, "multipart/form-data") == 0)
+        {
+          encode_query_params = FALSE;
+          break;
+        }
     }
-  }
-
-
 
   /* Merge the OAuth parameters with the query parameters */
   all_params = g_hash_table_new (g_str_hash, g_str_equal);
   merge_hashes (all_params, oauth_params);
-  if (encode_query_params && !priv->oauth_echo) {
-      merge_params (all_params, rest_proxy_call_get_params (call));
-  }
-
+  if (encode_query_params && !priv->oauth_echo)
+    merge_params (all_params, rest_proxy_call_get_params (call));
 
   ep = encode_params (all_params);
   eep = OAUTH_ENCODE_STRING (ep);
@@ -209,11 +212,12 @@ make_authorized_header (GHashTable *oauth_params)
   auth = g_string_new ("OAuth realm=\"\"");
 
   g_hash_table_iter_init (&iter, oauth_params);
-  while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value)) {
-    gchar *encoded_value = OAUTH_ENCODE_STRING (value);
-    g_string_append_printf (auth, ", %s=\"%s\"", key, encoded_value);
-    g_free (encoded_value);
-  }
+  while (g_hash_table_iter_next (&iter, (gpointer)&key, (gpointer)&value))
+    {
+      char *encoded_value = OAUTH_ENCODE_STRING (value);
+      g_string_append_printf (auth, ", %s=\"%s\"", key, encoded_value);
+      g_free (encoded_value);
+    }
 
   return g_string_free (auth, FALSE);
 }
@@ -234,20 +238,23 @@ steal_oauth_params (RestProxyCall *call, GHashTable *oauth_params)
   params = rest_proxy_call_get_params (call);
 
   rest_params_iter_init (&iter, params);
-  while (rest_params_iter_next (&iter, &name, &param)) {
-    if (rest_param_is_string (param) && g_str_has_prefix (name, "oauth_")) {
-      g_hash_table_insert (oauth_params,
-                           g_strdup (name),
-                           g_strdup (rest_param_get_content (param)));
-      to_remove = g_list_prepend (to_remove, g_strdup (name));
+  while (rest_params_iter_next (&iter, &name, &param))
+    {
+      if (rest_param_is_string (param) && g_str_has_prefix (name, "oauth_"))
+        {
+          g_hash_table_insert (oauth_params,
+                               g_strdup (name),
+                               g_strdup (rest_param_get_content (param)));
+          to_remove = g_list_prepend (to_remove, g_strdup (name));
+        }
     }
-  }
 
-  while (to_remove) {
-    rest_params_remove (params, to_remove->data);
-    g_free (to_remove->data);
-    to_remove = g_list_delete_link (to_remove, to_remove);
-  }
+  while (to_remove)
+    {
+      rest_params_remove (params, to_remove->data);
+      g_free (to_remove->data);
+      to_remove = g_list_delete_link (to_remove, to_remove);
+    }
 }
 
 static gboolean
@@ -284,25 +291,29 @@ _prepare (RestProxyCall *call, GError **error)
   if (priv->token)
     g_hash_table_insert (oauth_params, g_strdup ("oauth_token"), g_strdup (priv->token));
 
-  switch (priv->method) {
-  case PLAINTEXT:
-    g_hash_table_insert (oauth_params, g_strdup ("oauth_signature_method"), g_strdup ("PLAINTEXT"));
-    s = sign_plaintext (priv);
-    break;
-  case HMAC_SHA1:
-    g_hash_table_insert (oauth_params, g_strdup ("oauth_signature_method"), g_strdup ("HMAC-SHA1"));
-    s = sign_hmac (proxy, call, oauth_params);
-    break;
-  }
+  switch (priv->method)
+    {
+    case PLAINTEXT:
+      g_hash_table_insert (oauth_params, g_strdup ("oauth_signature_method"), g_strdup ("PLAINTEXT"));
+      s = sign_plaintext (priv);
+      break;
+    case HMAC_SHA1:
+      g_hash_table_insert (oauth_params, g_strdup ("oauth_signature_method"), g_strdup ("HMAC-SHA1"));
+      s = sign_hmac (proxy, call, oauth_params);
+      break;
+    }
   g_hash_table_insert (oauth_params, g_strdup ("oauth_signature"), s);
 
   s = make_authorized_header (oauth_params);
-  if (priv->oauth_echo) {
-    rest_proxy_call_take_header (call, "X-Verify-Credentials-Authorization", g_steal_pointer (&s));
-    rest_proxy_call_add_header (call, "X-Auth-Service-Provider", priv->service_url);
-  } else {
-    rest_proxy_call_take_header (call, "Authorization", g_steal_pointer (&s));
-  }
+  if (priv->oauth_echo)
+    {
+      rest_proxy_call_take_header (call, "X-Verify-Credentials-Authorization", g_steal_pointer (&s));
+      rest_proxy_call_add_header (call, "X-Auth-Service-Provider", priv->service_url);
+    }
+  else
+    {
+      rest_proxy_call_take_header (call, "Authorization", g_steal_pointer (&s));
+    }
   g_hash_table_destroy (oauth_params);
 
   g_object_unref (proxy);
