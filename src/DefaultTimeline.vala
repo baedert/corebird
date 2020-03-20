@@ -358,10 +358,7 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
     call.set_function (this.function);
     call.set_method("GET");
     call.add_header ("Authorization", "Bearer " + ((Rest.OAuth2Proxy)account.proxy).get_access_token ());
-    call.add_param ("count", requested_tweet_count.to_string ());
-    call.add_param ("contributor_details", "true");
-    call.add_param ("include_my_retweet", "true");
-    call.add_param ("tweet_mode", "extended");
+    call.add_param ("limit", requested_tweet_count.to_string ());
     call.add_param ("max_id", (tweet_list.model.min_id - 1).to_string ());
 
     Json.Node? root_node = null;
@@ -373,7 +370,7 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
       return;
     }
 
-    assert(root_node != null);
+    assert (root_node != null);
 
     var root = root_node.get_array();
     if (root.get_length () == 0) {

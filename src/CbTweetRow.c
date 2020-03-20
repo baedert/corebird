@@ -396,7 +396,7 @@ create_ui (CbTweetRow *self)
   self->text_label = gtk_label_new (NULL);
   gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
   gtk_label_set_yalign (GTK_LABEL (self->text_label), 0.0f);
-  /*gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);*/
+  gtk_label_set_use_markup (GTK_LABEL (self->text_label), TRUE);
   gtk_label_set_track_visited_links (GTK_LABEL (self->text_label), FALSE);
   gtk_label_set_wrap (GTK_LABEL (self->text_label), TRUE);
   gtk_label_set_wrap_mode (GTK_LABEL (self->text_label), PANGO_WRAP_WORD_CHAR);
@@ -517,7 +517,7 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
           self->reply_label = gtk_label_new (NULL);
           gtk_label_set_xalign (GTK_LABEL (self->reply_label), 0.0f);
           gtk_label_set_yalign (GTK_LABEL (self->reply_label), 0.0f);
-          /*gtk_label_set_use_markup (GTK_LABEL (self->reply_label), TRUE);*/
+          gtk_label_set_use_markup (GTK_LABEL (self->reply_label), TRUE);
           gtk_label_set_track_visited_links (GTK_LABEL (self->reply_label), FALSE);
           gtk_label_set_wrap (GTK_LABEL (self->reply_label), TRUE);
           gtk_label_set_wrap_mode (GTK_LABEL (self->reply_label), PANGO_WRAP_WORD_CHAR);
@@ -555,7 +555,7 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
 
           self->rt_label = gtk_label_new (NULL);
 
-          /*gtk_label_set_use_markup (GTK_LABEL (self->rt_label), TRUE);*/
+          gtk_label_set_use_markup (GTK_LABEL (self->rt_label), TRUE);
           gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),
                                        "rt-label");
           gtk_style_context_add_class (gtk_widget_get_style_context (self->rt_label),

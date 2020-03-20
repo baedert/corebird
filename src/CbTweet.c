@@ -22,7 +22,7 @@
 
 /* TODO: We might want to put this into a utils.c later */
 static gboolean
-usable_json_value (JsonObject *object, const char *name)
+usable_json_member (JsonObject *object, const char *name)
 {
   if (!json_object_has_member (object, name))
     return FALSE;
@@ -196,51 +196,49 @@ cb_tweet_load_from_json (CbTweet   *tweet,
   user = json_object_get_object_member (status, "account");
 
   tweet->id = atol (json_object_get_string_member (status, "id"));
-  tweet->retweet_count = 0;//(guint) json_object_get_int_member (status, "retweet_count");
+  tweet->retweet_count = (guint) json_object_get_int_member (status, "reblogs_count");
   tweet->favorite_count = (guint) json_object_get_int_member (status, "favourites_count");
-
-  tweet->avatar_url = g_strdup (json_object_get_string_member (user, "avatar"));
 
   cb_mini_tweet_parse (&tweet->source_tweet, status);
   /*has_media = json_array_size (json_object_get_object_member (status, "entities"), "media") > 0;*/
   has_media = FALSE;
-#if 0
-  if (json_object_has_member (status, "retweeted_status"))
+  if (usable_json_member (status, "reblog"))
     {
-      JsonObject *rt      = json_object_get_object_member (status, "retweeted_status");
-      JsonObject *rt_user = json_object_get_object_member (rt, "user");
+      JsonObject *rt      = json_object_get_object_member (status, "reblog");
+      JsonObject *rt_user = json_object_get_object_member (rt, "account");
 
       tweet->retweeted_tweet = g_malloc (sizeof(CbMiniTweet));
       cb_mini_tweet_init (tweet->retweeted_tweet);
       cb_mini_tweet_parse (tweet->retweeted_tweet, rt);
       cb_mini_tweet_parse_entities (tweet->retweeted_tweet, rt);
 
-      tweet->avatar_url = g_strdup (json_object_get_string_member (rt_user, "profile_image_url"));
-      if (json_object_get_boolean_member (rt_user, "protected"))
-        tweet->state |= CB_TWEET_STATE_PROTECTED;
+      tweet->avatar_url = g_strdup (json_object_get_string_member (rt_user, "avatar"));
+      /*if (json_object_get_boolean_member (rt_user, "protected"))*/
+        /*tweet->state |= CB_TWEET_STATE_PROTECTED;*/
 
-      if (json_object_get_boolean_member (rt_user, "verified"))
-        tweet->state |= CB_TWEET_STATE_VERIFIED;
+      /*if (json_object_get_boolean_member (rt_user, "verified"))*/
+        /*tweet->state |= CB_TWEET_STATE_VERIFIED;*/
 
-      if (usable_json_value (rt, "possibly_sensitive") &&
-          json_object_get_boolean_member (rt, "possibly_sensitive"))
-        tweet->state |= CB_TWEET_STATE_NSFW;
+      /*if (usable_json_value (rt, "possibly_sensitive") &&*/
+          /*json_object_get_boolean_member (rt, "possibly_sensitive"))*/
+        /*tweet->state |= CB_TWEET_STATE_NSFW;*/
     }
   else
     {
       cb_mini_tweet_parse_entities (&tweet->source_tweet, status);
-      tweet->avatar_url = g_strdup (json_object_get_string_member (user, "profile_image_url"));
+      tweet->avatar_url = g_strdup (json_object_get_string_member (user, "avatar"));
 
-      if (json_object_get_boolean_member (user, "protected"))
-        tweet->state |= CB_TWEET_STATE_PROTECTED;
+      /*if (json_object_get_boolean_member (user, "protected"))*/
+        /*tweet->state |= CB_TWEET_STATE_PROTECTED;*/
 
-      if (json_object_get_boolean_member (user, "verified"))
-        tweet->state |= CB_TWEET_STATE_VERIFIED;
+      /*if (json_object_get_boolean_member (user, "verified"))*/
+        /*tweet->state |= CB_TWEET_STATE_VERIFIED;*/
 
-      if (usable_json_value (status, "possibly_sensitive") &&
-          json_object_get_boolean_member (status, "possibly_sensitive"))
-        tweet->state |= CB_TWEET_STATE_NSFW;
+      /*if (usable_json_value (status, "possibly_sensitive") &&*/
+          /*json_object_get_boolean_member (status, "possibly_sensitive"))*/
+        /*tweet->state |= CB_TWEET_STATE_NSFW;*/
     }
+#if 0
 
   if (json_object_has_member (status, "quoted_status") && !has_media)
     {

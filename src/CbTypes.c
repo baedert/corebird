@@ -165,9 +165,6 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
                               JsonObject  *status)
 {
   JsonObject *extended_obj = status;
-  JsonObject *entities;
-  JsonArray *urls;
-  JsonArray *hashtags;
   JsonArray *user_mentions;
   JsonArray *media_arrays[2];
   int media_count;
@@ -179,55 +176,27 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   int max_entities;
   gboolean direct_duplicate = FALSE;
 
-  if (json_object_has_member (status, "extended_tweet"))
-    extended_obj = json_object_get_object_member (status, "extended_tweet");
+  user_mentions = json_object_get_array_member (extended_obj, "mentions");
+  media_count   = json_object_get_member_size (extended_obj, "media_attachments");
 
-  entities      = json_object_get_object_member (extended_obj, "entities");
-  urls          = json_object_get_array_member (entities, "urls");
-  hashtags      = json_object_get_array_member (entities, "hashtags");
-  user_mentions = json_object_get_array_member (entities, "user_mentions");
-  media_count   = json_object_get_member_size (entities, "media");
-
-
-  if (json_object_has_member (status, "extended_entities"))
-    media_count += json_object_get_member_size (json_object_get_object_member (status, "extended_entities"),
-                                                "media");
-
-  if (json_object_has_member (status, "in_reply_to_status_id") &&
-      !json_object_get_null_member (status, "in_reply_to_status_id"))
+  if (json_object_has_member (status, "in_reply_to_id") &&
+      !json_object_get_null_member (status, "in_reply_to_id"))
     {
       guint reply_index = 0;
       gint64 reply_to_user_id = 0;
 
-      reply_to_user_id = json_object_get_int_member (status, "in_reply_to_user_id");
+      reply_to_user_id = json_object_get_int_member (status, "in_reply_to_account_id");
 
       /* Check how many of the user mentions are reply mentions */
-      t->reply_id = json_object_get_int_member (status, "in_reply_to_status_id");
-      for (i = 0, p = json_array_get_length (user_mentions); i < p; i ++)
-        {
-          JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
-          JsonArray  *indices = json_object_get_array_member (mention, "indices");
-          gint64 user_id = json_object_get_int_member (mention, "id");
-
-          if (json_array_get_int_element (indices, 1) <= t->display_range_start)
-              n_reply_users ++;
-          else
-            break;
-
-          if (i == 0 && user_id == reply_to_user_id)
-            direct_duplicate = TRUE;
-        }
-
-      if (!direct_duplicate)
-        n_reply_users ++;
-
+      t->reply_id = json_object_get_int_member (status, "in_reply_to_id");
+#if 0
       t->reply_users = g_new0 (CbUserIdentity, n_reply_users);
       t->n_reply_users = n_reply_users;
 
       if (!direct_duplicate)
         {
           t->reply_users[0].id = reply_to_user_id;
-          t->reply_users[0].screen_name = g_strdup (json_object_get_string_member (status, "in_reply_to_screen_name"));
+          t->reply_users[0].screen_name = g_strdup ("");
           t->reply_users[0].user_name = g_strdup ("");
           reply_index = 1;
         }
@@ -246,14 +215,11 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
         }
 
       non_reply_mentions = n_reply_users - 1;
+#endif
     }
 
-  max_entities = json_array_get_length (urls) +
-                 json_array_get_length (hashtags) +
-                 json_array_get_length (user_mentions) - non_reply_mentions +
+  max_entities = json_array_get_length (user_mentions) - non_reply_mentions +
                  media_count;
-  media_count += (int)json_array_get_length (urls);
-
 
   t->medias   = g_new0 (CbMedia*, media_count);
   t->entities = g_new0 (CbTextEntity, max_entities);
@@ -261,48 +227,6 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
    * TODO: display_text and tooltip_text are often the same here, can we just set them to the
    *       same value and only free one?
    */
-
-  /* URLS */
-  for (i  = 0, p = json_array_get_length (urls); i < p; i ++)
-    {
-      JsonObject *url = json_node_get_object (json_array_get_element (urls, i));
-      const char *expanded_url = json_object_get_string_member (url, "expanded_url");
-      JsonArray *indices;
-
-      if (is_media_candidate (expanded_url))
-        {
-          t->medias[t->n_medias] = cb_media_new ();
-          t->medias[t->n_medias]->url = g_strdup (expanded_url);
-          t->medias[t->n_medias]->type = cb_media_type_from_url (expanded_url);
-          t->medias[t->n_medias]->target_url = g_strdup (expanded_url);
-          t->n_medias ++;
-        }
-
-      indices = json_object_get_array_member (url, "indices");
-      t->entities[url_index].from = json_array_get_int_element (indices, 0);
-      t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-      t->entities[url_index].display_text = cb_utils_escape_ampersands (json_object_get_string_member (url, "display_url"));
-      t->entities[url_index].tooltip_text = cb_utils_escape_ampersands (expanded_url);
-      t->entities[url_index].target = cb_utils_escape_ampersands (expanded_url);
-
-      url_index ++;
-    }
-
-  /* HASHTAGS */
-  for (i = 0, p = json_array_get_length (hashtags); i < p; i ++)
-    {
-      JsonObject *hashtag = json_node_get_object (json_array_get_element (hashtags, i));
-      JsonArray  *indices = json_object_get_array_member (hashtag, "indices");
-      const char *text    = json_object_get_string_member (hashtag, "text");
-
-      t->entities[url_index].from = json_array_get_int_element (indices, 0);
-      t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-      t->entities[url_index].display_text = g_strdup_printf ("#%s", text);
-      t->entities[url_index].tooltip_text = g_strdup_printf ("#%s", text);
-      t->entities[url_index].target = NULL;
-
-      url_index ++;
-    }
 
   /* USER MENTIONS */
   if (direct_duplicate)
@@ -313,57 +237,46 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   for (p = json_array_get_length (user_mentions); i < p; i ++)
     {
       JsonObject *mention = json_node_get_object (json_array_get_element (user_mentions, i));
-      JsonArray  *indices = json_object_get_array_member (mention, "indices");
-      const char *screen_name = json_object_get_string_member (mention, "screen_name");
-      const char *id_str = json_object_get_string_member (mention, "id_str");
+      const char *screen_name = json_object_get_string_member (mention, "username");
+      const char *id_str = json_object_get_string_member (mention, "id");
 
-      t->entities[url_index].from = json_array_get_int_element (indices, 0);
-      t->entities[url_index].to   = json_array_get_int_element (indices, 1);
+      t->entities[url_index].from = 0;
+      t->entities[url_index].to   = 0;
       t->entities[url_index].display_text = g_strdup_printf ("@%s", screen_name);
-      t->entities[url_index].tooltip_text = cb_utils_escape_ampersands (json_object_get_string_member (mention, "name"));
+      t->entities[url_index].tooltip_text = cb_utils_escape_ampersands (json_object_get_string_member (mention, "username"));
       t->entities[url_index].target = g_strdup_printf ("@%s/@%s", id_str, screen_name);
       url_index ++;
     }
 
   /* MEDIA */
-  if (json_object_has_member (entities, "media"))
+  if (json_object_has_member (extended_obj, "media_attachments"))
     {
-      JsonArray *medias = json_object_get_array_member (entities, "media");
+      JsonArray *medias = json_object_get_array_member (extended_obj, "media_attachments");
 
       for (i = 0, p = json_array_get_length (medias); i < p; i ++)
         {
-          JsonObject *url = json_node_get_object (json_array_get_element (medias, i));
-          JsonArray  *indices = json_object_get_array_member (url, "indices");
-          char *url_str = cb_utils_escape_ampersands (json_object_get_string_member (url, "url"));
-          int k;
-          gboolean duplicate = FALSE;
+          JsonObject *media = json_node_get_object (json_array_get_element (medias, i));
+          char *url_str = cb_utils_escape_ampersands (json_object_get_string_member (media, "url"));
+          char *text_url_str;
 
-          /* Check for duplicates */
-          for (k = 0; k < url_index; k ++)
-            {
-              const char *target = t->entities[k].target;
-              if (target != NULL && strcmp (target, url_str) == 0)
-                {
-                  duplicate = TRUE;
-                  break;
-                }
-            }
+          if (json_object_has_member (media, "text_url") &&
+              !json_object_get_null_member (media, "text_url"))
+            text_url_str = cb_utils_escape_ampersands (json_object_get_string_member (media, "text_url"));
+          else
+            text_url_str = cb_utils_escape_ampersands (url_str);
 
-          if (duplicate)
-            {
-              g_free (url_str);
-              continue;
-            }
-
-          t->entities[url_index].from = json_array_get_int_element (indices, 0);
-          t->entities[url_index].to   = json_array_get_int_element (indices, 1);
-          t->entities[url_index].display_text = cb_utils_escape_ampersands (json_object_get_string_member (url, "display_url"));
+          t->entities[url_index].from = 0;
+          t->entities[url_index].to   = 0;
+          t->entities[url_index].display_text = text_url_str;
           t->entities[url_index].target = url_str;
 
           url_index ++;
         }
-    }
 
+      media_arrays[n_media_arrays] = medias;
+      n_media_arrays++;
+    }
+#if 0
   /* entities->media and extended_entities contain exactly the same media objects,
      but extended_entities is not always present, and entities->media doesn't
      contain all the attached media, so parse both the same way... */
@@ -373,6 +286,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
       n_media_arrays ++;
     }
 
+
   if (json_object_has_member (status, "extended_entities"))
     {
       media_arrays[n_media_arrays] = json_object_get_array_member (json_object_get_object_member (status,
@@ -381,7 +295,9 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
       n_media_arrays ++;
     }
+#endif
 
+  g_message ("Media arrays: %d", n_media_arrays);
   for (i = 0; i < n_media_arrays; i ++)
     {
       guint x, k;
@@ -390,42 +306,25 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
           JsonObject *media_obj = json_node_get_object (json_array_get_element (media_arrays[i], x));
           const char *media_type = json_object_get_string_member (media_obj, "type");
 
-          if (strcmp (media_type, "photo") == 0)
+          if (strcmp (media_type, "image") == 0)
             {
-              const char *url = json_object_get_string_member (media_obj, "media_url");
-              gboolean dup = FALSE;
+              const char *url = json_object_get_string_member (media_obj, "url");
 
-              /* Remove duplicates */
-              for (k = 0; k < t->n_medias; k ++)
+              t->medias[t->n_medias] = cb_media_new ();
+              t->medias[t->n_medias]->type = CB_MEDIA_TYPE_IMAGE;
+              t->medias[t->n_medias]->url = g_strdup (url);
+              t->medias[t->n_medias]->target_url = g_strdup (url);
+
+              if (json_object_has_member (media_obj, "meta"))
                 {
-                  if (t->medias[k] != NULL && strcmp (t->medias[k]->url, url) == 0)
-                    {
-                      dup = TRUE;
-                      break;
-                    }
+                  JsonObject *meta_obj = json_object_get_object_member (media_obj, "meta");
+                  JsonObject *orig_size = json_object_get_object_member (meta_obj, "original");
+
+                  t->medias[t->n_medias]->width  = json_object_get_int_member (orig_size, "width");
+                  t->medias[t->n_medias]->height = json_object_get_int_member (orig_size, "height");
                 }
 
-              if (dup)
-                continue;
-
-              if (is_media_candidate (url))
-                {
-                  t->medias[t->n_medias] = cb_media_new ();
-                  t->medias[t->n_medias]->type = CB_MEDIA_TYPE_IMAGE;
-                  t->medias[t->n_medias]->url = g_strdup (url);
-                  t->medias[t->n_medias]->target_url = g_strdup_printf ("%s:orig", url);
-
-                  if (json_object_has_member (media_obj, "sizes"))
-                    {
-                      JsonObject *sizes = json_object_get_object_member (media_obj, "sizes");
-                      JsonObject *medium = json_object_get_object_member (sizes, "medium");
-
-                      t->medias[t->n_medias]->width  = json_object_get_int_member (medium, "w");
-                      t->medias[t->n_medias]->height = json_object_get_int_member (medium, "h");
-                    }
-
-                  t->n_medias ++;
-                }
+              t->n_medias ++;
 
             }
           else if (strcmp (media_type, "video")        == 0 ||
@@ -504,6 +403,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   g_debug ("Wasted media   : %d", media_count  - t->n_medias);
 #endif
 
+  g_message ("MEDIA: %d", t->n_medias);
   if (t->n_medias > 0)
     cb_media_downloader_load_all (cb_media_downloader_get_default (), t);
 
