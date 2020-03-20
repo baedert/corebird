@@ -136,50 +136,15 @@ cb_mini_tweet_parse (CbMiniTweet *t,
                      JsonObject  *obj)
 {
   GDateTime *time;
-  JsonObject *extended_object;
-  const char *tweet_text;
 
-  /*if (json_object_has_member (obj, "extended_tweet"))*/
-    /*extended_object = json_object_get_object_member (obj, "extended_tweet");*/
-  /*else*/
-    /*extended_object = obj;*/
-
+  t->id = atol (json_object_get_string_member (obj, "id"));
   time = cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));
+
+  t->created_at = g_date_time_to_unix (time);
   t->text = g_strdup (json_object_get_string_member (obj, "content"));
   t->display_range_start = 0;
 
   cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "account"));
-#if 0
-  t->id = json_object_get_int_member (obj, "id");
-  if (json_object_has_member (extended_object, "full_text"))
-    tweet_text = json_object_get_string_member (extended_object, "full_text");
-  else
-
-  if (json_object_has_member (extended_object, "display_text_range"))
-    {
-      /* We only remove the prefix */
-      guint start = (guint)json_array_get_int_element (
-                          json_object_get_array_member (extended_object, "display_text_range"),
-                          0);
-      guint i;
-      const char *p = tweet_text;
-
-      /* Skip ahead */
-      for (i = 0; i < start; i ++)
-        p = g_utf8_next_char (p);
-
-      t->text = g_strdup (p);
-      t->display_range_start = start;
-    }
-  else
-    {
-      t->text = g_strdup (tweet_text);
-      t->display_range_start= 0;
-    }
-
-#endif
-  t->created_at = g_date_time_to_unix (time);
-
   g_date_time_unref (time);
 }
 
