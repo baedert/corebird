@@ -357,6 +357,7 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
     var call = account.proxy.new_call ();
     call.set_function (this.function);
     call.set_method("GET");
+    call.add_header ("Authorization", "Bearer " + ((Rest.OAuth2Proxy)account.proxy).get_access_token ());
     call.add_param ("count", requested_tweet_count.to_string ());
     call.add_param ("contributor_details", "true");
     call.add_param ("include_my_retweet", "true");
@@ -372,11 +373,20 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
       return;
     }
 
+    assert(root_node != null);
+
+    //var gen = new Json.Generator ();
+    //gen.set_root (root_node);
+    //gen.set_pretty (true);
+    //message ("%s", gen.to_data (null));
+
     var root = root_node.get_array();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
       return;
     }
+
+    message ("STATUSES: %u", root.get_length ());
 
 #if EXPERIMENTAL_LISTBOX
     TweetUtils.work_array2 (root,

@@ -42,10 +42,13 @@ cb_user_identity_copy (const CbUserIdentity *id, CbUserIdentity *id2)
 void cb_user_identity_parse (CbUserIdentity *id,
                              JsonObject     *user_obj)
 {
-  id->id = json_object_get_int_member (user_obj, "id");
-  id->screen_name = g_strdup (json_object_get_string_member (user_obj, "screen_name"));
-  id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "name"));
-  id->verified = json_object_get_boolean_member (user_obj, "verified");
+  id->id = atol (json_object_get_string_member (user_obj, "id"));
+  id->screen_name = g_strdup (json_object_get_string_member (user_obj, "username"));
+  id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "display_name"));
+  if (!id->user_name || strcmp (id->user_name, "") == 0)
+    id->user_name = g_strdup (id->screen_name);
+
+  id->verified = FALSE; // TODO: Remove
 }
 
 
@@ -136,18 +139,21 @@ cb_mini_tweet_parse (CbMiniTweet *t,
   JsonObject *extended_object;
   const char *tweet_text;
 
-  if (json_object_has_member (obj, "extended_tweet"))
-    extended_object = json_object_get_object_member (obj, "extended_tweet");
-  else
-    extended_object = obj;
+  /*if (json_object_has_member (obj, "extended_tweet"))*/
+    /*extended_object = json_object_get_object_member (obj, "extended_tweet");*/
+  /*else*/
+    /*extended_object = obj;*/
 
-  time = cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));
+  /*time = 0;//cb_utils_parse_date (json_object_get_string_member (obj, "created_at"));*/
+  t->text = g_strdup (json_object_get_string_member (obj, "content"));
+  t->display_range_start = 0;
 
+  cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "account"));
+#if 0
   t->id = json_object_get_int_member (obj, "id");
   if (json_object_has_member (extended_object, "full_text"))
     tweet_text = json_object_get_string_member (extended_object, "full_text");
   else
-    tweet_text = json_object_get_string_member (extended_object, "text");
 
   if (json_object_has_member (extended_object, "display_text_range"))
     {
@@ -172,9 +178,9 @@ cb_mini_tweet_parse (CbMiniTweet *t,
     }
 
   t->created_at = g_date_time_to_unix (time);
-  cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "user"));
 
   g_date_time_unref (time);
+#endif
 }
 
 static int

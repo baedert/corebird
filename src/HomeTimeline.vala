@@ -18,7 +18,7 @@
 public class HomeTimeline : Cb.MessageReceiver, DefaultTimeline {
   protected override string function {
     get {
-      return "1.1/statuses/home_timeline.json";
+      return "api/v1/timelines/home";
     }
   }
 

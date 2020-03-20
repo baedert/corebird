@@ -27,7 +27,7 @@ public class Account : GLib.Object {
   public string? description;
   public Gdk.Texture avatar_small {public get; public set;}
   public Gdk.Texture avatar       {public get; public set;}
-  public Rest.OAuthProxy proxy;
+  public Rest.OAuth2Proxy proxy;
   public Cb.UserStream user_stream;
   public Cb.UserCounter user_counter;
   private UserEventReceiver event_receiver;
@@ -72,24 +72,23 @@ public class Account : GLib.Object {
     if (proxy != null)
       return;
 
-    this.proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
-                                      Settings.get_consumer_secret (),
-                                      "https://api.twitter.com/",
-                                      false);
+    this.proxy = new Rest.OAuth2Proxy (Settings.get_client_id (),
+                                       Settings.get_client_secret (),
+                                       "https://mastodon.social/",
+                                       false);
     this.user_stream = new Cb.UserStream (this.screen_name, STRESSTEST);
     this.user_stream.register (this.event_receiver);
 
     init_database ();
-    int n_rows = db.select ("common").cols ("token", "token_secret")
+    int n_rows = db.select ("common").cols ("access_token")
                                      .run ((vals) => {
-      proxy.token = vals[0];
-      proxy.token_secret = vals[1];
-      user_stream.set_proxy_data (proxy.token, proxy.token_secret);
+      proxy.set_access_token (vals[0]);
+      user_stream.set_proxy_data (vals[0], "");
       return false; //stop
     });
 
     if (n_rows < 1) {
-      critical ("Could not load token{_secret} for user %s", this.screen_name);
+      critical ("Could not load access_token for user %s", this.screen_name);
     }
   }
 
@@ -184,48 +183,52 @@ public class Account : GLib.Object {
     bool values_changed = false;
 
     this.id = root.get_int_member ("id");
-    if (this.name != root.get_string_member ("name")) {
-      this.name = root.get_string_member ("name");
+
+    if (this.name != root.get_string_member ("display_name")) {
+      this.name = root.get_string_member ("display_name");
       values_changed = true;
     }
-    if (this.screen_name != root.get_string_member ("screen_name")) {
+
+    if (this.screen_name != root.get_string_member ("username")) {
       string old_screen_name = this.screen_name;
-      this.screen_name = root.get_string_member ("screen_name");
+      this.screen_name = root.get_string_member ("username");
       Utils.update_startup_account (old_screen_name, this.screen_name);
+      if (this.name == "")
+        this.name = this.screen_name;
       values_changed = true;
     }
 
-    Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
-                                                              .get_array_member ("urls");
-    var urls = new Cb.TextEntity[desc_urls.get_length ()];
-    desc_urls.foreach_element ((arr, index, node) => {
-      Json.Object obj = node.get_object ();
-      Json.Array indices = obj.get_array_member ("indices");
-      urls[index] = Cb.TextEntity () {
-        from = (uint)indices.get_int_element (0),
-        to   = (uint)indices.get_int_element (1),
-        display_text = obj.get_string_member ("expanded_url"),
-        target = null
-      };
-    });
-    this.description = Cb.TextTransform.text (root.get_string_member ("description"),
-                                              urls,
-                                              Cb.TransformFlags.EXPAND_LINKS,
-                                              0, 0);
+    this.description = "";
+    //Json.Array desc_urls = root.get_object_member ("entities").get_object_member ("description")
+                                                              //.get_array_member ("urls");
+    //var urls = new Cb.TextEntity[desc_urls.get_length ()];
+    //desc_urls.foreach_element ((arr, index, node) => {
+      //Json.Object obj = node.get_object ();
+      //Json.Array indices = obj.get_array_member ("indices");
+      //urls[index] = Cb.TextEntity () {
+        //from = (uint)indices.get_int_element (0),
+        //to   = (uint)indices.get_int_element (1),
+        //display_text = obj.get_string_member ("expanded_url"),
+        //target = null
+      //};
+    //});
+    //this.description = Cb.TextTransform.text (root.get_string_member ("description"),
+                                              //urls,
+                                              //Cb.TransformFlags.EXPAND_LINKS,
+                                              //0, 0);
 
 
-    if (root.has_member ("profile_banner_url"))
-      this.banner_url = root.get_string_member ("profile_banner_url");
+    this.banner_url = root.get_string_member ("header");
 
     /* Website URL */
-    if (root.get_object_member ("entities").has_member ("url")) {
-      this.website = root.get_object_member ("entities").get_object_member ("url")
-                     .get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
-    } else
-      this.website = "";
+    //if (root.get_object_member ("entities").has_member ("url")) {
+      //this.website = root.get_object_member ("entities").get_object_member ("url")
+                     //.get_array_member ("urls").get_object_element (0).get_string_member ("expanded_url");
+    //} else
+    this.website = "";
 
 
-    string avatar_url = root.get_string_member ("profile_image_url");
+    string avatar_url = root.get_string_member ("avatar");
     values_changed |= yield update_avatar (avatar_url);
 
     if (values_changed) {

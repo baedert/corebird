@@ -67,11 +67,19 @@ public class Settings : GLib.Object {
 
 
   public static string get_consumer_key () {
-    return settings.get_string ("consumer-key");
+    return settings.get_string ("client-id");
   }
 
   public static string get_consumer_secret () {
-    return settings.get_string ("consumer-secret");
+    return settings.get_string ("client-secret");
+  }
+
+  public static string get_client_id () {
+    return settings.get_string ("client-id");
+  }
+
+  public static string get_client_secret () {
+    return settings.get_string ("client-secret");
   }
 
   public static void add_text_transform_flag (Cb.TransformFlags flag) {

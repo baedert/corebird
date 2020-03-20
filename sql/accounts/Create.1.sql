@@ -2,17 +2,15 @@ PRAGMA user_version = 1;
 
 -- SQL schema for an account database
 CREATE TABLE IF NOT EXISTS `common`(
-  token VARCHAR(100),
-  token_secret VARCHAR(100)
+  access_token VARCHAR(100)
 );
-
 
 CREATE TABLE IF NOT EXISTS `info`(
   id NUMERIC(19,0) PRIMARY KEY,
   screen_name VARCHAR(30),
   name VARCHAR(30)
+  last_tweet VARCHAR (255)
 );
-
 
 CREATE TABLE IF NOT EXISTS `dm_threads`(
   user_id NUMERIC(19,0) PRIMARY KEY,
@@ -43,4 +41,7 @@ CREATE TABLE IF NOT EXISTS `user_cache`(
   score INTEGER (11)
 );
 
-INSERT INTO `user_cache` (id, screen_name, name, score) VALUES ('2877682863', 'corebirdclient', 'Corebird', 10);
+CREATE TABLE IF NOT EXISTS `filters`(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  content VARCHAR(100)
+);

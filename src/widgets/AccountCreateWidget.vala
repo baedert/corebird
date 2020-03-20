@@ -33,7 +33,7 @@ public class AccountCreateWidget : Gtk.Box {
   private unowned Corebird corebird;
   private unowned Cb.MainWindow main_window;
   private bool request_pin_clicked = false;
-  private Rest.OAuthProxy local_proxy;
+  private Rest.OAuth2Proxy local_proxy;
   public signal void result_received (bool result, Account acc);
 
   public AccountCreateWidget (Account acc, Corebird corebird, Cb.MainWindow main_window) {
@@ -47,35 +47,20 @@ public class AccountCreateWidget : Gtk.Box {
   }
 
   private void open_pin_request_site () {
-    local_proxy = new Rest.OAuthProxy (Settings.get_consumer_key (),
-                                       Settings.get_consumer_secret (),
-                                       "https://api.twitter.com/",
-                                       false);
-    local_proxy.request_token_async.begin ("oauth/request_token", "oob", null, (obj, res) => {
-      try {
-        local_proxy.request_token_async.end (res);
-      } catch (GLib.Error e) {
-        if (e.message.down() == "unauthorized") {
-          Utils.show_error_dialog (_("Unauthorized. Most of the time, this means that there’s something wrong with the Twitter servers and you should try again later"), this.main_window);
-        } else {
-          Utils.show_error_dialog (e.message, this.main_window);
-        }
-        critical (e.message);
-        return;
-      }
 
-      string uri = "http://twitter.com/oauth/authorize?oauth_token=" + local_proxy.get_token();
-      debug ("Trying to open %s", uri);
+    var uri = "https://mastodon.social/oauth/authorize?client_id=%s".printf ("9qtdj5xMeZBw9QqdcFFf3UBsyAPSDv3-jrZLQHHTjuI") +
+              "&redirect_uri=urn:ietf:wg:oauth:2.0:oob" +
+              "&scope=read+write+follow+push&response_type=code";
+    debug ("Trying to open %s", uri);
 
-      try {
-        GLib.AppInfo.launch_default_for_uri (uri, null);
-      } catch (GLib.Error e) {
-        this.show_error (_("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>"));
-        Utils.show_error_dialog (e.message, this.main_window);
-        critical ("Could not open %s", uri);
-        critical (e.message);
-      }
-    });
+    try {
+      GLib.AppInfo.launch_default_for_uri (uri, null);
+    } catch (GLib.Error e) {
+      this.show_error (_("Could not open %s").printf ("<a href=\"" + uri + "\">" + uri + "</a>"));
+      Utils.show_error_dialog (e.message, this.main_window);
+      critical ("Could not open %s", uri);
+      critical (e.message);
+    }
 
     request_pin_clicked = true;
   }
@@ -96,72 +81,87 @@ public class AccountCreateWidget : Gtk.Box {
   }
 
   private async void do_confirm () {
-    assert (local_proxy != null);
+    Json.Parser parser;
+    local_proxy = new Rest.OAuth2Proxy ("9qtdj5xMeZBw9QqdcFFf3UBsyAPSDv3-jrZLQHHTjuI",
+                                        "8-d9jiW1cwhrDf15YK9bdXj--mBmQAT8m6piAcePoNA",
+                                        "https://mastodon.social/",
+                                        false);
+    var call = local_proxy.new_call ();
+    call.set_method ("POST");
+    call.set_function ("oauth/token");
+    call.add_param ("client_id", "9qtdj5xMeZBw9QqdcFFf3UBsyAPSDv3-jrZLQHHTjuI");
+    call.add_param ("client_secret", "8-d9jiW1cwhrDf15YK9bdXj--mBmQAT8m6piAcePoNA");
+    call.add_param ("redirect_uri", "urn:ietf:wg:oauth:2.0:oob");
+    call.add_param ("grant_type", "authorization_code");
+    call.add_param ("code", pin_entry.get_text ().strip ());
+    call.add_param ("scope", "read write follow push");
+
     try {
-      yield local_proxy.access_token_async ("oauth/access_token", pin_entry.get_text (), null);
+      yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      critical (e.message);
-      // We just assume that it was the wrong code
-      show_error (_("Wrong PIN"));
+      show_error (e.message);
+      pin_entry.sensitive = true;
+      confirm_button.sensitive = true;
+      request_pin_button.sensitive = true;
+      return;
+    }
+    parser = new Json.Parser ();
+    try {
+      parser.load_from_data (call.get_payload ());
+    } catch (GLib.Error e) {
+      show_error ("Invalid JSON:%s".printf (e.message));
       pin_entry.sensitive = true;
       confirm_button.sensitive = true;
       request_pin_button.sensitive = true;
       return;
     }
 
-    var call = local_proxy.new_call ();
-    call.set_function ("1.1/account/settings.json");
+    var root = parser.get_root ().get_object ();
+    string access_token = root.get_string_member ("access_token");
+
+    // Verify token
+    call = local_proxy.new_call ();
     call.set_method ("GET");
+    call.set_function ("api/v1/accounts/verify_credentials");
+    call.add_header ("Authorization", "Bearer %s".printf (access_token));
 
-    Json.Node? root_node;
     try {
-      root_node = yield Cb.Utils.load_threaded_async (call, null);
+      yield call.invoke_async (null);
     } catch (GLib.Error e) {
-      warning ("Could not get json data: %s", e.message);
-      return;
-    }
-
-    Json.Object root = root_node.get_object ();
-    string screen_name = root.get_string_member ("screen_name");
-    debug ("Checking for %s", screen_name);
-    Account? existing_account = Account.query_account (screen_name);
-    if (existing_account != null) {
-      result_received (false, existing_account);
-      critical ("Account is already in use");
-      show_error (_("Account already in use"));
+      show_error ("Error verifying PIN: %s".printf (e.message));
       pin_entry.sensitive = true;
-      pin_entry.text = "";
+      confirm_button.sensitive = true;
       request_pin_button.sensitive = true;
       return;
     }
 
-    var info_call = local_proxy.new_call ();
-    info_call.set_method ("GET");
-    info_call.set_function ("1.1/users/show.json");
-    info_call.add_param ("screen_name", screen_name);
-    info_call.add_param ("skip_status", "true");
-
+    message ("%s", call.get_payload ());
+    parser = new Json.Parser ();
     try {
-      yield info_call.invoke_async (null);
+      parser.load_from_data (call.get_payload ());
     } catch (GLib.Error e) {
-      warning (e.message);
+      show_error ("Invalid JSON:%s".printf (e.message));
+      pin_entry.sensitive = true;
+      confirm_button.sensitive = true;
+      request_pin_button.sensitive = true;
       return;
     }
 
-    Json.Parser parser = new Json.Parser ();
     try {
-      parser.load_from_data (info_call.get_payload ());
+      yield acc.set_info_from_json (parser.get_root ().get_object ());
     } catch (GLib.Error e) {
-      warning ("JSON error: %s.\nData:\n%s", e.message, info_call.get_payload ());
+      show_error ("Error reading account info: %s".printf (e.message));
+      pin_entry.sensitive = true;
+      confirm_button.sensitive = true;
+      request_pin_button.sensitive = true;
+      return;
     }
 
-    yield acc.set_info_from_json (parser.get_root ().get_object ());
     debug ("user info call");
     acc.init_database ();
-    acc.save_info();
+    acc.save_info ();
     acc.db.insert ("common")
-          .val ("token", local_proxy.token)
-          .val ("token_secret", local_proxy.token_secret)
+          .val ("access_token", access_token)
           .run ();
     acc.init_proxy ();
     corebird.account_added (acc);

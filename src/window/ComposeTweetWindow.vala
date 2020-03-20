@@ -85,8 +85,8 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
                                             Settings.get_consumer_secret (),
                                             "https://upload.twitter.com/",
                                             false);
-    upload_proxy.token = account.proxy.token;
-    upload_proxy.token_secret = account.proxy.token_secret;
+    //upload_proxy.token = account.proxy.token;
+    //upload_proxy.token_secret = account.proxy.token_secret;
     this.compose_job = new Cb.ComposeJob (account.proxy,
                                           upload_proxy,
                                           this.cancellable);

@@ -193,16 +193,18 @@ cb_tweet_load_from_json (CbTweet   *tweet,
   g_return_if_fail (now != NULL);
 
   status = json_node_get_object (status_node);
-  user = json_object_get_object_member (status, "user");
+  user = json_object_get_object_member (status, "account");
 
-  tweet->id = json_object_get_int_member (status, "id");
-  tweet->retweet_count = (guint) json_object_get_int_member (status, "retweet_count");
-  tweet->favorite_count = (guint) json_object_get_int_member (status, "favorite_count");
+  tweet->id = atol (json_object_get_string_member (status, "id"));
+  tweet->retweet_count = 0;//(guint) json_object_get_int_member (status, "retweet_count");
+  tweet->favorite_count = (guint) json_object_get_int_member (status, "favourites_count");
 
+  tweet->avatar_url = g_strdup (json_object_get_string_member (user, "avatar"));
 
   cb_mini_tweet_parse (&tweet->source_tweet, status);
-  has_media = json_array_size (json_object_get_object_member (status, "entities"), "media") > 0;
-
+  /*has_media = json_array_size (json_object_get_object_member (status, "entities"), "media") > 0;*/
+  has_media = FALSE;
+#if 0
   if (json_object_has_member (status, "retweeted_status"))
     {
       JsonObject *rt      = json_object_get_object_member (status, "retweeted_status");
@@ -289,7 +291,7 @@ cb_tweet_load_from_json (CbTweet   *tweet,
       tweet->my_retweet = tweet->id;
       tweet->state |= CB_TWEET_STATE_RETWEETED;
     }
-
+#endif
 
 #ifdef DEBUG
   {
