@@ -17,7 +17,6 @@
 
 #include "CbUserStream.h"
 #include "CbUtils.h"
-#include "rest/rest/oauth-proxy.h"
 #include "rest/rest/oauth2-proxy.h"
 #include <string.h>
 
@@ -159,7 +158,7 @@ cb_user_stream_init (CbUserStream *self)
   if (self->stresstest)
     {
       g_assert (FALSE);
-      self->proxy = oauth_proxy_new ("0rvHLdbzRULZd5dz6X1TUA",
+      self->proxy = oauth2_proxy_new ("0rvHLdbzRULZd5dz6X1TUA",
                                      "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
                                      "https://stream.twitter.com/",
                                      FALSE);

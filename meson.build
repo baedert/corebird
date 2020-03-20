@@ -175,8 +175,6 @@ corebird_lib_sources = files([
   'src/rest/rest/rest-proxy.c',
   'src/rest/rest/rest-proxy-call.c',
   'src/rest/rest/rest-main.c',
-  'src/rest/rest/oauth-proxy.c',
-  'src/rest/rest/oauth-proxy-call.c',
   'src/rest/rest/oauth2-proxy.c',
   'src/rest/rest/oauth2-proxy-call.c',
   'src/rest/rest/sha1.c',
