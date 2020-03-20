@@ -147,15 +147,7 @@ public class AccountCreateWidget : Gtk.Box {
       return;
     }
 
-    try {
-      yield acc.set_info_from_json (parser.get_root ().get_object ());
-    } catch (GLib.Error e) {
-      show_error ("Error reading account info: %s".printf (e.message));
-      pin_entry.sensitive = true;
-      confirm_button.sensitive = true;
-      request_pin_button.sensitive = true;
-      return;
-    }
+    yield acc.set_info_from_json (parser.get_root ().get_object ());
 
     debug ("user info call");
     acc.init_database ();

@@ -371,12 +371,12 @@ cb_text_view_finalize (GObject *object)
   G_OBJECT_CLASS (cb_text_view_parent_class)->finalize (object);
 }
 
-static void
+static gboolean
 cb_text_view_grab_focus (GtkWidget *widget)
 {
   CbTextView *self = CB_TEXT_VIEW (widget);
 
-  gtk_widget_grab_focus (self->text_view);
+  return gtk_widget_grab_focus (self->text_view);
 }
 
 static void
