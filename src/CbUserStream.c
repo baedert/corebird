@@ -18,6 +18,7 @@
 #include "CbUserStream.h"
 #include "CbUtils.h"
 #include "rest/rest/oauth-proxy.h"
+#include "rest/rest/oauth2-proxy.h"
 #include <string.h>
 
 G_DEFINE_TYPE (CbUserStream, cb_user_stream, G_TYPE_OBJECT);
@@ -46,7 +47,6 @@ cb_user_stream_finalize (GObject *o)
   cb_user_stream_stop (self);
 
   g_ptr_array_unref (self->receivers);
-  g_string_free (self->data, TRUE);
   g_free (self->account_name);
 
   if (self->network_changed_id != 0)
@@ -145,19 +145,20 @@ start_heartbeat_timeout (CbUserStream *self)
   if (self->heartbeat_timeout_id != 0)
     return;
 
-  self->heartbeat_timeout_id = g_timeout_add (45 * 1000, heartbeat_cb, self);
+  self->heartbeat_timeout_id = g_timeout_add (90 * 1000, heartbeat_cb, self);
 }
 
 static void
 cb_user_stream_init (CbUserStream *self)
 {
-  self->receivers = g_ptr_array_new ();
   self->data = g_string_new (NULL);
+  self->receivers = g_ptr_array_new ();
   self->restarting = FALSE;
   self->state = STATE_STOPPED;
 
   if (self->stresstest)
     {
+      g_assert (FALSE);
       self->proxy = oauth_proxy_new ("0rvHLdbzRULZd5dz6X1TUA",
                                      "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
                                      "https://stream.twitter.com/",
@@ -166,10 +167,10 @@ cb_user_stream_init (CbUserStream *self)
   else
     {
       /* TODO: We should be getting these from the settings */
-      self->proxy = oauth_proxy_new ("0rvHLdbzRULZd5dz6X1TUA",
-                                     "oGrvd6654nWLhzLcJywSW3pltUfkhP4BnraPPVNhHtY",
-                                     "https://userstream.twitter.com/",
-                                     FALSE);
+      self->proxy = oauth2_proxy_new ("9qtdj5xMeZBw9QqdcFFf3UBsyAPSDv3-jrZLQHHTjuI",
+                                      "8-d9jiW1cwhrDf15YK9bdXj--mBmQAT8m6piAcePoNA",
+                                      "https://mastodon.social/",
+                                      FALSE);
     }
   self->proxy_data_set = FALSE;
 
@@ -218,99 +219,18 @@ cb_user_stream_new (const char *account_name,
   return self;
 }
 
-static CbStreamMessageType
-get_event_type (const char *s)
-{
-  gsize len = strlen (s);
-
-  switch (len)
-    {
-      case 4:
-        if (strcmp (s, "mute") == 0)
-          return CB_STREAM_MESSAGE_EVENT_MUTE;
-        break;
-
-      case 5:
-        if (strcmp (s, "block") == 0)
-          return CB_STREAM_MESSAGE_EVENT_BLOCK;
-        break;
-
-      case 6:
-        if (strcmp (s, "unmute") == 0)
-          return CB_STREAM_MESSAGE_EVENT_UNMUTE;
-        if (strcmp (s, "follow") == 0)
-          return CB_STREAM_MESSAGE_EVENT_FOLLOW;
-        break;
-
-      case 7:
-        if (strcmp (s, "unblock") == 0)
-          return CB_STREAM_MESSAGE_EVENT_UNBLOCK;
-        break;
-
-      case 8:
-        if (strcmp (s, "favorite") == 0)
-          return CB_STREAM_MESSAGE_EVENT_FAVORITE;
-        if (strcmp (s, "unfollow") ==0)
-          return CB_STREAM_MESSAGE_EVENT_UNFOLLOW;
-        break;
-
-      case 10:
-        if (strcmp (s, "unfavorite") == 0)
-          return CB_STREAM_MESSAGE_EVENT_UNFAVORITE;
-        break;
-
-      case 11:
-        if (strcmp (s, "user_update") == 0)
-          return CB_STREAM_MESSAGE_EVENT_USER_UPDATE;
-        break;
-
-      case 12:
-        if (strcmp (s, "list_created") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_CREATED;
-        if (strcmp (s, "quoted_tweet") == 0)
-          return CB_STREAM_MESSAGE_EVENT_QUOTED_TWEET;
-        if (strcmp (s, "list_updated") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_UPDATED;;
-        break;
-
-      case 14:
-        if (strcmp (s, "list_destroyed") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_DESTROYED;
-        break;
-
-      case 17:
-        if (strcmp (s, "list_member_added") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_MEMBER_ADDED;
-        break;
-
-      case 19:
-        if (strcmp (s, "list_member_removed") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_MEMBER_REMOVED;
-        break;
-
-      case 20:
-        if (strcmp (s, "list_user_subscribed") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_SUBSCRIBED;
-        break;
-
-      case 22:
-        if (strcmp (s, "list_user_unsubscribed") == 0)
-          return CB_STREAM_MESSAGE_EVENT_LIST_UNSUBSCRIBED;
-        break;
-    }
-
-  return CB_STREAM_MESSAGE_UNSUPPORTED;
-}
-
 static void
 continuous_cb (RestProxyCall *call,
-               const gchar   *buf,
+               const char    *buf,
                gsize          len,
                const GError  *error,
                GObject       *weak_object,
                gpointer       user_data)
 {
   CbUserStream *self = user_data;
+  const char *event_type;
+  gsize event_type_len;
+  const char *data_str;
 
   if (buf == NULL)
     {
@@ -325,145 +245,114 @@ continuous_cb (RestProxyCall *call,
           g_debug ("%u, buf(%s) == NULL. Starting timeout...", self->state, self->account_name);
           start_network_timeout (self);
         }
-      return;
+      goto out;
     }
+
+  if (self->restarting)
+    {
+      g_debug (G_STRLOC ": Resuming...");
+      g_signal_emit (self, user_stream_signals[RESUMED], 0);
+      self->restarting = FALSE;
+    }
+
+  self->state = STATE_RUNNING;
 
   g_string_append_len (self->data, buf, len);
 
-  /* Actual messages end with \r\n */
-  if ((len >= 2 && buf[len - 1] == '\n' && buf[len - 2] == '\r') ||
-      (len >= 1 && buf[len - 1] == '\r'))
+  if (self->data->str[self->data->len - 1] != '\n')
+    return; // Dont' clear
+
+  /* :thump -> reset heartbeat */;
+  if (strcmp (self->data->str, ":thump\n") == 0)
     {
-      if (self->restarting)
-        {
-          g_debug (G_STRLOC ": Resuming...");
-          g_signal_emit (self, user_stream_signals[RESUMED], 0);
-          self->restarting = FALSE;
-        }
-
-      self->state = STATE_RUNNING;
-
-      /* Just \r\n messages are heartbeats. */
-      if (len == 2 &&
-          buf[0] == '\r' && buf[1] == '\n')
-        {
 #if DEBUG
-          char *date;
-          GDateTime *now = g_date_time_new_now_local ();
+      char *date;
+      GDateTime *now = g_date_time_new_now_local ();
 
-          date = g_date_time_format (now, "%k:%M:%S");
+      date = g_date_time_format (now, "%k:%M:%S");
 
-          g_debug ("%u HEARTBEAT (%s) %s", self->state, self->account_name, date);
-          g_free (date);
-          g_date_time_unref (now);
+      g_debug ("%u HEARTBEAT (%s) %s", self->state, self->account_name, date);
+      g_free (date);
+      g_date_time_unref (now);
 #endif
-          g_string_erase (self->data, 0, -1);
-          cb_clear_source (&self->heartbeat_timeout_id);
+      cb_clear_source (&self->heartbeat_timeout_id);
 
-          start_heartbeat_timeout (self);
-          return;
-        }
-
-      /* TODO: Bring "OK" check back? */
-      {
-        JsonParser *parser;
-        JsonNode *root_node;
-        JsonObject *root_object;
-        CbStreamMessageType message_type;
-        GError *error = NULL;
-        guint i;
-
-        parser = json_parser_new ();
-        json_parser_load_from_data (parser, self->data->str, -1, &error);
-
-        if (error != NULL)
-          {
-            if (g_str_has_prefix (error->message, "Exceeded connection limit for user"))
-              {
-                /* Ignore this one, let the next reconnect handle it */
-                g_string_erase (self->data, 0, -1);
-                return;
-              }
-
-            g_warning ("%s: %s", __FUNCTION__, error->message);
-            g_warning ("\n%s\n", self->data->str);
-            g_string_erase (self->data, 0, -1);
-            return;
-          }
-
-
-        root_node = json_parser_get_root (parser);
-        root_object = json_node_get_object (root_node);
-
-        message_type = CB_STREAM_MESSAGE_UNSUPPORTED;
-
-        if (json_object_has_member (root_object, "text"))
-          {
-            message_type = CB_STREAM_MESSAGE_TWEET;
-          }
-        else if (json_object_has_member (root_object, "delete"))
-          {
-            JsonObject *d = json_object_get_object_member (root_object, "delete");
-
-            if (json_object_has_member (d, "direct_message"))
-              message_type = CB_STREAM_MESSAGE_DM_DELETE;
-            else
-              message_type = CB_STREAM_MESSAGE_DELETE;
-          }
-        else if (json_object_has_member (root_object, "scrub_geo"))
-          {
-            message_type = CB_STREAM_MESSAGE_SCRUB_GEO;
-          }
-        else if (json_object_has_member (root_object, "limit"))
-          {
-            message_type = CB_STREAM_MESSAGE_LIMIT;
-          }
-        else if (json_object_has_member (root_object, "disconnect"))
-          {
-            message_type = CB_STREAM_MESSAGE_DISCONNECT;
-          }
-        else if (json_object_has_member (root_object, "friends"))
-          {
-            message_type = CB_STREAM_MESSAGE_FRIENDS;
-          }
-        else if (json_object_has_member (root_object, "event"))
-          {
-            const char *event_name = json_object_get_string_member (root_object, "event");
-
-            message_type = get_event_type (event_name);
-          }
-        else if (json_object_has_member (root_object, "warning"))
-          {
-            message_type = CB_STREAM_MESSAGE_WARNING;
-          }
-        else if (json_object_has_member (root_object, "direct_message"))
-          {
-            message_type = CB_STREAM_MESSAGE_DIRECT_MESSAGE;
-          }
-        else if (json_object_has_member (root_object, "status_withheld"))
-          {
-            message_type = CB_STREAM_MESSAGE_UNSUPPORTED;
-          }
-
-#if DEBUG
-        g_print ("Message with type %d on stream @%s\n", message_type, self->account_name);
-        g_print ("%s\n\n", self->data->str);
-#endif
-
-        for (i = 0; i < self->receivers->len; i++)
-          cb_message_receiver_stream_message_received (g_ptr_array_index (self->receivers, i),
-                                                       message_type,
-                                                       root_node);
-
-        g_object_unref (parser);
-        g_string_erase (self->data, 0, -1);
-      } /* Local block */
+      start_heartbeat_timeout (self);
+        goto out;
+      return;
     }
+
+  if (self->data->len <= strlen ("event: "))
+    {
+      g_debug ("2 Ignoring stream message '%s'", self->data->str);
+      goto out;
+    }
+
+  /* From now on out, all messages need to start with 'event: ' */
+  if (!g_str_has_prefix (self->data->str, "event: "))
+    {
+      g_debug ("3 Ignoring stream message '%s'", self->data->str);
+      goto out;
+    }
+
+  event_type = strstr (self->data->str, ":") + 2;
+  data_str = strstr (self->data->str, "\n") + 1;
+  event_type_len = data_str - event_type - 1;
+
+  if (!g_str_has_prefix (data_str, "data: "))
+    {
+      g_debug ("4 Ignoring stream message '%s'", self->data->str);
+      goto out;
+    }
+
+  data_str = data_str + strlen ("data: ");
+
+  {
+    JsonParser *parser;
+    JsonNode *root_node;
+    CbStreamMessageType message_type;
+    GError *error = NULL;
+    guint i;
+
+    parser = json_parser_new ();
+
+    json_parser_load_from_data (parser, data_str, self->data->len - (data_str - self->data->str), &error);
+
+    if (error != NULL)
+      {
+        g_warning ("%s: %s", __FUNCTION__, error->message);
+        g_warning ("\n%s\n", data_str);
+        goto out;
+      }
+
+    root_node = json_parser_get_root (parser);
+
+    if (strncmp (event_type, "update", event_type_len) == 0)
+      message_type = CB_STREAM_MESSAGE_TWEET;
+    else
+      message_type = CB_STREAM_MESSAGE_UNSUPPORTED;
+
+#if DEBUG
+    g_print ("Message with type %d on stream @%s\n", message_type, self->account_name);
+    g_print ("%s\n\n", data_str);
+#endif
+
+    for (i = 0; i < self->receivers->len; i++)
+      cb_message_receiver_stream_message_received (g_ptr_array_index (self->receivers, i),
+                                                   message_type,
+                                                   root_node);
+
+    g_object_unref (parser);
+  } /* Local block */
+
+out:
+  g_string_erase (self->data, 0, -1);
 }
 
 void
 cb_user_stream_start (CbUserStream *self)
 {
+  char *c;
   g_debug ("%u Starting stream for %s", self->state, self->account_name);
 
   g_assert (self->proxy_data_set);
@@ -476,9 +365,12 @@ cb_user_stream_start (CbUserStream *self)
   if (self->stresstest)
     rest_proxy_call_set_function (self->proxy_call, "1.1/statuses/sample.json");
   else
-    rest_proxy_call_set_function (self->proxy_call, "1.1/user.json");
+    rest_proxy_call_set_function (self->proxy_call, "api/v1/streaming/user");
 
   rest_proxy_call_set_method (self->proxy_call, "GET");
+  c = g_strdup_printf ("Bearer %s", oauth2_proxy_get_access_token (OAUTH2_PROXY (self->proxy)));
+  rest_proxy_call_add_header (self->proxy_call, "Authorization", c);
+  g_free (c);
   start_heartbeat_timeout (self);
 
   rest_proxy_call_continuous (self->proxy_call,
@@ -511,8 +403,7 @@ cb_user_stream_set_proxy_data (CbUserStream *self,
                                const char   *token,
                                const char   *token_secret)
 {
-  oauth_proxy_set_token (OAUTH_PROXY (self->proxy), token);
-  oauth_proxy_set_token_secret (OAUTH_PROXY (self->proxy), token_secret);
+  oauth2_proxy_set_access_token (OAUTH2_PROXY (self->proxy), token);
 
   self->proxy_data_set = TRUE;
 }

@@ -16,6 +16,7 @@
  */
 
 #include "CbDeltaUpdater.h"
+#include "CbTweetListBox.h"
 
 G_DEFINE_TYPE(CbDeltaUpdater, cb_delta_updater, G_TYPE_OBJECT)
 
@@ -23,6 +24,7 @@ G_DEFINE_TYPE(CbDeltaUpdater, cb_delta_updater, G_TYPE_OBJECT)
 static gboolean
 minutely_cb (gpointer user_data)
 {
+  GtkWidget *listbox;
   CbDeltaUpdater *self = user_data;
   GDateTime *now;
   GList *widgets;
@@ -31,7 +33,12 @@ minutely_cb (gpointer user_data)
   if (!GTK_IS_WIDGET (self->listbox))
     return G_SOURCE_REMOVE;
 
-  widgets = gtk_container_get_children (GTK_CONTAINER (self->listbox));
+  if (CB_IS_TWEET_LIST_BOX (self->listbox))
+    listbox = cb_tweet_list_box_get_widget (CB_TWEET_LIST_BOX (self->listbox));
+  else
+    listbox = self->listbox;
+
+  widgets = gtk_container_get_children (GTK_CONTAINER (listbox));
   now = g_date_time_new_now_local ();
 
   for (l = widgets; l != NULL; l = l->next)

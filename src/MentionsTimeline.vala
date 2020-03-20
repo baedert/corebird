@@ -48,16 +48,14 @@ class MentionsTimeline : Cb.MessageReceiver, DefaultTimeline {
   private void add_tweet (Json.Node root_node) {
     /* Mark tweets as seen the user has already replied to */
     var root = root_node.get_object ();
-    var author = root.get_object_member ("user");
-    if (author.get_int_member ("id") == account.id &&
-        !root.get_null_member ("in_reply_to_status_id")) {
-      mark_seen (root.get_int_member ("in_reply_to_status_id"));
+    var author = root.get_object_member ("account");
+    if (int64.parse (author.get_string_member ("id")) == account.id &&
+        !root.get_null_member ("in_reply_to_id")) {
+      mark_seen (int64.parse (root.get_string_member ("in_reply_to_id")));
       return;
     }
 
-
-
-    if (root.get_string_member ("text").contains ("@" + account.screen_name)) {
+    if (root.get_string_member ("content").contains ("@" + account.screen_name)) {
       GLib.DateTime now = new GLib.DateTime.now_local ();
       var t = new Cb.Tweet ();
       t.load_from_json (root_node, account.id, now);

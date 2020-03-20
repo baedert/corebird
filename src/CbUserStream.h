@@ -25,6 +25,16 @@
 
 G_BEGIN_DECLS
 
+typedef struct _CbStreamEvent CbStreamEvent;
+struct _CbStreamEvent
+{
+  CbStreamMessageType type;
+  union {
+    JsonNode *json_node;
+    gint64 id;
+  };
+};
+
 #define CB_TYPE_USER_STREAM (cb_user_stream_get_type ())
 G_DECLARE_FINAL_TYPE (CbUserStream, cb_user_stream, CB, USER_STREAM, GObject);
 

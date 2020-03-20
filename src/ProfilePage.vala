@@ -203,12 +203,8 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     follow_button.sensitive = false;
     var call = account.proxy.new_call ();
     call.set_method ("GET");
-    call.set_function ("1.1/users/show.json");
-    if (user_id != 0)
-      call.add_param ("user_id", user_id.to_string ());
-    else
-      call.add_param ("screen_name", this.screen_name);
-    call.add_param ("include_entities", "false");
+    call.set_function ("api/v1/accounts/" + user_id.to_string ());
+    // TODO: This used to work for a screen_name as well
 
     Json.Node? root_node = null;
     try {
@@ -226,17 +222,15 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       return;
     }
 
-    if (root_node == null) return;
+    if (root_node == null)
+      return;
 
     var root = root_node.get_object();
-    int64 id = root.get_int_member ("id");
+    int64 id = int64.parse (root.get_string_member ("id"));
     this.user_id = id;
 
-    string avatar_url = root.get_string_member("profile_image_url");
+    string avatar_url = root.get_string_member("avatar");
     int scale = this.get_scale_factor ();
-
-    /* Always load the 200x200 px version even in loDPI since there's no 100x100px version */
-    avatar_url = avatar_url.replace ("_normal", "_200x200");
 
     // We don't use our AvatarCache here because this (100×100) avatar is only
     // ever loaded here.
@@ -258,47 +252,51 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       loading_stack.visible_child_name = "data";
     });
 
-    string name        = root.get_string_member("name").replace ("&", "&amp;").strip ();
-    string screen_name = root.get_string_member("screen_name");
-    string description = root.get_string_member("description");
+    string name        = root.get_string_member("display_name").replace ("&", "&amp;").strip ();
+    string screen_name = root.get_string_member("username");
+    string description = root.get_string_member("note");
     int followers      = (int)root.get_int_member("followers_count");
-    int following      = (int)root.get_int_member("friends_count");
+    int following      = (int)root.get_int_member("following_count");
     int tweets         = (int)root.get_int_member("statuses_count");
     bool is_following  = false;
     if (Utils.usable_json_value (root, "following"))
       is_following = root.get_boolean_member("following");
-    bool has_url       = root.get_object_member("entities").has_member("url");
-    bool verified      = root.get_boolean_member ("verified");
-    bool protected_user = root.get_boolean_member ("protected");
+    bool has_url       = false;//root.get_object_member("entities").has_member("url");
+    bool verified      = false;//root.get_boolean_member ("verified");
+    bool protected_user = false;//root.get_boolean_member ("protected");
     if (protected_user) {
       tweet_list.set_placeholder_text (_("Protected profile"));
     }
 
-    if (root.has_member ("profile_banner_url")) {
-      string banner_base_url = root.get_string_member ("profile_banner_url");
-      load_profile_banner (banner_base_url);
+    if (root.has_member ("header")) {
+      string banner_url = root.get_string_member ("header");
+      Utils.download_pixbuf.begin (banner_url, null, (obj, res) => {
+        Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);
+        set_banner (banner);
+      });
     }
 
     string display_url = "";
-    Json.Object entities = root.get_object_member ("entities");
-    if (has_url) {
-      var urls_object = entities.get_object_member("url").get_array_member("urls").
-        get_element(0).get_object();
+    Json.Object entities = null;//root.get_object_member ("entities");
+    //if (has_url) {
+      //var urls_object = entities.get_object_member("url").get_array_member("urls").
+        //get_element(0).get_object();
 
-      var url = urls_object.get_string_member("expanded_url");
-      if (urls_object.has_member ("display_url")) {
-        display_url = urls_object.get_string_member("expanded_url");
-      } else {
-        url = urls_object.get_string_member("url");
-        display_url = url;
-      }
-    }
+      //var url = urls_object.get_string_member("expanded_url");
+      //if (urls_object.has_member ("display_url")) {
+        //display_url = urls_object.get_string_member("expanded_url");
+      //} else {
+        //url = urls_object.get_string_member("url");
+        //display_url = url;
+      //}
+    //}
 
     string location = null;
     if (root.has_member("location")) {
       location = root.get_string_member("location");
     }
 
+    if (false) {
     Cb.TextEntity[]? text_urls = null;
     if (root.has_member ("description")) {
       int n_tl_entities = 0;
@@ -357,6 +355,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
         i ++;
       }
     }
+    }
 
     account.user_counter.user_seen (id, screen_name, name);
 
@@ -373,14 +372,14 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     name_label.set_markup (name.strip ());
     screen_name_label.set_label ("@" + screen_name);
     string desc = description;
-    if (text_urls != null) {
-      TweetUtils.sort_entities (ref text_urls);
-      desc = Cb.TextTransform.text (description,
-                                    text_urls,
-                                    0,
-                                    0,
-                                    0);
-    }
+    //if (text_urls != null) {
+      //TweetUtils.sort_entities (ref text_urls);
+      //desc = Cb.TextTransform.text (description,
+                                    //text_urls,
+                                    //0,
+                                    //0,
+                                    //0);
+    //}
 
     this.follower_count = followers;
     description_label.label = "<big>%s</big>".printf (desc.replace ("&", "&amp;"));
@@ -574,14 +573,6 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     });
 
     this.following_loading = false;
-  }
-
-  private void load_profile_banner (string base_url) {
-    string banner_url  = base_url + "/mobile_retina";
-    Utils.download_pixbuf.begin (banner_url, null, (obj, res) => {
-      Gdk.Pixbuf? banner = Utils.download_pixbuf.end (res);
-      set_banner (banner);
-    });
   }
 
   [GtkCallback]
@@ -846,8 +837,8 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
                                        Json.Node         root_node) {
     if (type == Cb.StreamMessageType.TWEET) {
       var obj = root_node.get_object ();
-      var user = obj.get_object_member ("user");
-      if (user.get_int_member ("id") != this.user_id)
+      var user = obj.get_object_member ("account");
+      if (int64.parse (user.get_string_member ("id")) != this.user_id)
         return;
 
       // Correct user!
