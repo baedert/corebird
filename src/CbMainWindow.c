@@ -359,6 +359,8 @@ cb_main_window_save_geometry (CbMainWindow *self)
       g_free (key);
     }
 
+  // TODO: Maybe actually getting the window size would help here.
+
   /* Now add this window's geometry */
   g_variant_builder_add (&builder, "{s(iiii)}",
                          ACCOUNT (self->account)->screen_name, x, y, w, h);

@@ -552,6 +552,14 @@ call_done_cb (GObject      *source_object,
 
   payload = rest_proxy_call_take_payload (call);
 
+#ifdef DEBUG
+    {
+      char *s = cb_utils_rest_proxy_call_to_string (call);
+      g_message ("%s Result: \n%s", s, payload);
+      g_free (s);
+    }
+#endif
+
   g_task_set_task_data (task, payload, g_free);
   g_task_run_in_thread (task, parse_json_async);
 }

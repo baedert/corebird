@@ -375,18 +375,11 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
 
     assert(root_node != null);
 
-    //var gen = new Json.Generator ();
-    //gen.set_root (root_node);
-    //gen.set_pretty (true);
-    //message ("%s", gen.to_data (null));
-
     var root = root_node.get_array();
     if (root.get_length () == 0) {
       tweet_list.set_empty ();
       return;
     }
-
-    message ("STATUSES: %u", root.get_length ());
 
 #if EXPERIMENTAL_LISTBOX
     TweetUtils.work_array2 (root,

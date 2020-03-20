@@ -403,11 +403,11 @@ public class Corebird : Gtk.Application {
                                               out Cb.MainWindow? window = null) {
     unowned GLib.List<Gtk.Window> windows = this.get_windows ();
     foreach (Gtk.Window win in windows) {
-      if (win is Cb.MainWindow) {
-        if (((Cb.MainWindow)win).account.screen_name == screen_name) {
-          window = (Cb.MainWindow)win;
-          return true;
-        }
+      var main_window = win as Cb.MainWindow;
+      if (main_window != null && main_window.account != null &&
+          main_window.account.screen_name == screen_name) {
+        window = main_window;
+        return true;
       }
     }
     window = null;
@@ -418,11 +418,11 @@ public class Corebird : Gtk.Application {
                                           out Cb.MainWindow? window = null) {
     unowned GLib.List<Gtk.Window> windows = this.get_windows ();
     foreach (Gtk.Window win in windows) {
-      if (win is Cb.MainWindow) {
-        if (((Cb.MainWindow)win).account.id == user_id) {
-          window = (Cb.MainWindow)win;
-          return true;
-        }
+      var main_window = win as Cb.MainWindow;
+      if (main_window != null && main_window.account != null &&
+          main_window.account.id == user_id) {
+        window = main_window;
+        return true;
       }
     }
     window = null;

@@ -23,14 +23,21 @@ struct _CbScrollWidgetPrivate
 };
 typedef struct _CbScrollWidgetPrivate CbScrollWidgetPrivate;
 
+enum
+{
+  SIGNAL_SCROLLED_TO_START,
+  SIGNAL_SCROLLED_TO_END,
+  LAST_SIGNAL
+};
+static guint scroll_widget_signals[LAST_SIGNAL] = { 0 };
+
 static GtkBuildableIface *parent_buildable_iface;
 static void cb_scroll_widget_buildable_init (GtkBuildableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (CbScrollWidget, cb_scroll_widget, GTK_TYPE_WIDGET,
                          G_ADD_PRIVATE (CbScrollWidget)
                          G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                                                cb_scroll_widget_buildable_init)
-                         );
+                                                cb_scroll_widget_buildable_init));
 
 
 static void
@@ -80,6 +87,22 @@ cb_scroll_widget_class_init (CbScrollWidgetClass *klass)
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
   object_class->finalize = cb_scroll_widget_finalize;
+
+  scroll_widget_signals[SIGNAL_SCROLLED_TO_START] =
+    g_signal_new ("scrolled-to-start",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL,
+                  NULL, G_TYPE_NONE, 0);
+
+  scroll_widget_signals[SIGNAL_SCROLLED_TO_END] =
+    g_signal_new ("scrolled-to-end",
+                  G_OBJECT_CLASS_TYPE (object_class),
+                  G_SIGNAL_RUN_FIRST,
+                  0,
+                  NULL, NULL,
+                  NULL, G_TYPE_NONE, 0);
 
   gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }

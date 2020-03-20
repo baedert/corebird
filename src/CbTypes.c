@@ -44,8 +44,10 @@ void cb_user_identity_parse (CbUserIdentity *id,
 {
   id->id = atol (json_object_get_string_member (user_obj, "id"));
   id->screen_name = g_strdup (json_object_get_string_member (user_obj, "username"));
-  id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "display_name"));
-  if (!id->user_name || strcmp (id->user_name, "") == 0)
+  if (json_object_has_member (user_obj, "display_name") &&
+      json_object_get_string_member (user_obj, "display_name")[0] != '\0')
+    id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "display_name"));
+  else
     id->user_name = g_strdup (id->screen_name);
 
   id->verified = FALSE; // TODO: Remove

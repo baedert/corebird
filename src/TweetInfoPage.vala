@@ -332,12 +332,11 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
     var now = new GLib.DateTime.now_local ();
     var call = account.proxy.new_call ();
     call.set_method ("GET");
-    call.set_function ("1.1/statuses/show.json");
-    call.add_param ("id", tweet_id.to_string ());
-    call.add_param ("include_my_retweet", "true");
-    call.add_param ("tweet_mode", "extended");
+    call.set_function ("api/v1/statuses/" + tweet_id.to_string ());
+    call.add_header ("Authorization", "Bearer " + ((Rest.OAuth2Proxy)account.proxy).get_access_token ());
     Cb.Utils.load_threaded_async.begin (call, cancellable, (__, res) => {
       Json.Node? root = null;
+      string? with = null;
 
       try {
         root = Cb.Utils.load_threaded_async.end (res);
@@ -353,8 +352,8 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
       Json.Object root_object = root.get_object ();
 
       if (this.tweet != null) {
-        int n_retweets  = (int)root_object.get_int_member ("retweet_count");
-        int n_favorites = (int)root_object.get_int_member ("favorite_count");
+        int n_retweets  = (int)root_object.get_int_member ("reblogs_count");
+        int n_favorites = (int)root_object.get_int_member ("favourites_count");
         this.tweet.retweet_count = n_retweets;
         this.tweet.favorite_count = n_favorites;
       } else {
@@ -362,8 +361,12 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
         tweet.load_from_json (root, account.id, now);
       }
 
-      string with = root_object.get_string_member ("source");
-      with = "<span underline='none'>" + extract_source (with) + "</span>";
+      Json.Object app_obj = root_object.get_object_member ("application");
+      if (app_obj != null) {
+        string name = app_obj.get_string_member ("name");
+        string url = app_obj.get_string_member ("website");
+        with = "<span underline='none'><a href='%s'>%s</a></span>".printf (url, name);
+      }
 
       set_tweet_data (tweet, with);
 
@@ -377,57 +380,58 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
       values_set = true;
     });
 
-    var reply_call = account.proxy.new_call ();
-    reply_call.set_method ("GET");
-    reply_call.set_function ("1.1/search/tweets.json");
-    reply_call.add_param ("q", "to:" + this.screen_name);
-    reply_call.add_param ("since_id", tweet_id.to_string ());
-    reply_call.add_param ("count", "200");
-    reply_call.add_param ("tweet_mode", "extended");
-    Cb.Utils.load_threaded_async.begin (reply_call, cancellable, (_, res) => {
-      Json.Node? root = null;
+    warning ("Load replies to status");
+    //var reply_call = account.proxy.new_call ();
+    //reply_call.set_method ("GET");
+    //reply_call.set_function ("1.1/search/tweets.json");
+    //reply_call.add_param ("q", "to:" + this.screen_name);
+    //reply_call.add_param ("since_id", tweet_id.to_string ());
+    //reply_call.add_param ("count", "200");
+    //reply_call.add_param ("tweet_mode", "extended");
+    //Cb.Utils.load_threaded_async.begin (reply_call, cancellable, (_, res) => {
+      //Json.Node? root = null;
 
-      try {
-        root = Cb.Utils.load_threaded_async.end (res);
-      } catch (GLib.Error e) {
-        if (!(e is GLib.IOError.CANCELLED))
-          warning (e.message);
+      //try {
+        //root = Cb.Utils.load_threaded_async.end (res);
+      //} catch (GLib.Error e) {
+        //if (!(e is GLib.IOError.CANCELLED))
+          //warning (e.message);
 
-        return;
-      }
+        //return;
+      //}
 
-      if (root == null)
-        return;
+      //if (root == null)
+        //return;
 
-      var statuses_node = root.get_object ().get_array_member ("statuses");
-      int64 previous_tweet_id = -1;
-      if (reply_list_box.model.get_n_items () > 0) {
+      //var statuses_node = root.get_object ().get_array_member ("statuses");
+      //int64 previous_tweet_id = -1;
+      //if (reply_list_box.model.get_n_items () > 0) {
         //assert (reply_list_box.model.get_n_items () == 1);
-        previous_tweet_id = ((Cb.Tweet)(reply_list_box.model.get_item (0))).id;
-      }
-      int n_replies = 0;
-      statuses_node.foreach_element ((arr, index, node) => {
-        if (n_replies >= 5)
-          return;
+        //previous_tweet_id = ((Cb.Tweet)(reply_list_box.model.get_item (0))).id;
+      //}
+      //int n_replies = 0;
+      //statuses_node.foreach_element ((arr, index, node) => {
+        //if (n_replies >= 5)
+          //return;
 
-        var obj = node.get_object ();
-        if (!obj.has_member ("in_reply_to_status_id") || obj.get_null_member ("in_reply_to_status_id"))
-          return;
+        //var obj = node.get_object ();
+        //if (!obj.has_member ("in_reply_to_status_id") || obj.get_null_member ("in_reply_to_status_id"))
+          //return;
 
-        int64 reply_id = obj.get_int_member ("in_reply_to_status_id");
-        if (reply_id != tweet_id) {
-          return;
-        }
+        //int64 reply_id = obj.get_int_member ("in_reply_to_status_id");
+        //if (reply_id != tweet_id) {
+          //return;
+        //}
 
-        var t = new Cb.Tweet ();
-        t.load_from_json (node, account.id, now);
-        if (t.id != previous_tweet_id) {
-          reply_list_box.get_widget ().show ();
-          reply_list_box.model.add (t);
-          n_replies ++;
-        }
-      });
-    });
+        //var t = new Cb.Tweet ();
+        //t.load_from_json (node, account.id, now);
+        //if (t.id != previous_tweet_id) {
+          //reply_list_box.get_widget ().show ();
+          //reply_list_box.model.add (t);
+          //n_replies ++;
+        //}
+      //});
+    //});
 
   }
 
@@ -627,29 +631,6 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
 
   public string get_title () {
     return _("Tweet Details");
-  }
-
-  /**
-   * Twitter's source parameter of tweets includes a 'rel' parameter
-   * that doesn't work as pango markup, so we just remove it here.
-   *
-   * Example string:
-   *   <a href=\"http://www.tweetdeck.com\" rel=\"nofollow\">TweetDeck</a>
-   *
-   * @param source_str The source string from twitter
-   *
-   * @return The #source_string without the rel parameter
-   */
-  private string extract_source (string source_str) {
-    int from, to;
-    int tmp = 0;
-    tmp = source_str.index_of_char ('"');
-    tmp = source_str.index_of_char ('"', tmp + 1);
-    from = source_str.index_of_char ('"', tmp + 1);
-    to = source_str.index_of_char ('"', from + 1);
-    if (to == -1 || from == -1)
-      return source_str;
-    return source_str.substring (0, from-5) + source_str.substring(to + 1);
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}

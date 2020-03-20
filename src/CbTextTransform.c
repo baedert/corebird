@@ -103,8 +103,8 @@ cb_text_transform_text (const char         *text,
   int i;
   char *end_str;
   gboolean last_entity_was_trailing = FALSE;
-  guint last_end   = 0;
-  guint cur_end    = text_len;
+  guint last_end = 0;
+  guint cur_end = text_len;
   gint32 *info;
 
   if (text_len == 0)

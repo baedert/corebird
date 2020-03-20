@@ -60,7 +60,6 @@ class StartConversationEntry : Gtk.ListBoxRow {
     user_completion = new UserCompletion (account, MAX_RESULTS);
     user_completion.connect_to (name_entry.buffer, "text");
     user_completion.start_completion.connect (() => {
-      completion_window.set_attached_to (this.name_entry);
       completion_window.set_transient_for ((Gtk.Window)this.get_root ());
       position_popup_window ();
       completion_window.show ();

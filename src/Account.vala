@@ -182,7 +182,7 @@ public class Account : GLib.Object {
   public async void set_info_from_json (Json.Object root) {
     bool values_changed = false;
 
-    this.id = root.get_int_member ("id");
+    this.id = int64.parse (root.get_string_member ("id"));
 
     if (this.name != root.get_string_member ("display_name")) {
       this.name = root.get_string_member ("display_name");
@@ -253,6 +253,7 @@ public class Account : GLib.Object {
       collect_obj.emit ();
     });
 
+    if (false) {
     load_id_array.begin (collect_obj, "1.1/friendships/no_retweets/ids.json", true, (obj, res) => {
       Json.Array? arr = load_id_array.end (res);
       if (arr != null) {
@@ -274,6 +275,7 @@ public class Account : GLib.Object {
         collect_obj.emit ();
       }
     });
+    }
 
     yield;
   }
