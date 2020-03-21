@@ -333,7 +333,7 @@ continuous_cb (RestProxyCall *call,
 
 #if DEBUG
     g_print ("Message with type %d on stream @%s\n", message_type, self->account_name);
-    g_print ("%s\n\n", data_str);
+    g_print ("%s\n\n", self->data->str);
 #endif
 
     for (i = 0; i < self->receivers->len; i++)

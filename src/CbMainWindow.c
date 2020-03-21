@@ -243,27 +243,6 @@ out:
 }
 
 static void
-account_button_clicked_cb (GtkButton *source,
-                           gpointer   user_data)
-{
-  CbMainWindow *self = user_data;
-
-  if (gtk_widget_get_visible (self->accounts_popover))
-    gtk_popover_popdown (GTK_POPOVER (self->accounts_popover));
-  else
-    gtk_popover_popup (GTK_POPOVER (self->accounts_popover));
-}
-
-static void
-accounts_popover_closed_cb (GtkPopover *popover,
-                            gpointer    user_data)
-{
-  CbMainWindow *self = user_data;
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (self->account_button), FALSE);
-}
-
-static void
 back_button_clicked_cb (GtkButton *source,
                         gpointer   user_data)
 {
@@ -584,12 +563,10 @@ cb_main_window_init (CbMainWindow *self)
   self->header_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   self->account_button = gtk_menu_button_new ();
   gtk_widget_set_tooltip_text (self->account_button, _("Show configured accounts"));
-  /*g_signal_connect (self->account_button, "clicked", G_CALLBACK (account_button_clicked_cb), self);*/
-  gtk_style_context_add_class (gtk_widget_get_style_context (self->account_button), "account-button");
+  /*gtk_style_context_add_class (gtk_widget_get_style_context (self->account_button), "account-button");*/
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
   avatar_widget_set_size (AVATAR_WIDGET (self->avatar_widget), 24);
   gtk_widget_set_valign (self->avatar_widget, GTK_ALIGN_CENTER);
-  /*gtk_menu_button_add_child (GTK_MENU_BUTTON (self->account_button), self->avatar_widget);*/
   gtk_container_add (GTK_CONTAINER (self->header_box), self->account_button);
 
   self->compose_tweet_button = gtk_toggle_button_new ();
@@ -604,7 +581,6 @@ cb_main_window_init (CbMainWindow *self)
 
   self->accounts_popover = gtk_popover_new ();
   gtk_menu_button_set_popover (GTK_MENU_BUTTON (self->account_button), self->accounts_popover);
-  g_signal_connect (self->accounts_popover, "closed", G_CALLBACK (accounts_popover_closed_cb), self);
   accounts_frame = gtk_frame_new (NULL);
   gtk_widget_set_margin_start (accounts_frame, 6);
   gtk_widget_set_margin_end (accounts_frame, 6);

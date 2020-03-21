@@ -296,6 +296,12 @@ cb_text_transform_raw (const char *input)
               g_string_append_c (str, '\n');
               g_string_append_c (str, '\n');
             }
+          else
+            {
+              /*GString *s = g_string_new (NULL);*/
+              /*g_string_append_len (s, tag_start, len);*/
+              /*g_message ("Tag: %s", s->str);*/
+            }
           /* Ignore all other tags */
           /* TODO: This is a good way of finding out about links of course. Also this is all shit. */
 
@@ -314,7 +320,7 @@ next:
         break;
     }
 
-  /* Remove trailing whitespace here. */
+  /* Remove trailing whitespace here again. */
   p = g_utf8_prev_char (str->str + str->len);
   c = g_utf8_get_char (p);
   if (g_unichar_isspace (c))

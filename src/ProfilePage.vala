@@ -254,7 +254,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
 
     string name        = root.get_string_member("display_name").replace ("&", "&amp;").strip ();
     string screen_name = root.get_string_member("username");
-    string description = root.get_string_member("note");
+    string description = Cb.TextTransform.raw (root.get_string_member("note"));
     int followers      = (int)root.get_int_member("followers_count");
     int following      = (int)root.get_int_member("following_count");
     int tweets         = (int)root.get_int_member("statuses_count");
@@ -410,23 +410,14 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     this.avatar_url = avatar_url;
   }
 
-
   private async void load_tweets () {
     tweet_list.set_unempty ();
     tweets_loading = true;
     int requested_tweet_count = 10;
     var call = account.proxy.new_call ();
-    call.set_function ("1.1/statuses/user_timeline.json");
+    call.set_function ("api/v1/accounts/" + this.user_id.to_string () + "/statuses");
     call.set_method ("GET");
-    if (user_id != 0)
-      call.add_param ("user_id", this.user_id.to_string ());
-    else
-      call.add_param ("screen_name", this.screen_name);
-    call.add_param ("count", requested_tweet_count.to_string ());
-    call.add_param ("contributor_details", "true");
-    call.add_param ("tweet_mode", "extended");
-    call.add_param ("include_my_retweet", "true");
-
+    call.add_param ("limit", requested_tweet_count.to_string ());
 
     Json.Node? root = null;
     try {

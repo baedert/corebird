@@ -300,7 +300,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
   for (i = 0; i < n_media_arrays; i ++)
     {
-      guint x, k;
+      guint x;
       for (x = 0, p = json_array_get_length (media_arrays[i]); x < p; x ++)
         {
           JsonObject *media_obj = json_node_get_object (json_array_get_element (media_arrays[i], x));
@@ -327,68 +327,32 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
               t->n_medias ++;
 
             }
-          else if (strcmp (media_type, "video")        == 0 ||
+          else if (strcmp (media_type, "video") == 0 ||
+                   strcmp (media_type, "gifv") == 0 ||
                    strcmp (media_type, "animated_gif") == 0)
             {
-              JsonObject *video_info = json_object_get_object_member (media_obj, "video_info");
-              JsonArray  *variants = json_object_get_array_member (video_info, "variants");
-              JsonObject *variant = NULL;
+              JsonObject *video_info = json_object_get_object_member (media_obj, "meta");
+              const char *thumb_url = json_object_get_string_member (media_obj, "preview_url");
+              const char *video_url = json_object_get_string_member (media_obj, "url");
               int thumb_width  = -1;
               int thumb_height = -1;
-              guint q;
 
-              if (json_object_has_member (media_obj, "sizes"))
+              if (json_object_has_member (video_info, "small"))
                 {
-                  JsonObject *sizes = json_object_get_object_member (media_obj, "sizes");
-                  JsonObject *medium = json_object_get_object_member (sizes, "medium");
+                  JsonObject *small = json_object_get_object_member (video_info, "small");
 
-                  thumb_width  = json_object_get_int_member (medium, "w");
-                  thumb_height = json_object_get_int_member (medium, "h");
+                  thumb_width = json_object_get_int_member (small, "width");
+                  thumb_height = json_object_get_int_member (small, "height");
                 }
 
-              for (k = 0, q = json_array_get_length (variants); k < q; k ++)
-                {
-                  JsonObject *v = json_node_get_object (json_array_get_element (variants, k));
-                  if (strcmp (json_object_get_string_member (v, "content_type"), "application/x-mpegURL") == 0)
-                    {
-                      variant = v;
-                      break;
-                    }
-                }
+              t->medias[t->n_medias] = cb_media_new ();
+              t->medias[t->n_medias]->url = g_strdup (video_url);
+              t->medias[t->n_medias]->thumb_url = g_strdup (thumb_url);
+              t->medias[t->n_medias]->type   = CB_MEDIA_TYPE_TWITTER_VIDEO;
+              t->medias[t->n_medias]->width  = thumb_width;
+              t->medias[t->n_medias]->height = thumb_height;
 
-              if (variant == NULL && json_array_get_length (variants) > 0)
-                variant = json_node_get_object (json_array_get_element (variants, 0));
-
-              if (variant != NULL)
-                {
-                  guint n_media = t->n_medias;
-                  const char *thumb_url = json_object_get_string_member (media_obj, "media_url");
-                  /* Some tweets have both a video and a thumbnail for that video attached. The tweet json
-                   * will list the image first. The url of the image and the thumb_url of the video will match
-                   */
-                  for (k = 0; k < t->n_medias; k ++)
-                    {
-                      if (t->medias[k] != NULL &&
-                          t->medias[k]->type == CB_MEDIA_TYPE_IMAGE &&
-                          strcmp (t->medias[k]->url, thumb_url) == 0)
-                        {
-                          /* Replace this media */
-                          g_object_unref (t->medias[k]);
-                          n_media = k;
-                          break;
-                        }
-                    }
-
-                  t->medias[n_media] = cb_media_new ();
-                  t->medias[n_media]->url = g_strdup (json_object_get_string_member (variant, "url"));
-                  t->medias[n_media]->thumb_url = g_strdup (thumb_url);
-                  t->medias[n_media]->type   = CB_MEDIA_TYPE_TWITTER_VIDEO;
-                  t->medias[n_media]->width  = thumb_width;
-                  t->medias[n_media]->height = thumb_height;
-
-                  if (n_media == t->n_medias)
-                    t->n_medias ++;
-                }
+              t->n_medias++;
             }
           else
             {
