@@ -141,7 +141,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       reply_entry.activatable = false;
       reply_entry.set_read_only ();
       reply_list.get_widget ().add (reply_entry);
-      content_grid.attach (reply_list.get_widget (), 0, 0, 2, 1);
+      content_grid.attach (reply_list, 0, 0, 2, 1);
     }
 
     if (mode == Mode.QUOTE) {

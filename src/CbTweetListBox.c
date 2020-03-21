@@ -193,6 +193,7 @@ cb_tweet_list_box_finalize (GObject *obj)
 {
   CbTweetListBox *self = (CbTweetListBox *)obj;
 
+  g_clear_pointer (&self->widget, gtk_widget_unparent);
   g_object_unref (self->delta_updater);
   g_object_unref (self->model);
 
