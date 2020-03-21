@@ -361,8 +361,8 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
         tweet.load_from_json (root, account.id, now);
       }
 
-      Json.Object app_obj = root_object.get_object_member ("application");
-      if (app_obj != null) {
+      if (root_object.has_member ("application")) {
+        var app_obj = root_object.get_object_member ("application");
         string name = app_obj.get_string_member ("name");
         string url = app_obj.get_string_member ("website");
         with = "<span underline='none'><a href='%s'>%s</a></span>".printf (url, name);
