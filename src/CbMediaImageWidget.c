@@ -27,10 +27,10 @@ drag_begin_cb (GtkGestureDrag *gesture,
   CbMediaImageWidget *self = user_data;
   GtkAdjustment *adjustment;
 
-  adjustment = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self));
+  adjustment = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self->scroller));
   self->drag_start_hvalue = gtk_adjustment_get_value (adjustment);
 
-  adjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self));
+  adjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self->scroller));
   self->drag_start_vvalue = gtk_adjustment_get_value (adjustment);
 
   gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
@@ -45,19 +45,32 @@ drag_update_cb (GtkGestureDrag *gesture,
   CbMediaImageWidget *self = user_data;
   GtkAdjustment *adjustment;
 
-  adjustment = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self));
+  adjustment = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self->scroller));
   gtk_adjustment_set_value (adjustment, self->drag_start_hvalue - offset_x);
 
-  adjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self));
+  adjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self->scroller));
   gtk_adjustment_set_value (adjustment, self->drag_start_vvalue - offset_y);
 
   gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 }
 
 static void
+cb_media_image_widget_dispose (GObject *object)
+{
+  CbMediaImageWidget *self = CB_MEDIA_IMAGE_WIDGET (object);
+
+  g_clear_pointer (&self->scroller, gtk_widget_unparent);
+
+  G_OBJECT_CLASS (cb_media_image_widget_parent_class)->dispose (object);
+}
+
+static void
 cb_media_image_widget_class_init (CbMediaImageWidgetClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
+
+  object_class->dispose = cb_media_image_widget_dispose;
 
   gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);
 }
@@ -70,7 +83,7 @@ cb_media_image_widget_init (CbMediaImageWidget *self)
   self->scroller = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_set_parent (self->scroller, GTK_WIDGET (self));
 
-  self->image = gtk_image_new ();
+  self->image = gtk_picture_new ();
   gtk_container_add (GTK_CONTAINER (self->scroller), self->image);
 
   self->initial_scroll_x = 0.5;
@@ -97,9 +110,8 @@ cb_media_image_widget_new (CbMedia *media)
 
   if (media->type == CB_MEDIA_TYPE_GIF)
     g_warning ("Maybe remove the GIF handling support!");
-    /*gtk_image_set_from_animation (GTK_IMAGE (self->image), media->animation);*/
   else
-    gtk_image_set_from_paintable(GTK_IMAGE (self->image), GDK_PAINTABLE (media->texture));
+    gtk_picture_set_paintable (GTK_PICTURE (self->image), GDK_PAINTABLE (media->texture));
 
   self->img_width  = gdk_texture_get_width (media->texture);
   self->img_height = gdk_texture_get_height (media->texture);
@@ -144,8 +156,8 @@ cb_media_image_widget_scroll_to (CbMediaImageWidget *self,
                                  double              px,
                                  double              py)
 {
-  GtkAdjustment *hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self));
-  GtkAdjustment *vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self));
+  GtkAdjustment *hadj = gtk_scrolled_window_get_hadjustment (GTK_SCROLLED_WINDOW (self->scroller));
+  GtkAdjustment *vadj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (self->scroller));
 
   self->initial_scroll_x = px;
   self->initial_scroll_y = py;
@@ -169,17 +181,16 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
   GdkRectangle workarea;
   int win_width;
   int win_height;
+  int scale;
 
   g_assert (GTK_IS_WINDOW (gtk_widget_get_root (GTK_WIDGET (self))));
 
-  /* :( */
+  gtk_widget_realize (GTK_WIDGET (gtk_widget_get_native (GTK_WIDGET (self))));
 
-#if 0
-  gtk_widget_realize (gtk_widget_get_toplevel (GTK_WIDGET (self)));
-
-  surface = gtk_widget_get_surface (gtk_widget_get_toplevel (GTK_WIDGET (self)));
+  surface = gtk_native_get_surface (gtk_widget_get_native (GTK_WIDGET (self)));
   g_assert_nonnull (surface);
 
+  scale = gtk_widget_get_scale_factor (GTK_WIDGET (self));
   monitor = gdk_display_get_monitor_at_surface (gdk_display_get_default (),
                                                 surface);
 
@@ -190,16 +201,19 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
     }
 
   gdk_monitor_get_workarea (monitor, &workarea);
+  g_message ("image size: %d×%d", self->img_width, self->img_height);
+
+  g_message ("Workarea: %d×%d", workarea.width, workarea.height);
 
   win_width  = MIN ((int)(workarea.width * 0.95), self->img_width);
   win_height = MIN ((int)(workarea.height * 0.95), self->img_height);
 
   if (win_width >= self->img_width)
-    g_object_set ((GObject *)self, "hscrollbar-policy", GTK_POLICY_NEVER, NULL);
+    g_object_set ((GObject *)self->scroller, "hscrollbar-policy", GTK_POLICY_NEVER, NULL);
 
   if (win_height >= self->img_height)
-    g_object_set ((GObject *)self, "vscrollbar-policy", GTK_POLICY_NEVER, NULL);
+    g_object_set ((GObject *)self->scroller, "vscrollbar-policy", GTK_POLICY_NEVER, NULL);
 
-  gtk_widget_set_size_request ((GtkWidget *)self, win_width, win_height);
-#endif
+  // TODO: Is the scale calculation here really correct?
+  gtk_widget_set_size_request ((GtkWidget *)self, win_width / scale, win_height / scale);
 }

@@ -62,8 +62,8 @@ class MediaDialog : Gtk.Window {
   private void button_released_cb (int    n_press,
                                    double x,
                                    double y) {
-    this.destroy ();
     button_gesture.set_state (Gtk.EventSequenceState.CLAIMED);
+    this.destroy ();
   }
 
   private void change_media (Cb.Media media) {

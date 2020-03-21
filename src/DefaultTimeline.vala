@@ -347,7 +347,6 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
     });
   }
 
-
   /**
    * Default implementation for loading the newest tweets
    * from the given function of the twitter api.

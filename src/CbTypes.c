@@ -148,11 +148,6 @@ cb_mini_tweet_parse (CbMiniTweet *t,
 
   t->text = cb_text_transform_raw (json_object_get_string_member (obj, "content"));
 
-
-  /*if (strstr (t->text, "#cat") != NULL)*/
-    g_message ("######### %s", json_object_get_string_member (obj, "content"));
-
-
   cb_user_identity_parse (&t->author, json_object_get_object_member (obj, "account"));
 }
 

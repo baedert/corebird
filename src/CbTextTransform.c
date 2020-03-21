@@ -296,6 +296,8 @@ cb_text_transform_raw (const char *input)
               g_string_append_c (str, '\n');
               g_string_append_c (str, '\n');
             }
+          /* Ignore all other tags */
+          /* TODO: This is a good way of finding out about links of course. Also this is all shit. */
 
           /* Skip to next one */
           goto next;

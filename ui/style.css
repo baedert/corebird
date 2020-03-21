@@ -353,7 +353,7 @@ row.tweet>box.quote>multimedia {
 
 textview.view.fancy {
   border: 1px solid alpha(grey, 0.7);
-  border-radius: 2px;
+  border-radius: 6px;
 }
 
 textview.view.fancy textview {

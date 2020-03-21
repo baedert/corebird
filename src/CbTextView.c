@@ -340,20 +340,6 @@ cb_text_view_size_allocate (GtkWidget *widget,
 }
 
 static void
-cb_text_view_snapshot (GtkWidget   *widget,
-                       GtkSnapshot *snapshot)
-{
-  gtk_snapshot_push_clip (snapshot,
-                          &GRAPHENE_RECT_INIT(
-                            0, 0,
-                            gtk_widget_get_width (widget), gtk_widget_get_height (widget)));
-
-  GTK_WIDGET_CLASS (cb_text_view_parent_class)->snapshot (widget, snapshot);
-
-  gtk_snapshot_pop (snapshot);
-}
-
-static void
 cb_text_view_finalize (GObject *object)
 {
   CbTextView *self = CB_TEXT_VIEW (object);
@@ -572,7 +558,6 @@ cb_text_view_class_init (CbTextViewClass *klass)
 
   widget_class->measure = cb_text_view_measure;
   widget_class->size_allocate = cb_text_view_size_allocate;
-  widget_class->snapshot = cb_text_view_snapshot;
   widget_class->grab_focus = cb_text_view_grab_focus;
 
   text_view_signals[SIGNAL_CHANGED] = g_signal_new ("changed",
@@ -602,6 +587,7 @@ cb_text_view_init (CbTextView *self)
   GtkEventController *controller;
 
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
+  gtk_widget_set_overflow (GTK_WIDGET (self), GTK_OVERFLOW_HIDDEN);
 
   self->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (self->scrolled_window), 80);
