@@ -159,8 +159,6 @@ class SearchPage : IPage, Gtk.Box {
     if (set_text)
       search_entry.set_text(q);
 
-    q += " -rt";
-
     this.search_query    = GLib.Uri.escape_string (q);
     this.user_page       = 1;
     this.lowest_tweet_id = int64.MAX-1;
@@ -289,12 +287,10 @@ class SearchPage : IPage, Gtk.Box {
 
     this.loading_tweets = true;
     var call = account.proxy.new_call ();
-    call.set_function ("1.1/search/tweets.json");
+    call.set_function ("api/v2/search");
     call.set_method ("GET");
+    call.add_header ("Authorization", "Bearer " + account.proxy.get_access_token ().to_string ());
     call.add_param ("q", this.search_query);
-    call.add_param ("tweet_mode", "extended");
-    call.add_param ("max_id", (lowest_tweet_id - 1).to_string ());
-    call.add_param ("count", "35");
     Cb.Utils.load_threaded_async.begin (call, cancellable, (_, res) => {
       Json.Node? root = null;
       try {
@@ -319,7 +315,8 @@ class SearchPage : IPage, Gtk.Box {
       }
 
       var now = new GLib.DateTime.now_local ();
-      var statuses = root.get_object().get_array_member("statuses");
+      var statuses = root.get_object().get_array_member ("statuses");
+      var users = root.get_object ().get_array_member ("accounts");
       if (statuses.get_length () == 0 && n_results <= 0)
         n_results = -1;
       else
@@ -340,6 +337,24 @@ class SearchPage : IPage, Gtk.Box {
         else
           entry.show ();
 
+        tweet_list.get_widget ().add (entry);
+      });
+      users.foreach_element ((array, index, node) => {
+        if (index > USER_COUNT - 1)
+          return;
+
+        var user_obj = node.get_object ();
+        var entry = new UserListEntry ();
+        string avatar_url = user_obj.get_string_member ("avatar");
+
+        entry.user_id = int64.parse (user_obj.get_string_member ("id"));
+        entry.set_screen_name ("@" + user_obj.get_string_member ("username"));
+        entry.name = user_obj.get_string_member ("display_name").strip ();
+        entry.avatar_url = avatar_url;
+        entry.verified = false;
+        entry.show_settings = false;
+        if (!collect_obj.done)
+          entry.visible = false;
         tweet_list.get_widget ().add (entry);
       });
 

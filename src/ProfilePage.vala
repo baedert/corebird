@@ -569,9 +569,10 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
   [GtkCallback]
   private void follow_button_clicked_cb () {
     var call = account.proxy.new_call();
+    call.add_header ("Authorization", "Bearer " + account.proxy.get_access_token ());
     HomeTimeline ht = (HomeTimeline) _main_window.get_page (Page.STREAM);
     if (follow_button.following) {
-      call.set_function( "1.1/friendships/destroy.json");
+      call.set_function ("api/v1/accounts/" + this.user_id.to_string () + "/unfollow");
       ht.hide_tweets_from (this.user_id, Cb.TweetState.HIDDEN_UNFOLLOWED);
       ht.hide_retweets_from (this.user_id, Cb.TweetState.HIDDEN_UNFOLLOWED);
       follower_count --;
@@ -579,8 +580,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       ((SimpleAction)actions.lookup_action ("toggle-retweets")).set_enabled (false);
       set_retweets_disabled (false);
     } else {
-      call.set_function ("1.1/friendships/create.json");
-      call.add_param ("follow", "false");
+      call.set_function ("api/v1/accounts/" + this.user_id.to_string () + "/follow");
       ht.show_tweets_from (this.user_id, Cb.TweetState.HIDDEN_UNFOLLOWED);
       if (!((SimpleAction)actions.lookup_action ("toggle-retweets")).get_state ().get_boolean ()) {
         ht.show_retweets_from (this.user_id, Cb.TweetState.HIDDEN_UNFOLLOWED);
@@ -593,7 +593,6 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     update_follower_label ();
     follow_button.sensitive = false;
     call.set_method ("POST");
-    call.add_param ("id", user_id.to_string ());
     call.invoke_async.begin (null, (obj, res) => {
       try {
         this.follow_button.following = !this.follow_button.following;
