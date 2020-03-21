@@ -8,7 +8,6 @@
   </object>
   <template class="AccountDialog" parent="GtkWindow">
     <property name="destroy-with-parent">1</property>
-    <property name="type-hint">dialog</property>
     <property name="resizable">0</property>
     <child type="titlebar">
       <object class="GtkHeaderBar">
@@ -24,7 +23,6 @@
           <object class="GtkButton" id="save_button">
             <property name="can-focus">1</property>
             <property name="label" translatable="yes">Save</property>
-            <property name="can-default">1</property>
             <signal name="clicked" handler="save_button_clicked_cb"/>
             <style>
               <class name="suggested-action"/>
