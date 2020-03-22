@@ -317,10 +317,17 @@ cb_bundle_class_init (CbBundleClass *klass)
   object_class->finalize = cb_bundle_finalize;
 }
 
+
+static void clear_gvalue (void *v)
+{
+  g_value_reset (v);
+}
+
 static void
 cb_bundle_init (CbBundle *self)
 {
   self->keys   = g_array_new (FALSE, FALSE, sizeof (int));
   self->values = g_array_new (FALSE, TRUE, sizeof (GValue));
-  g_array_set_clear_func (self->values, g_value_reset);
+
+  g_array_set_clear_func (self->values, clear_gvalue);
 }
