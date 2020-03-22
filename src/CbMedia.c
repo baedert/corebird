@@ -32,14 +32,11 @@ cb_media_finalize (GObject *object)
 {
   CbMedia *media = CB_MEDIA (object);
 
-  if (media->texture)
-    g_object_unref (media->texture);
   g_free (media->thumb_url);
   g_free (media->target_url);
   g_free (media->url);
-
-  if (media->animation)
-    g_object_unref (media->animation);
+  g_clear_object (&media->texture);
+  g_clear_object (&media->animation);
 
   G_OBJECT_CLASS (cb_media_parent_class)->finalize (object);
 }

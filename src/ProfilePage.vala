@@ -844,7 +844,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
   private void tweets_button_toggled_cb (GLib.Object source) {
     if (((Gtk.RadioButton)source).active) {
       this.balance_next_upper_change (BOTTOM);
-      user_stack.visible_child = tweet_list.get_widget ();
+      user_stack.visible_child = tweet_list;
     }
   }
   [GtkCallback]

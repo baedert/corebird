@@ -357,14 +357,15 @@ public class AccountDialog : Gtk.Window {
     if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       warning ("avatar image selector stubbed out!");
       var file = filechooser.get_file ();
+      Gdk.Texture? texture = null;
       Gdk.Pixbuf? image = null;
-      //try {
-        //image = new Gdk.Pixbuf.from_file (selected_file);
-      //} catch (GLib.Error e) {
-        //warning (e.message);
-        //content_stack.visible_child = info_box;
-        //return;
-      //}
+      try {
+        texture = Gdk.Texture.from_file (file);
+      } catch (GLib.Error e) {
+        warning (e.message);
+        content_stack.visible_child = info_box;
+        return;
+      }
 
       /* Values for banner */
       int min_width = 200;
@@ -376,9 +377,9 @@ public class AccountDialog : Gtk.Window {
         min_height = 48;
       }
 
-      if (image.get_width () >= min_width &&
-          image.get_height () >= min_height) {
-        crop_widget.set_image (image);
+      if (texture.get_width () >= min_width &&
+          texture.get_height () >= min_height) {
+        crop_widget.set_texture (texture);
         save_button.sensitive = true;
       } else {
         string error_str = "";
@@ -400,7 +401,7 @@ public class AccountDialog : Gtk.Window {
   private void avatar_clicked_cb () {
     this.get_size (out old_width, out old_height);
     this.resize (400, 400);
-    crop_widget.set_image (null);
+    crop_widget.set_texture (null);
     crop_widget.set_size_request (-1, 400);
     crop_widget.desired_aspect_ratio = 1.0;
     crop_widget.set_min_size (48);
@@ -414,7 +415,7 @@ public class AccountDialog : Gtk.Window {
     this.get_size (out old_width, out old_height);
     this.resize (700, 350);
     crop_widget.set_size_request (700, 350);
-    crop_widget.set_image (null);
+    crop_widget.set_texture (null);
     crop_widget.desired_aspect_ratio = 2.0;
     crop_widget.set_min_size (200);
     content_stack.visible_child = crop_widget;

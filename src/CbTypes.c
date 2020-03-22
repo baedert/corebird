@@ -45,7 +45,7 @@ void cb_user_identity_parse (CbUserIdentity *id,
 {
   id->id = atol (json_object_get_string_member (user_obj, "id"));
   id->screen_name = g_strdup (json_object_get_string_member (user_obj, "username"));
-  if (json_object_has_member (user_obj, "display_name") &&
+  if (usable_json_member (user_obj, "display_name") &&
       json_object_get_string_member (user_obj, "display_name")[0] != '\0')
     id->user_name = cb_utils_escape_ampersands (json_object_get_string_member (user_obj, "display_name"));
   else
@@ -155,7 +155,7 @@ static int
 json_object_get_member_size (JsonObject *obj,
                              const char *member_name)
 {
-  if (!obj || !json_object_has_member (obj, member_name))
+  if (!obj || !usable_json_member (obj, member_name))
     return 0;
 
   return (int)json_array_get_length (json_object_get_array_member (obj, member_name));
@@ -180,8 +180,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   user_mentions = json_object_get_array_member (extended_obj, "mentions");
   media_count   = json_object_get_member_size (extended_obj, "media_attachments");
 
-  if (json_object_has_member (status, "in_reply_to_id") &&
-      !json_object_get_null_member (status, "in_reply_to_id"))
+  if (usable_json_member (status, "in_reply_to_id"))
     {
       guint reply_index = 0;
       gint64 reply_to_user_id = 0;
@@ -250,7 +249,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
     }
 
   /* MEDIA */
-  if (json_object_has_member (extended_obj, "media_attachments"))
+  if (usable_json_member (extended_obj, "media_attachments"))
     {
       JsonArray *medias = json_object_get_array_member (extended_obj, "media_attachments");
 
@@ -260,8 +259,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
           char *url_str = cb_utils_escape_ampersands (json_object_get_string_member (media, "url"));
           char *text_url_str;
 
-          if (json_object_has_member (media, "text_url") &&
-              !json_object_get_null_member (media, "text_url"))
+          if (usable_json_member (media, "text_url"))
             text_url_str = cb_utils_escape_ampersands (json_object_get_string_member (media, "text_url"));
           else
             text_url_str = cb_utils_escape_ampersands (url_str);
@@ -281,14 +279,14 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
   /* entities->media and extended_entities contain exactly the same media objects,
      but extended_entities is not always present, and entities->media doesn't
      contain all the attached media, so parse both the same way... */
-  if (json_object_has_member (entities, "media"))
+  if (usable_json_member (entities, "media"))
     {
       media_arrays[n_media_arrays] = json_object_get_array_member (entities, "media");
       n_media_arrays ++;
     }
 
 
-  if (json_object_has_member (status, "extended_entities"))
+  if (usable_json_member (status, "extended_entities"))
     {
       media_arrays[n_media_arrays] = json_object_get_array_member (json_object_get_object_member (status,
                                                                                                   "extended_entities"),
@@ -315,7 +313,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
               t->medias[t->n_medias]->url = g_strdup (url);
               t->medias[t->n_medias]->target_url = g_strdup (url);
 
-              if (json_object_has_member (media_obj, "meta"))
+              if (usable_json_member (media_obj, "meta"))
                 {
                   JsonObject *meta_obj = json_object_get_object_member (media_obj, "meta");
                   JsonObject *orig_size = json_object_get_object_member (meta_obj, "original");
@@ -337,7 +335,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
               int thumb_width  = -1;
               int thumb_height = -1;
 
-              if (json_object_has_member (video_info, "small"))
+              if (usable_json_member (video_info, "small"))
                 {
                   JsonObject *small = json_object_get_object_member (video_info, "small");
 

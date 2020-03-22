@@ -18,7 +18,6 @@
 class CropWidget : Gtk.DrawingArea {
   private const int MIN_SIZE = 48;
 
-  private Gdk.Pixbuf? image;
   private Gdk.Texture? texture;
   private Gdk.Rectangle selection_rect;
   private Gdk.Rectangle image_rect;
@@ -223,11 +222,8 @@ class CropWidget : Gtk.DrawingArea {
     this.queue_draw ();
   }
 
-  public void set_image (Gdk.Pixbuf? image) {
-    this.image = image;
-    if (image != null) {
-      this.texture = Gdk.Texture.for_pixbuf (image);
-    }
+  public void set_texture (Gdk.Texture? texture) {
+    this.texture = texture;
     calculate_image_rect ();
 
     /* Place the selection rect initially, using the maximum size
@@ -250,7 +246,7 @@ class CropWidget : Gtk.DrawingArea {
 
 
   public override void snapshot (Gtk.Snapshot snapshot) {
-    if (image == null)
+    if (texture == null)
       return;
 
     int widget_width  = get_width ();
@@ -372,30 +368,30 @@ class CropWidget : Gtk.DrawingArea {
     int widget_width  = this.get_width ();
     int widget_height = this.get_height ();
 
-    if (this.image == null) {
+    if (this.texture == null) {
       return;
     }
 
     /* current_scale the image down */
-    if (image.get_width () > image.get_height ()) {
-      current_scale = (double) widget_width / image.get_width ();
+    if (texture.get_width () > texture.get_height ()) {
+      current_scale = (double) widget_width / texture.get_width ();
     } else {
-      current_scale = (double) widget_height / image.get_height ();
+      current_scale = (double) widget_height / texture.get_height ();
     }
 
-    if (image.get_width () * current_scale > widget_width)
-      current_scale = (double) widget_width / image.get_width ();
+    if (texture.get_width () * current_scale > widget_width)
+      current_scale = (double) widget_width / texture.get_width ();
 
-    if (image.get_height () * current_scale > widget_height)
-      current_scale = (double) widget_height / image.get_height ();
+    if (texture.get_height () * current_scale > widget_height)
+      current_scale = (double) widget_height / texture.get_height ();
 
     /* Cap at 1.0 */
     if (current_scale > 1.0)
       current_scale = 1.0;
 
 
-    this.image_rect.width  = (int)(this.image.get_width () * current_scale);
-    this.image_rect.height = (int)(this.image.get_height () * current_scale);
+    this.image_rect.width  = (int)(this.texture.get_width () * current_scale);
+    this.image_rect.height = (int)(this.texture.get_height () * current_scale);
     this.image_rect.x      = (widget_width - image_rect.width) / 2;
     this.image_rect.y      = (widget_height - image_rect.height) / 2;
   }
@@ -413,26 +409,27 @@ class CropWidget : Gtk.DrawingArea {
   }
 
   public Gdk.Pixbuf get_cropped_image () {
-    int absolute_x = (int)((selection_rect.x - image_rect.x) / current_scale);
-    int absolute_y = (int)((selection_rect.y - image_rect.y) / current_scale);
-    int absolute_w = (int)(selection_rect.width / current_scale);
-    int absolute_h = (int)(selection_rect.height / current_scale);
+    return null;
+    //int absolute_x = (int)((selection_rect.x - image_rect.x) / current_scale);
+    //int absolute_y = (int)((selection_rect.y - image_rect.y) / current_scale);
+    //int absolute_w = (int)(selection_rect.width / current_scale);
+    //int absolute_h = (int)(selection_rect.height / current_scale);
 
-    Gdk.Pixbuf final_image = new Gdk.Pixbuf (Gdk.Colorspace.RGB,
-                                             this.image.get_has_alpha (),
-                                             8,
-                                             absolute_w,
-                                             absolute_h);
+    //Gdk.Pixbuf final_image = new Gdk.Pixbuf (Gdk.Colorspace.RGB,
+                                             //this.texture.get_has_alpha (),
+                                             //8,
+                                             //absolute_w,
+                                             //absolute_h);
 
-    this.image.copy_area (absolute_x,
-                          absolute_y,
-                          absolute_w,
-                          absolute_h,
-                          final_image,
-                          0,
-                          0);
+    //this.texture.copy_area (absolute_x,
+                          //absolute_y,
+                          //absolute_w,
+                          //absolute_h,
+                          //final_image,
+                          //0,
+                          //0);
 
-    return final_image;
+    //return final_image;
   }
 
   public void set_min_size (int min_width) {

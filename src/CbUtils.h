@@ -25,6 +25,8 @@
 #include "rest/rest-proxy-call.h"
 #include "rest/rest-proxy.h"
 
+#define usable_json_member(obj, val_name) (json_object_has_member (obj, val_name) && \
+                                           !json_object_get_null_member (obj, val_name))
 
 
 typedef GtkWidget * (*CbUtilsCreateWidgetFunc) (gpointer  data, gpointer  user_data);
