@@ -63,6 +63,19 @@ cb_scroll_widget_buildable_add_child (GtkBuildable  *buildable,
 }
 
 
+static void
+adjustment_value_changed_cb (GObject    *source,
+                             GParamSpec *pspec,
+                             gpointer    user_data)
+{
+  CbScrollWidget *self = user_data;
+
+  if (cb_scroll_widget_scrolled_down (self))
+    g_signal_emit (self, scroll_widget_signals[SIGNAL_SCROLLED_TO_END], 0);
+
+  if (cb_scroll_widget_scrolled_up (self))
+    g_signal_emit (self, scroll_widget_signals[SIGNAL_SCROLLED_TO_START], 0);
+}
 
 static void
 cb_scroll_widget_buildable_init (GtkBuildableIface *iface)
@@ -111,9 +124,14 @@ static void
 cb_scroll_widget_init (CbScrollWidget *self)
 {
   CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
+  GtkAdjustment *vadjustment;
 
   priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_set_parent (priv->scrolled_window, GTK_WIDGET (self));
+
+  /* TODO: Do we also need to connect to notify::upper + notify::page-size? */
+  vadjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (priv->scrolled_window));
+  g_signal_connect (vadjustment, "notify::value", G_CALLBACK (adjustment_value_changed_cb), self);
 }
 
 GtkWidget *
