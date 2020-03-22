@@ -37,7 +37,8 @@ class UserListDialog : Gtk.Dialog {
                          Account       account,
                          int64         user_id) {
     GLib.Object (use_header_bar: Gtk.Settings.get_default ().gtk_dialogs_use_header ? 1 : 0);
-    IPage p; // XXX This is just here to fix a linking error. Remove later.
+    IPage? p = null; // XXX This is just here to fix a linking error. Remove later.
+    assert(p == null);
     this.title = _("Add to or Remove User From List");
     this.main_window = parent;
     this.user_id = user_id;
