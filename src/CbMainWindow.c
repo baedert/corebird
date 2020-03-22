@@ -616,7 +616,7 @@ cb_main_window_init (CbMainWindow *self)
   gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (thumb_button_gesture), 0);
   gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (thumb_button_gesture), GTK_PHASE_CAPTURE);
   g_signal_connect (thumb_button_gesture, "pressed", G_CALLBACK (thumb_button_gesture_pressed_cb), self);
-  /*gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)thumb_button_gesture);*/
+  gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)thumb_button_gesture);
 
   cb = COREBIRD (g_application_get_default ());
   g_signal_connect (cb, "account-added", G_CALLBACK (app_account_added_cb), self);
