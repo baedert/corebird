@@ -27,7 +27,7 @@ public class Twitter : GLib.Object {
   }
 
   [Signal (detailed = true)]
-  private signal void avatar_downloaded (Gdk.Texture avatar);
+  private signal void avatar_downloaded (Gdk.Paintable avatar);
 
   public const int MAX_BYTES_PER_IMAGE    = 1024 * 1024 * 3;
   public const int short_url_length       = 23;
@@ -46,11 +46,11 @@ public class Twitter : GLib.Object {
     this.avatar_cache = new Cb.AvatarCache ();
   }
 
-  public void ref_avatar (Gdk.Texture texture) {
+  public void ref_avatar (Gdk.Paintable texture) {
     this.avatar_cache.increase_refcount_for_texture (texture);
   }
 
-  public void unref_avatar (Gdk.Texture texture) {
+  public void unref_avatar (Gdk.Paintable texture) {
     this.avatar_cache.decrease_refcount_for_texture (texture);
   }
 
@@ -58,9 +58,9 @@ public class Twitter : GLib.Object {
     return (get_cached_avatar (user_id) != Twitter.no_avatar);
   }
 
-  public Gdk.Texture get_cached_avatar (int64 user_id) {
+  public Gdk.Paintable get_cached_avatar (int64 user_id) {
     bool found;
-    Gdk.Texture? texture = this.avatar_cache.get_texture_for_id (user_id, out found);
+    Gdk.Paintable? texture = this.avatar_cache.get_texture_for_id (user_id, out found);
 
     return texture ?? Twitter.no_avatar;
   }
@@ -71,10 +71,10 @@ public class Twitter : GLib.Object {
      This will first query the account details of the given account,
      then use the avatar_url to download the avatar and insert it
      into the avatar cache */
-  public async Gdk.Texture? load_avatar_for_user_id (Account account,
-                                                     int64   user_id,
-                                                     int     size) {
-    Gdk.Texture? s;
+  public async Gdk.Paintable? load_avatar_for_user_id (Account account,
+                                                       int64   user_id,
+                                                       int     size) {
+    Gdk.Paintable? s;
     bool found = false;
 
     s = avatar_cache.get_texture_for_id (user_id, out found);
@@ -148,13 +148,13 @@ public class Twitter : GLib.Object {
     dest_widget.texture = yield this.get_texture (user_id, url, size, force_download);
   }
 
-  private async Gdk.Texture? get_texture (int64  user_id,
-                                          string url,
-                                          int    size = 48,
-                                          bool   force_download = false) {
+  private async Gdk.Paintable? get_texture (int64  user_id,
+                                            string url,
+                                            int    size = 48,
+                                            bool   force_download = false) {
     assert (user_id > 0);
     bool has_key = false;
-    Gdk.Texture? a = this.avatar_cache.get_texture_for_id (user_id, out has_key);
+    Gdk.Paintable? a = this.avatar_cache.get_texture_for_id (user_id, out has_key);
 
     bool new_url = a == Twitter.no_avatar &&
                         url != this.avatar_cache.get_url_for_id (user_id);
@@ -183,7 +183,7 @@ public class Twitter : GLib.Object {
         warning ("%s for %s", e.message, url);
       }
 
-      Gdk.Texture s;
+      Gdk.Paintable s;
       // E.g. in the 404 case...
       if (avatar == null)
         s = Twitter.no_avatar;

@@ -43,7 +43,7 @@ class DMThreadEntry : Gtk.ListBoxRow {
       last_message_label.label = value;
     }
   }
-  public Gdk.Texture? avatar {
+  public Gdk.Paintable? avatar {
     set { avatar_image.texture = value;}
   }
 

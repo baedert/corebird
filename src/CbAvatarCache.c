@@ -26,16 +26,14 @@ struct _CacheEntry
   gint64 user_id;
   int refcount;
   char *url;
-  GdkTexture *texture;
+  GdkPaintable *texture;
 };
 
 static void
 cache_entry_destroy (CacheEntry *entry)
 {
   g_free (entry->url);
-
-  if (entry->texture)
-    g_object_unref (entry->texture);
+  g_clear_object (&entry->texture);
 }
 
 static inline CacheEntry *
@@ -64,7 +62,7 @@ cb_avatar_cache_new (void)
 void
 cb_avatar_cache_add (CbAvatarCache   *self,
                      gint64           user_id,
-                     GdkTexture      *texture,
+                     GdkPaintable    *texture,
                      const char      *url)
 {
   CacheEntry *entry = NULL;
@@ -97,7 +95,7 @@ cb_avatar_cache_add (CbAvatarCache   *self,
 void
 cb_avatar_cache_set_avatar (CbAvatarCache   *self,
                             gint64           user_id,
-                            GdkTexture      *texture,
+                            GdkPaintable    *texture,
                             const char      *url)
 {
   CacheEntry *entry = NULL;
@@ -115,7 +113,7 @@ cb_avatar_cache_set_avatar (CbAvatarCache   *self,
   entry->url = g_strdup (url);
 }
 
-GdkTexture *
+GdkPaintable *
 cb_avatar_cache_get_texture_for_id (CbAvatarCache *self,
                                     gint64         user_id,
                                     gboolean      *out_found)
@@ -162,7 +160,7 @@ cb_avatar_cache_set_url (CbAvatarCache *self,
 
 void
 cb_avatar_cache_decrease_refcount_for_texture (CbAvatarCache   *self,
-                                               GdkTexture      *texture)
+                                               GdkPaintable    *texture)
 {
   guint i;
   guint index = (guint) -1;
@@ -200,7 +198,7 @@ cb_avatar_cache_decrease_refcount_for_texture (CbAvatarCache   *self,
 
 void
 cb_avatar_cache_increase_refcount_for_texture (CbAvatarCache   *self,
-                                               GdkTexture      *texture)
+                                               GdkPaintable    *texture)
 {
   guint i;
 

@@ -29,8 +29,8 @@ public class AvatarWidget : Gtk.Widget {
       this.queue_draw ();
     }
   }
-  private Gdk.Texture _texture;
-  public Gdk.Texture texture {
+  private Gdk.Paintable _texture;
+  public Gdk.Paintable texture {
     get { return _texture; }
     set {
       if (this._texture == value) {
@@ -187,10 +187,10 @@ public class AvatarContainer : Gtk.Widget {
     }
   }
 
-  public Gdk.Texture texture;
+  public Gdk.Paintable texture;
 
 
-  static Gdk.Texture[] verified_textures;
+  static Gdk.Paintable[] verified_textures;
   const int[] VERIFIED_SIZES = {12, 25};
   static construct {
     try {
@@ -238,7 +238,7 @@ public class AvatarContainer : Gtk.Widget {
       snapshot.push_rounded_clip (round_clip);
     }
 
-    snapshot.append_texture (this.texture, bounds);
+    this.texture.snapshot (snapshot, width, height);
 
     if (_round) {
       snapshot.pop ();
@@ -262,7 +262,10 @@ public class AvatarContainer : Gtk.Widget {
       verified_bounds.size.width = VERIFIED_SIZES[index] * verified_scale;
       verified_bounds.size.height = VERIFIED_SIZES[index] * verified_scale;
 
-      snapshot.append_texture (verified_texture, verified_bounds);
+      snapshot.save ();
+      snapshot.translate (verified_bounds.origin);
+      verified_texture.snapshot (snapshot, verified_bounds.size.width, verified_bounds.size.height);
+      snapshot.restore ();
     }
   }
 

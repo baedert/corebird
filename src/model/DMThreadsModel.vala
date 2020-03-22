@@ -22,7 +22,7 @@ public class DMThread : GLib.Object {
   public int unread_count = 0;
   public string? notification_id = null;
 
-  public Gdk.Texture? avatar_texture = null;
+  public Gdk.Paintable? avatar_texture = null;
 
   public async void load_avatar (Account account, int scale_factor) {
     assert (this.user.id != 0);

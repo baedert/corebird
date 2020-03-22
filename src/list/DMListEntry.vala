@@ -32,7 +32,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     set { ((Gtk.Label)name_button.get_child ()).set_label (value.replace ("&", "&amp;")); }
   }
 
-  public Gdk.Texture avatar {
+  public Gdk.Paintable avatar {
     set { avatar_image.texture = value; }
   }
 

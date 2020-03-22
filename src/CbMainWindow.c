@@ -791,7 +791,7 @@ cb_main_window_change_account (CbMainWindow *self,
       g_free (page_title);
 
       avatar_widget_set_texture (AVATAR_WIDGET (self->avatar_widget),
-                                 account_get_avatar_small (account));
+                                 GDK_PAINTABLE (account_get_avatar_small (account)));
       g_signal_connect (account, "info-changed", G_CALLBACK (account_info_changed_cb), self);
       title = g_strdup_printf ("Corebird - @%s", account->screen_name);
       gtk_window_set_title (GTK_WINDOW (self), title);

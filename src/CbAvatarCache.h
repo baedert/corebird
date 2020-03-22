@@ -36,18 +36,18 @@ G_DECLARE_FINAL_TYPE (CbAvatarCache, cb_avatar_cache, CB, AVATAR_CACHE, GObject)
 
 CbAvatarCache *   cb_avatar_cache_new                           (void);
 void              cb_avatar_cache_decrease_refcount_for_texture (CbAvatarCache   *self,
-                                                                 GdkTexture      *texture);
+                                                                 GdkPaintable    *paintable);
 void              cb_avatar_cache_increase_refcount_for_texture (CbAvatarCache   *self,
-                                                                 GdkTexture      *texture);
+                                                                 GdkPaintable    *paintable);
 void              cb_avatar_cache_add                           (CbAvatarCache   *self,
                                                                  gint64           user_id,
-                                                                 GdkTexture      *texture,
+                                                                 GdkPaintable    *paintable,
                                                                  const char      *url);
 void              cb_avatar_cache_set_avatar                    (CbAvatarCache   *self,
                                                                  gint64           user_id,
-                                                                 GdkTexture      *texture,
+                                                                 GdkPaintable    *paintable,
                                                                  const char      *url);
-GdkTexture *      cb_avatar_cache_get_texture_for_id            (CbAvatarCache *self,
+GdkPaintable *    cb_avatar_cache_get_texture_for_id            (CbAvatarCache *self,
                                                                  gint64         user_id,
                                                                  gboolean      *out_found);
 const char *      cb_avatar_cache_get_url_for_id                (CbAvatarCache *self,

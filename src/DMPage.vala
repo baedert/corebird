@@ -200,7 +200,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
                                                     entry.user_id,
                                                     48 * this.get_scale_factor (),
                                                     (obj, res) => {
-        Gdk.Texture? s = Twitter.get ().load_avatar_for_user_id.end (res);
+        Gdk.Paintable? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
       });
       messages_list.add (entry);
@@ -266,7 +266,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
                                                     entry.user_id,
                                                     48 * this.get_scale_factor (),
                                                     (obj, res) => {
-        Gdk.Texture? s = Twitter.get ().load_avatar_for_user_id.end (res);
+        Gdk.Paintable? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
       });
       messages_list.add (entry);

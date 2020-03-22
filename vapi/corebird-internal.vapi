@@ -217,12 +217,12 @@ namespace Cb {
   [CCode (cprefix = "cb_avatar_cache_", cheader_filename = "CbAvatarCache.h")]
   class AvatarCache : GLib.Object {
     public AvatarCache ();
-    public void add (int64 user_id, Gdk.Texture? t, string? avatar_url);
-    public void increase_refcount_for_texture (Gdk.Texture t);
-    public void decrease_refcount_for_texture (Gdk.Texture t);
+    public void add (int64 user_id, Gdk.Paintable? t, string? avatar_url);
+    public void increase_refcount_for_texture (Gdk.Paintable t);
+    public void decrease_refcount_for_texture (Gdk.Paintable t);
     public void set_url (int64 user_id, string url);
-    public void set_avatar (int64 user_id, Gdk.Texture? t, string url);
-    public unowned Gdk.Texture? get_texture_for_id (int64 user_id, out bool found);
+    public void set_avatar (int64 user_id, Gdk.Paintable? t, string url);
+    public unowned Gdk.Paintable? get_texture_for_id (int64 user_id, out bool found);
     public unowned string? get_url_for_id (int64 user_id);
     public uint get_n_entries ();
   }
@@ -439,7 +439,7 @@ namespace Cb {
     public void toggle_mode ();
     public bool shows_actions ();
     public void set_read_only ();
-    public void set_avatar (Gdk.Texture? s);
+    public void set_avatar (Gdk.Paintable? s);
   }
 
   [CCode (cprefix = "CbTextView_", lower_case_cprefix = "cb_text_view_", cheader_filename =
