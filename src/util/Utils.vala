@@ -378,8 +378,9 @@ namespace Utils {
 
   public void show_about_dialog (Gtk.Window? parent) {
     var dialog = new Gtk.AboutDialog ();
-    dialog.set_title(_("About Corebird"));
-    // TODO: Re-add other stuff
+    dialog.version = "x.y";
+    dialog.website = "https://corebird.baedert.org";
+    dialog.logo_icon_name = "corebird";
 
     dialog.modal = true;
     dialog.set_transient_for (parent);
