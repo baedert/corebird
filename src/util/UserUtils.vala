@@ -29,20 +29,16 @@ struct Cursor {
 
 
 namespace UserUtils {
+  // TODO: Remove screen_name parameter, won't work.
   async uint load_friendship (Account account,
                               int64   user_id,
                               string  screen_name)
   {
     var call = account.proxy.new_call ();
-    call.set_function ("1.1/friendships/show.json");
+    call.add_header ("Authorization", "Bearer " + account.proxy.get_access_token ());
+    call.set_function ("api/v1/accounts/relationships");
     call.set_method ("GET");
-    call.add_param ("source_id", account.id.to_string ());
-
-    if (user_id != 0)
-      call.add_param ("target_id", user_id.to_string ());
-    else
-      call.add_param ("target_screen_name", screen_name);
-
+    call.add_param ("id[]", user_id.to_string ());
 
     Json.Node? root = null;
     try {
@@ -52,26 +48,27 @@ namespace UserUtils {
       return 0;
     }
 
-    var relationship = root.get_object ().get_object_member ("relationship");
-    var target = relationship.get_object_member ("target");
-    var source = relationship.get_object_member ("source");
+    var relationships = root.get_array ();
+    if (relationships.get_length () == 0)
+      return 0;
+
+    var relationship = relationships.get_element (0).get_object ();
 
     uint friendship = 0;
 
-    if (target.get_boolean_member ("following"))
-      friendship |= FRIENDSHIP_FOLLOWED_BY;
-
-    if (target.get_boolean_member ("followed_by"))
+    if (relationship.get_boolean_member ("following"))
       friendship |= FRIENDSHIP_FOLLOWING;
 
-    if (source.get_boolean_member ("want_retweets"))
+    if (relationship.get_boolean_member ("followed_by"))
+      friendship |= FRIENDSHIP_FOLLOWED_BY;
+
+    if (relationship.get_boolean_member ("showing_reblogs"))
       friendship |= FRIENDSHIP_WANT_RETWEETS;
 
-    if (source.get_boolean_member ("blocking"))
+    if (relationship.get_boolean_member ("blocking"))
       friendship |= FRIENDSHIP_BLOCKING;
 
-    if (source.get_boolean_member ("can_dm"))
-      friendship |= FRIENDSHIP_CAN_DM;
+    // TODO: CAN_DM not checked here. Remove.
 
     return friendship;
   }

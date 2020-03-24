@@ -193,6 +193,8 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     set_retweets_disabled ((fr & FRIENDSHIP_FOLLOWING) > 0 &&
                            (fr & FRIENDSHIP_WANT_RETWEETS) == 0);
 
+    this.follow_button.following = (fr & FRIENDSHIP_FOLLOWING) > 0;
+
     if ((fr & FRIENDSHIP_CAN_DM) == 0)
       ((SimpleAction)actions.lookup_action ("write-dm")).set_enabled (false);
 
