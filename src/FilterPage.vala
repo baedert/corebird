@@ -25,7 +25,7 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     }
   }
   public unowned Account account;
-  private BadgeRadioButton radio_button;
+  private Cb.BadgeRadioButton radio_button;
   [GtkChild]
   private Gtk.ListBox filter_list;
   [GtkChild]
@@ -314,10 +314,10 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
 
   public void on_leave () {}
   public void create_radio_button (Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton(group, "corebird-filter-symbolic", _("Filters"));
+    radio_button = new Cb.BadgeRadioButton(group, "corebird-filter-symbolic", _("Filters"));
   }
 
-  public BadgeRadioButton? get_radio_button() { return radio_button; }
+  public Cb.BadgeRadioButton? get_radio_button() { return radio_button; }
 
   public string get_title () {
     return _("Filters");

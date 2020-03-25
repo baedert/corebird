@@ -29,7 +29,6 @@ struct _CbScrollWidgetClass
 };
 
 
-GType           cb_scroll_widget_get_type                  (void) G_GNUC_CONST;
 GtkWidget *     cb_scroll_widget_new                       (void);
 
 void            cb_scroll_widget_set_policy                (CbScrollWidget *self,

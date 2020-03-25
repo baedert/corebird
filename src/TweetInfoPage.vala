@@ -634,7 +634,7 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
   }
 
   public void create_radio_button (Gtk.RadioButton? group) {}
-  public BadgeRadioButton? get_radio_button () {
+  public Cb.BadgeRadioButton? get_radio_button () {
     return null;
   }
 

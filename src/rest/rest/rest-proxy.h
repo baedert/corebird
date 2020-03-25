@@ -148,7 +148,6 @@ typedef enum {
 
 GQuark rest_proxy_error_quark (void);
 
-GType           rest_proxy_get_type         (void);
 RestProxy *     rest_proxy_new              (const char         *url_format,
                                              gboolean            binding_required);
 void            rest_proxy_add_soup_feature (RestProxy          *proxy,

@@ -351,7 +351,7 @@ cb_media_downloader_load_threaded (CbMediaDownloader *downloader,
   g_object_unref (msg);
 }
 
-void
+static void
 load_in_thread (GTask        *task,
                 gpointer      source_object,
                 gpointer      task_data,

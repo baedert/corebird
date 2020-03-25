@@ -36,7 +36,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
   }
   public unowned Account account;
   public int id                             { get; set; }
-  private BadgeRadioButton radio_button;
+  private Cb.BadgeRadioButton radio_button;
   private StartConversationEntry start_conversation_entry;
   private Gtk.ListBox thread_list;
   private Gtk.ListBox top_list;
@@ -241,10 +241,10 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
   }
 
   public void create_radio_button(Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton(group, "corebird-dms-symbolic", _("Direct Messages"));
+    radio_button = new Cb.BadgeRadioButton(group, "corebird-dms-symbolic", _("Direct Messages"));
   }
 
-  public BadgeRadioButton? get_radio_button() {
+  public Cb.BadgeRadioButton? get_radio_button() {
     return radio_button;
   }
 

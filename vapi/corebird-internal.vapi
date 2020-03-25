@@ -544,4 +544,13 @@ namespace Cb {
     public unowned Gtk.Adjustment get_vadjustment ();
     public void add (Gtk.Widget child);
   }
+  [CCode (cprefix = "CbBadgeRadioButton_", lower_case_cprefix = "cb_badge_radio_button_", cheader_filename =
+          "CbBadgeRadioButton.h")]
+  public class BadgeRadioButton : Gtk.Widget {
+    public bool active { get; set; }
+    public bool show_badge { get; set; }
+    [CCode (has_construct_function = false)]
+    public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text = "");
+    public unowned Gtk.RadioButton get_button ();
+  }
 }

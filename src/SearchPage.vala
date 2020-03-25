@@ -44,7 +44,7 @@ class SearchPage : IPage, Gtk.Box {
   private Gtk.Label tweets_header;
   [GtkChild]
   private Cb.ScrollWidget scroll_widget;
-  private BadgeRadioButton radio_button;
+  private Cb.BadgeRadioButton radio_button;
   private GLib.Cancellable? cancellable = null;
   private LoadMoreEntry load_more_entry = new LoadMoreEntry ();
   private string search_query;
@@ -382,13 +382,12 @@ class SearchPage : IPage, Gtk.Box {
   }
 
   public void create_radio_button (Gtk.RadioButton? group){
-    radio_button = new BadgeRadioButton (group, "corebird-edit-find-symbolic", _("Search"));
+    radio_button = new Cb.BadgeRadioButton (group, "corebird-edit-find-symbolic", _("Search"));
   }
 
-  public BadgeRadioButton? get_radio_button() {
+  public Cb.BadgeRadioButton? get_radio_button() {
     return radio_button;
   }
-
 
   public string get_title () {
     return _("Search");

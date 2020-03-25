@@ -688,7 +688,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     return "@" + screen_name;
   }
 
-  public BadgeRadioButton? get_radio_button(){
+  public Cb.BadgeRadioButton? get_radio_button(){
     return null;
   }
 

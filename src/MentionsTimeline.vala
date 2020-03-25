@@ -110,6 +110,6 @@ class MentionsTimeline : Cb.MessageReceiver, DefaultTimeline {
   }
 
   public override void create_radio_button (Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton (group, "corebird-mentions-symbolic", _("Mentions"));
+    radio_button = new Cb.BadgeRadioButton (group, "corebird-mentions-symbolic", _("Mentions"));
   }
 }

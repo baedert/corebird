@@ -370,7 +370,7 @@ cb_mini_tweet_parse_entities (CbMiniTweet *t,
 
   if (t->n_entities > 0)
     {
-      guint i, k;
+      guint k;
       /* Sort entities. */
       for (i = 0; i < t->n_entities; i ++)
         for (k = 0; k < t->n_entities; k++)

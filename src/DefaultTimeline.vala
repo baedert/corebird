@@ -43,12 +43,20 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
   public Cb.TweetListBox tweet_list = new Cb.TweetListBox ();
 #endif
   public unowned Account account;
-  protected BadgeRadioButton radio_button;
+  protected Cb.BadgeRadioButton radio_button;
   protected uint tweet_remove_timeout = 0;
   protected abstract string function     { get;      }
   protected bool loading = false;
   protected Gtk.Widget? last_focus_widget = null;
   private double last_value = 0.0;
+
+
+  public override GLib.Menu? get_menu () {
+    var menu = new GLib.Menu ();
+
+    return menu;
+  }
+
 
 
   protected DefaultTimeline (int id) {
@@ -174,7 +182,7 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
 
   public virtual void create_radio_button(Gtk.RadioButton? group){}
 
-  public BadgeRadioButton? get_radio_button() {
+  public Cb.BadgeRadioButton? get_radio_button() {
     return radio_button;
   }
 

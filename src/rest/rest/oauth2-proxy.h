@@ -41,8 +41,6 @@ struct _OAuth2ProxyClass
 };
 
 
-GType oauth2_proxy_get_type (void);
-
 RestProxy *   oauth2_proxy_new (const char  *client_id,
                                 const char  *auth_endpoint,
                                 const gchar *url_format,

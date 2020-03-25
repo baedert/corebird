@@ -110,7 +110,6 @@ corebird_lib_sources = files([
   'src/widgets/AccountCreateWidget.vala',
   'src/widgets/AvatarBannerWidget.vala',
   'src/widgets/AvatarWidget.vala',
-  'src/widgets/BadgeRadioButton.vala',
   'src/widgets/CropWidget.vala',
   'src/widgets/DMPlaceholderBox.vala',
   'src/widgets/DoubleTapButton.vala',
@@ -168,6 +167,7 @@ corebird_lib_sources = files([
   'src/CbMaxSizeContainer.c',
   'src/CbComposeImages.c',
   'src/CbScrollWidget.c',
+  'src/CbBadgeRadioButton.c',
 
   # Rest sources
   'src/rest/rest/rest-param.c',
@@ -216,6 +216,56 @@ if enable_listbox
   add_project_arguments('-D', 'EXPERIMENTAL_LISTBOX', language: 'vala')
 endif
 
+
+test_cflags = [
+  '-fno-strict-aliasing',
+  '-Wno-typedef-redefinition',
+  '-Wcast-align',
+  '-Wduplicated-branches',
+  '-Wduplicated-cond',
+  '-Wformat=2',
+  '-Wformat-nonliteral',
+  '-Wformat-security',
+  '-Wignored-qualifiers',
+  '-Wimplicit-function-declaration',
+  '-Wlogical-op',
+  '-Wmisleading-indentation',
+  '-Wmissing-format-attribute',
+  '-Wmissing-include-dirs',
+  '-Wmissing-noreturn',
+  '-Wnested-externs',
+  '-Wnull-dereference',
+  '-Wold-style-definition',
+  '-Wpointer-arith',
+  '-Wshadow',
+  '-Wstrict-prototypes',
+  '-Wswitch-default',
+  '-Wswitch-enum',
+  '-Wundef',
+  '-Wuninitialized',
+  '-Wunused',
+  '-Werror=address',
+  '-Werror=array-bounds',
+  '-Werror=empty-body',
+  '-Werror=implicit',
+  '-Werror=implicit-fallthrough',
+  '-Werror=init-self',
+  '-Werror=int-to-pointer-cast',
+  '-Werror=main',
+  '-Werror=missing-braces',
+  '-Werror=missing-declarations',
+  '-Werror=missing-prototypes',
+  '-Werror=nonnull',
+  '-Werror=pointer-to-int-cast',
+  '-Werror=redundant-decls',
+  '-Werror=return-type',
+  '-Werror=sequence-point',
+  '-Werror=trigraphs',
+  '-Werror=vla',
+  '-Werror=write-strings',
+]
+common_cflags = meson.get_compiler('c').get_supported_arguments(test_cflags)
+
 # library (for unit tests)
 cb_lib = static_library(
   'corebird',
@@ -229,9 +279,7 @@ cb_lib = static_library(
     '--gresources=' + meson.source_root() + '/corebird.gresource.xml',
     '--disable-since-check'
   ],
-  c_args: [
-    '-Werror=implicit-function-declaration'
-  ]
+  c_args: common_cflags,
 )
 cb_dep = declare_dependency(
   link_with: cb_lib,

@@ -33,7 +33,6 @@ struct _CbComposeImages
 #define CB_TYPE_COMPOSE_IMAGES cb_compose_images_get_type ()
 G_DECLARE_FINAL_TYPE (CbComposeImages, cb_compose_images, CB, COMPOSE_IMAGES, GtkWidget);
 
-GType     cb_compose_images_get_type              (void) G_GNUC_CONST;
 void      cb_compose_images_load_image            (CbComposeImages *self,
                                                    const char      *image_path);
 void      cb_compose_images_set_image_progress    (CbComposeImages *self,

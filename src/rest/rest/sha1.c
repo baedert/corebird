@@ -39,7 +39,7 @@ hmac_sha1 (const char *key, const char *message)
 {
   GHmac *hmac;
   gsize digest_length = SHA1_LENGTH;
-  guchar digest[digest_length];
+  guchar digest[SHA1_LENGTH];
 
   hmac = g_hmac_new (G_CHECKSUM_SHA1, (guchar *)key, strlen (key));
   g_hmac_update (hmac, (guchar *)message, -1);

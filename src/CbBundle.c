@@ -45,16 +45,6 @@ find_value (CbBundle *self,
   return NULL;
 }
 
-guint
-cb_bundle_get_size (CbBundle *self)
-{
-  g_return_val_if_fail (CB_IS_BUNDLE (self), 0);
-
-  g_assert (self->keys->len == self->values->len);
-
-  return self->keys->len;
-}
-
 void
 cb_bundle_put_string (CbBundle   *self,
                       int         key,

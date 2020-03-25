@@ -20,6 +20,11 @@
 struct _CbScrollWidgetPrivate
 {
   GtkWidget *scrolled_window;
+
+  gint64 start_time;
+  gint64 end_time;
+  double transition_diff;
+  double transition_start_value;
 };
 typedef struct _CbScrollWidgetPrivate CbScrollWidgetPrivate;
 
@@ -85,6 +90,17 @@ cb_scroll_widget_buildable_init (GtkBuildableIface *iface)
 }
 
 static void
+cb_scroll_widget_dispose (GObject *object)
+{
+  CbScrollWidget *self = CB_SCROLL_WIDGET (object);
+  CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
+
+  g_clear_pointer (&priv->scrolled_window, gtk_widget_unparent);
+
+  G_OBJECT_CLASS (cb_scroll_widget_parent_class)->dispose (object);
+}
+
+static void
 cb_scroll_widget_finalize (GObject *object)
 {
   CbScrollWidget *self = CB_SCROLL_WIDGET (object);
@@ -99,6 +115,7 @@ cb_scroll_widget_class_init (CbScrollWidgetClass *klass)
   GObjectClass *object_class   = G_OBJECT_CLASS (klass);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (klass);
 
+  object_class->dispose = cb_scroll_widget_dispose;
   object_class->finalize = cb_scroll_widget_finalize;
 
   scroll_widget_signals[SIGNAL_SCROLLED_TO_START] =
@@ -192,12 +209,40 @@ cb_scroll_widget_scroll_down_next (CbScrollWidget *self,
 {
   CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
 }
+
 void
 cb_scroll_widget_scroll_up_next (CbScrollWidget *self,
                                  gboolean        animate,
                                  gboolean        force_start)
 {
   CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
+  GtkAdjustment *adjustment = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (priv->scrolled_window));
+  GtkSettings *settings = gtk_widget_get_settings (GTK_WIDGET (self));
+  GdkFrameClock *frame_clock = gtk_widget_get_frame_clock (GTK_WIDGET (self));
+  gboolean animations_enabled;
+
+  if (!gtk_widget_get_mapped (GTK_WIDGET (self)))
+    goto skip;
+
+  g_object_get (settings, "gtk-enable-animations", &animations_enabled, NULL);
+
+  if (force_start)
+    {
+      if (animations_enabled && animate)
+        {
+        }
+      else
+        {
+          goto skip;
+        }
+    }
+  else
+    {
+    }
+
+  return;
+skip:
+  gtk_adjustment_set_value (adjustment, 0);
 }
 
 void

@@ -29,12 +29,6 @@
 
 G_DEFINE_TYPE_WITH_PRIVATE (OAuth2Proxy, oauth2_proxy, REST_TYPE_PROXY)
 
-GQuark
-oauth2_proxy_error_quark (void)
-{
-    return g_quark_from_static_string ("rest-oauth2-proxy");
-}
-
 #define EXTRA_CHARS_ENCODE "!$&'()*+,;=@"
 
 enum {

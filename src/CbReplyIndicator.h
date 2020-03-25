@@ -32,7 +32,6 @@ struct _CbReplyIndicator
 #define CB_TYPE_REPLY_INDICATOR cb_reply_indicator_get_type ()
 G_DECLARE_FINAL_TYPE (CbReplyIndicator, cb_reply_indicator, CB, REPLY_INDICATOR, GtkWidget);
 
-GType     cb_reply_indicator_get_type              (void) G_GNUC_CONST;
 void      cb_reply_indicator_set_replies_available (CbReplyIndicator *self,
                                                     gboolean          replies_available);
 gboolean  cb_reply_indicator_get_replies_available (CbReplyIndicator *self);

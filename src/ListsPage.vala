@@ -21,7 +21,7 @@ class ListsPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
 
   public const int MODE_DELETE = 1;
 
-  private BadgeRadioButton radio_button;
+  private Cb.BadgeRadioButton radio_button;
   public int unread_count                   { get; set; }
   private unowned Cb.MainWindow _main_window;
   public unowned Cb.MainWindow main_window {
@@ -123,15 +123,14 @@ class ListsPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
 
 
   public void create_radio_button (Gtk.RadioButton? group) {
-    radio_button = new BadgeRadioButton (group, "view-list-symbolic", _("Lists"));
+    radio_button = new Cb.BadgeRadioButton (group, "view-list-symbolic", _("Lists"));
   }
-
 
   public string get_title () {
     return _("Lists");
   }
 
-  public BadgeRadioButton? get_radio_button () {
+  public Cb.BadgeRadioButton? get_radio_button () {
     return radio_button;
   }
 
