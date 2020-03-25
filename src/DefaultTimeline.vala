@@ -57,8 +57,6 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
     return menu;
   }
 
-
-
   protected DefaultTimeline (int id) {
     this.id = id;
     this.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);

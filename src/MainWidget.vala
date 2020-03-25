@@ -78,22 +78,18 @@ public class MainWidget : Gtk.Box {
 
       page.create_radio_button (dummy_button);
       stack.add (page);
-      if (page.get_radio_button () != null) {
-        top_box.add (page.get_radio_button ());
-        page.get_radio_button ().get_button ().clicked.connect (() => {
+      var page_button = page.get_radio_button ();
+      if (page_button != null) {
+        top_box.add (page_button);
+        page_button.get_button ().clicked.connect (() => {
           if (page.get_radio_button ().active && !page_switch_lock) {
             switch_page (page.id);
           }
         });
-      }
 
       var menu = page.get_menu ();
-      if (menu != null) {
-        var controller = new Gtk.GestureClick ();
-
 
       }
-
     }
 
     Settings.get ().bind ("sidebar-visible", this.topbar_revealer, "reveal-child",
