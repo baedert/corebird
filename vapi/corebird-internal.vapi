@@ -552,5 +552,6 @@ namespace Cb {
     [CCode (has_construct_function = false)]
     public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text = "");
     public unowned Gtk.RadioButton get_button ();
+    public void set_menu (GLib.Menu menu);
   }
 }

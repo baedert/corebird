@@ -82,13 +82,15 @@ public class MainWidget : Gtk.Box {
       if (page_button != null) {
         top_box.add (page_button);
         page_button.get_button ().clicked.connect (() => {
-          if (page.get_radio_button ().active && !page_switch_lock) {
+          if (page_button.active && !page_switch_lock) {
             switch_page (page.id);
           }
         });
 
-      var menu = page.get_menu ();
-
+        var menu = page.get_menu ();
+        if (menu != null) {
+          page_button.set_menu (menu);
+        }
       }
     }
 

@@ -31,3 +31,5 @@ void                            cb_badge_radio_button_set_active     (CbBadgeRad
                                                                       gboolean            value);
 gboolean                        cb_badge_radio_button_get_active     (CbBadgeRadioButton *self);
 
+void                            cb_badge_radio_button_set_menu       (CbBadgeRadioButton *self,
+                                                                      GMenu              *menu);

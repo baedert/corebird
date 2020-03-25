@@ -53,6 +53,8 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
 
   public override GLib.Menu? get_menu () {
     var menu = new GLib.Menu ();
+    var item = new GLib.MenuItem ("Split off", "page.split");
+    menu.append_item (item);
 
     return menu;
   }
