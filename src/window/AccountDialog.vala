@@ -90,12 +90,7 @@ public class AccountDialog : Gtk.Window {
       });
     }
 
-    Gtk.AccelGroup ag = new Gtk.AccelGroup ();
-    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED, escape_pressed_cb);
-
     description_text_view.changed.connect (update_description_length);
-
-    this.add_accel_group (ag);
 
     description_length_label = new Gtk.Label ("");
     description_length_label.margin_start = 12;

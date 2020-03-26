@@ -310,16 +310,17 @@ continuous_cb (RestProxyCall *call,
     JsonParser *parser;
     JsonNode *root_node;
     CbStreamMessageType message_type;
-    GError *error = NULL;
+    GError *json_error = NULL;
     guint i;
 
     parser = json_parser_new ();
 
-    json_parser_load_from_data (parser, data_str, self->data->len - (data_str - self->data->str), &error);
+    json_parser_load_from_data (parser, data_str, self->data->len - (data_str - self->data->str),
+                                &json_error);
 
-    if (error != NULL)
+    if (json_error != NULL)
       {
-        g_warning ("%s: %s", __FUNCTION__, error->message);
+        g_warning ("%s: %s", __FUNCTION__, json_error->message);
         g_warning ("\n%s\n", data_str);
         goto out;
       }

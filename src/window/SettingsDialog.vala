@@ -150,7 +150,6 @@ class SettingsDialog : Gtk.Window {
       snippet_list_box.add (e);
     });
 
-    add_accels ();
     load_geometry ();
   }
 
@@ -242,25 +241,6 @@ class SettingsDialog : Gtk.Window {
     builder.add_value (new GLib.Variant.int32(h));
     Settings.get ().set_value ("settings-geometry", builder.end ());
   }
-
-  private void add_accels () {
-    Gtk.AccelGroup ag = new Gtk.AccelGroup();
-
-    ag.connect (Gdk.Key.Escape, 0, Gtk.AccelFlags.LOCKED,
-        () => {this.close (); return true;});
-    ag.connect (Gdk.Key.@1, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "interface"; return true;});
-    ag.connect (Gdk.Key.@2, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "notifications"; return true;});
-    ag.connect (Gdk.Key.@3, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "tweet"; return true;});
-    ag.connect (Gdk.Key.@4, Gdk.ModifierType.MOD1_MASK, Gtk.AccelFlags.LOCKED,
-        () => {main_stack.visible_child_name = "snippets"; return true;});
-
-
-    this.add_accel_group(ag);
-  }
-
 
   [GtkCallback]
   private void remove_trailing_hashtags_cb () {
