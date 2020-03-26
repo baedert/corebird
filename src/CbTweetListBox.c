@@ -86,107 +86,11 @@ get_focused_row (CbTweetListBox *self)
 
   focus_widget = gtk_window_get_focus (GTK_WINDOW (toplevel));
 
-  if (focus_widget != NULL &&
-      gtk_widget_get_parent (focus_widget) == GTK_WIDGET (self) &&
-      CB_IS_TWEET_ROW (focus_widget))
-    return focus_widget;
+  if (focus_widget)
+    return gtk_widget_get_ancestor (focus_widget, CB_TYPE_TWEET_ROW);
 
   return NULL;
 }
-
-#if 0
-static gboolean
-cb_tweet_list_box_event (GtkWidget *widget,
-                         GdkEvent  *event)
-{
-  CbTweetListBox *self = (CbTweetListBox*)widget;
-
-  switch (gdk_event_get_event_type (event))
-    {
-    case GDK_KEY_RELEASE:
-      {
-        guint keyval;
-
-        gdk_event_get_keyval (event, &keyval);
-
-        /* switch² */
-        switch (keyval)
-          {
-          case GDK_KEY_r: /* Reply */
-            {
-              GtkWidget *focus_row = get_focused_row (self);
-              CbTweet *tweet = CB_TWEET_ROW (focus_row)->tweet;
-
-              if (focus_row)
-                {
-                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_root ((GtkWidget *)self));
-
-                  ComposeTweetWindow *window = compose_tweet_window_new (main_window,
-                                                                         self->account,
-                                                                         tweet,
-                                                                         COMPOSE_TWEET_WINDOW_MODE_REPLY);
-                  gtk_widget_show (GTK_WIDGET (window));
-
-                  return GDK_EVENT_STOP;
-                }
-            }
-          return GDK_EVENT_PROPAGATE;
-
-          case GDK_KEY_t: /* Retweet */
-          return GDK_EVENT_STOP;
-
-          case GDK_KEY_q: /* Quote */
-            {
-              GtkWidget *focus_row = get_focused_row (self);
-              CbTweet *tweet = CB_TWEET_ROW (focus_row)->tweet;
-
-              if (focus_row)
-                {
-                  CbMainWindow *main_window = CB_MAIN_WINDOW (gtk_widget_get_root ((GtkWidget *)self));
-
-                  ComposeTweetWindow *window = compose_tweet_window_new (main_window,
-                                                                         self->account,
-                                                                         tweet,
-                                                                         COMPOSE_TWEET_WINDOW_MODE_QUOTE);
-                  gtk_widget_show (GTK_WIDGET (window));
-
-                  return GDK_EVENT_STOP;
-                }
-            }
-          return GDK_EVENT_PROPAGATE;
-
-          case GDK_KEY_f: /* Favorite */
-          return GDK_EVENT_STOP;
-
-          case GDK_KEY_j: /* Down */
-            gtk_widget_child_focus (GTK_WIDGET (self), GTK_DIR_DOWN);
-          return GDK_EVENT_STOP;
-
-          case GDK_KEY_k: /* Up */
-            gtk_widget_child_focus (GTK_WIDGET (self), GTK_DIR_UP);
-          return GDK_EVENT_STOP;
-
-#ifdef DEBUG
-          case GDK_KEY_m: /* Print debug info */
-            {
-              GtkWidget *row = get_focused_row (self);
-
-              /* Will leak that string */
-              if (row)
-                g_message ("\n%s\n", cb_utils_get_tweet_debug_info (CB_TWEET_ROW (row)->tweet));
-            }
-          return GDK_EVENT_STOP;
-#endif
-          }
-      }
-    break;
-
-    default: {}
-    }
-
-  return GDK_EVENT_PROPAGATE;
-}
-#endif
 
 static void
 cb_tweet_list_box_finalize (GObject *obj)
@@ -207,8 +111,6 @@ cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
   GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
   /* vfuncs */
-  /*widget_class->event = cb_tweet_list_box_event;*/
-
   object_class->finalize = cb_tweet_list_box_finalize;
 
   /* signals */
@@ -223,9 +125,92 @@ cb_tweet_list_box_class_init (CbTweetListBoxClass *klass)
 }
 
 static void
+reply_activated_cb (GSimpleAction *action,
+                    GVariant      *param,
+                    gpointer       user_data)
+{
+  CbTweetListBox *self = user_data;
+  GtkWidget *focus_row = get_focused_row (self);
+  CbMainWindow *main_window;
+  ComposeTweetWindow *window;
+  CbTweet *tweet;
+
+
+  if (!focus_row)
+    return;
+
+  tweet = CB_TWEET_ROW (focus_row)->tweet;
+  main_window = CB_MAIN_WINDOW (gtk_widget_get_root ((GtkWidget *)self));
+
+  window = compose_tweet_window_new (main_window,
+                                     self->account,
+                                     tweet,
+                                     COMPOSE_TWEET_WINDOW_MODE_REPLY);
+  gtk_widget_show (GTK_WIDGET (window));
+}
+
+static void
+quote_activated_cb (GSimpleAction *action,
+                    GVariant      *param,
+                    gpointer       user_data)
+{
+  CbTweetListBox *self = user_data;
+  GtkWidget *focus_row = get_focused_row (self);
+  CbMainWindow *main_window;
+  ComposeTweetWindow *window;
+  CbTweet *tweet;
+
+
+  if (!focus_row)
+    return;
+
+  tweet = CB_TWEET_ROW (focus_row)->tweet;
+  main_window = CB_MAIN_WINDOW (gtk_widget_get_root ((GtkWidget *)self));
+
+  window = compose_tweet_window_new (main_window,
+                                     self->account,
+                                     tweet,
+                                     COMPOSE_TWEET_WINDOW_MODE_QUOTE);
+  gtk_widget_show (GTK_WIDGET (window));
+}
+
+
+
+static void G_GNUC_UNUSED
+debug_string_activated_cb (GSimpleAction *action,
+                           GVariant      *param,
+                           gpointer       user_data)
+{
+  CbTweetListBox *self = user_data;
+  GtkWidget *row = get_focused_row (self);
+
+  /* Will leak that string */
+  if (row)
+    g_message ("\n%s\n", cb_utils_get_tweet_debug_info (CB_TWEET_ROW (row)->tweet));
+}
+
+static void
 cb_tweet_list_box_init (CbTweetListBox *self)
 {
   GtkGesture *multipress_gesture;
+
+  /* Actions */
+  {
+    static GActionEntry action_entries[] = {
+      { "reply", reply_activated_cb, NULL, NULL, NULL },
+      { "quote", quote_activated_cb, NULL, NULL, NULL },
+#ifdef DEBUG
+      { "debug-str", debug_string_activated_cb, NULL, NULL, NULL },
+#endif
+    };
+    GActionGroup *action_group;
+
+    action_group = G_ACTION_GROUP (g_simple_action_group_new ());
+    g_action_map_add_action_entries (G_ACTION_MAP (action_group),
+                                     action_entries, G_N_ELEMENTS (action_entries),
+                                     self);
+    gtk_widget_insert_action_group (GTK_WIDGET (self), "tweet", action_group);
+  }
 
   self->widget = gtk_list_box_new ();
   gtk_widget_set_parent (self->widget, (GtkWidget *)self);
@@ -244,7 +229,7 @@ cb_tweet_list_box_init (CbTweetListBox *self)
   gtk_event_controller_set_propagation_phase ((GtkEventController *)multipress_gesture,
                                               GTK_PHASE_BUBBLE);
   g_signal_connect (multipress_gesture, "pressed", G_CALLBACK (gesture_pressed_cb), self);
-  /*gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)multipress_gesture);*/
+  gtk_widget_add_controller (GTK_WIDGET (self), (GtkEventController *)multipress_gesture);
 
   g_signal_connect (settings_get (), "changed::double-click-activation",
                     G_CALLBACK (double_click_activation_setting_changed_cb), self);
@@ -254,6 +239,22 @@ cb_tweet_list_box_init (CbTweetListBox *self)
                            tweet_row_create_func,
                            self,
                            NULL);
+
+  {
+    GtkEventController *controller;
+
+    controller = gtk_shortcut_controller_new ();
+
+    gtk_shortcut_controller_add_shortcut (GTK_SHORTCUT_CONTROLLER (controller),
+                                          gtk_shortcut_new (gtk_shortcut_trigger_parse_string ("r"),
+                                                            gtk_named_action_new ("tweet.reply")));
+    gtk_shortcut_controller_add_shortcut (GTK_SHORTCUT_CONTROLLER (controller),
+                                          gtk_shortcut_new (gtk_shortcut_trigger_parse_string ("m"),
+                                                            gtk_named_action_new ("tweet.debug-str")));
+
+
+    gtk_widget_add_controller (GTK_WIDGET (self), controller);
+  }
 
   /* Create some pre-defined placeholder widgetry */
   {
