@@ -518,7 +518,7 @@ namespace Cb {
   [CCode (cprefix = "CbComposeImages_", lower_case_cprefix = "cb_compose_images_", cheader_filename =
           "CbComposeImages.h")]
   public class ComposeImages : Gtk.Widget {
-    public void load_image (string path);
+    public void load_image (GLib.File file);
     public void set_image_progress (string path, double d);
     public void end_image_progress (string path, string? error);
     public int get_n_images ();

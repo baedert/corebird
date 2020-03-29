@@ -22,7 +22,7 @@ class FavImageRow : Gtk.FlowBoxChild {
   private static Gdk.Texture play_icon;
 
   private Gtk.Image image;
-  private string file_path;
+  private GLib.File file;
   private Gtk.GestureClick gesture;
 
   public bool is_gif = false;
@@ -31,8 +31,8 @@ class FavImageRow : Gtk.FlowBoxChild {
     play_icon = Gdk.Texture.from_resource ("/org/baedert/corebird/data/play.png");
   }
 
-  public FavImageRow (string path) {
-    this.file_path = path;
+  public FavImageRow (GLib.File file) {
+    this.file = file;
 
     image = new Gtk.Image ();
     image.set_size_request (THUMB_WIDTH, THUMB_HEIGHT);
@@ -120,13 +120,13 @@ class FavImageRow : Gtk.FlowBoxChild {
     }
   }
 
-  public unowned string get_image_path () {
-    return file_path;
+  public GLib.File get_image_file () {
+    return file;
   }
 
   private async void load_image () {
     try {
-      var in_stream = GLib.File.new_for_path (file_path).read ();
+      var in_stream = this.file.read ();
       var pixbuf = yield new Gdk.Pixbuf.from_stream_at_scale_async (in_stream, THUMB_WIDTH, THUMB_HEIGHT, true);
       in_stream.close ();
 

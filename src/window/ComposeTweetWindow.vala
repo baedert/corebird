@@ -348,8 +348,8 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       } else {
         this.compose_images.show ();
         warning ("filename -> file conversion missing");
-        //this.compose_images.load_image (filename);
-        //this.compose_job.upload_image_async (filename);
+        this.compose_images.load_image (file);
+        this.compose_job.upload_image_async (file.get_path ());
         if (this.compose_images.get_n_images () > 0) {
           fav_image_view.set_gifs_enabled (false);
         }
@@ -370,11 +370,11 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
   }
 
   [GtkCallback]
-  public void favorite_image_selected_cb (string path) {
+  public void favorite_image_selected_cb (GLib.File file) {
     cancel_clicked ();
     this.compose_images.show ();
-    this.compose_images.load_image (path);
-    this.compose_job.upload_image_async (path);
+    this.compose_images.load_image (file);
+    //this.compose_job.upload_image_async (path);
     if (this.compose_images.is_full ()) {
       this.add_image_button.sensitive = false;
       this.fav_image_button.sensitive = false;

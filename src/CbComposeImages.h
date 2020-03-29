@@ -34,7 +34,7 @@ struct _CbComposeImages
 G_DECLARE_FINAL_TYPE (CbComposeImages, cb_compose_images, CB, COMPOSE_IMAGES, GtkWidget);
 
 void      cb_compose_images_load_image            (CbComposeImages *self,
-                                                   const char      *image_path);
+                                                   GFile           *file);
 void      cb_compose_images_set_image_progress    (CbComposeImages *self,
                                                    const char      *image_path,
                                                    double           progress);

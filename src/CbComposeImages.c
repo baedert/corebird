@@ -374,9 +374,8 @@ delete_button_clicked_cb (GtkButton *source,
 
 void
 cb_compose_images_load_image (CbComposeImages *self,
-                              const char      *image_path)
+                              GFile           *file)
 {
-  GFile *file;
   GError *error = NULL;
   GdkTexture *texture;
   Image *image;
@@ -385,25 +384,22 @@ cb_compose_images_load_image (CbComposeImages *self,
   g_assert (!cb_compose_images_is_full (self));
 #endif
 
-  file = g_file_new_for_path (image_path);
   texture = gdk_texture_new_from_file (file, &error);
 
   if (error != NULL)
     {
       g_warning (G_STRLOC ": Couldn't load image %s: %s",
-                 image_path, error->message);
-      g_object_unref (file);
-      return;
+                 g_file_get_path (file), error->message);
+        return;
     }
 
   g_array_set_size (self->images, self->images->len + 1);
   image = &g_array_index (self->images, Image, self->images->len - 1);
-  image->path = g_strdup (image_path);
+  image->path = g_file_get_path (file);
   image->fraction = 0.0;
   image->deleted = FALSE;
 
-  image->image = gtk_image_new_from_paintable (GDK_PAINTABLE (g_steal_pointer (&texture)));
-  /*gtk_image_set_can_shrink (GTK_IMAGE (image->image), TRUE);*/
+  image->image = gtk_picture_new_for_paintable (GDK_PAINTABLE (g_steal_pointer (&texture)));
   gtk_widget_set_size_request (image->image, -1, MIN_IMAGE_HEIGHT);
   gtk_widget_set_parent (image->image, GTK_WIDGET (self));
 
@@ -415,8 +411,6 @@ cb_compose_images_load_image (CbComposeImages *self,
   image->progressbar = gtk_progress_bar_new ();
   gtk_widget_hide (image->progressbar);
   gtk_widget_set_parent (image->progressbar, GTK_WIDGET (self));
-
-  g_object_unref (file);
 }
 
 void

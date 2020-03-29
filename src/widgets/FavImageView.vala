@@ -23,7 +23,7 @@ class FavImageView : Gtk.Box {
 
   private bool gifs_enabled = true;
 
-  public signal void image_selected (string image_path);
+  public signal void image_selected (GLib.File file);
 
   construct {
     this.orientation = Gtk.Orientation.VERTICAL;
@@ -85,7 +85,7 @@ class FavImageView : Gtk.Box {
             content_type == "image/png" ||
             content_type == "image/gif") {
           var file = dir.get_child (info.get_name ());
-          var row = new FavImageRow (file.get_path ());
+          var row = new FavImageRow (file);
 
           if (content_type == "image/gif") {
             row.is_gif = true;
@@ -112,7 +112,7 @@ class FavImageView : Gtk.Box {
     if (!child.sensitive)
       return;
 
-    this.image_selected (child.get_image_path ());
+    this.image_selected (child.get_image_file ());
   }
 
   private void new_fav_image_button_clicked_cb () {
@@ -146,7 +146,7 @@ class FavImageView : Gtk.Box {
 
         file.copy (dest_file, GLib.FileCopyFlags.NONE);
 
-        var row = new FavImageRow (dest_file.get_path ());
+        var row = new FavImageRow (dest_file);
         if (file_info.get_content_type () == "image/gif") {
           row.is_gif = true;
           row.set_sensitive (gifs_enabled);
@@ -170,7 +170,7 @@ class FavImageView : Gtk.Box {
     foreach (Gtk.Widget w in fav_image_list.get_children ()) {
       var child = (FavImageRow)w;
 
-      if (child.get_image_path ().down ().has_suffix (".gif")) {
+      if (child.get_image_file ().get_path ().down ().has_suffix (".gif")) {
         child.set_sensitive (this.gifs_enabled);
       }
     }
