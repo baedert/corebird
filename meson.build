@@ -32,7 +32,6 @@ enable_debug = get_option('buildtype') == 'debug' or get_option('buildtype') == 
 enable_video = get_option('video')
 enable_spellcheck = get_option('spellcheck')
 enable_examples = get_option('examples')
-enable_listbox = get_option('experimental-listbox')
 
 # Project arguments
 
@@ -204,18 +203,6 @@ configure_file(
 libtl = subproject('libtl')
 libtl_dep = libtl.get_variable('libtl_dep')
 cb_deps += libtl_dep
-
-if enable_listbox
-  corebird_lib_sources += ['src/ModelListBox.vala', 'vapi/gd-model-list-box.vapi']
-  # liblistbox subproject
-  liblistbox = subproject('liblistbox')
-  liblistbox_dep = liblistbox.get_variable('liblistbox_dep')
-  cb_deps += liblistbox_dep
-
-  add_project_arguments('-DEXPERIMENTAL_LISTBOX', language: 'c')
-  add_project_arguments('-D', 'EXPERIMENTAL_LISTBOX', language: 'vala')
-endif
-
 
 test_cflags = [
   '-fno-strict-aliasing',
