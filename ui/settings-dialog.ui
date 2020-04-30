@@ -425,7 +425,6 @@
                   <object class="GtkBox">
                     <child>
                       <object class="GtkButton">
-                        <property name="relief">none</property>
                         <property name="valign">center</property>
                         <property name="margin-start">6</property>
                         <property name="margin-end">6</property>

@@ -7,7 +7,6 @@
       <object class="GtkOverlay" id="overlay">
         <child>
           <object class="GtkFrame" id="frame">
-            <property name="shadow-type">none</property>
           </object>
         </child>
         <child type="overlay">

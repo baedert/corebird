@@ -57,7 +57,6 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
     var frame = new Gtk.Frame (null);
     frame.margin_start = frame.margin_end = frame.margin_top = frame.margin_bottom = 25;
     frame.set_valign (Gtk.Align.START);
-    frame.set_shadow_type (Gtk.ShadowType.IN);
     frame.show ();
     var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     frame.add (box);

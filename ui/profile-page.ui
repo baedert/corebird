@@ -171,7 +171,6 @@
                         <property name="justify">center</property>
                         <property name="wrap">1</property>
                         <property name="wrap-mode">word-char</property>
-                        <property name="track-visited-links">0</property>
                         <signal name="activate-link" handler="activate_link" swapped="no"/>
                         <layout>
                           <property name="left-attach">0</property>
@@ -190,7 +189,6 @@
                         <property name="use-markup">1</property>
                         <property name="justify">center</property>
                         <property name="ellipsize">end</property>
-                        <property name="track-visited-links">0</property>
                         <layout>
                           <property name="left-attach">0</property>
                           <property name="top-attach">7</property>
@@ -206,7 +204,6 @@
                           <object class="GtkRadioButton" id="tweets_button">
                             <property name="hexpand">1</property>
                             <property name="draw-indicator">0</property>
-                            <property name="relief">none</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
@@ -244,7 +241,6 @@
                             <property name="hexpand">1</property>
                             <property name="group">tweets_button</property>
                             <property name="draw-indicator">0</property>
-                            <property name="relief">none</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
@@ -282,7 +278,6 @@
                             <property name="hexpand">1</property>
                             <property name="group">tweets_button</property>
                             <property name="draw-indicator">0</property>
-                            <property name="relief">none</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
@@ -320,7 +315,6 @@
                             <property name="hexpand">1</property>
                             <property name="group">tweets_button</property>
                             <property name="draw-indicator">0</property>
-                            <property name="relief">none</property>
                             <style>
                               <class name="profile-button"/>
                             </style>

@@ -56,7 +56,6 @@
             <child>
               <object class="GtkButton" id="more_button">
                 <property name="can-focus">1</property>
-                <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="margin-start">6</property>
                 <property name="margin-end">6</property>

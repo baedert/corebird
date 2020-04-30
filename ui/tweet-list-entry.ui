@@ -30,7 +30,6 @@
             <child>
               <object class="DoubleTapButton" id="retweet_button">
                 <property name="visible">true</property>
-                <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="tooltip-text" translatable="true">Retweet</property>
                 <signal name="toggled" handler="retweet_button_toggled_cb"/>
@@ -49,7 +48,6 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="favorite_button">
-                <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="tooltip-text" translatable="yes">Favorite</property>
                 <signal name="toggled" handler="favorite_button_toggled_cb"/>
@@ -68,7 +66,6 @@
             </child>
             <child>
               <object class="GtkButton" id="reply_button">
-                <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="tooltip-text" translatable="yes">Reply</property>
                 <signal name="clicked" handler="reply_button_clicked_cb"/>
@@ -88,7 +85,6 @@
             <child>
               <object class="LazyMenuButton" id="more_button">
                 <property name="visible">true</property>
-                <property name="relief">none</property>
                 <property name="valign">center</property>
                 <property name="menu-model">actions_menu</property>
                 <style>
@@ -219,7 +215,6 @@
                 <property name="halign">start</property>
                 <property name="xalign">0</property>
                 <property name="use-markup">1</property>
-                <property name="track-visited-links">0</property>
                 <signal name="activate-link" handler="link_activated_cb"/>
                 <style>
                   <class name="dim-label"/>
@@ -244,7 +239,6 @@
                 <property name="use-markup">1</property>
                 <property name="wrap">1</property>
                 <property name="wrap-mode">word-char</property>
-                <property name="track-visited-links">0</property>
                 <signal name="activate-link" handler="link_activated_cb"/>
                 <signal name="populate-popup" handler="populate_popup_cb"/>
               </object>
@@ -281,7 +275,6 @@
                 <property name="use-markup">1</property>
                 <property name="ellipsize">end</property>
                 <property name="xalign">0</property>
-                <property name="track-visited-links">0</property>
                 <signal name="activate-link" handler="link_activated_cb" swapped="no"/>
                 <style>
                   <class name="dim-label"/>

@@ -47,7 +47,6 @@
                   <object class="GtkButton" id="menu_button">
                     <property name="halign">center</property>
                     <property name="valign">center</property>
-                    <property name="relief">none</property>
                     <property name="can-focus">1</property>
                     <property name="icon-name">list-remove-symbolic</property>
                     <property name="tooltip-text" translatable="Yes">Remove this Filter</property>

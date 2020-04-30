@@ -166,7 +166,6 @@
                     <property name="homogeneous">1</property>
                     <child>
                       <object class="GtkButton" id="recent.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -174,7 +173,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="people.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -182,7 +180,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="body.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -190,7 +187,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="nature.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -198,7 +194,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="food.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -206,7 +201,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="travel.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -214,7 +208,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="activities.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -222,7 +215,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="objects.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -230,7 +222,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="symbols.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>
@@ -238,7 +229,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="flags.button">
-                        <property name="relief">none</property>
                         <style>
                           <class name="emoji-section"/>
                         </style>

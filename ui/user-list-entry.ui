@@ -61,7 +61,6 @@
           <object class="GtkButton" id="settings_button">
             <property name="valign">center</property>
             <property name="halign">end</property>
-            <property name="relief">none</property>
             <property name="margin-start">6</property>
             <property name="margin-end">3</property>
             <property name="tooltip-text" translatable="yes">Show settings of this account</property>
@@ -76,7 +75,6 @@
         </child>
         <child>
           <object class="GtkButton" id="new_window_button">
-            <property name="relief">none</property>
             <property name="valign">center</property>
             <property name="margin-end">3</property>
             <property name="margin-start">3</property>
@@ -92,7 +90,6 @@
         </child>
         <child>
           <object class="GtkButton" id="profile_button">
-            <property name="relief">none</property>
             <property name="valign">center</property>
             <property name="margin-start">3</property>
             <property name="tooltip-text" translatable="yes">Go to profile</property>

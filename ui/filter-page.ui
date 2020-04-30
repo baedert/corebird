@@ -13,7 +13,6 @@
             <property name="margin-start">25</property>
             <property name="margin-end">25</property>
             <property name="margin-top">25</property>
-            <property name="shadow-type">in</property>
             <child>
               <object class="GtkListBox" id="filter_list">
                 <property name="visible">1</property>
@@ -33,7 +32,6 @@
                 <property name="margin-start">25</property>
                 <property name="margin-end">25</property>
                 <property name="margin-top">25</property>
-                <property name="shadow-type">in</property>
                 <child>
                   <object class="GtkListBox" id="user_list">
                     <property name="visible">1</property>
