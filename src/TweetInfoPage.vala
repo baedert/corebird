@@ -365,7 +365,7 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
         var app_obj = root_object.get_object_member ("application");
         string name = app_obj.get_string_member ("name");
         string url = app_obj.get_string_member ("website");
-        with = "<span underline='none'><a href='%s'>%s</a></span>".printf (url, name);
+        //with = "<span underline='none'><a href='%s'>%s</a></span>".printf (url, name);
       }
 
       set_tweet_data (tweet, with);
@@ -466,11 +466,11 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
 
         /* We may not count the listbox placeholder here */
         int n_children = 0;
-        foreach (Gtk.Widget w in conversation_list_box.get_widget ().get_children ()) {
-          if (w is Gtk.ListBoxRow) {
-            n_children ++;
-          }
-        }
+        //foreach (Gtk.Widget w in conversation_list_box.get_widget ().get_children ()) {
+          //if (w is Gtk.ListBoxRow) {
+            //n_children ++;
+          //}
+        //}
 
         conversation_list_box.get_widget ().visible = n_children > 0;
         return;

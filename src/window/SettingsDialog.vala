@@ -128,7 +128,7 @@ class SettingsDialog : Gtk.Window {
     sample_tweet_row.set_avatar (avatar);
     sample_tweet_row.activatable = false;
     sample_tweet_row.set_read_only ();
-    this.sample_tweet_list.add (sample_tweet_row);
+    this.sample_tweet_list.insert (sample_tweet_row, -1);
     // }}}
 
     var text_transform_flags = Settings.get_text_transform_flags ();
@@ -146,8 +146,7 @@ class SettingsDialog : Gtk.Window {
     // Fill snippet list box
     Corebird.snippet_manager.query_snippets ((key, value) => {
       var e = new SnippetListEntry ((string)key, (string)value);
-      e.show ();
-      snippet_list_box.add (e);
+      snippet_list_box.insert (e, -1);
     });
 
     load_geometry ();
@@ -181,34 +180,34 @@ class SettingsDialog : Gtk.Window {
 
   private void snippet_updated_func (string? old_key, string? key, string? value) {
     if (old_key != null && key == null && value == null) {
-      foreach (var _row in snippet_list_box.get_children ()) {
-        if (!(_row is SnippetListEntry))
-          continue;
+      //foreach (var _row in snippet_list_box.get_children ()) {
+        //if (!(_row is SnippetListEntry))
+          //continue;
 
-        var srow = (SnippetListEntry) _row;
-        if (srow.key == old_key) {
-          srow.reveal ();
-          break;
-        }
-      }
+        //var srow = (SnippetListEntry) _row;
+        //if (srow.key == old_key) {
+          //srow.reveal ();
+          //break;
+        //}
+      //}
       return;
     }
 
     if (old_key == null) {
       var e = new SnippetListEntry (key, value);
-      snippet_list_box.add (e);
+      snippet_list_box.insert (e, -1);
     } else {
-      foreach (var _row in snippet_list_box.get_children ()) {
-        if (!(_row is SnippetListEntry))
-          continue;
+      //foreach (var _row in snippet_list_box.get_children ()) {
+        //if (!(_row is SnippetListEntry))
+          //continue;
 
-        var srow = (SnippetListEntry) _row;
-        if (srow.key == old_key) {
-          srow.key = key;
-          srow.value = value;
-          break;
-        }
-      }
+        //var srow = (SnippetListEntry) _row;
+        //if (srow.key == old_key) {
+          //srow.key = key;
+          //srow.value = value;
+          //break;
+        //}
+      //}
     }
   }
 

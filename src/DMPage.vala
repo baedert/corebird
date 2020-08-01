@@ -56,7 +56,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     this.placeholder_box = new DMPlaceholderBox ();
     messages_list.set_placeholder (placeholder_box);
     scroll_widget.add (messages_list);
-    this.add (scroll_widget);
+    this.append (scroll_widget);
 
     var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
     this.text_view = new Cb.TextView ();
@@ -64,15 +64,15 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     text_view.changed.connect (recalc_length);
     text_view.send.connect (send_button_clicked_cb);
     text_view.set_account (account);
-    bottom_box.add (text_view);
+    bottom_box.append (text_view);
 
     this.send_button = new Gtk.Button.with_label (_("Send"));
     send_button.set_receives_default (true);
     send_button.set_valign (Gtk.Align.START);
     send_button.get_style_context ().add_class ("suggested-action");
     send_button.clicked.connect (send_button_clicked_cb);
-    bottom_box.add (send_button);
-    this.add (bottom_box);
+    bottom_box.append (send_button);
+    this.append (bottom_box);
   }
 
   public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
@@ -84,39 +84,39 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       /* XXX Replace this with local entity parsing */
       if (obj.get_int_member ("sender_id") == account.id &&
           obj.has_member ("entities")) {
-        var entries = messages_list.get_children ();
+        //var entries = messages_list.get_children ();
 
-        int64 dm_id = obj.get_int_member ("id");
+        //int64 dm_id = obj.get_int_member ("id");
 
-        foreach (var entry in entries) {
-          var e = (DMListEntry) entry;
-          if (e.user_id == account.id &&
-              e.id == -1) {
+        //foreach (var entry in entries) {
+          //var e = (DMListEntry) entry;
+          //if (e.user_id == account.id &&
+              //e.id == -1) {
 
-            var text = obj.get_string_member ("text");
-            var urls = obj.get_object_member ("entities").get_array_member ("urls");
-            var url_list = new Cb.TextEntity[urls.get_length ()];
-            urls.foreach_element((arr, index, node) => {
-              var url = node.get_object();
-              string expanded_url = url.get_string_member("expanded_url");
+            //var text = obj.get_string_member ("text");
+            //var urls = obj.get_object_member ("entities").get_array_member ("urls");
+            //var url_list = new Cb.TextEntity[urls.get_length ()];
+            //urls.foreach_element((arr, index, node) => {
+              //var url = node.get_object();
+              //string expanded_url = url.get_string_member("expanded_url");
 
-              Json.Array indices = url.get_array_member ("indices");
-              expanded_url = expanded_url.replace("&", "&amp;");
-              url_list[index] = Cb.TextEntity() {
-                from = (int)indices.get_int_element (0),
-                to   = (int)indices.get_int_element (1) ,
-                target = expanded_url,
-                display_text = url.get_string_member ("display_url")
-              };
-            });
-            e.text = Cb.TextTransform.text (text,
-                                            url_list,
-                                            0, 0, 0);
+              //Json.Array indices = url.get_array_member ("indices");
+              //expanded_url = expanded_url.replace("&", "&amp;");
+              //url_list[index] = Cb.TextEntity() {
+                //from = (int)indices.get_int_element (0),
+                //to   = (int)indices.get_int_element (1) ,
+                //target = expanded_url,
+                //display_text = url.get_string_member ("display_url")
+              //};
+            //});
+            //e.text = Cb.TextTransform.text (text,
+                                            //url_list,
+                                            //0, 0, 0);
 
-            e.id = dm_id;
-            break;
-          }
-        }
+            //e.id = dm_id;
+            //break;
+          //}
+        //}
       }
 
 
@@ -160,7 +160,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
       new_msg.user_id = sender.get_int_member ("id");
       new_msg.update_time_delta ();
       new_msg.load_avatar (sender.get_string_member ("profile_image_url"));
-      messages_list.add (new_msg);
+      messages_list.insert (new_msg, -1);
       if (scroll_widget.scrolled_down ())
         scroll_widget.scroll_down_next ();
     }
@@ -203,7 +203,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
         Gdk.Paintable? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
       });
-      messages_list.add (entry);
+      messages_list.insert (entry, -1);
       return true;
     });
 
@@ -228,7 +228,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     }
 
     // Clear list
-    messages_list.foreach ((w) => {messages_list.remove (w);});
+    //messages_list.foreach ((w) => {messages_list.remove (w);});
 
     // Update unread count
     DMThreadsPage threads_page = ((DMThreadsPage)_main_window.get_page (Page.DM_THREADS));
@@ -269,7 +269,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
         Gdk.Paintable? s = Twitter.get ().load_avatar_for_user_id.end (res);
         entry.avatar = s;
       });
-      messages_list.add (entry);
+      messages_list.insert (entry, -1);
       return true;
     });
 
@@ -304,7 +304,7 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     entry.name = account.name;
     entry.avatar = account.avatar;
     entry.update_time_delta ();
-    messages_list.add (entry);
+    messages_list.insert (entry, -1);
     var call = account.proxy.new_call ();
     call.set_function ("1.1/direct_messages/new.json");
     call.set_method ("POST");

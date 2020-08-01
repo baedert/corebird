@@ -21,15 +21,16 @@
 typedef struct _CbMaxSizeContainer      CbMaxSizeContainer;
 struct _CbMaxSizeContainer
 {
-  GtkBin parent_instance;
+  GtkWidget parent_instance;
 
+  GtkWidget *child;
   double fraction;
 
   CbAnimation open_animation;
 };
 
 #define CB_TYPE_MAX_SIZE_CONTAINER cb_max_size_container_get_type ()
-G_DECLARE_FINAL_TYPE (CbMaxSizeContainer, cb_max_size_container, CB, MAX_SIZE_CONTAINER, GtkBin);
+G_DECLARE_FINAL_TYPE (CbMaxSizeContainer, cb_max_size_container, CB, MAX_SIZE_CONTAINER, GtkWidget);
 
 void          cb_max_size_container_set_fraction (CbMaxSizeContainer *self,
                                                   double              fraction);

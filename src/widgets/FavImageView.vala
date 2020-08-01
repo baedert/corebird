@@ -28,21 +28,21 @@ class FavImageView : Gtk.Box {
   construct {
     this.orientation = Gtk.Orientation.VERTICAL;
 
-    this.scrolled_window = new Gtk.ScrolledWindow (null, null);
+    this.scrolled_window = new Gtk.ScrolledWindow ();
     this.fav_image_list = new Gtk.FlowBox ();
     fav_image_list.homogeneous = true;
     scrolled_window.set_vexpand (true);
-    scrolled_window.add (this.fav_image_list);
-    this.add (scrolled_window);
+    scrolled_window.set_child (this.fav_image_list);
+    this.append (scrolled_window);
 
-    this.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+    this.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
     this.new_fav_image_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
     new_fav_image_button.set_halign (Gtk.Align.START);
     new_fav_image_button.set_margin_start (6);
     new_fav_image_button.set_margin_top (6);
     new_fav_image_button.set_margin_bottom (6);
     new_fav_image_button.clicked.connect (new_fav_image_button_clicked_cb);
-    this.add (new_fav_image_button);
+    this.append (new_fav_image_button);
 
 
     fav_image_list.set_selection_mode (Gtk.SelectionMode.NONE);
@@ -66,7 +66,8 @@ class FavImageView : Gtk.Box {
   }
 
   public void load_images () {
-    if (fav_image_list.get_children ().length () > 0)
+    //if (fav_image_list.get_children ().length () > 0)
+
       return;
 
     const int MAX_IMAGES = 50;
@@ -92,8 +93,7 @@ class FavImageView : Gtk.Box {
             row.set_sensitive (gifs_enabled);
           }
 
-          row.show ();
-          fav_image_list.add (row);
+          fav_image_list.insert (row, -1);
 
           i ++;
           if (i >= MAX_IMAGES)
@@ -127,7 +127,8 @@ class FavImageView : Gtk.Box {
     filter.add_mime_type ("image/gif");
     filechooser.set_filter (filter);
 
-    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+    if (false) {
+    //if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       try {
         // First, take the selected file and copy it into the image-favorites folder
         var file = filechooser.get_file ();
@@ -152,8 +153,7 @@ class FavImageView : Gtk.Box {
           row.set_sensitive (gifs_enabled);
         }
 
-        row.show ();
-        fav_image_list.add (row);
+        fav_image_list.insert (row, -1);
 
       } catch (GLib.Error e) {
         warning (e.message);
@@ -167,12 +167,12 @@ class FavImageView : Gtk.Box {
 
     this.gifs_enabled = enabled;
 
-    foreach (Gtk.Widget w in fav_image_list.get_children ()) {
-      var child = (FavImageRow)w;
+    //foreach (Gtk.Widget w in fav_image_list.get_children ()) {
+      //var child = (FavImageRow)w;
 
-      if (child.get_image_file ().get_path ().down ().has_suffix (".gif")) {
-        child.set_sensitive (this.gifs_enabled);
-      }
-    }
+      //if (child.get_image_file ().get_path ().down ().has_suffix (".gif")) {
+        //child.set_sensitive (this.gifs_enabled);
+      //}
+    //}
   }
 }

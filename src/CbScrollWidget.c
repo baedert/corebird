@@ -59,7 +59,7 @@ cb_scroll_widget_buildable_add_child (GtkBuildable  *buildable,
       if (type)
         GTK_BUILDER_WARN_INVALID_CHILD_TYPE (buildable, type);
       else
-        gtk_container_add (GTK_CONTAINER (priv->scrolled_window), GTK_WIDGET (child));
+        gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (priv->scrolled_window), GTK_WIDGET (child));
     }
   else
     {
@@ -143,7 +143,7 @@ cb_scroll_widget_init (CbScrollWidget *self)
   CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
   GtkAdjustment *vadjustment;
 
-  priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  priv->scrolled_window = gtk_scrolled_window_new ();
   gtk_widget_set_parent (priv->scrolled_window, GTK_WIDGET (self));
 
   /* TODO: Do we also need to connect to notify::upper + notify::page-size? */
@@ -271,5 +271,5 @@ cb_scroll_widget_add (CbScrollWidget *self,
 {
   CbScrollWidgetPrivate *priv = cb_scroll_widget_get_instance_private (self);
 
-  gtk_container_add (GTK_CONTAINER (priv->scrolled_window), child);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (priv->scrolled_window), GTK_WIDGET (child));
 }

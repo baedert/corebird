@@ -23,13 +23,13 @@ public class AddListEntry : Gtk.ListBoxRow {
     img.margin_start = 10;
     img.hexpand = true;
     img.halign = Gtk.Align.END;
-    box.add (img);
+    box.append (img);
     var l = new Gtk.Label (label);
     l.hexpand = true;
     l.halign = Gtk.Align.START;
-    box.add (l);
+    box.append (l);
     box.margin_bottom = 4;
     box.margin_top = 4;
-    add (box);
+    set_child (box);
   }
 }

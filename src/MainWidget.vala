@@ -45,15 +45,15 @@ public class MainWidget : Gtk.Box {
     top_box.set_hexpand (true);
     top_box.set_homogeneous (true);
     top_box.get_style_context ().add_class ("topbar");
-    topbar_revealer.add (top_box);
-    this.add (topbar_revealer);
+    topbar_revealer.set_child (top_box);
+    this.append (topbar_revealer);
 
     this.stack = new Gtk.Stack ();
     stack.set_hexpand (true);
     stack.set_vexpand (true);
-    this.add (stack);
+    this.append (stack);
 
-    stack.add (stack_impostor);
+    stack.add_named (stack_impostor, "impostor");
 
     pages     = new IPage[11];
     pages[0]  = new HomeTimeline (Page.STREAM, account);
@@ -77,10 +77,10 @@ public class MainWidget : Gtk.Box {
         account.user_stream.register ((Cb.MessageReceiver)page);
 
       page.create_radio_button (dummy_button);
-      stack.add (page);
+      stack.add_named (page, "");
       var page_button = page.get_radio_button ();
       if (page_button != null) {
-        top_box.add (page_button);
+        top_box.append (page_button);
         page_button.get_button ().clicked.connect (() => {
           if (page_button.active && !page_switch_lock) {
             switch_page (page.id);

@@ -377,7 +377,7 @@ create_ui (CbTweetRow *self)
   gtk_style_context_add_class (gtk_widget_get_style_context (self->name_button), "user-name");
   gtk_widget_set_valign (self->name_button, GTK_ALIGN_BASELINE);
   g_signal_connect (self->name_button, "clicked", G_CALLBACK (name_button_clicked_cb), self);
-  gtk_container_add (GTK_CONTAINER (self->top_row_box), self->name_button);
+  gtk_box_append (GTK_BOX (self->top_row_box), self->name_button);
 
   self->screen_name_label = gtk_label_new (NULL);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->screen_name_label),
@@ -385,13 +385,13 @@ create_ui (CbTweetRow *self)
   gtk_widget_set_hexpand (self->screen_name_label, TRUE);
   gtk_widget_set_halign (self->screen_name_label, GTK_ALIGN_START);
   gtk_widget_set_valign (self->screen_name_label, GTK_ALIGN_BASELINE);
-  gtk_container_add (GTK_CONTAINER (self->top_row_box), self->screen_name_label);
+  gtk_box_append (GTK_BOX (self->top_row_box), self->screen_name_label);
 
   self->time_delta_label = gtk_label_new ("");
   gtk_widget_set_valign (self->time_delta_label, GTK_ALIGN_BASELINE);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "dim-label");
   gtk_style_context_add_class (gtk_widget_get_style_context (self->time_delta_label), "time-delta");
-  gtk_container_add (GTK_CONTAINER (self->top_row_box), self->time_delta_label);
+  gtk_box_append (GTK_BOX (self->top_row_box), self->time_delta_label);
 
   self->text_label = gtk_label_new (NULL);
   gtk_label_set_xalign (GTK_LABEL (self->text_label), 0.0f);
@@ -590,7 +590,7 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
 
           self->quote_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
           self->quote_widget = cb_quote_tweet_widget_new ();
-          gtk_container_add (GTK_CONTAINER (self->quote_box), self->quote_widget);
+          gtk_box_append (GTK_BOX (self->quote_box), self->quote_widget);
 
           gtk_style_context_add_class (gtk_widget_get_style_context (self->quote_box), "quote");
           gtk_widget_set_parent (self->quote_box, (GtkWidget *)self);
@@ -620,7 +620,7 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
           self->mm_widget = (GtkWidget *)multi_media_widget_new ();
 
           if (self->quote_box != NULL)
-            gtk_container_add (GTK_CONTAINER (self->quote_box), self->mm_widget);
+            gtk_box_append (GTK_BOX (self->quote_box), self->mm_widget);
           else
             gtk_widget_set_parent (self->mm_widget, (GtkWidget *)self);
 
@@ -635,7 +635,7 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
             {
               g_assert (gtk_widget_get_parent (self->mm_widget) == (GtkWidget *)self);
               gtk_widget_unparent (self->mm_widget);
-              gtk_container_add (GTK_CONTAINER (self->quote_box), self->mm_widget);
+              gtk_box_append (GTK_BOX (self->quote_box), self->mm_widget);
             }
           else
             {
@@ -655,7 +655,7 @@ cb_tweet_row_set_tweet (CbTweetRow *self,
   else if (self->mm_widget != NULL)
     {
       if (gtk_widget_get_parent (self->mm_widget) == self->quote_box)
-        gtk_container_remove (GTK_CONTAINER (self->quote_box), self->mm_widget);
+        gtk_box_remove (GTK_BOX (self->quote_box), self->mm_widget);
       else
         gtk_widget_unparent (self->mm_widget);
 

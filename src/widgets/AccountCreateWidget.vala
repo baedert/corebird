@@ -173,8 +173,8 @@ public class AccountCreateWidget : Gtk.Box {
     confirm_button.sensitive = confirm_possible;
   }
 
-  public override void destroy () {
+  public override void dispose () {
     Account.remove_account (Account.DUMMY);
-    base.destroy ();
+    base.dispose ();
   }
 }

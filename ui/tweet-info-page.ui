@@ -284,11 +284,6 @@
                     <property name="valign">baseline</property>
                     <property name="menu-model">actions_menu</property>
                     <property name="icon-name">go-down-symbolic</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="menubutton1-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes">More</property>
-                      </object>
-                    </child>
                     <style>
                       <class name="dim-label"/>
                     </style>

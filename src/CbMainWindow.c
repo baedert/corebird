@@ -58,26 +58,26 @@ app_account_added_cb (Corebird *cb,
   GList *entries, *l;
   GtkWidget *row;
 
-  entries = gtk_container_get_children (GTK_CONTAINER (self->accounts_list));
+  /*entries = gtk_container_get_children (GTK_CONTAINER (self->accounts_list));*/
 
-  for (l = entries; l; l = l->next)
-    {
-      if (!IS_USER_LIST_ENTRY (l->data))
-        continue;
+  /*for (l = entries; l; l = l->next)*/
+    /*{*/
+      /*if (!IS_USER_LIST_ENTRY (l->data))*/
+        /*continue;*/
 
-      if (user_list_entry_get_user_id (USER_LIST_ENTRY (l->data)) == account->id)
-        goto out;
-    }
+      /*if (user_list_entry_get_user_id (USER_LIST_ENTRY (l->data)) == account->id)*/
+        /*goto out;*/
+    /*}*/
 
   /* Account not yet in list */
   row = (GtkWidget *)user_list_entry_new_from_account (account);
   user_list_entry_set_show_settings (USER_LIST_ENTRY (row), TRUE);
   g_signal_connect (row, "action-clicked", G_CALLBACK (accounts_row_action_clicked_cb), self);
 
-  gtk_container_add (GTK_CONTAINER (self->accounts_list), row);
+  /*gtk_container_add (GTK_CONTAINER (self->accounts_list), row);*/
 
-out:
-  g_list_free (entries);
+/*out:*/
+  /*g_list_free (entries);*/
 }
 
 static void
@@ -88,21 +88,21 @@ app_account_removed_cb (Corebird *cb,
   CbMainWindow *self = user_data;
   GList *entries, *l;
 
-  entries = gtk_container_get_children (GTK_CONTAINER (self->accounts_list));
+  /*entries = gtk_container_get_children (GTK_CONTAINER (self->accounts_list));*/
 
-  for (l = entries; l; l = l->next)
-    {
-      if (!IS_USER_LIST_ENTRY (l->data))
-        continue;
+  /*for (l = entries; l; l = l->next)*/
+    /*{*/
+      /*if (!IS_USER_LIST_ENTRY (l->data))*/
+        /*continue;*/
 
-      if (user_list_entry_get_user_id (USER_LIST_ENTRY (l->data)) == account->id)
-        {
-          gtk_container_remove (GTK_CONTAINER (self->accounts_list), GTK_WIDGET (l->data));
-          break;
-        }
-    }
+      /*if (user_list_entry_get_user_id (USER_LIST_ENTRY (l->data)) == account->id)*/
+        /*{*/
+          /*gtk_container_remove (GTK_CONTAINER (self->accounts_list), GTK_WIDGET (l->data));*/
+          /*break;*/
+        /*}*/
+    /*}*/
 
-  g_list_free (entries);
+  /*g_list_free (entries);*/
 }
 
 static void
@@ -424,7 +424,7 @@ toggle_compose_window (GSimpleAction *action,
     }
   else
     {
-      gtk_widget_destroy (self->compose_window);
+      gtk_window_destroy (self->compose_window);
       self->compose_window = NULL;
     }
 }
@@ -543,22 +543,22 @@ cb_main_window_init (CbMainWindow *self)
 
   /* Create UI */
   self->headerbar = gtk_header_bar_new ();
-  gtk_header_bar_set_title (GTK_HEADER_BAR (self->headerbar), "Corebird");
-  gtk_header_bar_set_show_title_buttons (GTK_HEADER_BAR (self->headerbar), TRUE);
+  /*gtk_header_bar_set_title (GTK_HEADER_BAR (self->headerbar), "Corebird");*/
+  /*gtk_header_bar_set_show_title_buttons (GTK_HEADER_BAR (self->headerbar), TRUE);*/
   /*g_signal_connect (self->headerbar, "key-press-event", G_CALLBACK (headerbar_key_press_event_cb), self);*/
   gtk_window_set_titlebar ((GtkWindow *)self, self->headerbar);
 
   self->title_stack = gtk_stack_new ();
   self->title_label = gtk_label_new ("");
-  gtk_label_set_ellipsize (GTK_LABEL (self->title_label), PANGO_ELLIPSIZE_MIDDLE);
-  gtk_style_context_add_class (gtk_widget_get_style_context (self->title_label), "title");
-  gtk_container_add (GTK_CONTAINER (self->title_stack), self->title_label);
-  self->last_page_label = gtk_label_new ("");
-  gtk_label_set_ellipsize (GTK_LABEL (self->last_page_label), PANGO_ELLIPSIZE_MIDDLE);
-  gtk_style_context_add_class (gtk_widget_get_style_context (self->last_page_label), "title");
-  gtk_container_add (GTK_CONTAINER (self->title_stack), self->last_page_label);
+  /*gtk_label_set_ellipsize (GTK_LABEL (self->title_label), PANGO_ELLIPSIZE_MIDDLE);*/
+  /*gtk_style_context_add_class (gtk_widget_get_style_context (self->title_label), "title");*/
+  /*gtk_container_add (GTK_CONTAINER (self->title_stack), self->title_label);*/
+  /*self->last_page_label = gtk_label_new ("");*/
+  /*gtk_label_set_ellipsize (GTK_LABEL (self->last_page_label), PANGO_ELLIPSIZE_MIDDLE);*/
+  /*gtk_style_context_add_class (gtk_widget_get_style_context (self->last_page_label), "title");*/
+  /*gtk_container_add (GTK_CONTAINER (self->title_stack), self->last_page_label);*/
 
-  gtk_header_bar_set_custom_title (GTK_HEADER_BAR (self->headerbar), self->title_stack);
+  /*gtk_header_bar_set_custom_title (GTK_HEADER_BAR (self->headerbar), self->title_stack);*/
 
   self->header_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   self->account_button = gtk_menu_button_new ();
@@ -567,17 +567,17 @@ cb_main_window_init (CbMainWindow *self)
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
   avatar_widget_set_size (AVATAR_WIDGET (self->avatar_widget), 24);
   gtk_widget_set_valign (self->avatar_widget, GTK_ALIGN_CENTER);
-  gtk_container_add (GTK_CONTAINER (self->header_box), self->account_button);
+  gtk_box_append (GTK_BOX (self->header_box), self->account_button);
 
   self->compose_tweet_button = gtk_toggle_button_new ();
   gtk_button_set_icon_name (GTK_BUTTON (self->compose_tweet_button), "corebird-compose-symbolic");
   gtk_widget_set_tooltip_text (self->compose_tweet_button, _("Compose tweet"));
   gtk_actionable_set_action_name (GTK_ACTIONABLE (self->compose_tweet_button), "win.compose-tweet");
-  gtk_container_add (GTK_CONTAINER (self->header_box), self->compose_tweet_button);
+  gtk_box_append (GTK_BOX (self->header_box), self->compose_tweet_button);
 
   self->back_button = gtk_button_new_from_icon_name ("go-previous-symbolic");
   g_signal_connect (self->back_button, "clicked", G_CALLBACK (back_button_clicked_cb), self);
-  gtk_container_add (GTK_CONTAINER (self->header_box), self->back_button);
+  gtk_box_append (GTK_BOX (self->header_box), self->back_button);
 
   self->accounts_popover = gtk_popover_new ();
   gtk_menu_button_set_popover (GTK_MENU_BUTTON (self->account_button), self->accounts_popover);
@@ -586,16 +586,16 @@ cb_main_window_init (CbMainWindow *self)
   gtk_widget_set_margin_end (accounts_frame, 6);
   gtk_widget_set_margin_top (accounts_frame, 6);
   gtk_widget_set_margin_bottom (accounts_frame, 6);
-  gtk_container_add (GTK_CONTAINER (self->accounts_popover), accounts_frame);
+  gtk_popover_set_child (GTK_POPOVER (self->accounts_popover), accounts_frame);
   self->accounts_list = gtk_list_box_new ();
   gtk_list_box_set_selection_mode (GTK_LIST_BOX (self->accounts_list), GTK_SELECTION_NONE);
   gtk_list_box_set_sort_func (GTK_LIST_BOX (self->accounts_list), accounts_list_sort_func, NULL, NULL);
   gtk_list_box_set_header_func (GTK_LIST_BOX (self->accounts_list), cb_default_header_func, NULL, NULL);
   g_signal_connect (self->accounts_list, "row-activated", G_CALLBACK (accounts_list_row_activated_cb), self);
-  gtk_container_add (GTK_CONTAINER (accounts_frame), self->accounts_list);
+  gtk_frame_set_child (GTK_FRAME (accounts_frame), self->accounts_list);
 
   add_entry = (GtkWidget *)add_list_entry_new (_("Add new Account"));
-  gtk_container_add (GTK_CONTAINER (self->accounts_list), add_entry);
+  gtk_list_box_prepend (GTK_LIST_BOX (self->accounts_list), add_entry);
 
   for (i = 0; i < account_get_n (); i ++)
     {
@@ -607,7 +607,8 @@ cb_main_window_init (CbMainWindow *self)
 
       row = (GtkWidget *)user_list_entry_new_from_account (acc);
       g_signal_connect (row, "action-clicked", G_CALLBACK (accounts_row_action_clicked_cb), self);
-      gtk_container_add (GTK_CONTAINER (self->accounts_list), row);
+      // TODO: Order
+      gtk_list_box_prepend (GTK_LIST_BOX (self->accounts_list), row);
     }
 
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->headerbar), self->header_box);
@@ -763,10 +764,7 @@ cb_main_window_change_account (CbMainWindow *self,
   if (self->main_widget != NULL)
     main_widget_stop (MAIN_WIDGET (self->main_widget));
 
-  if (gtk_bin_get_child (GTK_BIN (self)) != NULL)
-    {
-      gtk_container_remove (GTK_CONTAINER (self), gtk_bin_get_child (GTK_BIN (self)));
-    }
+  gtk_window_set_child (GTK_WINDOW (self), NULL); /* Remove old child */
 
   cb = COREBIRD (g_application_get_default ());
 
@@ -781,7 +779,7 @@ cb_main_window_change_account (CbMainWindow *self,
       gtk_widget_show (self->header_box);
 
       self->main_widget = (GtkWidget *)main_widget_new (account, self, cb);
-      gtk_container_add (GTK_CONTAINER (self), self->main_widget);
+      gtk_window_set_child (GTK_WINDOW (self), self->main_widget);
       main_widget_switch_page (MAIN_WIDGET (self->main_widget), 0, NULL);
 
       first_page = main_widget_get_page (MAIN_WIDGET (self->main_widget), 0);
@@ -800,22 +798,22 @@ cb_main_window_change_account (CbMainWindow *self,
       g_signal_emit_by_name (cb, "account-window-changed", old_user_id, account->id);
 
       /* Disable app menu in the titlebar since we do that ourselves */
-      g_object_get (gtk_settings_get_default (), "gtk-shell-shows-app-menu", &shell_shows_app_menu, NULL);
-      if (!shell_shows_app_menu)
-        {
-          if (self->app_menu_button == NULL)
-            {
-              self->app_menu_button = gtk_menu_button_new ();
-              gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (self->app_menu_button), "emblem-system-symbolic");
-              gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->app_menu_button),
-                                              gtk_application_get_app_menu (GTK_APPLICATION (cb)));
-              gtk_header_bar_pack_end (GTK_HEADER_BAR (self->headerbar), self->app_menu_button);
-            }
-          else
-            {
-              gtk_widget_show (self->app_menu_button);
-            }
-        }
+      /*g_object_get (gtk_settings_get_default (), "gtk-shell-shows-app-menu", &shell_shows_app_menu, NULL);*/
+      /*if (!shell_shows_app_menu)*/
+        /*{*/
+          /*if (self->app_menu_button == NULL)*/
+            /*{*/
+              /*self->app_menu_button = gtk_menu_button_new ();*/
+              /*gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (self->app_menu_button), "emblem-system-symbolic");*/
+              /*gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->app_menu_button),*/
+                                              /*gtk_application_get_app_menu (GTK_APPLICATION (cb)));*/
+              /*gtk_header_bar_pack_end (GTK_HEADER_BAR (self->headerbar), self->app_menu_button);*/
+            /*}*/
+          /*else*/
+            /*{*/
+              /*gtk_widget_show (self->app_menu_button);*/
+            /*}*/
+        /*}*/
     }
   else
     {
@@ -837,7 +835,7 @@ cb_main_window_change_account (CbMainWindow *self,
 
       account_add_account (acc);
       account_create_widget = (GtkWidget *)account_create_widget_new (acc, cb, self);
-      gtk_container_add (GTK_CONTAINER (self), account_create_widget);
+      gtk_window_set_child (GTK_WINDOW (self), account_create_widget);
       g_signal_connect (account_create_widget, "result-received",
                         G_CALLBACK (account_create_widget_result_received_cb), self);
     }

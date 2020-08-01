@@ -65,7 +65,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     name_label.xalign = 0;
     name_button.set_valign (Gtk.Align.BASELINE);
     name_button.get_style_context ().add_class ("user-name");
-    name_button.add (name_label);
+    name_button.set_child (name_label);
     grid.attach (name_button, 1, 0, 1, 1);
 
     this.screen_name_label = new Gtk.Label (null);
@@ -100,7 +100,7 @@ class DMListEntry : Gtk.ListBoxRow, Cb.TwitterItem {
       main_window.main_widget.switch_page (Page.PROFILE, bundle);
     });
 
-    this.add (grid);
+    this.set_child (grid);
   }
 
   public void load_avatar (string avatar_url) {

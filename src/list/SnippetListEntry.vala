@@ -47,24 +47,27 @@ class SnippetListEntry : Gtk.ListBoxRow {
     key_label.halign = Gtk.Align.START;
     key_label.hexpand = true;
     key_label.ellipsize = Pango.EllipsizeMode.END;
-    box.add (key_label);
+    box.append (key_label);
 
     value_label = new Gtk.Label (value);
     value_label.halign = Gtk.Align.START;
     value_label.hexpand = true;
     value_label.xalign = 0;
     value_label.ellipsize = Pango.EllipsizeMode.END;
-    box.add (value_label);
+    box.append (value_label);
 
-    revealer.add (box);
-    this.add (revealer);
+    revealer.set_child (box);
+    this.set_child (revealer);
     this.get_style_context ().add_class ("border-bottom");
   }
 
   public void reveal () {
     revealer.notify["child-revealed"].connect (() => {
       if (!revealer.child_revealed) {
-        ((Gtk.Container)this.get_parent ()).remove (this);
+        Gtk.ListBox? parent = (Gtk.ListBox? )this.get_parent();
+        if (parent != null) {
+          parent.remove (this);
+        }
       }
     });
     revealer.reveal_child = false;

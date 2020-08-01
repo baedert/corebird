@@ -171,13 +171,13 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
 
   public abstract string get_title ();
 
-  public override void destroy () {
+  public override void dispose () {
     if (tweet_remove_timeout > 0) {
       GLib.Source.remove (tweet_remove_timeout);
       tweet_remove_timeout = 0;
     }
 
-    base.destroy ();
+    base.dispose ();
   }
 
   public virtual void create_radio_button(Gtk.RadioButton? group){}
@@ -283,20 +283,20 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
 
   protected void mark_seen (int64 id) {
 #if !EXPERIMENTAL_LISTBOX
-    foreach (Gtk.Widget w in tweet_list.get_widget ().get_children ()) {
-      if (w == null || !(w is Cb.TweetRow))
-        continue;
+    //foreach (Gtk.Widget w in tweet_list.get_widget ().get_children ()) {
+      //if (w == null || !(w is Cb.TweetRow))
+        //continue;
 
-      var tle = (Cb.TweetRow) w;
-      if (tle.tweet.id == id || id == -1) {
-        if (!tle.tweet.get_seen ()) {
-          this.unread_count--;
-        }
-        tle.tweet.set_seen (true);
-        if (id != -1)
-          break;
-      }
-    }
+      //var tle = (Cb.TweetRow) w;
+      //if (tle.tweet.id == id || id == -1) {
+        //if (!tle.tweet.get_seen ()) {
+          //this.unread_count--;
+        //}
+        //tle.tweet.set_seen (true);
+        //if (id != -1)
+          //break;
+      //}
+    //}
 #endif
   }
 
@@ -446,21 +446,21 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
 
     // We HAVE to use widgets here.
 #if !EXPERIMENTAL_LISTBOX
-    tweet_list.get_widget ().forall ((w) => {
-      if (!(w is Cb.TweetRow))
-        return;
+    //tweet_list.get_widget ().forall ((w) => {
+      //if (!(w is Cb.TweetRow))
+        //return;
 
-      var tle = (Cb.TweetRow)w;
-      if (tle.tweet.get_seen ())
-        return;
+      //var tle = (Cb.TweetRow)w;
+      //if (tle.tweet.get_seen ())
+        //return;
 
-      Gtk.Allocation alloc;
-      tle.get_allocation (out alloc);
-      if (alloc.y + (alloc.height / 2.0) >= value) {
-        tle.tweet.set_seen (true);
-        unread_count--;
-      }
-    });
+      //Gtk.Allocation alloc;
+      //tle.get_allocation (out alloc);
+      //if (alloc.y + (alloc.height / 2.0) >= value) {
+        //tle.tweet.set_seen (true);
+        //unread_count--;
+      //}
+    //});
 #endif
   }
 

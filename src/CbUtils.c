@@ -61,7 +61,7 @@ non_gobject_model_changed (GListModel *model,
       GtkListBoxRow *row;
 
       row = gtk_list_box_get_row_at_index (box, position);
-      gtk_container_remove (GTK_CONTAINER (box), GTK_WIDGET (row));
+      gtk_list_box_remove (GTK_LIST_BOX (box), GTK_WIDGET (row));
     }
 
   for (i = 0; i < added; i++)

@@ -262,12 +262,12 @@ class SearchPage : IPage, Gtk.Box {
         entry.show_settings = false;
         if (!collect_obj.done)
           entry.visible = false;
-        tweet_list.get_widget ().add (entry);
+        tweet_list.get_widget ().insert (entry, -1);
       });
       if (users.get_length () > USER_COUNT) {
         if (load_more_entry.parent == null) {
           load_more_entry.visible = false;
-          tweet_list.get_widget ().add (load_more_entry);
+          tweet_list.get_widget ().insert (load_more_entry, -1);
         }
       } else {
         load_more_entry.hide ();
@@ -337,7 +337,7 @@ class SearchPage : IPage, Gtk.Box {
         else
           entry.show ();
 
-        tweet_list.get_widget ().add (entry);
+        tweet_list.get_widget ().insert (entry, -1);
       });
       users.foreach_element ((array, index, node) => {
         if (index > USER_COUNT - 1)
@@ -355,7 +355,7 @@ class SearchPage : IPage, Gtk.Box {
         entry.show_settings = false;
         if (!collect_obj.done)
           entry.visible = false;
-        tweet_list.get_widget ().add (entry);
+        tweet_list.get_widget ().insert (entry, -1);
       });
 
       if (!collect_obj.done)
@@ -375,7 +375,7 @@ class SearchPage : IPage, Gtk.Box {
       return;
     }
 
-    tweet_list.get_widget ().@foreach ((w) => w.show());
+    //tweet_list.get_widget ().@foreach ((w) => w.show());
     this.loading_tweets = false;
     this.loading_users = false;
     this.cancellable = null;
@@ -416,8 +416,8 @@ class LoadMoreEntry : Gtk.ListBoxRow, Cb.TwitterItem {
     load_more_button.set_halign (Gtk.Align.CENTER);
     load_more_button.set_hexpand (true);
     load_more_button.show ();
-    box.add (load_more_button);
-    this.add (box);
+    box.append (load_more_button);
+    this.set_child (box);
   }
 
   public Gtk.Button get_button () {

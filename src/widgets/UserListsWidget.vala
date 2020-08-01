@@ -158,119 +158,119 @@ class UserListsWidget : Gtk.Box {
     arr.foreach_element ((array, index, node) => {
       var obj = node.get_object ();
       var entry = new ListListEntry.from_json_data (obj, account);
-      list_box.add (entry);
+      list_box.insert (entry, -1);
     });
     return arr.get_length ();
   } // }}}
 
 
   public void remove_list (int64 list_id) {
-    uint n_user_lists = user_list_box.get_children ().length ();
-    user_list_box.foreach ((w) => {
-      if (!(w is ListListEntry))
-        return;
+    //uint n_user_lists = user_list_box.get_children ().length ();
+    //user_list_box.foreach ((w) => {
+      //if (!(w is ListListEntry))
+        //return;
 
-      if (((ListListEntry)w).id == list_id) {
-        user_list_box.remove (w);
-        if (n_user_lists - 1 == 0)
-          user_lists_revealer.reveal_child = false;
-      }
-    });
+      //if (((ListListEntry)w).id == list_id) {
+        //user_list_box.remove (w);
+        //if (n_user_lists - 1 == 0)
+          //user_lists_revealer.reveal_child = false;
+      //}
+    //});
 
-    subscribed_list_box.foreach ((w) => {
-      if (!(w is ListListEntry))
-        return;
+    //subscribed_list_box.foreach ((w) => {
+      //if (!(w is ListListEntry))
+        //return;
 
-      if (((ListListEntry)w).id == list_id) {
-        subscribed_list_box.remove (w);
-      }
-    });
+      //if (((ListListEntry)w).id == list_id) {
+        //subscribed_list_box.remove (w);
+      //}
+    //});
 
-    if (subscribed_list_box.get_children ().length () == 0) {
-      subscribed_list_label.hide ();
-      subscribed_list_frame.hide ();
-    }
+    //if (subscribed_list_box.get_children ().length () == 0) {
+      //subscribed_list_label.hide ();
+      //subscribed_list_frame.hide ();
+    //}
   }
 
   public void add_list (ListListEntry entry) {
     if (entry.user_list) {
       // Avoid duplicates
-      var user_lists = user_list_box.get_children ();
-      foreach (Gtk.Widget w in user_lists) {
-        if (!(w is ListListEntry))
-          continue;
+      //var user_lists = user_list_box.get_children ();
+      //foreach (Gtk.Widget w in user_lists) {
+        //if (!(w is ListListEntry))
+          //continue;
 
-        if (((ListListEntry)w).id == entry.id)
-          return;
-      }
-      user_list_box.add (entry);
-      user_lists_revealer.reveal_child = true;
+        //if (((ListListEntry)w).id == entry.id)
+          //return;
+      //}
+      //user_list_box.add (entry);
+      //user_lists_revealer.reveal_child = true;
     } else {
       // Avoid duplicates
-      var subscribed_lists = subscribed_list_box.get_children ();
-      foreach (Gtk.Widget w in subscribed_lists) {
-        if (!(w is ListListEntry))
-          continue;
+      //var subscribed_lists = subscribed_list_box.get_children ();
+      //foreach (Gtk.Widget w in subscribed_lists) {
+        //if (!(w is ListListEntry))
+          //continue;
 
-        if (((ListListEntry)w).id == entry.id)
-          return;
-      }
-      subscribed_list_box.add (entry);
-      subscribed_list_frame.show ();
-      subscribed_list_box.show ();
-      subscribed_list_label.show ();
+        //if (((ListListEntry)w).id == entry.id)
+          //return;
+      //}
+      //subscribed_list_box.add (entry);
+      //subscribed_list_frame.show ();
+      //subscribed_list_box.show ();
+      //subscribed_list_label.show ();
     }
   }
 
   public void update_list (int64 list_id, string name, string description, string mode) {
-    user_list_box.foreach ((w) => {
-      if (!(w is ListListEntry))
-        return;
+    //user_list_box.foreach ((w) => {
+      //if (!(w is ListListEntry))
+        //return;
 
-      var lle = (ListListEntry) w;
-      if (lle.id == list_id) {
-        lle.name = name;
-        lle.description = description;
-        lle.mode = mode;
-        lle.queue_draw ();
-      }
-    });
+      //var lle = (ListListEntry) w;
+      //if (lle.id == list_id) {
+        //lle.name = name;
+        //lle.description = description;
+        //lle.mode = mode;
+        //lle.queue_draw ();
+      //}
+    //});
   }
 
   public void update_member_count (int64 list_id, int increase) {
-    var lists = user_list_box.get_children ();
-    foreach (var list in lists) {
-      if (!(list is ListListEntry))
-        continue;
+    //var lists = user_list_box.get_children ();
+    //foreach (var list in lists) {
+      //if (!(list is ListListEntry))
+        //continue;
 
-      var lle = (ListListEntry) list;
-      if (lle.id == list_id) {
-        lle.n_members += increase;
-        break;
-      }
-    }
+      //var lle = (ListListEntry) list;
+      //if (lle.id == list_id) {
+        //lle.n_members += increase;
+        //break;
+      //}
+    //}
   }
 
   public TwitterList[] get_user_lists () {
-    GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
-    TwitterList[] lists = new TwitterList[children.length ()];
-    int i = 0;
-    foreach (Gtk.Widget w in children) {
-      assert (w is ListListEntry);
-      var lle = (ListListEntry) w;
-      lists[i].id = lle.id;
-      lists[i].name = lle.name;
-      lists[i].description = lle.description;
-      lists[i].mode = lle.mode;
-      lists[i].n_members = lle.n_members;
-      i ++;
-    }
+    //GLib.List<weak Gtk.Widget> children = user_list_box.get_children ();
+    TwitterList[] lists = new TwitterList[0];//children.length ()];
+    //int i = 0;
+    //foreach (Gtk.Widget w in children) {
+      //assert (w is ListListEntry);
+      //var lle = (ListListEntry) w;
+      //lists[i].id = lle.id;
+      //lists[i].name = lle.name;
+      //lists[i].description = lle.description;
+      //lists[i].mode = lle.mode;
+      //lists[i].n_members = lle.n_members;
+      //i ++;
+    //}
     return lists;
   }
 
   public void clear_lists () {
-    user_list_box.foreach ((w) => { user_list_box.remove (w);});
-    subscribed_list_box.foreach ((w) => {subscribed_list_box.remove (w);});
+    //user_list_box.foreach ((w) => { user_list_box.remove (w);});
+    //subscribed_list_box.foreach ((w) => {subscribed_list_box.remove (w);});
   }
 
   [GtkCallback]

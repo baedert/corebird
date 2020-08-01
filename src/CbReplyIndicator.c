@@ -85,20 +85,20 @@ cb_reply_indicator_init (CbReplyIndicator *self)
   w = gtk_image_new_from_icon_name ("go-up-symbolic");
   gtk_widget_set_hexpand (w, TRUE);
   gtk_widget_set_halign (w, GTK_ALIGN_END);
-  gtk_container_add (GTK_CONTAINER (box), w);
-  gtk_container_add (GTK_CONTAINER (box), gtk_label_new (_("Show Conversation")));
+  gtk_box_append (GTK_BOX (box), w);
+  gtk_box_append (GTK_BOX (box), gtk_label_new (_("Show Conversation")));
   w = gtk_image_new_from_icon_name ("go-up-symbolic");
   gtk_widget_set_hexpand (w, TRUE);
   gtk_widget_set_halign (w, GTK_ALIGN_START);
-  gtk_container_add (GTK_CONTAINER (box), w);
+  gtk_box_append (GTK_BOX (box), w);
 
   gtk_style_context_add_class (gtk_widget_get_style_context (box), "dim-label");
 
   self->button = gtk_button_new ();
-  gtk_container_add (GTK_CONTAINER (self->button), box);
+  gtk_button_set_child (GTK_BUTTON (self->button), box);
   self->revealer = gtk_revealer_new ();
 
-  gtk_container_add (GTK_CONTAINER (self->revealer), self->button);
+  gtk_revealer_set_child (GTK_REVEALER (self->revealer), self->button);
   gtk_widget_set_parent (self->revealer, GTK_WIDGET (self));
 
   g_signal_connect (self->button, "clicked", G_CALLBACK (button_clicked_cb), self);

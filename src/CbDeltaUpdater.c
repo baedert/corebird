@@ -37,7 +37,7 @@ minutely_cb (gpointer user_data)
     listbox = cb_tweet_list_box_get_widget (CB_TWEET_LIST_BOX (self->listbox));
   else
     listbox = self->listbox;
-
+#if 0
   widgets = gtk_container_get_children (GTK_CONTAINER (listbox));
   now = g_date_time_new_now_local ();
 
@@ -75,6 +75,7 @@ minutely_cb (gpointer user_data)
 
   g_date_time_unref (now);
   g_list_free (widgets);
+#endif
 
   return G_SOURCE_CONTINUE;
 }

@@ -265,9 +265,9 @@ create_completion_row_func (gpointer item,
   gtk_style_context_add_class (gtk_widget_get_style_context (box), "col-spacing");
   gtk_style_context_add_class (gtk_widget_get_style_context (l2), "dim-label");
 
-  gtk_container_add (GTK_CONTAINER (box), l1);
-  gtk_container_add (GTK_CONTAINER (box), l2);
-  gtk_container_add (GTK_CONTAINER (row), box);
+  gtk_box_append (GTK_BOX (box), l1);
+  gtk_box_append (GTK_BOX (box), l2);
+  gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), box);
 
   g_object_set_data_full (G_OBJECT (row), "row-data", g_strdup (id->screen_name), g_free);
 
@@ -589,7 +589,7 @@ cb_text_view_init (CbTextView *self)
   gtk_widget_set_can_focus (GTK_WIDGET (self), TRUE);
   gtk_widget_set_overflow (GTK_WIDGET (self), GTK_OVERFLOW_HIDDEN);
 
-  self->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  self->scrolled_window = gtk_scrolled_window_new ();
   gtk_scrolled_window_set_min_content_height (GTK_SCROLLED_WINDOW (self->scrolled_window), 80);
   gtk_widget_set_parent (self->scrolled_window, GTK_WIDGET (self));
 
@@ -606,7 +606,7 @@ cb_text_view_init (CbTextView *self)
                     G_CALLBACK (text_buffer_cursor_position_changed_cb), self);
   gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (self->text_view), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->text_view), GTK_WRAP_WORD_CHAR);
-  gtk_container_add (GTK_CONTAINER (self->scrolled_window), self->text_view);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (self->scrolled_window), self->text_view);
 
   get_link_color (self, &link_color);
   gtk_text_buffer_create_tag (buffer, TAG_NO_SPELL_CHECK, NULL);
@@ -627,13 +627,14 @@ cb_text_view_init (CbTextView *self)
 
   cb_animation_init (&self->completion_show_animation, GTK_WIDGET (self), completion_animate_func);
   self->completion_show_factor = 0.0;
-  self->completion_scroller = gtk_scrolled_window_new (NULL, NULL);
+  self->completion_scroller = gtk_scrolled_window_new ();
   gtk_scrolled_window_set_propagate_natural_height (GTK_SCROLLED_WINDOW (self->completion_scroller),
                                                     TRUE);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->completion_scroller), "completion");
   gtk_widget_set_parent (self->completion_scroller, GTK_WIDGET (self));
   self->completion_listbox = gtk_list_box_new ();
-  gtk_container_add (GTK_CONTAINER (self->completion_scroller), self->completion_listbox);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (self->completion_scroller),
+                                 self->completion_listbox);
   self->completion_model = cb_user_completion_model_new ();
   cb_utils_bind_non_gobject_model (self->completion_listbox,
                                    G_LIST_MODEL (self->completion_model),
@@ -674,7 +675,7 @@ void
 cb_text_view_add_widget (CbTextView *self,
                          GtkWidget  *widget)
 {
-  gtk_container_add (GTK_CONTAINER (self->box), widget);
+  gtk_box_append (GTK_BOX (self->box), widget);
   gtk_widget_show (self->box);
 }
 

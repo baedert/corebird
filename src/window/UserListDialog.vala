@@ -52,8 +52,8 @@ class UserListDialog : Gtk.Dialog {
     set_default_response (Gtk.ResponseType.OK);
 
 
-    var content_box = get_content_area ();
-    var scroller = new Gtk.ScrolledWindow (null, null);
+    var content_box = (Gtk.Box)get_content_area ();
+    var scroller = new Gtk.ScrolledWindow ();
     list_list_box.selection_mode = Gtk.SelectionMode.NONE;
     list_list_box.set_header_func (default_header_func);
     list_list_box.row_activated.connect ((row) => {
@@ -64,8 +64,8 @@ class UserListDialog : Gtk.Dialog {
       ((ListUserEntry)row).toggle ();
     });
     scroller.set_vexpand (true);
-    scroller.add (list_list_box);
-    content_box.add (scroller);
+    scroller.set_child (list_list_box);
+    content_box.append (scroller);
 
 
     placeholder_label = new Gtk.Label (_("You have no lists."));
@@ -84,7 +84,7 @@ class UserListDialog : Gtk.Dialog {
         l.id = list.id;
         if (list.n_members >= 500)
           l.disable ();
-        list_list_box.add (l);
+        list_list_box.insert (l, -1);
       }
       this.show ();
     });
@@ -111,14 +111,14 @@ class UserListDialog : Gtk.Dialog {
       var root = parser.get_root ().get_object ();
       var list_arr = root.get_array_member ("lists");
       list_arr.foreach_element ((arr, index, node) => {
-        int64 id = node.get_object ().get_int_member ("id");
-        list_list_box.@foreach ((w) => {
-          var lue = (ListUserEntry) w;
-          if (lue.id == id) {
-            lue.check ();
-            lue.enable ();
-          }
-        });
+        //int64 id = node.get_object ().get_int_member ("id");
+        //list_list_box.@foreach ((w) => {
+          //var lue = (ListUserEntry) w;
+          //if (lue.id == id) {
+            //lue.check ();
+            //lue.enable ();
+          //}
+        //});
       });
     });
   }
@@ -128,20 +128,20 @@ class UserListDialog : Gtk.Dialog {
     if (response_id == Gtk.ResponseType.CANCEL) {
       this.destroy ();
     } else if (response_id == Gtk.ResponseType.OK) {
-      var list_entries = list_list_box.get_children ();
-      foreach (Gtk.Widget w in list_entries) {
-        var lue = (ListUserEntry) w;
-        if (lue.changed) {
-          debug ("VALUE CHANGED");
-          if (lue.active) {
+      //var list_entries = list_list_box.get_children ();
+      //foreach (Gtk.Widget w in list_entries) {
+        //var lue = (ListUserEntry) w;
+        //if (lue.changed) {
+          //debug ("VALUE CHANGED");
+          //if (lue.active) {
             // Add user to the list
-            add_user (lue.id);
-          } else {
+            //add_user (lue.id);
+          //} else {
             // Remove user from the list
-            remove_user (lue.id);
-          }
-        }
-      }
+            //remove_user (lue.id);
+          //}
+        //}
+      //}
       this.destroy ();
     }
   }
@@ -196,19 +196,19 @@ class ListUserEntry : Gtk.ListBoxRow {
     box.margin_start = box.margin_end = box.margin_top = box.margin_bottom = 6;
     added_checkbox.valign = Gtk.Align.CENTER;
     added_checkbox.margin_start = 6;
-    box.add (added_checkbox);
+    box.append (added_checkbox);
     var box2 = new Gtk.Box (Gtk.Orientation.VERTICAL, 3);
     var label = new Gtk.Label ("<b>" + list_name + "</b>");
     label.use_markup = true;
     label.halign = Gtk.Align.START;
-    box2.add (label);
+    box2.append (label);
     var desc_label = new Gtk.Label (description);
     desc_label.get_style_context ().add_class ("dim-label");
     desc_label.halign = Gtk.Align.START;
     desc_label.ellipsize = Pango.EllipsizeMode.END;
-    box2.add (desc_label);
-    box.add (box2);
-    add (box);
+    box2.append (desc_label);
+    box.append (box2);
+    set_child (box);
     added_checkbox.toggled.connect (() => {
       changed = !changed;
     });

@@ -104,27 +104,27 @@ add_recent_item (CbEmojiChooser *chooser,
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("a((auss)u)"));
   g_variant_builder_add (&builder, "(@(auss)u)", item, modifier);
 
-  children = gtk_container_get_children (GTK_CONTAINER (chooser->recent.box));
-  for (l = children, i = 1; l; l = l->next, i++)
-    {
-      GVariant *item2 = g_object_get_data (G_OBJECT (l->data), "emoji-data");
-      gunichar modifier2 = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (l->data), "modifier"));
+  /*children = gtk_container_get_children (GTK_CONTAINER (chooser->recent.box));*/
+  /*for (l = children, i = 1; l; l = l->next, i++)*/
+    /*{*/
+      /*GVariant *item2 = g_object_get_data (G_OBJECT (l->data), "emoji-data");*/
+      /*gunichar modifier2 = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (l->data), "modifier"));*/
 
-      if (modifier == modifier2 && g_variant_equal (item, item2))
-        {
-          gtk_widget_destroy (GTK_WIDGET (l->data));
-          i--;
-          continue;
-        }
-      if (i >= MAX_RECENT)
-        {
-          gtk_widget_destroy (GTK_WIDGET (l->data));
-          continue;
-        }
+      /*if (modifier == modifier2 && g_variant_equal (item, item2))*/
+        /*{*/
+          /*gtk_widget_destroy (GTK_WIDGET (l->data));*/
+          /*i--;*/
+          /*continue;*/
+        /*}*/
+      /*if (i >= MAX_RECENT)*/
+        /*{*/
+          /*gtk_widget_destroy (GTK_WIDGET (l->data));*/
+          /*continue;*/
+        /*}*/
 
-      g_variant_builder_add (&builder, "(@(auss)u)", item2, modifier2);
-    }
-  g_list_free (children);
+      /*g_variant_builder_add (&builder, "(@(auss)u)", item2, modifier2);*/
+    /*}*/
+  /*g_list_free (children);*/
 
   add_emoji (chooser->recent.box, TRUE, item, modifier);
 
@@ -144,7 +144,7 @@ emoji_activated (GtkFlowBox      *box,
   GVariant *item;
   gunichar modifier;
 
-  label = gtk_bin_get_child (GTK_BIN (child));
+  label = gtk_flow_box_child_get_child (child);
   text = g_strdup (gtk_label_get_label (GTK_LABEL (label)));
 
   item = (GVariant*) g_object_get_data (G_OBJECT (child), "emoji-data");
@@ -197,7 +197,7 @@ add_emoji (GtkWidget    *box,
   if (modifier != 0)
     g_object_set_data (G_OBJECT (child), "modifier", GUINT_TO_POINTER (modifier));
 
-  gtk_container_add (GTK_CONTAINER (child), label);
+  gtk_flow_box_child_set_child (GTK_FLOW_BOX_CHILD (child), label);
   gtk_flow_box_insert (GTK_FLOW_BOX (box), child, prepend ? 0 : -1);
 }
 
@@ -434,7 +434,6 @@ setup_section (CbEmojiChooser *chooser,
 
   adj = gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW (chooser->scrolled_window));
 
-  gtk_container_set_focus_vadjustment (GTK_CONTAINER (section->box), adj);
   gtk_flow_box_set_filter_func (GTK_FLOW_BOX (section->box), filter_func, section, NULL);
   g_signal_connect (section->button, "clicked", G_CALLBACK (scroll_to_section), section);
 }

@@ -215,7 +215,7 @@ cb_media_video_widget_destroy (GtkWidget *widget)
   CbMediaVideoWidget *self = CB_MEDIA_VIDEO_WIDGET (widget);
 
   cb_media_video_widget_stop_video (self);
-  GTK_WIDGET_CLASS (cb_media_video_widget_parent_class)->destroy (widget);
+  /*GTK_WIDGET_CLASS (cb_media_video_widget_parent_class)->destroy (widget);*/
 }
 
 #if 0
@@ -272,8 +272,8 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
   self->surface_progress = cb_surface_progress_new ();
   gtk_widget_show (self->surface_progress);
 
-  gtk_container_add (GTK_CONTAINER (self->stack), self->surface_progress);
-  gtk_container_add (GTK_CONTAINER (self->stack), self->error_label);
+  gtk_stack_add_named (GTK_STACK (self->stack), self->surface_progress, "progress");
+  gtk_stack_add_named (GTK_STACK (self->stack), self->error_label, "error");
 
   self->cancellable = g_cancellable_new ();
 
@@ -310,10 +310,10 @@ cb_media_video_widget_init (CbMediaVideoWidget *self)
 
 
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_container_add (GTK_CONTAINER (box), self->area);
+  gtk_box_append (GTK_BOX (box), self->area);
   gtk_style_context_add_class (gtk_widget_get_style_context (self->video_progress),
                                "embedded-progress");
-  gtk_container_add (GTK_CONTAINER (box), self->video_progress);
+  gtk_box_append (GTK_BOX (box), self->video_progress);
 
   gtk_stack_add_named (GTK_STACK (self->stack), box, "video");
 #endif
@@ -327,7 +327,7 @@ cb_media_video_widget_class_init (CbMediaVideoWidgetClass *klass)
 
   object_class->finalize = cb_media_video_widget_finalize;
 
-  widget_class->destroy = cb_media_video_widget_destroy;
+  /*widget_class->destroy = cb_media_video_widget_destroy;*/
   /*widget_class->key_press_event = cb_media_video_widget_key_press_event;*/
 
   gtk_widget_class_set_layout_manager_type (widget_class, GTK_TYPE_BIN_LAYOUT);

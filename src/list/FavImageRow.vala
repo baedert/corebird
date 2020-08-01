@@ -39,7 +39,7 @@ class FavImageRow : Gtk.FlowBoxChild {
     image.set_halign (Gtk.Align.CENTER);
     image.set_valign (Gtk.Align.CENTER);
     image.margin_start = image.margin_end = image.margin_top = image.margin_bottom = 3;
-    this.add (image);
+    this.set_child (image);
 
     this.set_valign (Gtk.Align.START);
 
@@ -93,9 +93,9 @@ class FavImageRow : Gtk.FlowBoxChild {
         }
       }
     });
-    this.add_controller (gesture);
+    //this.add_controller (gesture);
 
-    this.get_style_context ().add_class ("fav-image-item");
+    this.add_css_class ("fav-image-item");
     load_image.begin ();
   }
 

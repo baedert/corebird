@@ -109,7 +109,7 @@ public class AccountDialog : Gtk.Window {
     }
   }
 
-  public override void destroy () {
+  public override void dispose () {
     if (account != null) {
       if (account_was_not_initied) {
         account.uninit ();
@@ -118,11 +118,11 @@ public class AccountDialog : Gtk.Window {
       account = null;
     }
 
-    base.destroy ();
+    base.dispose ();
   }
 
   private bool escape_pressed_cb () {
-    this.destroy ();
+    this.dispose ();
     return Gdk.EVENT_STOP;
   }
 
@@ -349,7 +349,8 @@ public class AccountDialog : Gtk.Window {
     filter.add_mime_type ("image/jpeg");
     filechooser.set_filter (filter);
 
-    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+    if (false) {
+    //if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       warning ("avatar image selector stubbed out!");
       var file = filechooser.get_file ();
       Gdk.Texture? texture = null;
@@ -429,7 +430,7 @@ public class AccountDialog : Gtk.Window {
       content_stack.visible_child = info_box;
       save_button.label = _("Save");
     } else {
-      this.destroy ();
+      this.dispose ();
     }
   }
 

@@ -59,22 +59,21 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
     frame.set_valign (Gtk.Align.START);
     frame.show ();
     var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-    frame.add (box);
-    box.show ();
+    frame.set_child (box);
+    //box.append (frame);
     this.top_list = new Gtk.ListBox ();
     top_list.show ();
     top_list.set_selection_mode (Gtk.SelectionMode.NONE);
     top_list.keynav_failed.connect (top_list_keynav_failed_cb);
-    box.add (top_list);
+    box.append (top_list);
     var sep = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-    sep.show ();
-    box.add (sep);
+    box.append (sep);
     thread_list = new Gtk.ListBox ();
     thread_list.set_valign (Gtk.Align.START);
     thread_list.set_selection_mode (Gtk.SelectionMode.NONE);
     thread_list.keynav_failed.connect (thread_list_keynav_failed_cb);
     thread_list.set_header_func (default_header_func);
-    box.add (thread_list);
+    box.append (thread_list);
     this.add (frame);
 
 
@@ -117,7 +116,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
 
     Cb.Utils.bind_model (thread_list, manager.get_threads_model (), thread_widget_func);
 
-    top_list.add (start_conversation_entry);
+    top_list.insert (start_conversation_entry, -1);
 
     /* We need to do this here so we know which threads we already have cached */
     manager.load_cached_threads ();
@@ -154,16 +153,16 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
   }
 
   void thread_changed_cb (DMThread thread) {
-    foreach (Gtk.Widget w in this.thread_list.get_children ()) {
-      if (w is DMThreadEntry) {
-        var entry = (DMThreadEntry) w;
-        if (entry.user_id == thread.user.id) {
-          entry.last_message = thread.last_message;
-          entry.unread_count = thread.unread_count;
-          break;
-        }
-      }
-    }
+    //foreach (Gtk.Widget w in this.thread_list.get_children ()) {
+      //if (w is DMThreadEntry) {
+        //var entry = (DMThreadEntry) w;
+        //if (entry.user_id == thread.user.id) {
+          //entry.last_message = thread.last_message;
+          //entry.unread_count = thread.unread_count;
+          //break;
+        //}
+      //}
+    //}
   }
   public void stream_message_received (Cb.StreamMessageType type, Json.Node root) {
     if (type == Cb.StreamMessageType.DIRECT_MESSAGE) {
@@ -187,10 +186,10 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
         spinner.margin_start = spinner.margin_end = spinner.margin_top = spinner.margin_bottom = 12;
         spinner.visible = true;
         spinner.start ();
-        progress_row.add (spinner);
+        progress_row.set_child (spinner);
         progress_row.activatable = false;
         progress_row.visible = true;
-        thread_list.add (progress_row);
+        thread_list.insert (progress_row, -1);
       }
       this.manager.load_newest_dms.begin (() => {
         if (was_empty) {
@@ -201,9 +200,9 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
 
           top_list.show ();
 
-          foreach (Gtk.Widget w in thread_list.get_children ()) {
-            w.show ();
-          }
+          //foreach (Gtk.Widget w in thread_list.get_children ()) {
+            //w.show ();
+          //}
         }
       });
       this.initialized = true;

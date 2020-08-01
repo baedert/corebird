@@ -44,7 +44,7 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     this.account = account;
 
     filter_list.set_header_func (default_header_func);
-    filter_list.add (new AddListEntry (_("Add new Filter")));
+    filter_list.insert (new AddListEntry (_("Add new Filter")), -1);
     filter_list.row_activated.connect ((row) => {
       if (row is AddListEntry) {
         var dialog = new ModifyFilterDialog (_main_window, account);
@@ -67,7 +67,7 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       for (int i = 0; i < account.filters.length; i ++) {
         var f = account.filters.get (i);
         var entry = new FilterListEntry (f, account, _main_window);
-        filter_list.add (entry);
+        filter_list.insert (entry, -1);
       }
       filters_loaded = true;
     }
@@ -82,10 +82,10 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     users_loaded = true;
     var collect_obj = new Barrier (2);
     collect_obj.finished.connect (() => {
-      if (user_list.get_children ().length () > 0) {
-        user_list_frame.show ();
-        user_list_revealer.reveal_child = true;
-      }
+      //if (user_list.get_children ().length () > 0) {
+        //user_list_frame.show ();
+        //user_list_revealer.reveal_child = true;
+      //}
     });
 
     var call = account.proxy.new_call ();
@@ -152,19 +152,19 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
   private void filter_added_cb (Cb.Filter f, bool created) {
     if (created) {
       var entry = new FilterListEntry (f, account, _main_window);
-      filter_list.add (entry);
+      filter_list.insert (entry, -1);
     } else {
-      var children = filter_list.get_children ();
-      foreach (Gtk.Widget w in children) {
-        if (!(w is FilterListEntry))
-          continue;
+      //var children = filter_list.get_children ();
+      //foreach (Gtk.Widget w in children) {
+        //if (!(w is FilterListEntry))
+          //continue;
 
-        var le = (FilterListEntry) w;
-        if (le.filter.get_id () == f.get_id ()) {
-          le.content = f.get_contents ();
-          break;
-        }
-      }
+        //var le = (FilterListEntry) w;
+        //if (le.filter.get_id () == f.get_id ()) {
+          //le.content = f.get_contents ();
+          //break;
+        //}
+      //}
     }
   }
 
@@ -189,19 +189,19 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
   private void add_user (Json.Object user_obj, bool muted) {
     int64 id = user_obj.get_int_member ("id");
 
-    foreach (Gtk.Widget w in user_list.get_children ()) {
-      if (!(w is UserFilterEntry))
-        continue;
+    //foreach (Gtk.Widget w in user_list.get_children ()) {
+      //if (!(w is UserFilterEntry))
+        //continue;
 
-      var ufe = (UserFilterEntry) w;
-      if (ufe.user_id == id) {
-        if (muted)
-          ufe.muted = true;
-        else
-          ufe.blocked = true;
-        return;
-      }
-    }
+      //var ufe = (UserFilterEntry) w;
+      //if (ufe.user_id == id) {
+        //if (muted)
+          //ufe.muted = true;
+        //else
+          //ufe.blocked = true;
+        //return;
+      //}
+    //}
 
     string avatar_url = user_obj.get_string_member ("profile_image_url");
 
@@ -222,30 +222,30 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       if (entry.blocked)
         unblock_user (id);
     });
-    user_list.add (entry);
+    user_list.insert (entry, -1);
     user_list_frame.show ();
   }
 
   private void remove_user (int64 id, bool muted) {
-    foreach (Gtk.Widget w in user_list.get_children ()) {
-      if (!(w is UserFilterEntry))
-        continue;
+    //foreach (Gtk.Widget w in user_list.get_children ()) {
+      //if (!(w is UserFilterEntry))
+        //continue;
 
-      var ufe = (UserFilterEntry) w;
-      if (ufe.user_id == id) {
-        if (muted)
-          ufe.muted = false;
-        else
-          ufe.blocked = false;
+      //var ufe = (UserFilterEntry) w;
+      //if (ufe.user_id == id) {
+        //if (muted)
+          //ufe.muted = false;
+        //else
+          //ufe.blocked = false;
 
-        if (!ufe.blocked && !ufe.muted)
-          user_list.remove (w);
+        //if (!ufe.blocked && !ufe.muted)
+          //user_list.remove (w);
 
-        break;
-      }
-    }
+        //break;
+      //}
+    //}
 
-    if (user_list.get_children ().length () == 0) {
+    if (user_list.get_first_child () == null) {
       user_list_frame.hide ();
     }
   }

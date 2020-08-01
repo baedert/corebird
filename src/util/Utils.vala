@@ -155,7 +155,7 @@ namespace Utils {
                                         "%s", message);
 
     /* Hacky way to get the label selectable */
-    ((Gtk.Label)(((Gtk.Container)dialog.get_message_area ()).get_children ().nth_data (0))).set_selectable (true);
+    //((Gtk.Label)(((Gtk.Container)dialog.get_message_area ()).get_children ().nth_data (0))).set_selectable (true);
 
     dialog.response.connect ((id) => {
       if (id == Gtk.ResponseType.OK)

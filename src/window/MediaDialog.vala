@@ -36,19 +36,19 @@ class MediaDialog : Gtk.Window {
     Cb.Media cur_media = tweet.get_medias()[start_media_index];
     this.tweet = tweet;
     this.cur_index = start_media_index;
-    this.button_gesture = new Gtk.GestureClick ();
-    this.button_gesture.set_button (0);
-    this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
-    this.button_gesture.released.connect (button_released_cb);
-    this.add_controller (this.button_gesture);
+    //this.button_gesture = new Gtk.GestureClick ();
+    //this.button_gesture.set_button (0);
+    //this.button_gesture.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
+    //this.button_gesture.released.connect (button_released_cb);
+    //this.add_controller (this.button_gesture);
 
     this.initial_px = px;
     this.initial_py = py;
 
-    var motion_controller = new Gtk.EventControllerMotion ();
-    motion_controller.enter.connect (enter_cb);
-    motion_controller.leave.connect (leave_cb);
-    this.add_controller (motion_controller);
+    //var motion_controller = new Gtk.EventControllerMotion ();
+    //motion_controller.enter.connect (enter_cb);
+    //motion_controller.leave.connect (leave_cb);
+    //this.add_controller (motion_controller);
 
 
     if (tweet.get_medias ().length == 1) {
@@ -74,19 +74,19 @@ class MediaDialog : Gtk.Window {
 
 
     if (frame.get_child () != null) {
-      frame.remove (cur_child);
+      frame.set_child (null);
       cur_child.get_size_request (out cur_width, out cur_height);
     }
 
     Gtk.Widget new_widget = null;
     if (media.is_video ()) {
       new_widget = new Cb.MediaVideoWidget (media);
-      frame.add (new_widget);
+      frame.set_child (new_widget);
       ((Cb.MediaVideoWidget)new_widget).start ();
     } else {
       new_widget = new Cb.MediaImageWidget (media);
       ((Cb.MediaImageWidget)new_widget).scroll_to (this.initial_px, this.initial_py);
-      frame.add (new_widget);
+      frame.set_child (new_widget);
 
       ((Cb.MediaImageWidget)new_widget).calc_size ();
 

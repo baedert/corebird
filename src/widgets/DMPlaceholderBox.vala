@@ -48,16 +48,16 @@ class DMPlaceholderBox : Gtk.Box {
     this.avatar_image = new AvatarWidget ();
     avatar_image.size = 48;
     avatar_image.set_halign (Gtk.Align.CENTER);
-    this.add (avatar_image);
+    this.append (avatar_image);
 
     this.name_label = new Gtk.Label ("");
     var attrs = new Pango.AttrList ();
     attrs.insert (Pango.attr_weight_new (Pango.Weight.BOLD));
     name_label.set_attributes (attrs);
-    this.add (name_label);
+    this.append (name_label);
 
     this.screen_name_label = new Gtk.Label ("");
     screen_name_label.get_style_context ().add_class ("dim-label");
-    this.add (screen_name_label);
+    this.append (screen_name_label);
   }
 }

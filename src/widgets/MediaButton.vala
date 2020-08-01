@@ -266,7 +266,8 @@ private class MediaButton : Gtk.Widget {
                                                  _("Cancel"));
 
     filechooser.set_current_name (Utils.get_media_display_name (_media));
-    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+    if (false) {
+    //if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       var file = filechooser.get_file ();
       // Download the file
       string url = _media.target_url ?? _media.url;

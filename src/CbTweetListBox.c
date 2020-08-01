@@ -284,10 +284,10 @@ cb_tweet_list_box_init (CbTweetListBox *self)
     gtk_widget_set_margin_bottom (self->error_label, 12);
     gtk_widget_set_margin_start (self->error_label, 12);
     gtk_label_set_selectable ((GtkLabel *)self->error_label, TRUE);
-    gtk_container_add (GTK_CONTAINER (error_box), self->error_label);
+    gtk_box_append (GTK_BOX (error_box), self->error_label);
     gtk_widget_set_halign (retry_button, GTK_ALIGN_CENTER);
     g_signal_connect (retry_button, "clicked", G_CALLBACK (retry_button_clicked_cb), self);
-    gtk_container_add (GTK_CONTAINER (error_box), retry_button);
+    gtk_box_append (GTK_BOX (error_box), retry_button);
     gtk_stack_add_named ((GtkStack *)self->placeholder, error_box, "error");
 
     gtk_stack_set_visible_child_name ((GtkStack *)self->placeholder, "spinner");
@@ -369,14 +369,14 @@ cb_tweet_list_box_get_placeholder (CbTweetListBox *self)
 void
 cb_tweet_list_box_remove_all (CbTweetListBox *self)
 {
-  GList *children = gtk_container_get_children (GTK_CONTAINER (self->widget));
-  GList *l;
+  /*GList *children = gtk_container_get_children (GTK_CONTAINER (self->widget));*/
+  /*GList *l;*/
 
-  for (l = children; l; l = l->next)
-    {
-      if (GTK_WIDGET (l->data) != self->placeholder)
-        gtk_container_remove ((GtkContainer *)self, l->data);
-    }
+  /*for (l = children; l; l = l->next)*/
+    /*{*/
+      /*if (GTK_WIDGET (l->data) != self->placeholder)*/
+        /*gtk_container_remove ((GtkContainer *)self, l->data);*/
+    /*}*/
 
-  g_list_free (children);
+  /*g_list_free (children);*/
 }

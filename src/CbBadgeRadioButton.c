@@ -125,15 +125,6 @@ create_ui (CbBadgeRadioButton *self,
 
   gtk_check_button_set_draw_indicator (GTK_CHECK_BUTTON (self->button), FALSE);
   gtk_button_set_icon_name (GTK_BUTTON (self->button), icon_name);
-  if (text && text[0] != '\0')
-    {
-      AtkObject *accessible;
-
-      gtk_widget_set_tooltip_text (GTK_WIDGET (self), text);
-
-      accessible = gtk_widget_get_accessible (GTK_WIDGET (self));
-      atk_object_set_name (accessible, text);
-    }
   gtk_widget_set_parent (self->button, (GtkWidget *)self);
 
   self->badge = g_object_new (GTK_TYPE_FRAME, /* TODO: Because we can't instantiate GtkWidget */

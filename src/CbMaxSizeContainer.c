@@ -17,7 +17,7 @@
 
 #include "CbMaxSizeContainer.h"
 
-G_DEFINE_TYPE (CbMaxSizeContainer, cb_max_size_container, GTK_TYPE_BIN);
+G_DEFINE_TYPE (CbMaxSizeContainer, cb_max_size_container, GTK_TYPE_WIDGET);
 
 
 static void
@@ -30,21 +30,20 @@ cb_max_size_container_measure (GtkWidget      *widget,
                                int            *natural_baseline)
 {
   CbMaxSizeContainer *self = CB_MAX_SIZE_CONTAINER (widget);
-  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
   int min_height;
   int nat_height;
 
-  if (child == NULL)
+  if (self->child == NULL)
     return;
 
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-      gtk_widget_measure (child, orientation, for_size,
+      gtk_widget_measure (self->child, orientation, for_size,
                           minimum, natural, minimum_baseline, natural_baseline);
       return;
     }
 
-  gtk_widget_measure (child, orientation, for_size, &min_height, &nat_height, NULL, NULL);
+  gtk_widget_measure (self->child, orientation, for_size, &min_height, &nat_height, NULL, NULL);
 
   *minimum = min_height * self->fraction;
   *natural = nat_height * self->fraction;
@@ -56,14 +55,14 @@ cb_max_size_container_size_allocate (GtkWidget *widget,
                                      int        height,
                                      int        baseline)
 {
-  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
+  CbMaxSizeContainer *self = (CbMaxSizeContainer *)widget;
   GtkAllocation child_alloc;
   int min_height;
 
-  if (child == NULL)
+  if (self->child == NULL)
     return;
 
-  gtk_widget_measure (child, GTK_ORIENTATION_VERTICAL, width,
+  gtk_widget_measure (self->child, GTK_ORIENTATION_VERTICAL, width,
                       &min_height, NULL, NULL, NULL);
 
   child_alloc.x = 0;
@@ -71,28 +70,7 @@ cb_max_size_container_size_allocate (GtkWidget *widget,
   child_alloc.width = width;
   child_alloc.height = min_height;
 
-  gtk_widget_size_allocate (child, &child_alloc, baseline);
-}
-
-static void
-cb_max_size_container_snapshot (GtkWidget   *widget,
-                                GtkSnapshot *snapshot)
-{
-  GtkWidget *child = gtk_bin_get_child (GTK_BIN (widget));
-
-  if (child == NULL)
-    return;
-
-  gtk_snapshot_push_clip (snapshot,
-                          &GRAPHENE_RECT_INIT (
-                            0, 0,
-                            gtk_widget_get_width (widget),
-                            gtk_widget_get_height (widget)
-                          ));
-
-  gtk_widget_snapshot_child (widget, child, snapshot);
-
-  gtk_snapshot_pop (snapshot);
+  gtk_widget_size_allocate (self->child, &child_alloc, baseline);
 }
 
 static void
@@ -110,7 +88,6 @@ cb_max_size_container_class_init (CbMaxSizeContainerClass *klass)
 
   widget_class->measure = cb_max_size_container_measure;
   widget_class->size_allocate = cb_max_size_container_size_allocate;
-  widget_class->snapshot = cb_max_size_container_snapshot;
 }
 
 static void

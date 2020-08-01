@@ -47,9 +47,9 @@ public class MultiMediaWidget : Gtk.Box {
   }
 
   private void remove_all () {
-    this.get_children ().foreach ((w) => {
-      this.remove (w);
-    });
+    //this.get_children ().foreach ((w) => {
+      //this.remove (w);
+    //});
   }
 
   public void set_media (int index, Cb.Media media) {
@@ -71,7 +71,7 @@ public class MultiMediaWidget : Gtk.Box {
     }
     button.visible = true;
     button.clicked.connect (button_clicked_cb);
-    this.add (button);
+    this.append (button);
   }
 
   private void button_clicked_cb (MediaButton source, double px, double py) {

@@ -140,7 +140,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       var reply_entry = new Cb.TweetRow (reply_to, parent);
       reply_entry.activatable = false;
       reply_entry.set_read_only ();
-      reply_list.get_widget ().add (reply_entry);
+      reply_list.get_widget ().insert (reply_entry, -1);
       content_grid.attach (reply_list, 0, 0, 2, 1);
     }
 
@@ -213,7 +213,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       }
     });
     close_event_controller.set_propagation_phase (Gtk.PropagationPhase.BUBBLE);
-    this.add_controller (close_event_controller);
+    //this.add_controller (close_event_controller);
 
     this.set_default_size (DEFAULT_WIDTH, (int)(DEFAULT_WIDTH / 2.5));
   }
@@ -313,7 +313,8 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
     filter.add_mime_type ("image/gif");
     filechooser.set_filter (filter);
 
-    if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
+    if (false) {
+    //if (filechooser.run () == Gtk.ResponseType.ACCEPT) {
       /* Get file size */
       var file = filechooser.get_file ();
       debug ("Loading %s", file.get_uri ());
@@ -408,7 +409,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.tweet_text.insert_at_cursor (text);
       cancel_clicked ();
     });
-    stack.add (emoji_chooser);
+    stack.add_named (emoji_chooser, "");
 
     this.emoji_button = new Gtk.Button.from_icon_name ("face-smile-symbolic");
     emoji_button.clicked.connect (() => {

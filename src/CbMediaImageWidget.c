@@ -80,11 +80,11 @@ cb_media_image_widget_init (CbMediaImageWidget *self)
 {
   GtkGesture *drag_gesture;
 
-  self->scroller = gtk_scrolled_window_new (NULL, NULL);
+  self->scroller = gtk_scrolled_window_new ();
   gtk_widget_set_parent (self->scroller, GTK_WIDGET (self));
 
   self->image = gtk_picture_new ();
-  gtk_container_add (GTK_CONTAINER (self->scroller), self->image);
+  gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (self->scroller), self->image);
 
   self->initial_scroll_x = 0.5;
   self->initial_scroll_y = 0.5;
@@ -200,7 +200,9 @@ cb_media_image_widget_calc_size (CbMediaImageWidget *self)
        return;
     }
 
-  gdk_monitor_get_workarea (monitor, &workarea);
+  /*gdk_monitor_get_workarea (monitor, &workarea);*/
+  workarea.width = 1024;
+  workarea.height = 768;
   g_message ("image size: %d×%d", self->img_width, self->img_height);
 
   g_message ("Workarea: %d×%d", workarea.width, workarea.height);

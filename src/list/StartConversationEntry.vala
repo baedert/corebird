@@ -50,10 +50,10 @@ class StartConversationEntry : Gtk.ListBoxRow {
     //});
 
     var popup_frame = new Gtk.Frame (null);
-    var scroller = new Gtk.ScrolledWindow (null, null);
-    popup_frame.add (scroller);
-    scroller.add (completion_list);
-    completion_window.add (popup_frame);
+    var scroller = new Gtk.ScrolledWindow ();
+    popup_frame.set_child (scroller);
+    scroller.set_child (completion_list);
+    completion_window.set_child (popup_frame);
 
     completion_list.activate_on_single_click = false;
     completion_list.row_activated.connect (go_button_clicked_cb);
@@ -63,12 +63,12 @@ class StartConversationEntry : Gtk.ListBoxRow {
       completion_window.set_transient_for ((Gtk.Window)this.get_root ());
       position_popup_window ();
       completion_window.show ();
-      completion_list.foreach ((w) => { completion_list.remove (w); });
+      //completion_list.foreach ((w) => { completion_list.remove (w); });
     });
     user_completion.populate_completion.connect ((screen_name, name) => {
       var l = new CompletionListEntry (screen_name, name);
       l.show ();
-      completion_list.add (l);
+      completion_list.insert (l, -1);
     });
 
     //name_entry.key_press_event.connect (name_entry_key_pressed);
@@ -219,9 +219,9 @@ class CompletionListEntry : Gtk.ListBoxRow {
     name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.set_valign (Gtk.Align.BASELINE);
     screen_name_label.get_style_context ().add_class ("dim-label");
-    box.add (name_label);
-    box.add (screen_name_label);
-    add (box);
+    box.append (name_label);
+    box.append (screen_name_label);
+    set_child (box);
   }
   public string get_screen_name () {
     return screen_name_label.get_label ().substring (1);

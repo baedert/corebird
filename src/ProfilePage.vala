@@ -518,7 +518,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("border-bottom");
-      this.followers_list.get_widget ().add (entry);
+      this.followers_list.get_widget ().insert (entry, -1);
     });
 
     this.followers_loading = false;
@@ -560,8 +560,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
       entry.name = user_obj.get_string_member ("name");
       entry.avatar_url = avatar_url;
       entry.get_style_context ().add_class ("border-bottom");
-      entry.show ();
-      this.following_list.get_widget ().add (entry);
+      this.following_list.get_widget ().insert (entry, -1);
 
     });
 

@@ -59,7 +59,10 @@ class FilterListEntry : Gtk.ListBoxRow {
   construct {
     revealer.notify["child-revealed"].connect (() => {
       if (!revealer.child_revealed) {
-        ((Gtk.Container)this.get_parent ()).remove (this);
+        Gtk.ListBox? parent = (Gtk.ListBox?) this.get_parent();
+        if (parent != null) {
+          parent.remove (this);
+        }
       }
     });
   }
