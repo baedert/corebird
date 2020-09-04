@@ -338,6 +338,6 @@ class DMPage : IPage, Cb.MessageReceiver, Gtk.Box {
     return _("Direct Conversation");
   }
 
-  public void create_radio_button (Gtk.RadioButton? group) {}
+  public void create_radio_button (Gtk.ToggleButton? group) {}
   public Cb.BadgeRadioButton? get_radio_button() {return null;}
 }

@@ -381,7 +381,7 @@ class SearchPage : IPage, Gtk.Box {
     this.cancellable = null;
   }
 
-  public void create_radio_button (Gtk.RadioButton? group){
+  public void create_radio_button (Gtk.ToggleButton? group){
     radio_button = new Cb.BadgeRadioButton (group, "corebird-edit-find-symbolic", _("Search"));
   }
 

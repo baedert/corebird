@@ -122,7 +122,7 @@ class ListsPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
   }
 
 
-  public void create_radio_button (Gtk.RadioButton? group) {
+  public void create_radio_button (Gtk.ToggleButton? group) {
     radio_button = new Cb.BadgeRadioButton (group, "view-list-symbolic", _("Lists"));
   }
 

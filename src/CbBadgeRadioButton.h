@@ -18,7 +18,7 @@ typedef struct _CbBadgeRadioButton CbBadgeRadioButton;
 #define CB_TYPE_BADGE_RADIO_BUTTON cb_badge_radio_button_get_type ()
 G_DECLARE_FINAL_TYPE (CbBadgeRadioButton, cb_badge_radio_button, CB, BADGE_RADIO_BUTTON, GtkWidget);
 
-CbBadgeRadioButton *            cb_badge_radio_button_new            (GtkRadioButton     *group,
+CbBadgeRadioButton *            cb_badge_radio_button_new            (GtkToggleButton    *group,
                                                                       const char         *icon_name,
                                                                       const char         *text);
 GtkWidget *                     cb_badge_radio_button_get_button     (CbBadgeRadioButton *self);

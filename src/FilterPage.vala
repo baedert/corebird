@@ -313,7 +313,7 @@ class FilterPage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
 
 
   public void on_leave () {}
-  public void create_radio_button (Gtk.RadioButton? group) {
+  public void create_radio_button (Gtk.ToggleButton? group) {
     radio_button = new Cb.BadgeRadioButton(group, "corebird-filter-symbolic", _("Filters"));
   }
 

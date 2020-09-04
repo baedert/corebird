@@ -72,7 +72,7 @@ class FavoritesTimeline : Cb.MessageReceiver, DefaultTimeline {
     return _("Favorites");
   }
 
-  public override void create_radio_button (Gtk.RadioButton? group) {
+  public override void create_radio_button (Gtk.ToggleButton? group) {
     radio_button = new Cb.BadgeRadioButton(group, "corebird-favorite-symbolic", _("Favorites"));
   }
 }

@@ -180,7 +180,7 @@ public abstract class DefaultTimeline : Cb.ScrollWidget, IPage {
     base.dispose ();
   }
 
-  public virtual void create_radio_button(Gtk.RadioButton? group){}
+  public virtual void create_radio_button(Gtk.ToggleButton? group){}
 
   public Cb.BadgeRadioButton? get_radio_button() {
     return radio_button;

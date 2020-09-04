@@ -550,8 +550,8 @@ namespace Cb {
     public bool active { get; set; }
     public bool show_badge { get; set; }
     [CCode (has_construct_function = false)]
-    public BadgeRadioButton (Gtk.RadioButton group, string icon_name, string text = "");
-    public unowned Gtk.RadioButton get_button ();
+    public BadgeRadioButton (Gtk.ToggleButton group, string icon_name, string text = "");
+    public unowned Gtk.ToggleButton get_button ();
     public void set_menu (GLib.Menu menu);
   }
 }

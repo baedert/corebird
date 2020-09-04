@@ -18,7 +18,7 @@
 public class MainWidget : Gtk.Box {
   private unowned Account account;
 
-  private Gtk.RadioButton dummy_button  = new Gtk.RadioButton (null);
+  private Gtk.ToggleButton dummy_button  = new Gtk.ToggleButton ();
   private IPage[] pages;
   private Cb.BundleHistory history      = new Cb.BundleHistory ();
   private bool page_switch_lock         = false;

@@ -238,7 +238,7 @@ class DMThreadsPage : IPage, Cb.MessageReceiver, Cb.ScrollWidget {
                                                             text);
   }
 
-  public void create_radio_button(Gtk.RadioButton? group) {
+  public void create_radio_button(Gtk.ToggleButton? group) {
     radio_button = new Cb.BadgeRadioButton(group, "corebird-dms-symbolic", _("Direct Messages"));
   }
 

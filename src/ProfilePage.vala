@@ -81,7 +81,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
   [GtkChild]
   private Gtk.Stack loading_stack;
   [GtkChild]
-  private Gtk.RadioButton tweets_button;
+  private Gtk.ToggleButton tweets_button;
   [GtkChild]
   private Gtk.Label loading_error_label;
   private int64 user_id;
@@ -680,7 +680,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
     avatar_image.texture = null;
   }
 
-  public void create_radio_button (Gtk.RadioButton? group) {}
+  public void create_radio_button (Gtk.ToggleButton? group) {}
 
 
   public string get_title () {
@@ -843,14 +843,14 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
 
   [GtkCallback]
   private void tweets_button_toggled_cb (GLib.Object source) {
-    if (((Gtk.RadioButton)source).active) {
+    if (((Gtk.ToggleButton)source).active) {
       this.balance_next_upper_change (BOTTOM);
       user_stack.visible_child = tweet_list;
     }
   }
   [GtkCallback]
   private void followers_button_toggled_cb (GLib.Object source) {
-    if (((Gtk.RadioButton)source).active) {
+    if (((Gtk.ToggleButton)source).active) {
       if (this.followers_cursor == null) {
         this.load_followers.begin ();
       }
@@ -861,7 +861,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
 
   [GtkCallback]
   private void following_button_toggled_cb (GLib.Object source) {
-    if (((Gtk.RadioButton)source).active) {
+    if (((Gtk.ToggleButton)source).active) {
       if (this.following_cursor == null) {
         this.load_following.begin ();
       }
@@ -872,7 +872,7 @@ public class ProfilePage : Cb.ScrollWidget, IPage, Cb.MessageReceiver {
 
   [GtkCallback]
   private void lists_button_toggled_cb (GLib.Object source) {
-    if (((Gtk.RadioButton)source).active) {
+    if (((Gtk.ToggleButton)source).active) {
       if (!lists_page_inited) {
         user_lists.load_lists.begin (user_id);
         lists_page_inited = true;

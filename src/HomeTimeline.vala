@@ -186,7 +186,7 @@ public class HomeTimeline : Cb.MessageReceiver, DefaultTimeline {
     return "@" + account.screen_name;
   }
 
-  public override void create_radio_button (Gtk.RadioButton? group) {
+  public override void create_radio_button (Gtk.ToggleButton? group) {
     radio_button = new Cb.BadgeRadioButton(group, "corebird-user-home-symbolic", _("Home"));
   }
 }

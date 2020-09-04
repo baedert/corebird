@@ -119,11 +119,12 @@ cb_badge_radio_button_init (CbBadgeRadioButton *self)
 static void
 create_ui (CbBadgeRadioButton *self,
            const char         *icon_name,
-           const char         *text)
+           const char         *text,
+           GtkToggleButton    *group)
 {
   g_assert (self->button);
 
-  gtk_check_button_set_draw_indicator (GTK_CHECK_BUTTON (self->button), FALSE);
+  gtk_toggle_button_set_group (GTK_TOGGLE_BUTTON (self->button), group);
   gtk_button_set_icon_name (GTK_BUTTON (self->button), icon_name);
   gtk_widget_set_parent (self->button, (GtkWidget *)self);
 
@@ -137,15 +138,15 @@ create_ui (CbBadgeRadioButton *self,
 }
 
 CbBadgeRadioButton *
-cb_badge_radio_button_new (GtkRadioButton *group,
-                           const char     *icon_name,
-                           const char     *text)
+cb_badge_radio_button_new (GtkToggleButton *group,
+                           const char      *icon_name,
+                           const char      *text)
 {
   CbBadgeRadioButton *self = (CbBadgeRadioButton *)g_object_new (CB_TYPE_BADGE_RADIO_BUTTON,
                                                                  NULL);
 
-  self->button = gtk_radio_button_new_from_widget (group);
-  create_ui (self, icon_name, text);
+  self->button = gtk_toggle_button_new ();
+  create_ui (self, icon_name, text, group);
 
   return self;
 }

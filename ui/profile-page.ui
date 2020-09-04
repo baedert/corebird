@@ -201,9 +201,8 @@
                         <property name="margin-top">6</property>
                         <property name="margin-bottom">6</property>
                         <child>
-                          <object class="GtkRadioButton" id="tweets_button">
+                          <object class="GtkToggleButton" id="tweets_button">
                             <property name="hexpand">1</property>
-                            <property name="draw-indicator">0</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
@@ -237,10 +236,9 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkRadioButton">
+                          <object class="GtkToggleButton">
                             <property name="hexpand">1</property>
                             <property name="group">tweets_button</property>
-                            <property name="draw-indicator">0</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
@@ -274,10 +272,9 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkRadioButton">
+                          <object class="GtkToggleButton">
                             <property name="hexpand">1</property>
                             <property name="group">tweets_button</property>
-                            <property name="draw-indicator">0</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
@@ -311,10 +308,9 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkRadioButton">
+                          <object class="GtkToggleButton">
                             <property name="hexpand">1</property>
                             <property name="group">tweets_button</property>
-                            <property name="draw-indicator">0</property>
                             <style>
                               <class name="profile-button"/>
                             </style>
