@@ -44,8 +44,8 @@
                   <class name="dim-label"/>
                 </style>
                 <layout>
-                  <property name="left-attach">0</property>
-                  <property name="top-attach">0</property>
+                  <property name="column">0</property>
+                  <property name="row">0</property>
                 </layout>
               </object>
             </child>
@@ -55,8 +55,8 @@
                 <property name="max-length">20</property>
                 <property name="activates-default">1</property>
                 <layout>
-                  <property name="left-attach">1</property>
-                  <property name="top-attach">0</property>
+                  <property name="column">1</property>
+                  <property name="row">0</property>
                 </layout>
               </object>
             </child>
@@ -68,8 +68,8 @@
                   <class name="dim-label"/>
                 </style>
                 <layout>
-                  <property name="left-attach">0</property>
-                  <property name="top-attach">1</property>
+                  <property name="column">0</property>
+                  <property name="row">1</property>
                 </layout>
               </object>
             </child>
@@ -79,8 +79,8 @@
                 <property name="max-length">200</property>
                 <property name="activates-default">1</property>
                 <layout>
-                  <property name="left-attach">1</property>
-                  <property name="top-attach">1</property>
+                  <property name="column">1</property>
+                  <property name="row">1</property>
                 </layout>
               </object>
             </child>
@@ -88,8 +88,8 @@
               <object class="GtkLabel" id="error_label">
                 <property name="halign">center</property>
                 <layout>
-                  <property name="left-attach">0</property>
-                  <property name="top-attach">2</property>
+                  <property name="column">0</property>
+                  <property name="row">2</property>
                   <property name="column-span">2</property>
                 </layout>
               </object>
@@ -100,8 +100,8 @@
                 <property name="label" translatable="yes">Delete</property>
                 <signal name="clicked" handler="delete_button_clicked_cb"/>
                 <layout>
-                  <property name="left-attach">0</property>
-                  <property name="top-attach">3</property>
+                  <property name="column">0</property>
+                  <property name="row">3</property>
                   <property name="column-span">2</property>
                 </layout>
               </object>

@@ -31,8 +31,8 @@
                 </attributes>
               </object>
               <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
+                <property name="column">0</property>
+                <property name="row">0</property>
               </packing>
             </child>
             <child>
@@ -49,8 +49,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">1</property>
+                <property name="column">0</property>
+                <property name="row">1</property>
               </packing>
             </child>
             <child>
@@ -66,8 +66,8 @@
                 <signal name="clicked" handler="more_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
+                <property name="column">1</property>
+                <property name="row">0</property>
                 <property name="height">2</property>
               </packing>
             </child>

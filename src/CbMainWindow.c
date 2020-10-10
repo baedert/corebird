@@ -553,8 +553,8 @@ cb_main_window_init (CbMainWindow *self)
   /*gtk_label_set_ellipsize (GTK_LABEL (self->title_label), PANGO_ELLIPSIZE_MIDDLE);*/
   /*gtk_style_context_add_class (gtk_widget_get_style_context (self->title_label), "title");*/
   /*gtk_container_add (GTK_CONTAINER (self->title_stack), self->title_label);*/
-  /*self->last_page_label = gtk_label_new ("");*/
-  /*gtk_label_set_ellipsize (GTK_LABEL (self->last_page_label), PANGO_ELLIPSIZE_MIDDLE);*/
+  self->last_page_label = gtk_label_new ("");
+  gtk_label_set_ellipsize (GTK_LABEL (self->last_page_label), PANGO_ELLIPSIZE_MIDDLE);
   /*gtk_style_context_add_class (gtk_widget_get_style_context (self->last_page_label), "title");*/
   /*gtk_container_add (GTK_CONTAINER (self->title_stack), self->last_page_label);*/
 

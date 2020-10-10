@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="UserListEntry" parent="GtkListBoxRow">
-    <property name="can-focus">1</property>
-    <child>
+    <property name="child">
       <object class="GtkGrid" id="grid">
         <property name="margin-start">6</property>
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-
         <child>
           <object class="AvatarWidget" id="avatar_image">
             <property name="width-request">48</property>
@@ -18,8 +16,8 @@
             <property name="valign">center</property>
             <property name="margin-end">8</property>
             <layout>
-              <property name="left-attach">0</property>
-              <property name="top-attach">0</property>
+              <property name="column">0</property>
+              <property name="row">0</property>
               <property name="row-span">2</property>
             </layout>
           </object>
@@ -37,8 +35,8 @@
               <attribute name="weight" value="bold"></attribute>
             </attributes>
             <layout>
-              <property name="left-attach">1</property>
-              <property name="top-attach">0</property>
+              <property name="column">1</property>
+              <property name="row">0</property>
             </layout>
           </object>
         </child>
@@ -52,8 +50,8 @@
               <class name="dim-label"/>
             </style>
             <layout>
-              <property name="left-attach">1</property>
-              <property name="top-attach">1</property>
+              <property name="column">1</property>
+              <property name="row">1</property>
             </layout>
           </object>
         </child>
@@ -67,8 +65,8 @@
             <property name="icon-name">emblem-system-symbolic</property>
             <signal name="clicked" handler="settings_button_clicked_cb"/>
             <layout>
-              <property name="left-attach">2</property>
-              <property name="top-attach">0</property>
+              <property name="column">2</property>
+              <property name="row">0</property>
               <property name="row-span">2</property>
             </layout>
           </object>
@@ -82,8 +80,8 @@
             <property name="icon-name">corebird-new-window-symbolic</property>
             <signal name="clicked" handler="new_window_button_clicked_cb"/>
             <layout>
-              <property name="left-attach">3</property>
-              <property name="top-attach">0</property>
+              <property name="column">3</property>
+              <property name="row">0</property>
               <property name="row-span">2</property>
             </layout>
           </object>
@@ -96,13 +94,13 @@
             <property name="icon-name">corebird-profile-symbolic</property>
             <signal name="clicked" handler="profile_button_clicked_cb"/>
             <layout>
-              <property name="left-attach">4</property>
-              <property name="top-attach">0</property>
+              <property name="column">4</property>
+              <property name="row">0</property>
               <property name="row-span">2</property>
             </layout>
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

@@ -119,8 +119,8 @@
                 <property name="margin-start">4</property>
               </object>
               <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
+                <property name="column">0</property>
+                <property name="row">0</property>
                 <property name="height">3</property>
               </packing>
             </child>
@@ -135,8 +135,8 @@
                 <signal name="clicked" handler="name_button_clicked_cb" swapped="no"/>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">0</property>
+                <property name="column">1</property>
+                <property name="row">0</property>
               </packing>
             </child>
             <child>
@@ -154,8 +154,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">2</property>
-                <property name="top-attach">0</property>
+                <property name="column">2</property>
+                <property name="row">0</property>
               </packing>
             </child>
             <child>
@@ -172,8 +172,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">3</property>
-                <property name="top-attach">0</property>
+                <property name="column">3</property>
+                <property name="row">0</property>
               </packing>
             </child>
             <child>
@@ -190,8 +190,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">4</property>
-                <property name="top-attach">0</property>
+                <property name="column">4</property>
+                <property name="row">0</property>
               </packing>
             </child>
             <child>
@@ -205,8 +205,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">6</property>
-                <property name="top-attach">0</property>
+                <property name="column">6</property>
+                <property name="row">0</property>
               </packing>
             </child>
             <child>
@@ -222,8 +222,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">1</property>
+                <property name="column">1</property>
+                <property name="row">1</property>
                 <property name="width">6</property>
               </packing>
             </child>
@@ -243,8 +243,8 @@
                 <signal name="populate-popup" handler="populate_popup_cb"/>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">2</property>
+                <property name="column">1</property>
+                <property name="row">2</property>
                 <property name="width">6</property>
               </packing>
             </child>
@@ -262,8 +262,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">6</property>
+                <property name="column">0</property>
+                <property name="row">6</property>
               </packing>
             </child>
             <child>
@@ -281,8 +281,8 @@
                 </style>
               </object>
               <packing>
-                <property name="left-attach">1</property>
-                <property name="top-attach">6</property>
+                <property name="column">1</property>
+                <property name="row">6</property>
                 <property name="width">6</property>
               </packing>
             </child>

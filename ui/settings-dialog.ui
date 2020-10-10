@@ -44,8 +44,8 @@
                       <attribute name="weight" value="bold"></attribute>
                     </attributes>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">2</property>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
                       <property name="column-span">4</property>
                     </layout>
                   </object>
@@ -59,8 +59,8 @@
                       <relation type="label-for" target="media_visibility_combobox"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">3</property>
+                      <property name="column">0</property>
+                      <property name="row">3</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -77,8 +77,8 @@
                       <relation type="labelled-by" target="media_visibility_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">2</property>
-                      <property name="top-attach">3</property>
+                      <property name="column">2</property>
+                      <property name="row">3</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -92,8 +92,8 @@
                       <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">4</property>
+                      <property name="column">0</property>
+                      <property name="row">4</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -107,8 +107,8 @@
                       <relation type="labelled-by" target="auto_scroll_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">2</property>
-                      <property name="top-attach">4</property>
+                      <property name="column">2</property>
+                      <property name="row">4</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -122,8 +122,8 @@
                       <relation type="label-for" target="double_click_activation_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">5</property>
+                      <property name="column">0</property>
+                      <property name="row">5</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -136,8 +136,8 @@
                       <relation type="labelled-by" target="double_click_activation_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">2</property>
-                      <property name="top-attach">5</property>
+                      <property name="column">2</property>
+                      <property name="row">5</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -168,8 +168,8 @@
                       <relation type="label-for" target="on_new_tweets_combobox"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">1</property>
+                      <property name="column">0</property>
+                      <property name="row">1</property>
                     </layout>
                   </object>
                 </child>
@@ -181,8 +181,8 @@
                       <attribute name="weight" value="bold"></attribute>
                     </attributes>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">0</property>
+                      <property name="column">0</property>
+                      <property name="row">0</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -195,8 +195,8 @@
                       <relation type="label-for" target="on_new_mentions_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">2</property>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
                     </layout>
                   </object>
                 </child>
@@ -208,8 +208,8 @@
                       <relation type="label-for" target="on_new_dms_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">3</property>
+                      <property name="column">0</property>
+                      <property name="row">3</property>
                     </layout>
                   </object>
                 </child>
@@ -221,8 +221,8 @@
                       <relation type="labelled-by" target="label14"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">2</property>
+                      <property name="column">1</property>
+                      <property name="row">2</property>
                     </layout>
                   </object>
                 </child>
@@ -234,8 +234,8 @@
                       <relation type="labelled-by" target="label15"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">3</property>
+                      <property name="column">1</property>
+                      <property name="row">3</property>
                     </layout>
                   </object>
                 </child>
@@ -255,8 +255,8 @@
                       <relation type="labelled-by" target="label6"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">1</property>
+                      <property name="column">1</property>
+                      <property name="row">1</property>
                     </layout>
                   </object>
                 </child>
@@ -279,8 +279,8 @@
                     <property name="selection-mode">none</property>
                     <property name="margin-bottom">12</property>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">0</property>
+                      <property name="column">0</property>
+                      <property name="row">0</property>
                       <property name="column-span">2</property>
                     </layout>
                   </object>
@@ -293,8 +293,8 @@
                       <relation type="label-for" target="round_avatar_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">1</property>
+                      <property name="column">0</property>
+                      <property name="row">1</property>
                     </layout>
                   </object>
                 </child>
@@ -305,8 +305,8 @@
                       <relation type="labelled-by" target="round_avatar_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">1</property>
+                      <property name="column">1</property>
+                      <property name="row">1</property>
                     </layout>
                   </object>
                 </child>
@@ -318,8 +318,8 @@
                       <relation type="label-for" target="remove_trailing_hashtags_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">2</property>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
                     </layout>
                   </object>
                 </child>
@@ -331,8 +331,8 @@
                       <relation type="labelled-by" target="remove_trailing_hashtags_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">2</property>
+                      <property name="column">1</property>
+                      <property name="row">2</property>
                     </layout>
                   </object>
                 </child>
@@ -344,8 +344,8 @@
                       <relation type="label-for" target="remove_media_links_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">3</property>
+                      <property name="column">0</property>
+                      <property name="row">3</property>
                     </layout>
                   </object>
                 </child>
@@ -357,8 +357,8 @@
                       <relation type="labelled-by" target="remove_media_links_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">3</property>
+                      <property name="column">1</property>
+                      <property name="row">3</property>
                     </layout>
                   </object>
                 </child>
@@ -370,8 +370,8 @@
                       <relation type="label-for" target="hide_nsfw_content_switch"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">0</property>
-                      <property name="top-attach">4</property>
+                      <property name="column">0</property>
+                      <property name="row">4</property>
                     </layout>
                   </object>
                 </child>
@@ -382,8 +382,8 @@
                       <relation type="labelled-by" target="hide_nsfw_content_label"/>
                     </accessibility>
                     <layout>
-                      <property name="left-attach">1</property>
-                      <property name="top-attach">4</property>
+                      <property name="column">1</property>
+                      <property name="row">4</property>
                     </layout>
                   </object>
                 </child>

@@ -49,8 +49,8 @@
                         <property name="visible">1</property>
                         <property name="can-focus">False</property>
                         <layout>
-                          <property name="left-attach">0</property>
-                          <property name="top-attach">0</property>
+                          <property name="column">0</property>
+                          <property name="row">0</property>
                           <property name="column-span">5</property>
                         </layout>
                       </object>
@@ -67,8 +67,8 @@
                         <property name="halign">start</property>
                         <property name="overlap">1</property>
                         <layout>
-                          <property name="left-attach">0</property>
-                          <property name="top-attach">1</property>
+                          <property name="column">0</property>
+                          <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
@@ -106,8 +106,8 @@
                           </object>
                         </child>
                         <layout>
-                          <property name="left-attach">1</property>
-                          <property name="top-attach">1</property>
+                          <property name="column">1</property>
+                          <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
@@ -155,8 +155,8 @@
                           </object>
                         </child>
                         <layout>
-                          <property name="left-attach">2</property>
-                          <property name="top-attach">1</property>
+                          <property name="column">2</property>
+                          <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
@@ -173,8 +173,8 @@
                         <property name="wrap-mode">word-char</property>
                         <signal name="activate-link" handler="activate_link" swapped="no"/>
                         <layout>
-                          <property name="left-attach">0</property>
-                          <property name="top-attach">6</property>
+                          <property name="column">0</property>
+                          <property name="row">6</property>
                           <property name="column-span">4</property>
                         </layout>
                       </object>
@@ -190,8 +190,8 @@
                         <property name="justify">center</property>
                         <property name="ellipsize">end</property>
                         <layout>
-                          <property name="left-attach">0</property>
-                          <property name="top-attach">7</property>
+                          <property name="column">0</property>
+                          <property name="row">7</property>
                           <property name="column-span">5</property>
                         </layout>
                       </object>
@@ -230,8 +230,8 @@
                               </object>
                             </child>
                             <layout>
-                              <property name="left-attach">0</property>
-                              <property name="top-attach">0</property>
+                              <property name="column">0</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
@@ -266,8 +266,8 @@
                               </object>
                             </child>
                             <layout>
-                              <property name="left-attach">1</property>
-                              <property name="top-attach">0</property>
+                              <property name="column">1</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
@@ -302,8 +302,8 @@
                               </object>
                             </child>
                             <layout>
-                              <property name="left-attach">2</property>
-                              <property name="top-attach">0</property>
+                              <property name="column">2</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
@@ -337,15 +337,15 @@
                               </object>
                             </child>
                             <layout>
-                              <property name="left-attach">3</property>
-                              <property name="top-attach">0</property>
+                              <property name="column">3</property>
+                              <property name="row">0</property>
                               <property name="row-span">2</property>
                             </layout>
                           </object>
                         </child>
                         <layout>
-                          <property name="left-attach">0</property>
-                          <property name="top-attach">8</property>
+                          <property name="column">0</property>
+                          <property name="row">8</property>
                           <property name="column-span">5</property>
                         </layout>
                       </object>
@@ -353,8 +353,8 @@
                     <child>
                       <object class="GtkSeparator">
                         <layout>
-                          <property name="left-attach">0</property>
-                          <property name="top-attach">9</property>
+                          <property name="column">0</property>
+                          <property name="row">9</property>
                           <property name="column-span">5</property>
                         </layout>
                       </object>
