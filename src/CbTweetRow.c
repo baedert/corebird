@@ -24,7 +24,7 @@
 
 static void cb_twitter_item_iface_init (CbTwitterItemInterface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (CbTweetRow, cb_tweet_row, GTK_TYPE_LIST_BOX_ROW,
+G_DEFINE_TYPE_WITH_CODE (CbTweetRow, cb_tweet_row, GTK_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (CB_TYPE_TWITTER_ITEM, cb_twitter_item_iface_init));
 
 
@@ -283,6 +283,12 @@ cb_tweet_row_finalize (GObject *object)
   G_OBJECT_CLASS (cb_tweet_row_parent_class)->finalize (object);
 }
 
+static GtkSizeRequestMode
+cb_tweet_row_get_request_mode (GtkWidget *widget)
+{
+  return GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH;
+}
+
 static void
 cb_tweet_row_class_init (CbTweetRowClass *klass)
 {
@@ -293,6 +299,9 @@ cb_tweet_row_class_init (CbTweetRowClass *klass)
 
   widget_class->measure = cb_tweet_row_measure;
   widget_class->size_allocate = cb_tweet_row_size_allocate;
+  widget_class->get_request_mode = cb_tweet_row_get_request_mode;
+
+  gtk_widget_class_set_css_name (widget_class, "row");
 }
 
 static void

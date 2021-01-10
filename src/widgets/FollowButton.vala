@@ -43,8 +43,8 @@ class FollowButton : Gtk.Button {
     this.follow_label = new Gtk.Label (_("Follow"));
     this.unfollow_label = new Gtk.Label (_("Unfollow"));
 
-    stack.add_named (follow_label, "");
-    stack.add_named (unfollow_label, "");
+    stack.add_child (follow_label);
+    stack.add_child (unfollow_label);
     stack.set_interpolate_size (true);
     stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
     stack.hhomogeneous = false;

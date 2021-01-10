@@ -98,10 +98,10 @@ class MediaDialog : Gtk.Window {
     }
 
     new_widget.get_size_request (out new_width, out new_height);
-    if ((new_width != cur_width ||
-        new_height != cur_height) && new_width > 0 && new_height > 0) {
-      this.resize (new_width, new_height);
-    }
+    //if ((new_width != cur_width ||
+        //new_height != cur_height) && new_width > 0 && new_height > 0) {
+      //this.resize (new_width, new_height);
+    //}
     this.queue_resize ();
 
     next_revealer.set_visible (cur_index != tweet.get_medias ().length - 1);

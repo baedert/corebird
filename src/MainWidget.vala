@@ -77,7 +77,7 @@ public class MainWidget : Gtk.Box {
         account.user_stream.register ((Cb.MessageReceiver)page);
 
       page.create_radio_button (dummy_button);
-      stack.add_named (page, "");
+      stack.add_child (page);
       var page_button = page.get_radio_button ();
       if (page_button != null) {
         top_box.append (page_button);

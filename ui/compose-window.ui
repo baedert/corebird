@@ -12,6 +12,7 @@
     <property name="destroy-with-parent">1</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
+        <property name="decoration-layout"></property>
         <child type="title">
           <object class="GtkStack" id="title_stack">
             <property name="transition-type">crossfade</property>

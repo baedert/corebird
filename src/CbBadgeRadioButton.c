@@ -92,7 +92,7 @@ cb_badge_radio_button_size_allocate (GtkWidget *widget,
   gtk_widget_size_allocate (self->badge,  &(GtkAllocation) { 0, 0, width, height }, -1);
 
   if (self->menu)
-    gtk_native_check_resize (GTK_NATIVE (self->menu));
+    gtk_popover_present (GTK_POPOVER (self->menu));
 }
 
 static void

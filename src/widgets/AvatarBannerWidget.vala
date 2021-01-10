@@ -113,7 +113,7 @@ public class AvatarBannerWidget : Gtk.Widget {
     child_allocation.width = int.max (width, child_requisition.width);
     child_allocation.height = (int)(width * BANNER_RATIO);
     child_allocation.height = int.max (height - (AVATAR_SIZE / 2), child_requisition.height);
-    set_banner_button.size_allocate_emit (child_allocation, -1);
+    set_banner_button.allocate_size (child_allocation, -1);
 
 
     /* set_avatar_button */
@@ -122,7 +122,7 @@ public class AvatarBannerWidget : Gtk.Widget {
     child_allocation.y = get_avatar_y ();
     child_allocation.width = AVATAR_SIZE;
     child_allocation.height = AVATAR_SIZE;
-    set_avatar_button.size_allocate_emit (child_allocation, -1);
+    set_avatar_button.allocate_size (child_allocation, -1);
   }
 
   private void banner_clicked_cb () {

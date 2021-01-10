@@ -409,7 +409,7 @@ public class ComposeTweetWindow : Gtk.ApplicationWindow {
       this.tweet_text.insert_at_cursor (text);
       cancel_clicked ();
     });
-    stack.add_named (emoji_chooser, "");
+    stack.add_child (emoji_chooser);
 
     this.emoji_button = new Gtk.Button.from_icon_name ("face-smile-symbolic");
     emoji_button.clicked.connect (() => {

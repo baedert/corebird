@@ -126,7 +126,7 @@ public class AvatarWidget : Gtk.Widget {
       child_alloc.height = child_height;
     }
 
-    container_widget.size_allocate_emit (child_alloc, -1);
+    container_widget.allocate_size (child_alloc, -1);
   }
 
   public override void snapshot (Gtk.Snapshot snapshot) {

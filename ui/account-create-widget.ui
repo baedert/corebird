@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
+  <requires lib="gtk" version="4.0"/>
   <template class="AccountCreateWidget" parent="GtkBox">
     <property name="halign">center</property>
     <property name="orientation">vertical</property>
@@ -10,6 +11,7 @@
     <property name="spacing">24</property>
     <child>
       <object class="GtkImage">
+        <property name="visible">0</property>
         <property name="icon-name">corebird</property>
         <property name="halign">center</property>
         <property name="margin-bottom">24</property>
@@ -18,6 +20,7 @@
     </child>
     <child>
       <object class="GtkLabel">
+        <property name="visible">0</property>
         <property name="label" translatable="yes">New Account</property>
         <attributes>
           <attribute name="scale" value="3"></attribute>
@@ -26,16 +29,19 @@
     </child>
     <child>
       <object class="GtkStack" id="content_stack">
+        <property name="visible">0</property>
         <property name="transition-type">slide-left-right</property>
         <child>
           <object class="GtkStackPage">
             <property name="name">intro</property>
             <property name="child">
               <object class="GtkBox">
+                <property name="visible">0</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">24</property>
                 <child>
                   <object class="GtkLabel">
+                    <property name="visible">0</property>
                     <property name="label" translatable="yes">To authenticate Corebird, you need a PIN from twitter.com with the account you wish to add</property>
                     <property name="xalign">0</property>
                     <property name="max-width-chars">20</property>
@@ -46,12 +52,14 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="request_pin_button">
+                    <property name="visible">0</property>
                     <property name="label" translatable="yes">Request PIN</property>
                     <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
                   </object>
                 </child>
                 <child>
                   <object class="GtkLabel" id="info_label">
+                    <property name="visible">0</property>
                     <property name="use-markup">1</property>
                     <style>
                       <class name="dim-label"/>
@@ -67,11 +75,13 @@
             <property name="name">pin</property>
             <property name="child">
               <object class="GtkGrid">
+                <property name="visible">0</property>
                 <property name="row-spacing">24</property>
                 <property name="column-spacing">12</property>
                 <property name="column-homogeneous">1</property>
                 <child>
                   <object class="GtkLabel">
+                    <property name="visible">0</property>
                     <property name="label" translatable="yes">Enter PIN from twitter.com below:</property>
                     <property name="hexpand">1</property>
                     <property name="wrap-mode">word-char</property>
@@ -87,6 +97,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="pin_entry">
+                    <property name="visible">0</property>
                     <property name="placeholder-text" translatable="yes">PIN</property>
                     <property name="hexpand">1</property>
                     <layout>
@@ -98,6 +109,7 @@
                 </child>
                 <child>
                   <object class="GtkButton">
+                    <property name="visible">0</property>
                     <property name="label" translatable="yes">Retry</property>
                     <signal name="clicked" handler="request_pin_clicked_cb" swapped="no"/>
                     <layout>
@@ -108,6 +120,7 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="confirm_button">
+                    <property name="visible">0</property>
                     <property name="label" translatable="yes">Confirm</property>
                     <property name="sensitive">0</property>
                     <signal name="clicked" handler="confirm_button_clicked_cb" swapped="no"/>

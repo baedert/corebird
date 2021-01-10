@@ -24,7 +24,7 @@
 
 struct _CbTweetRow
 {
-  GtkListBoxRow parent_instance;
+  GtkWidget parent_instance;
 
   gulong tweet_state_changed_id;
 
@@ -52,7 +52,7 @@ typedef struct _CbTweetRow CbTweetRow;
 
 
 #define CB_TYPE_TWEET_ROW cb_tweet_row_get_type ()
-G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkListBoxRow);
+G_DECLARE_FINAL_TYPE (CbTweetRow, cb_tweet_row, CB, TWEET_ROW, GtkWidget);
 
 GtkWidget *  cb_tweet_row_new               (CbTweet         *tweet,
                                              CbMainWindow    *main_window);
