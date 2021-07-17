@@ -543,27 +543,25 @@ cb_main_window_init (CbMainWindow *self)
 
   /* Create UI */
   self->headerbar = gtk_header_bar_new ();
-  /*gtk_header_bar_set_title (GTK_HEADER_BAR (self->headerbar), "Corebird");*/
-  /*gtk_header_bar_set_show_title_buttons (GTK_HEADER_BAR (self->headerbar), TRUE);*/
   /*g_signal_connect (self->headerbar, "key-press-event", G_CALLBACK (headerbar_key_press_event_cb), self);*/
   gtk_window_set_titlebar ((GtkWindow *)self, self->headerbar);
 
   self->title_stack = gtk_stack_new ();
   self->title_label = gtk_label_new ("");
-  /*gtk_label_set_ellipsize (GTK_LABEL (self->title_label), PANGO_ELLIPSIZE_MIDDLE);*/
-  /*gtk_style_context_add_class (gtk_widget_get_style_context (self->title_label), "title");*/
-  /*gtk_container_add (GTK_CONTAINER (self->title_stack), self->title_label);*/
+  gtk_widget_add_css_class (self->title_label, "title");
+  gtk_stack_add_child (GTK_STACK (self->title_stack), self->title_label);
+  gtk_label_set_ellipsize (GTK_LABEL (self->title_label), PANGO_ELLIPSIZE_MIDDLE);
   self->last_page_label = gtk_label_new ("");
+  gtk_widget_add_css_class (self->last_page_label, "title");
   gtk_label_set_ellipsize (GTK_LABEL (self->last_page_label), PANGO_ELLIPSIZE_MIDDLE);
-  /*gtk_style_context_add_class (gtk_widget_get_style_context (self->last_page_label), "title");*/
-  /*gtk_container_add (GTK_CONTAINER (self->title_stack), self->last_page_label);*/
+  gtk_stack_add_child (GTK_STACK (self->title_stack), self->last_page_label);
 
-  /*gtk_header_bar_set_custom_title (GTK_HEADER_BAR (self->headerbar), self->title_stack);*/
+  gtk_header_bar_set_title_widget (GTK_HEADER_BAR (self->headerbar), self->title_stack);
 
   self->header_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
   self->account_button = gtk_menu_button_new ();
   gtk_widget_set_tooltip_text (self->account_button, _("Show configured accounts"));
-  /*gtk_style_context_add_class (gtk_widget_get_style_context (self->account_button), "account-button");*/
+  gtk_widget_add_css_class (self->account_button, "account-button");
   self->avatar_widget = (GtkWidget *)avatar_widget_new ();
   avatar_widget_set_size (AVATAR_WIDGET (self->avatar_widget), 24);
   gtk_widget_set_valign (self->avatar_widget, GTK_ALIGN_CENTER);
