@@ -111,8 +111,37 @@ cb_tweet_row_measure (GtkWidget      *widget,
 
   if (orientation == GTK_ORIENTATION_HORIZONTAL)
     {
-      /* Whatever, really. */
+      int min = 0;
+      int top_box_min;
+      int rt_min = 0;
+      int m;
 
+
+      gtk_widget_measure (self->avatar_widget, GTK_ORIENTATION_HORIZONTAL, -1,
+                          &m, NULL, NULL, NULL);
+
+      min += m;
+
+      gtk_widget_measure (self->top_row_box, GTK_ORIENTATION_HORIZONTAL, -1,
+                          &top_box_min, NULL, NULL, NULL);
+
+      if (self->rt_image)
+          {
+            rt_min = 0;
+            gtk_widget_measure (self->rt_image, GTK_ORIENTATION_HORIZONTAL, -1,
+                                &m, NULL, NULL, NULL);
+            rt_min += m;
+
+            gtk_widget_measure (self->rt_label, GTK_ORIENTATION_HORIZONTAL, -1,
+                                &m, NULL, NULL, NULL);
+
+            rt_min += m;
+          }
+
+      min += MAX (top_box_min, rt_min);
+
+      *minimum = min;
+      *natural = min;
     }
   else /* VERTICAL */
     {
