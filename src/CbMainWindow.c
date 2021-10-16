@@ -424,7 +424,7 @@ toggle_compose_window (GSimpleAction *action,
     }
   else
     {
-      gtk_window_destroy (self->compose_window);
+      gtk_window_destroy (GTK_WINDOW (self->compose_window));
       self->compose_window = NULL;
     }
 }
@@ -795,23 +795,27 @@ cb_main_window_change_account (CbMainWindow *self,
 
       g_signal_emit_by_name (cb, "account-window-changed", old_user_id, account->id);
 
-      /* Disable app menu in the titlebar since we do that ourselves */
-      /*g_object_get (gtk_settings_get_default (), "gtk-shell-shows-app-menu", &shell_shows_app_menu, NULL);*/
-      /*if (!shell_shows_app_menu)*/
-        /*{*/
-          /*if (self->app_menu_button == NULL)*/
-            /*{*/
-              /*self->app_menu_button = gtk_menu_button_new ();*/
-              /*gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (self->app_menu_button), "emblem-system-symbolic");*/
-              /*gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->app_menu_button),*/
-                                              /*gtk_application_get_app_menu (GTK_APPLICATION (cb)));*/
-              /*gtk_header_bar_pack_end (GTK_HEADER_BAR (self->headerbar), self->app_menu_button);*/
-            /*}*/
-          /*else*/
-            /*{*/
-              /*gtk_widget_show (self->app_menu_button);*/
-            /*}*/
-        /*}*/
+      if (self->app_menu_button == NULL)
+        {
+          GtkBuilder *menu_builder = gtk_builder_new ();
+          GMenuModel *menu;
+
+          gtk_builder_add_from_resource (menu_builder, "/org/baedert/corebird/gtk/menus.ui", NULL);
+          menu = G_MENU_MODEL (gtk_builder_get_object (menu_builder, "app-menu"));
+          g_assert (menu);
+
+          self->app_menu_button = gtk_menu_button_new ();
+          gtk_menu_button_set_icon_name (GTK_MENU_BUTTON (self->app_menu_button), "emblem-system-symbolic");
+          gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (self->app_menu_button),
+                                          menu);
+          gtk_header_bar_pack_end (GTK_HEADER_BAR (self->headerbar), self->app_menu_button);
+
+          g_object_unref (menu_builder);
+        }
+      else
+        {
+          gtk_widget_show (self->app_menu_button);
+        }
     }
   else
     {
