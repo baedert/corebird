@@ -53,7 +53,7 @@ main (int argc, char **argv)
 
         g_debug ("Destroying %s %p", G_OBJECT_TYPE_NAME (w), w);
 
-        gtk_window_destroy (w);
+        gtk_window_destroy (GTK_WINDOW (w));
       }
     g_list_free (toplevels);
   }

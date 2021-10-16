@@ -45,14 +45,48 @@ tweet_row_create_func (gpointer item,
 
 static void
 gesture_pressed_cb (GtkGestureClick *gesture,
-                    int                   n_press,
-                    double                x,
-                    double                y,
-                    gpointer              user_data)
+                    int              n_press,
+                    double           x,
+                    double           y,
+                    gpointer         user_data)
 {
   CbTweetListBox *self = user_data;
+  CbMainWindow *main_window;
+  CbTweetRow *row;
 
-  g_message (__FUNCTION__);
+  /* First, get the proper tweet row, because we're not using one
+   * gesture per row here. */
+  {
+      GtkWidget *picked = gtk_widget_pick (GTK_WIDGET (self), x, y, 0);
+
+      if (!picked) return;
+
+      row = (CbTweetRow *)gtk_widget_get_ancestor (picked, CB_TYPE_TWEET_ROW);
+
+      if (!row) return;
+  }
+
+  /* Retrieve our main window */
+  {
+    GtkRoot *root = gtk_widget_get_root (GTK_WIDGET (self));
+    if (!root) return;
+
+    if (!CB_IS_MAIN_WINDOW (root)) return;
+
+    main_window = CB_MAIN_WINDOW (root);
+  }
+
+
+  /* Switch to the tweet info page */
+  {
+    CbTweet *tweet = row->tweet;
+    CbBundle *args = cb_bundle_new ();
+    cb_bundle_put_int (args, TWEET_INFO_PAGE_KEY_MODE, TWEET_INFO_PAGE_BY_INSTANCE);
+    cb_bundle_put_bool (args, TWEET_INFO_PAGE_KEY_EXISTING, TRUE);
+    cb_bundle_put_object (args, TWEET_INFO_PAGE_KEY_TWEET, (GObject *)tweet);
+
+    cb_main_window_switch_page (main_window, PAGE_TWEET_INFO, args);
+  }
 }
 
 static void
@@ -60,8 +94,8 @@ double_click_activation_setting_changed_cb (GObject    *obj,
                                             GParamSpec *pspec,
                                             gpointer    user_data)
 {
-  CbTweetListBox *self = user_data;
-  GSettings *settings = G_SETTINGS (obj);
+  /*CbTweetListBox *self = user_data;*/
+  /*GSettings *settings = G_SETTINGS (obj);*/
 
   /*gtk_list_box_set_activate_on_single_click ((GtkListBox *)self->widget,*/
                                              /*FALSE);*/

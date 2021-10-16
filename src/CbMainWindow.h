@@ -19,6 +19,7 @@
 #define __CB_MAIN_WINDOW_H__
 
 #include <gtk/gtk.h>
+#include "CbBundle.h"
 
 typedef struct _CbMainWindow CbMainWindow;
 struct _CbMainWindow
@@ -62,6 +63,9 @@ void              cb_main_window_mark_tweet_as_read (CbMainWindow           *sel
 int               cb_main_window_get_cur_page_id    (CbMainWindow           *self);
 void *            cb_main_window_get_page           (CbMainWindow           *self,
                                                      int                     page_id);
+void              cb_main_window_switch_page        (CbMainWindow           *self,
+                                                     int                     page_id,
+                                                     CbBundle               *args);
 
 
 #endif

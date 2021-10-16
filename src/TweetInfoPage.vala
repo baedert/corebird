@@ -143,6 +143,8 @@ public class TweetInfoPage : IPage, Cb.ScrollWidget, Cb.MessageReceiver {
   }
 
   public void on_join (int page_id, Cb.Bundle? args) {
+    if (args == null) return;
+
     int mode = args.get_int (KEY_MODE);
 
     if (mode == 0)

@@ -218,11 +218,11 @@ cb_main_window_close_request (GtkWindow *window)
   windows = gtk_application_get_windows (GTK_APPLICATION (g_application_get_default ()));
   for (l = windows; l; l = l->next)
     {
-      GtkWidget *window = l->data;
+      GtkWidget *win = l->data;
 
-      if (CB_IS_MAIN_WINDOW (window) &&
-          CB_MAIN_WINDOW (window)->account != NULL &&
-          strcmp (ACCOUNT (CB_MAIN_WINDOW (window)->account)->screen_name, ACCOUNT_DUMMY) != 0)
+      if (CB_IS_MAIN_WINDOW (win) &&
+          CB_MAIN_WINDOW (win)->account != NULL &&
+          strcmp (ACCOUNT (CB_MAIN_WINDOW (win)->account)->screen_name, ACCOUNT_DUMMY) != 0)
         n_main_windows ++;
     }
 
@@ -772,7 +772,6 @@ cb_main_window_change_account (CbMainWindow *self,
       IPage *first_page;
       char *title;
       char *page_title;
-      gboolean shell_shows_app_menu;
 
       gtk_widget_show (self->header_box);
 
@@ -819,7 +818,7 @@ cb_main_window_change_account (CbMainWindow *self,
     }
   else
     {
-      Account *acc;
+      Account *new_acc;
       GtkWidget *account_create_widget;
       /* Special case when creating a new account */
       gtk_widget_hide (self->header_box);
@@ -828,19 +827,26 @@ cb_main_window_change_account (CbMainWindow *self,
         gtk_widget_hide (self->app_menu_button);
 
       if (account != NULL)
-        acc = account;
+        new_acc = account;
       else
-        acc = account_new (0, ACCOUNT_DUMMY, "name");
+        new_acc = account_new (0, ACCOUNT_DUMMY, "name");
 
       gtk_label_set_label (GTK_LABEL (self->title_label), "Corebird");
       gtk_window_set_title (GTK_WINDOW (self), "Corebird");
 
       account_add_account (acc);
-      account_create_widget = (GtkWidget *)account_create_widget_new (acc, cb, self);
+      account_create_widget = (GtkWidget *)account_create_widget_new (new_acc, cb, self);
       gtk_window_set_child (GTK_WINDOW (self), account_create_widget);
       g_signal_connect (account_create_widget, "result-received",
                         G_CALLBACK (account_create_widget_result_received_cb), self);
     }
-
-
 }
+
+void
+cb_main_window_switch_page (CbMainWindow           *self,
+                            int                     page_id,
+                            CbBundle               *args)
+{
+  main_widget_switch_page (MAIN_WIDGET (self->main_widget), page_id, args);
+}
+
