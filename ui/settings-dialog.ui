@@ -16,8 +16,7 @@
     <signal name="close-request" handler="window_close_cb"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-        <property name="title" translatable="yes">Settings</property>
-        <property name="custom-title">custom_title</property>
+        <property name="title-widget">custom_title</property>
         <property name="show-title-buttons">1</property>
       </object>
     </child>
@@ -55,9 +54,6 @@
                     <property name="halign">end</property>
                     <property name="hexpand">1</property>
                     <property name="label" translatable="yes">Show inline media</property>
-                    <accessibility>
-                      <relation type="label-for" target="media_visibility_combobox"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">3</property>
@@ -73,9 +69,6 @@
                       <item id="Hide" translatable="yes">Always hide</item>
                       <item id="Hide in Timeline" translatable="yes">Hide in timeline</item>
                     </items>
-                    <accessibility>
-                      <relation type="labelled-by" target="media_visibility_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">2</property>
                       <property name="row">3</property>
@@ -88,9 +81,6 @@
                     <property name="halign">end</property>
                     <property name="hexpand">1</property>
                     <property name="label" translatable="yes">Auto scroll on new tweets</property>
-                    <accessibility>
-                      <relation type="label-for" target="auto_scroll_on_new_tweets_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">4</property>
@@ -103,9 +93,6 @@
                     <property name="can-focus">1</property>
                     <property name="halign">start</property>
                     <property name="hexpand">1</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="auto_scroll_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">2</property>
                       <property name="row">4</property>
@@ -118,9 +105,6 @@
                     <property name="label" translatable="yes">Double-click activation</property>
                     <property name="halign">end</property>
                     <property name="hexpand">1</property>
-                    <accessibility>
-                      <relation type="label-for" target="double_click_activation_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">5</property>
@@ -132,9 +116,6 @@
                   <object class="GtkSwitch" id="double_click_activation_switch">
                     <property name="can-focus">1</property>
                     <property name="halign">start</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="double_click_activation_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">2</property>
                       <property name="row">5</property>
@@ -164,9 +145,6 @@
                     <property name="halign">end</property>
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Tweets</property>
-                    <accessibility>
-                      <relation type="label-for" target="on_new_tweets_combobox"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">1</property>
@@ -191,9 +169,6 @@
                   <object class="GtkLabel" id="label14">
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Mentions</property>
-                    <accessibility>
-                      <relation type="label-for" target="on_new_mentions_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">2</property>
@@ -204,9 +179,6 @@
                   <object class="GtkLabel" id="label15">
                     <property name="xalign">1</property>
                     <property name="label" translatable="yes">On New Messages</property>
-                    <accessibility>
-                      <relation type="label-for" target="on_new_dms_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">3</property>
@@ -217,9 +189,6 @@
                   <object class="GtkSwitch" id="on_new_mentions_switch">
                     <property name="can-focus">1</property>
                     <property name="halign">start</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="label14"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">2</property>
@@ -230,9 +199,6 @@
                   <object class="GtkSwitch" id="on_new_dms_switch">
                     <property name="can-focus">1</property>
                     <property name="halign">start</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="label15"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">3</property>
@@ -251,9 +217,6 @@
                       <item id="Stack 25" translatable="yes">Stack 25</item>
                       <item id="Stack 50" translatable="yes">Stack 50</item>
                     </items>
-                    <accessibility>
-                      <relation type="labelled-by" target="label6"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">1</property>
@@ -289,9 +252,6 @@
                   <object class="GtkLabel" id="round_avatar_label">
                     <property name="label" translatable="yes">Round avatars</property>
                     <property name="halign">end</property>
-                    <accessibility>
-                      <relation type="label-for" target="round_avatar_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">1</property>
@@ -301,9 +261,6 @@
                 <child>
                   <object class="GtkSwitch" id="round_avatar_switch">
                     <property name="halign">start</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="round_avatar_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">1</property>
@@ -314,9 +271,6 @@
                   <object class="GtkLabel" id="remove_trailing_hashtags_label">
                     <property name="label" translatable="yes">Remove trailing hashtags</property>
                     <property name="halign">end</property>
-                    <accessibility>
-                      <relation type="label-for" target="remove_trailing_hashtags_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">2</property>
@@ -327,9 +281,6 @@
                   <object class="GtkSwitch" id="remove_trailing_hashtags_switch">
                     <property name="halign">start</property>
                     <signal name="notify::active" handler="remove_trailing_hashtags_cb"/>
-                    <accessibility>
-                      <relation type="labelled-by" target="remove_trailing_hashtags_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">2</property>
@@ -340,9 +291,6 @@
                   <object class="GtkLabel" id="remove_media_links_label">
                     <property name="label" translatable="yes">Remove media links</property>
                     <property name="halign">end</property>
-                    <accessibility>
-                      <relation type="label-for" target="remove_media_links_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">3</property>
@@ -353,9 +301,6 @@
                   <object class="GtkSwitch" id="remove_media_links_switch">
                     <property name="halign">start</property>
                     <signal name="notify::active" handler="remove_media_links_cb"/>
-                    <accessibility>
-                      <relation type="labelled-by" target="remove_media_links_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">3</property>
@@ -366,9 +311,6 @@
                   <object class="GtkLabel" id="hide_nsfw_content_label">
                     <property name="label" translatable="yes">Hide inappropriate content</property>
                     <property name="halign">end</property>
-                    <accessibility>
-                      <relation type="label-for" target="hide_nsfw_content_switch"/>
-                    </accessibility>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">4</property>
@@ -378,9 +320,6 @@
                 <child>
                   <object class="GtkSwitch" id="hide_nsfw_content_switch">
                     <property name="halign">start</property>
-                    <accessibility>
-                      <relation type="labelled-by" target="hide_nsfw_content_label"/>
-                    </accessibility>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">4</property>
